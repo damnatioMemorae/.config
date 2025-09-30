@@ -19,25 +19,23 @@ return {
                         sh         = { "shfmt" },
                         zsh        = { "shfmt" },
                 }
+
                 local options = {
-                        clang_format = {
-                                args = { "--style=file" },
-                        },
-                        shfmt        = {
-                                args = { "-ln=bash", "-i=8", "-ci", "-fn" }
-                        },
+                        clang_format = { args = { "--style=file" } },
+                        shfmt        = { args = { "-ln=bash", "-i=8", "-ci", "-fn" } },
                 }
 
                 conform.setup({
                         formatters_by_ft = ft,
                         formatters       = options,
                 })
+
                 vim.keymap.set({ "n", "v" }, "<leader>f", function()
                         conform.format({
                                 lsp_fallback = true,
                                 async        = false,
-                                timeout_ms   = 1000
+                                timeout_ms   = 1000,
                         })
                 end)
-        end
+        end,
 }

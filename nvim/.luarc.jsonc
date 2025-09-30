@@ -12,4 +12,6 @@
         ],
         "runtime.version": "LuaJIT",
         "diagnostics.globals": ["Snacks"]
+        // "hover.enable": false,
+        // "signatureHelp.enable": true
 }

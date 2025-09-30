@@ -24,8 +24,7 @@ api.nvim_create_autocmd("VimEnter", {
                 end)
                 if root and root ~= "" then vim.uv.chdir(root) end
         end,
-})
---]]
+}) --]]
 
 ------------------------------------------------------------------------------------------------------------------------
 -- <q>
@@ -265,35 +264,6 @@ api.nvim_create_autocmd("CmdwinEnter", {
 api.nvim_create_autocmd("LspAttach", {
         group    = api.nvim_create_augroup("lsp-attach", { clear = true }),
         callback = function(args)
-                ---@param keys string
-                ---@param func string|function
-                ---@param desc string
-                local map = function(keys, func, desc)
-                        vim.keymap.set("n", keys, func, { buffer = args.buf, desc = "LSP: " .. desc })
-                end
-
-                vim.keymap.set("n", ",", "gr", {})
-                map("K", vim.lsp.buf.hover, "󰏪 Hover Documentation")
-                map("J", vim.lsp.buf.signature_help, "󰏪 Signature Help")
-                -- map("gD", vim.lsp.buf.declaration, " Goto Declaration")
-                -- map("gd", vim.lsp.buf.definition, " Goto Definition")
-                map("gri", vim.lsp.buf.implementation, " Goto Implementation")
-                map("grr", vim.lsp.buf.references, " Goto Implementation")
-                map("grI", vim.lsp.buf.incoming_calls, "Incoming calls")
-                map("grc", vim.lsp.buf.code_action, "󱠀 Code Action")
-                map("gra", function() require("functions.quickfix").code_actions() end, "󱠀 Quickfix")
-                map("gr ", function() require("tiny-code-action").code_action() end, "󱠀 Code Action Picker")
-                map("gre", vim.diagnostic.open_float, "■ Diagnostic Float")
-                map("<A-d>", function()
-                            -- vim.diagnostic.goto_next({ float = false })
-                            vim.diagnostic.jump({ count = 1, float = false })
-                            vim.cmd.normal("zz")
-                    end, "■ Diagnostic Next")
-                map("<A-D>", function()
-                            vim.diagnostic.jump({ count = -1, float = false })
-                            vim.cmd.normal("zz")
-                    end, "■ Diagnostic Prev")
-
                 local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
                 if vim.fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight") then
                         local highlight_augroup = api.nvim_create_augroup("lsp-highlight", { clear = false })

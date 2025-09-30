@@ -99,7 +99,7 @@ return {
                                         hide_gitignored = true,
                                 },
                                 bind_to_cwd            = true,
-                                follow_current_file    = { enabled = true },
+                                follow_current_file    = { enabled = false },
                                 leave_dirs_open        = true,
                                 use_libuv_file_watcher = false,
                                 terminals_first        = true,

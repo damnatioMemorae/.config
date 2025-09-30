@@ -329,6 +329,7 @@
         "custom/gpuinfo#icon": {
                 "format": "󰢮",
                 "tooltip": false,
+                "on-click": "$HOME/.local/share/bin/gpu",
                 "interval": 5,
                 "min-length": 1,
                 "max-length": 10
@@ -337,6 +338,7 @@
                 "exec": "$HOME/.local/share/bin/gpuinfo",
                 "return-type": "json",
                 "format": "{}",
+                "on-click": "$HOME/.local/share/bin/gpu",
                 "tooltip": true,
                 "interval": 5,
                 "min-length": 4,

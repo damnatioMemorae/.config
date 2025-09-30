@@ -7,8 +7,9 @@ return {
                 ensure_installed      = "all",
                 ignore_install        = { "comment" },
                 highlight             = {
-                        enable  = true,
-                        disable = function(_, bufnr)
+                        additional_vim_regex_highlighting = false,
+                        enable                            = true,
+                        disable                           = function(_, bufnr)
                                 local maxFilesizeKb = 100
                                 local ok, stats     = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
                                 if ok and stats and stats.size > maxFilesizeKb * 1024 then return true end
@@ -31,8 +32,8 @@ return {
                                 node_incremental  = "<CR>",
                                 node_decremental  = "<Backspace>",
                                 scope_incremental = false,
-                        }
-                }
+                        },
+                },
         },
         { -- NODE ACTIONS
                 "ckolkey/ts-node-action",
@@ -51,7 +52,7 @@ return {
                 dependencies = { "nvim-treesitter/nvim-treesitter" },
                 event        = "VeryLazy",
                 config       = function()
-                        require "treesitter-context".setup {
+                        require"treesitter-context".setup{
                                 enable              = true,
                                 multiwindow         = false,
                                 max_lines           = 2,
@@ -69,8 +70,8 @@ return {
                         vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = false })
 
                         vim.keymap.set("n", ",c", function()
-                                require("treesitter-context").go_to_context(vim.v.count1)
-                        end, { silent = true })
-                end
+                                               require("treesitter-context").go_to_context(vim.v.count1)
+                                       end, { silent = true })
+                end,
         },
 }

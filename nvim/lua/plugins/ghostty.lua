@@ -1,5 +1,6 @@
 return {
         "bezhermoso/tree-sitter-ghostty",
-        lazy  = false,
+        enabled = false,
+        -- lazy  = false,
         build = "make nvim_install",
 }

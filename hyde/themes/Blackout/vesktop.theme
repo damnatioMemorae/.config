@@ -67,7 +67,7 @@ body {
     /* styling options */
     --custom-spotify-bar: on; /* off: default, on: custom text-like spotify progress bar */
     --ascii-titles: on; /* off: default, on: use ascii font for titles at the start of a channel */
-    --ascii-loader: system24; /* off: default, system24: use system24 ascii loader, cats: use cats loader */
+    --ascii-loader: Blackout; /* off: default, system24: use system24 ascii loader, cats: use cats loader */
 
     /* panel labels */
     --panel-labels: off; /* off: default, on: add labels to panels */

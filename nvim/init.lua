@@ -51,7 +51,7 @@ safeRequire("functions.beacon")
 
 if os.getenv("DISPLAY") ~= nil or os.getenv("WAYLAND_DISPLAY") ~= nil then
         -- vim.cmd("colorscheme darkmatter")
-        vim.cmd("colorscheme catppuccin")
+        vim.cmd.colorscheme("catppuccin")
 else
-        vim.cmd("colorscheme industry")
+        vim.cmd.colorscheme("industry")
 end

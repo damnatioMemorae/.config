@@ -35,10 +35,6 @@ require("git"):setup()
 -- require("hexyl"):setup()
 -- require("lsar"):setup()
 
-require("fuse-archive"):setup({
-        smart_enter = true
-})
-
 require("telegram-send"):setup({
         command      = "telegram-send --file",
         notification = true,

@@ -27,17 +27,18 @@ vim.lsp.enable({
         "emmet",
         "emmylua_ls",
         "glsl_analyzer",
-        "ts_ls",
         "gopls",
         "jsonls",
-        -- "lua_ls",
-        "yamlls",
+        "lua_ls",
         -- "pylsp",
         -- "pylyzer",
         "pyright",
+        "qmlls",
         "ruff",
         "rust_analyzer",
         "superhtml",
+        "ts_ls",
+        "yamlls",
 })
 
 vim.api.nvim_create_autocmd("FileType", {

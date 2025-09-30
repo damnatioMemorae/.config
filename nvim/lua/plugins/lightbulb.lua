@@ -14,7 +14,7 @@ return {
                 },
                 virtual_text    = {
                         enabled = true,
-                        text    = "" .. icons.diagnostics.lightbulb,
+                        text    = " " .. icons.diagnostics.lightbulb,
                         pos     = "eol",
                         hl_mode = "combine",
                         hl      = "LightBulbSign",

@@ -10,6 +10,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+#if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+        #mkdir -p ~/.cache
+        #exec Hyprland > ~/.cache/hyprland.log 2>&1
+#fi
+
 export PATH="$PATH:$HOME/.cargo/bin/"
 
 export EDITOR=nvim
@@ -20,7 +25,7 @@ export FZF_DEFAULT_OPTS='
 --color=fg:#6c7086,fg+:,bg:,bg+:#11111b
 --color=hl:#cdd6f4,hl+:#F38BA8,info:#f9e2af,marker:#F38BA8
 --color=prompt:#f9e2af,spinner:#f9e2af,pointer:#af5fff,header:#ababab
---color=gutter:#11111b,border:#11111b,label:#cdd6f4,query:#cdd6f4
+--color=gutter:#11111b,border:#0e0e16,label:#cdd6f4,query:#cdd6f4
 --border="none" --border-label-pos="0" --preview-window="border-bold"
 --padding="1" --margin="0" --prompt="> " --marker="󰨓 "
 --pointer="" --separator="" --scrollbar="" --layout="reverse" --preview-window=right,60%'
@@ -111,6 +116,7 @@ alias          n='nvim'
 alias          t='tmux'
 alias    yayfind='$aurhelper -Slq | fzf --border-label="yay" --multi --preview "$aurhelper -Si {1}" | xargs -ro $aurhelper -S'
 alias    pacfind='pacman -Slq | fzf --multi --border-label="pacman" --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
+alias     rmfind='pacman -Qq | fzf --border-label="remove" --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
 
 alias         gpp='g++'
 alias         nvz='nvim ~/.config/.zshrc'

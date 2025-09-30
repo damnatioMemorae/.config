@@ -1,5 +1,5 @@
 return {
-        cmd          = { "lua-language-server", "--force-accept-workspace" },
+        cmd          = { "lua-language-server" },
         filetypes    = { "lua" },
         root_markers = {
                 ".luarc.json",
@@ -24,21 +24,24 @@ return {
                 end
 
                 client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-                        runtime   = {
+                        runtime       = {
                                 version = "LuaJIT",
                                 path    = {
                                         "lua/?.lua",
                                         "lua/?/init.lua",
                                 },
                         },
-                        workspace = {
+                        hover         = { enable = false },
+                        signatureHelp = { enable = true },
+                        workspace     = {
                                 checkThirdParty = false,
                                 library         = {
                                         vim.env.VIMRUNTIME,
                                 },
                         },
                 })
-        end, --]]
+        end,
+        --]]
         settings     = {
                 completion    = {
                         callSnippet = "Both",
@@ -51,7 +54,7 @@ return {
                         setType        = true,
                 },
                 hover         = { enable = false },
-                signatureHelp = { enable = false },
+                signatureHelp = { enable = true },
                 semantic      = {
                         enable     = true,
                         annotation = true,

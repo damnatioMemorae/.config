@@ -24,7 +24,8 @@ local nxcvo = { n, x, c, v, o }
 ------------------------------------------------------------------------------------------------------------------------
 -- META
 
-map(n, "ZZ", require("core.utils").safeQuit, { desc = " Safe Quit", silent = true })
+-- map(n, "ZZ", require("core.utils").safeQuit, { desc = " Safe Quit", silent = true })
+map(n, "ZZ", "<cmd>qa<cr>", { desc = " Safe Quit", silent = true })
 
 local pluginDir = vim.fn.stdpath("data") --[[@as string]]
 map(n, "<leader>pd", function() vim.ui.open(pluginDir) end, { desc = "󰝰 Plugin dir", silent = true })
@@ -159,7 +160,7 @@ map(i, "<A-`>", "``<Left>", { desc = " Inline Code", silent = true })
 -- TEXTOBJECTS
 
 local textobjRemaps = {
-        { "c", "}", "", "curly" },
+        -- { "c", "}", "", "curly" },
         { "r", "]", "󰅪", "rectangular" },
         { "m", "W", "󰬞", "WORD" },
         { "q", '"', "", "double" },
@@ -204,23 +205,31 @@ map(n, "rq", function()
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP
 
---[[ LSP KEYMAPS
-map(n, "K", vim.lsp.buf.hover, { desc = "󰏪 Hover Documentation" })
-map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
-map(n, ",e", vim.diagnostic.open_float, { desc = "󰨓 Diagnostic Float" })
-map(n, ",D", vim.lsp.buf.declaration, { desc = " Goto Declaration" })
-map(n, ",d", vim.lsp.buf.definition, { desc = " Goto Definition" })
-map(n, ",i", vim.lsp.buf.implementation, { desc = " Goto Implementation" })
-map(n, ",I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
-map(n, ",c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
-map(n, ",a", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
-map(n, "<leader><leader>c", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
-map("<leader>f", vim.lsp.buf.format, { desc = "󰏪 Format Buffer"}) --]]
-
-map(nxcvo, ",", "g", { silent = true })
+map(n, "<A-d>", function()
+            -- vim.diagnostic.goto_next({ float = false })
+            vim.diagnostic.jump({ count = 1, float = false })
+            vim.cmd.normal("zz")
+    end, { desc = "■ Diagnostic Next" })
+map(n, "<A-D>", function()
+            vim.diagnostic.jump({ count = -1, float = false })
+            vim.cmd.normal("zz")
+    end, { desc = "■ Diagnostic Prev" })
 
 -- GOTO
--- map(n, ",f", "gf", { desc = "Goto File", silent = true })
+local prefixLsp = ","
+map(n, "K", vim.lsp.buf.hover, { desc = "󰏪 Hover Documentation" })
+map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
+map(n, prefixLsp .. "f", "gf", { desc = "Goto File", silent = true })
+map(n, prefixLsp .. "e", vim.diagnostic.open_float, { desc = "󰨓 Diagnostic Float" })
+map(n, prefixLsp .. "D", vim.lsp.buf.declaration, { desc = " Goto Declaration" })
+map(n, prefixLsp .. "d", vim.lsp.buf.definition, { desc = " Goto Definition" })
+map(n, prefixLsp .. "i", vim.lsp.buf.implementation, { desc = " Goto Implementation" })
+map(n, prefixLsp .. "r", vim.lsp.buf.references, { desc = " Goto Implementation" })
+map(n, prefixLsp .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
+map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
+map(n, prefixLsp .. "a", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
+-- map(n, prefixLsp .. " ", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
+map(n, "<leader><leader>c", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
 
 --[[ HOVER
 do
@@ -343,7 +352,7 @@ map(n, "<leader>ow", "<cmd>set wrap!<CR>", { desc = "󰖶 Wrap", silent = true }
 
 map(n, "<leader>od", function()
             vim.diagnostic.enable(not vim.diagnostic.is_enabled)
-    end, { desc = "󰋽 Diagnostics" })
+    end, { desc = "󰨓 Toggle Diagnostics" })
 
 map(n, "<leader>oc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0 end,
     { desc = "󰈉 Conceal", silent = true })

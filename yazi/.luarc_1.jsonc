@@ -1,0 +1,9 @@
+{
+    "diagnostics.globals": [
+        "th"
+    ],
+        "workspace.library": [
+                "$VIMRUNTIME/lua",
+                "${3rd}/luv/library"
+        ]
+}

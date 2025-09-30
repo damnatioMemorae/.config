@@ -574,7 +574,13 @@ return {
                         dim_inactive           = { enabled = false, shade = "dark", percentage = 0.15 },
                         no_italic              = true,
                         no_bold                = false,
-                        no_underline           = false,
+                        no_underline           = true,
+                        styles                 = {
+                                conditionals = { "italic" },
+                                loops        = { "italic" },
+                                keywords     = { "bold" },
+                                misc         = {},
+                        },
                         color_overrides        = {
                                 mocha = {
                                         -- mantle = "#000000",
@@ -585,6 +591,7 @@ return {
                         },
                         custom_highlights      = customCol,
                         default_integrations   = true,
+                        auto_integrations      = false,
                         integrations           = {
                                 blink_cmp        = true,
                                 cmp              = true,

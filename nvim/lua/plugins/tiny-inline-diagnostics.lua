@@ -1,9 +1,8 @@
--- icons = require("core.icons").diagnostics
 icons = require("core.icons").diagnostics.HINT
 
 return {
         "rachartier/tiny-inline-diagnostic.nvim",
-        event    = "VeryLazy",
+        event    = "LspAttach",
         priority = 1000,
         opts     = {
                 signs   = {

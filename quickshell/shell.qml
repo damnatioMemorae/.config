@@ -1,25 +1,24 @@
 import Quickshell
 import QtQuick
-import "bar" as Bar
-import "notifs" as Notifs
-import "launcher" as Launcher
-import "screenshot" as Screenshot
-import "lock" as Lock
 
-ShellRoot {
-    Bg {}
-
-    Bar.Bar {
-        id: bar
+PanelWindow {
+    anchors {
+        top: true
+        left: true
+        right: true
     }
 
-    Notifs.Overlay {
-        bar: bar
-    }
+    margins {
+        left: 40
+        right: 40
+        top: 10
+        bottom: 10
 
-    Component.onCompleted: () => {
-        Launcher.Controller.init();
-        Screenshot.Controller.init();
-        Lock.Controller.init();
+        height: 36
+
+        Text {
+            anchors.centerIn: parent
+            text: "hello world"
+        }
     }
 }

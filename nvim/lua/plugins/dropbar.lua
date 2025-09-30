@@ -89,6 +89,7 @@ return {
                                 },
                                 buf = {
                                         "LspAttach",
+                                        "CursorMoved",
                                         "BufModifiedSet",
                                         "FileChangedShellPost",
                                         "TextChanged",

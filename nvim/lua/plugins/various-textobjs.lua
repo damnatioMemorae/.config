@@ -85,7 +85,7 @@ return { -- pattern-based textobjs
                         desc = " Delete surrounding indent",
                 },
                 { -- open URL (forward seeking)
-                        "gx",
+                        ",x",
                         function()
                                 require("various-textobjs").url()
                                 local foundURL = vim.fn.mode():find("v")
