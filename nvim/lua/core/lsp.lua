@@ -21,8 +21,9 @@ vim.lsp.enable({
         -- "asm",
         -- "basedpyright",
         "bashls",
+        "biome",
         "clangd",
-        "cssls",
+        -- "cssls",
         "css_variables",
         "emmet",
         "emmylua_ls",
@@ -73,7 +74,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- DIAGNOSTICS
 
 ---@diagnostic disable-next-line: unused-local
-local _icons   = require("core.icons").diagnostics
+local _icons  = require("core.icons").diagnostics
 local numbers = {
         text = {
                 [vim.diagnostic.severity.ERROR] = "",

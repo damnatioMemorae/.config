@@ -198,7 +198,7 @@ map(n, "qy", function() comments.duplicateLineAsComment() end,
 map(n, "Q", function() comments.addComment("eol") end, { desc = "󰆈 Append Comment", silent = true })
 map(n, "qo", function() comments.addComment("below") end, { desc = "󰆈 Comment Below", silent = true })
 map(n, "qO", function() comments.addComment("above") end, { desc = "󰆈 Comment Above", silent = true })
-map(n, "rq", function()
+map(n, "<leader>rq", function()
             vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~")))
     end, { desc = "󰆈  Delete Comments", silent = true })
 
@@ -227,7 +227,7 @@ map(n, prefixLsp .. "i", vim.lsp.buf.implementation, { desc = " Goto Implemen
 map(n, prefixLsp .. "r", vim.lsp.buf.references, { desc = " Goto Implementation" })
 map(n, prefixLsp .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
 map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
-map(n, prefixLsp .. "a", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
+map(n, prefixLsp .. "q", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
 -- map(n, prefixLsp .. " ", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
 map(n, "<leader><leader>c", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
 
@@ -244,7 +244,8 @@ do
         end
         map(n, "<PageDown>", function() scrollLspWin(5) end, { desc = "↓ Scroll LSP window", silent = true })
         map(n, "<PageUp>", function() scrollLspWin(-5) end, { desc = "↑ Scroll LSP window", silent = true })
-end --]]
+end
+--]]
 
 ------------------------------------------------------------------------------------------------------------------------
 -- INSERT MODE

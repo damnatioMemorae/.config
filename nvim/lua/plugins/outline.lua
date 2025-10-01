@@ -37,7 +37,7 @@ return {
         "hedyhli/outline.nvim",
         event = "LspAttach",
         cmd   = { "Outline", "OutlineOpen" },
-        keys  = { { "<leader><leader>o", "<cmd>Outline<cr>", desc = "Outline", mode = { "n" } } },
+        keys  = { { "<A-o>", "<cmd>Outline<cr>", desc = "Outline", mode = { "n" } } },
         opts  = {
                 outline_window = {
                         position                = "right",

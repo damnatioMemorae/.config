@@ -75,7 +75,7 @@ return {
         "Bekaboo/dropbar.nvim",
         lazy         = false,
         dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
-        keys         = { { ",q", function() require("dropbar.api").pick() end, desc = "Toggle dropbar", mode = { "n" } } },
+        keys         = { { ",w", function() require("dropbar.api").pick() end, desc = "Toggle dropbar", mode = { "n" } } },
         opts         = {
                 bar     = {
                         truncate      = true,
