@@ -33,8 +33,10 @@ return {
                         },
                         hover         = { enable = false },
                         signatureHelp = { enable = true },
+                        telemetry     = { enable = false },
                         workspace     = {
-                                checkThirdParty = false,
+                                checkThirdParty = "Disabled",
+                                maxPreload      = 500,
                                 library         = {
                                         vim.env.VIMRUNTIME,
                                 },

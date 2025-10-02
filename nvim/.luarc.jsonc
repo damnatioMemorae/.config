@@ -11,7 +11,8 @@
                 "${3rd}/luv/library"
         ],
         "runtime.version": "LuaJIT",
-        "diagnostics.globals": ["Snacks"]
+        "diagnostics.globals": ["Snacks"],
+    "workspace.maxPreload": 1100
         // "hover.enable": false,
         // "signatureHelp.enable": true
 }

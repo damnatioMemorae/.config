@@ -55,6 +55,7 @@ local customCol = function(C)
                 DiagnosticUnderlineWarn          = { bg = "#28262a" },
                 DiagnosticUnderlineInfo          = { bg = "#1a232b" },
                 DiagnosticUnderlineHint          = { bg = "#1b2329" },
+                DiagnosticUnnecessary            = { link = "LspInlayHint" },
                 ActiveLineNumber                 = { fg = C.subtext0 },
                 Boolean                          = { fg = C.peach },
                 borderStyle                      = { fg = C.crust, bg = C.crust },
@@ -547,6 +548,8 @@ local customCol = function(C)
                 MiniHipatternsTodo               = { fg = C.crust, bg = C.teal, italic = true, bold = true },
                 MiniHipatternsHack               = { fg = C.crust, bg = C.yellow, italic = true, bold = true },
                 MiniHipatternsFixme              = { fg = C.crust, bg = C.red, italic = true, bold = true },
+                DiffAdded                        = { link = "DiffDelete" },
+                DiffRemoved                      = { link = "DiffAdd" },
                 --[[ Treesitter Context highlights
                 TreesitterContextLineNumber       = { link = "LineNr" },
                 TreesitterContext                 = { link = "NormalFloat" },

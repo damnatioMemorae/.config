@@ -11,5 +11,4 @@ return {
                 ".stylua.toml",
                 "stylua.toml",
         },
-        require_workspace = false,
 }
