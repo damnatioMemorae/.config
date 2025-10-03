@@ -55,7 +55,7 @@ local customCol = function(C)
                 DiagnosticUnderlineWarn          = { bg = "#28262a" },
                 DiagnosticUnderlineInfo          = { bg = "#1a232b" },
                 DiagnosticUnderlineHint          = { bg = "#1b2329" },
-                DiagnosticUnnecessary            = { link = "LspInlayHint" },
+                -- DiagnosticUnnecessary            = { link = "LspInlayHint" },
                 ActiveLineNumber                 = { fg = C.subtext0 },
                 Boolean                          = { fg = C.peach },
                 borderStyle                      = { fg = C.crust, bg = C.crust },
@@ -90,7 +90,7 @@ local customCol = function(C)
                 Identifier                       = { fg = C.flamingo },
                 Include                          = { fg = C.mauve },
                 IncSearch                        = { link = "CurSearch" },
-                Keyword                          = { fg = C.yellow },
+                Keyword                          = { fg = C.yellow, bold = false },
                 Label                            = { fg = C.sky },
                 LineNr                           = { link = "NonText" },
                 Macro                            = { fg = C.mauve },
@@ -581,7 +581,7 @@ return {
                         styles                 = {
                                 conditionals = { "italic" },
                                 loops        = { "italic" },
-                                keywords     = { "bold" },
+                                -- keywords     = { "bold" },
                                 misc         = {},
                         },
                         color_overrides        = {

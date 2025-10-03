@@ -1,7 +1,10 @@
 return {
         "saghen/blink.cmp",
-        event        = "VeryLazy",
+        lazy         = false,
         dependencies = {
+                { "samiulsami/cmp-go-deep" },
+                { "saghen/blink.compat" },
+                { "niuiic/blink-cmp-rg.nvim" },
                 {
                         "L3MON4D3/LuaSnip",
                         dependencies = {
@@ -11,14 +14,6 @@ return {
                                 end,
                         },
                 },
-                { "samiulsami/cmp-go-deep" },
-                { "saghen/blink.compat" },
-                { "bydlw98/blink-cmp-env" },
-                { "MahanRahmati/blink-nerdfont.nvim" },
-                { "niuiic/blink-cmp-rg.nvim" },
-                { "jdrupal-dev/css-vars.nvim" },
-                { "archie-judd/blink-cmp-words" },
-                { "mgalliou/blink-cmp-tmux" },
         },
         opts         = {
                 snippets   = { preset = "luasnip" },
@@ -152,7 +147,7 @@ return {
                         default      = function(ctx)
                                 local success, node = pcall(vim.treesitter.get_node)
                                 if success and node and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type()) then
-                                        return { "buffer", "ripgrep", "blink-cmp-words" }
+                                        return { "buffer", "ripgrep" }
                                 else
                                         return { "snippets", "lsp", "path", "buffer" }
                                 end
@@ -160,13 +155,13 @@ return {
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
-                                lua                = { inherit_defaults = true, "ripgrep", "env" },
-                                c                  = { inherit_defaults = true, "ripgrep", "env" },
-                                cpp                = { inherit_defaults = true, "ripgrep", "env" },
-                                css                = { inherit_defaults = true, "ripgrep", "nerdfont", "css_vars" },
-                                json               = { inherit_defaults = true, "ripgrep", "nerdfont" },
-                                jsons              = { inherit_defaults = true, "ripgrep", "nerdfont" },
-                                go                 = { inherit_defaults = true, "ripgrep", "go_deep" },
+                                lua                = { inherit_defaults = true, "ripgrep" },
+                                c                  = { inherit_defaults = true, "ripgrep" },
+                                cpp                = { inherit_defaults = true, "ripgrep" },
+                                css                = { inherit_defaults = true, "ripgrep" },
+                                json               = { inherit_defaults = true, "ripgrep" },
+                                jsons              = { inherit_defaults = true, "ripgrep" },
+                                go                 = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
                                 snippets = {
@@ -184,6 +179,7 @@ return {
                                         enabled      = function()
                                                 if vim.bo.ft ~= "lua" then return true end
                                                 local col                 = vim.api.nvim_win_get_cursor(0)[2]
+                                                ---@diagnostic disable-next-line: unknown-diag-code
                                                 ---@diagnostic disable-next-line: param-type-not-match, need-check-nil
                                                 local charsBefore         = vim.api.nvim_get_current_line():sub(col - 2,
                                                                                                                 col)
@@ -230,10 +226,6 @@ return {
                                                 -- end
                                         },
                                 },
-                                css_vars = {
-                                        name   = "CSS",
-                                        module = "css-vars.blink",
-                                },
                                 omni     = {
                                         name         = "Omni",
                                         module       = "blink.cmp.sources.complete_func",
@@ -241,22 +233,6 @@ return {
                                         opts         = {
                                                 disable_omnifunc = { "v:lua.vim.lsp.omnifunc" },
                                         },
-                                },
-                                env      = {
-                                        name         = "Env",
-                                        module       = "blink-cmp-env",
-                                        max_items    = 4,
-                                        score_offset = 4,
-                                        opts         = {
-                                                show_braces               = true,
-                                                show_documentation_window = true,
-                                        },
-                                },
-                                nerdfont = {
-                                        module       = "blink-nerdfont",
-                                        name         = "Nerd",
-                                        score_offset = 10,
-                                        opts         = { insert = true },
                                 },
                                 ripgrep  = {
                                         module       = "blink-cmp-rg",
