@@ -227,6 +227,19 @@ map(n, prefixLsp .. "i", vim.lsp.buf.implementation, { desc = " Goto Implemen
 map(n, prefixLsp .. "r", vim.lsp.buf.references, { desc = " Goto Implementation" })
 map(n, prefixLsp .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
 map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
+map(n, prefixLsp .. "F", vim.lsp.buf.format, { desc = "LSP Format" })
+
+--[[ RANGE FORMAT
+map(v, prefixLsp .. "F", function()
+            vim.lsp.buf.format({
+                    range = {
+                            ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+                            ["end"]   = vim.api.nvim_buf_get_mark(0, ">"),
+                    },
+            })
+    end, { desc = "󱠀 Code Action" })
+--]]
+
 map(n, prefixLsp .. "q", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
 -- map(n, prefixLsp .. " ", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
 map(n, "<leader><leader>c", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })

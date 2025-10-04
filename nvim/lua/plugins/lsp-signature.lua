@@ -6,7 +6,7 @@ return {
                 require("lsp_signature").on_attach({
                         bind            = false,
                         hint_prefix     = "󰏪 ",
-                        floating_window = true,
+                        floating_window = false,
                 })
         end,
 }

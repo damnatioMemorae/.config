@@ -141,7 +141,7 @@ return {
                         },
                 },
                 sources    = {
-                        default = { "snippets", "lsp", "path", "buffer" },
+                        default = { "snippets", "lsp", "path", "buffer", "treesitter" },
 
                         --[[ COMMENT AWARE COMPLETION
                         default      = function(ctx)
@@ -151,7 +151,8 @@ return {
                                 else
                                         return { "snippets", "lsp", "path", "buffer" }
                                 end
-                        end, --]]
+                        end,
+                        --]]
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
@@ -164,18 +165,18 @@ return {
                                 go                 = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
-                                snippets = {
+                                snippets   = {
                                         name               = "Snip",
                                         score_offset       = 140,
                                         min_keyword_length = 2,
                                 },
-                                go_deep  = {
-                                        name         = "go_deep",
+                                go_deep    = {
+                                        name         = "GO",
                                         module       = "blink.compat.source",
                                         score_offset = 180,
                                         opts         = {},
                                 },
-                                lsp      = {
+                                lsp        = {
                                         enabled      = function()
                                                 if vim.bo.ft ~= "lua" then return true end
                                                 local col                 = vim.api.nvim_win_get_cursor(0)[2]
@@ -199,7 +200,7 @@ return {
                                                 end,
                                         },
                                 },
-                                path     = {
+                                path       = {
                                         name         = "Path",
                                         module       = "blink.cmp.sources.path",
                                         score_offset = 260,
@@ -213,7 +214,7 @@ return {
                                                 show_hidden_files_by_default = true,
                                         },
                                 },
-                                buffer   = {
+                                buffer     = {
                                         name         = "Buf",
                                         score_offset = 60,
                                         max_items    = 8,
@@ -226,7 +227,7 @@ return {
                                                 -- end
                                         },
                                 },
-                                omni     = {
+                                omni       = {
                                         name         = "Omni",
                                         module       = "blink.cmp.sources.complete_func",
                                         score_offset = 60,
@@ -234,7 +235,7 @@ return {
                                                 disable_omnifunc = { "v:lua.vim.lsp.omnifunc" },
                                         },
                                 },
-                                ripgrep  = {
+                                ripgrep    = {
                                         module       = "blink-cmp-rg",
                                         name         = "RG",
                                         score_offset = 10,

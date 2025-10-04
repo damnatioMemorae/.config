@@ -1,8 +1,8 @@
 local ivory     = "#dce0e8"
 ---@diagnostic disable-next-line: unused-local
-local _spark    = "#add8e6"
+local spark    = "#add8e6"
 
-local _noita    = {
+local noita    = {
         mocha = {
                 --[[
                 rosewater = "#",
@@ -565,7 +565,7 @@ return {
         "catppuccin/nvim",
         lazy     = false,
         name     = "catppuccin",
-        priority = 1000,
+        priority = 2000,
         config   = function()
                 require("catppuccin").setup({
                         compile_path           = vim.fn.stdpath"cache" .. "/catppuccin",
