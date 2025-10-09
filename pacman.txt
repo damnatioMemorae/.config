@@ -12,19 +12,18 @@ pacman-contrib
 
 # Hyprland Core & Dependencies
 kitty
-#waybar
+waybar
 hyprland
-ttf-jetbrains-mono-nerd
-noto-fonts-emoji
 xdg-desktop-portal-hyprland
 hyprpaper
 hyprsunset
-hypridle
 hyprlock
 hyprpicker
+hyprshade
 swww
 
 # Development
+yazi
 neovim
 docker
 docker-compose
@@ -34,8 +33,6 @@ wl-clipboard
 cliphist
 grim
 slurp
-rofi-wayland
-rofi-emoji
 
 # Audio & Video
 pipewire

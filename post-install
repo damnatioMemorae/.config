@@ -1,0 +1,13 @@
+#/usr/bin/bash
+
+# Create symlinks
+ln -s ~/.config/.zshrc ~/.zshrc
+ln -s ~/.bash_profile ~/.bash_profile
+ln -s ~/.bashrc ~/.bashrc
+ln -s ~/.p10k.zsh ~/.p10k.zsh
+ln -s ~/.clang-format ~/.clang-format
+
+# Kanata setup
+sudo systemctl enable kanata.service
+sudo systemctl start kanata.service
+sudo systemctl restart kanata.service

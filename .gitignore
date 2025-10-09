@@ -11,9 +11,10 @@
 !/userstyle.less
 !/.zshrc
 !/telegram.tdesktop-theme
-!/install
 !/pacman.txt
 !/yay.txt
+!/install
+!/post-install
 
 
 !/bat/
