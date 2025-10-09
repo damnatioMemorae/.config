@@ -1,0 +1,8 @@
+CompileFlags:
+  BuiltinHeaders: Clangd
+  Add:
+    -Wall
+  Compiler: clang++
+Index:
+  Background: Build
+  StandardLibrary: true
