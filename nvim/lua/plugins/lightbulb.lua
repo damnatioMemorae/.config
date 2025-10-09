@@ -6,7 +6,7 @@ return {
         opts  = {
                 priority        = 100,
                 link_highlights = true,
-                code_lenses     = false,
+                code_lenses     = true,
                 sign            = {
                         enabled = true,
                         text    = icons.diagnostics.lightbulb,
@@ -16,12 +16,12 @@ return {
                         enabled = true,
                         text    = " " .. icons.diagnostics.lightbulb,
                         pos     = "eol",
-                        hl_mode = "combine",
+                        -- hl_mode = "combine",
                         hl      = "LightBulbSign",
                 },
                 autocmd         = {
                         enabled    = true,
-                        updatetime = 10,
+                        updatetime = 1,
                 },
         },
 }

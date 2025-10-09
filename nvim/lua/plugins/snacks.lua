@@ -1,27 +1,31 @@
 local button = "Function"
 local label  = "Comment"
+-- local prefix = "<leader><leader>"
+local prefix = ","
+local icons  = require("core.icons")
 
 return {
         "folke/snacks.nvim",
         lazy     = false,
         priority = 1000,
         keys     = {
-                { "<C-n>",      function() Snacks.notifier.show_history() end,        desc = "Notification History" },
-                { "<A-b>",      function() Snacks.bufdelete() vim.cmd.normal("zz") end, desc = "Delete Buffer" },
-                { "<leader>rf", function() Snacks.rename.rename_file() end,           desc = "Rename File" },
-                { "<leader>lg", function() Snacks.lazygit() end,                      desc = "Lazygit" },
-                { "]]",         function() Snacks.words.jump(vim.v.count1) end,       desc = "Next Reference",      mode = { "n", "t" } },
-                { "[[",         function() Snacks.words.jump(-vim.v.count1) end,      desc = "Prev Reference",      mode = { "n", "t" } },
+                { "<C-n>",      function() Snacks.notifier.show_history() end, desc = "Notification History" },
+                {
+                        "<A-b>",
+                        function()
+                                Snacks.bufdelete()
+                                vim.cmd.normal("zz")
+                        end,
+                        desc = "Delete Buffer",
+                },
+                { "<leader>rf", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
+                { "<leader>lg", function() Snacks.lazygit() end,               desc = "Lazygit" },
+                { "<C-]>",      function() Snacks.words.jump(1) end,           desc = "Next Reference",      mode = { "n", "t" } },
+                { "<C-[>",      function() Snacks.words.jump(-1) end,          desc = "Prev Reference",      mode = { "n", "t" } },
                 { -- MAIN
                         "<leader><leader><leader>",
                         function() Snacks.picker({ layout = "vscode" }) end,
                         desc = "Main Picker",
-                        mode = { "n" },
-                },
-                { -- TODO  COMMENTS
-                        "<leader><leader>t",
-                        function() Snacks.picker.todo_comments({ layout = "select" }) end,
-                        desc = "TODO comments",
                         mode = { "n" },
                 },
                 { -- FILES
@@ -32,7 +36,7 @@ return {
                 },
                 { -- KEYMAPS
                         "<leader><leader>k",
-                        function() Snacks.picker.keymaps({ layout = "select" }) end,
+                        function() Snacks.picker.keymaps({ layout = "dropdown" }) end,
                         desc = "Keymap Picker",
                         mode = { "n" },
                 },
@@ -44,7 +48,7 @@ return {
                 },
                 { -- GREP WORD
                         "<leader><leader>W",
-                        function() Snacks.picker.grep_word({ layout = "default" }) end,
+                        function() Snacks.picker.grep_word({ layout = "vertical" }) end,
                         desc = "Grep Word",
                         mode = { "n" },
                 },
@@ -103,9 +107,10 @@ return {
 
                 -- LSP PICKERS
                 { -- REFERENCES
-                        ",r",
+                        prefix .. "r",
                         function()
                                 Snacks.picker.lsp_references({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -113,9 +118,10 @@ return {
                         mode = { "n" },
                 },
                 { -- IMPLEMENTATIONS
-                        ",i",
+                        prefix .. "i",
                         function()
                                 Snacks.picker.lsp_implementations({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -123,9 +129,10 @@ return {
                         mode = { "n" },
                 },
                 { -- DEFINITIONS
-                        ",d",
+                        prefix .. "d",
                         function()
                                 Snacks.picker.lsp_definitions({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -133,9 +140,10 @@ return {
                         mode = { "n" },
                 },
                 { -- DECLARATIONS
-                        ",D",
+                        prefix .. "D",
                         function()
                                 Snacks.picker.lsp_declarations({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -143,9 +151,10 @@ return {
                         mode = { "n" },
                 },
                 { -- SYMBOLS
-                        ",s",
+                        prefix .. "s",
                         function()
                                 Snacks.picker.lsp_symbols({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -153,9 +162,10 @@ return {
                         mode = { "n" },
                 },
                 { -- WORKSPACE SYMBOLS
-                        ",S",
+                        prefix .. "S",
                         function()
                                 Snacks.picker.lsp_workspace_symbols({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -163,9 +173,10 @@ return {
                         mode = { "n" },
                 },
                 { -- BUFFER DIAGNOSTICS
-                        "<leader><leader>d",
+                        prefix .. "o",
                         function()
                                 Snacks.picker.diagnostics_buffer({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -173,9 +184,10 @@ return {
                         mode = { "n" },
                 },
                 { -- WORKSPACE DIAGNOSTICS
-                        "<leader><leader>D",
+                        prefix .. "O",
                         function()
                                 Snacks.picker.diagnostics({
+                                        layout = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -184,10 +196,20 @@ return {
                 },
         },
         opts     = {
-                lazygit   = { enabled = true },
-                words     = { enabled = false },
-                win       = { border = vim.g.borderStyle },
-                styles    = {
+                lazygit      = { enabled = true },
+                words        = { enabled = false },
+                win          = { border = vim.g.borderStyle },
+                statuscolumn = {
+                        enabled = true,
+                        left    = { "git" },
+                        right   = { "fold" },
+                        folds   = {
+                                open   = true,
+                                git_hl = false,
+                        },
+                        refresh = 50,
+                },
+                styles       = {
                         notification_history = { border = vim.g.borderStyleNone, height = 0.9, width = 0.9 },
                         input                = {
                                 backdrop = true,
@@ -215,7 +237,7 @@ return {
                                 title    = " 󰆽 Git blame ",
                         },
                 },
-                indent    = {
+                indent       = {
                         animate = { enabled = false },
                         char    = { vertical = require("core.icons").misc.vertical_bar },
                         indent  = { enabled = false },
@@ -227,18 +249,20 @@ return {
                                 hl           = "SnacksIndentScope",
                         },
                 },
-                notifier  = {
+                notifier     = {
                         icons   = { error = " ■", warn = " ■", info = " ■", debug = " ■", trace = " ■" },
                         style   = "minimal",
                         enabled = true,
                         timeout = 2000,
                 },
-                picker    = {
-                        hidden  = true,
-                        ignored = true,
-                        formats = { file = { filename_only = true } },
-                        layout  = { preset = "default" },
-                        win     = {
+                picker       = {
+                        prompt    = " > ",
+                        ui_select = true,
+                        hidden    = true,
+                        ignored   = true,
+                        formats   = { file = { filename_only = true } },
+                        layout    = { preset = "default" },
+                        win       = {
                                 input = {
                                         keys = {
                                                 ["<Esc>"] = { "close", mode = { "i", "n" } },
@@ -251,7 +275,7 @@ return {
                                         },
                                 },
                         },
-                        layouts = {
+                        layouts   = {
                                 vscode   = {
                                         preview = false,
                                         layout  = {
@@ -287,17 +311,17 @@ return {
                                 vertical = {
                                         layout = {
                                                 backdrop   = true,
-                                                width      = 0.9,
-                                                height     = 0.9,
-                                                min_width  = 80,
+                                                width      = 0.8,
+                                                height     = 0.95,
+                                                min_width  = 70,
                                                 min_height = 30,
                                                 box        = "vertical",
                                                 border     = "single",
                                                 title      = "{title} {live} {flags}",
                                                 title_pos  = "center",
-                                                { win = "preview", title = "{preview}", height = 0.6,     border = "top" },
-                                                { win = "input",   height = 1,          border = "bottom" },
                                                 { win = "list",    border = "none" },
+                                                { win = "input",   height = 1,          border = "bottom" },
+                                                { win = "preview", title = "{preview}", height = 0.6,     border = "top" },
                                         },
                                 },
                                 default  = {
@@ -358,8 +382,12 @@ return {
                                         },
                                 },
                         },
+                        icons     = {
+                                diagnostics = icons.diagnostics,
+                                kinds       = icons.symbol_kinds,
+                        },
                 },
-                image     = {
+                image        = {
                         enabled  = false,
                         formats  = { "png", "jpg", "jpeg", "gif", "bmp", "webp", "tiff", "heic", "avif", "mp4", "mov", "avi", "mkv", "webm", "pdf" },
                         force    = false,
@@ -439,7 +467,7 @@ return {
                                 },
                         },
                 },
-                dashboard = {
+                dashboard    = {
                         formats  = {
                                 key = function(item)
                                         return {

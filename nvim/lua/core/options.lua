@@ -23,9 +23,9 @@ opt.splitright  = true
 opt.splitbelow  = true
 
 opt.cursorline  = true
--- opt.signcolumn  = "yes:2"
-opt.signcolumn  = "yes:1"
--- opt.foldcolumn  = "1"
+opt.signcolumn  = "yes"
+-- opt.signcolumn  = "yes:1"
+opt.foldcolumn  = "1"
 
 opt.wrap        = false
 opt.breakindent = true
@@ -124,10 +124,10 @@ opt.linebreak      = false
 opt.list           = true
 opt.mouse          = "a"
 opt.number         = true
-opt.pumblend       = 10
+opt.pumblend       = 0
 opt.pumheight      = 20
 opt.relativenumber = true
-opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" }
 opt.showmode       = false
 opt.syntax         = "on"
 opt.termguicolors  = true

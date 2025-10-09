@@ -73,7 +73,8 @@ local devicons = {
 
 return {
         "Bekaboo/dropbar.nvim",
-        lazy         = false,
+        -- lazy         = false,
+        event        = "VeryLazy",
         dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
         keys         = { { ",w", function() require("dropbar.api").pick() end, desc = "Toggle dropbar", mode = { "n" } } },
         opts         = {
@@ -95,7 +96,7 @@ return {
                                         "TextChanged",
                                         "ModeChanged",
                                 },
-                        }
+                        },
                 },
                 menu    = {
                         keymaps   = {
@@ -115,8 +116,8 @@ return {
                         },
                         scrollbar = {
                                 enable     = false,
-                                background = true
-                        }
+                                background = true,
+                        },
                 },
                 sources = {
                         treesitter = {
@@ -147,7 +148,7 @@ return {
                                         "Event",
                                         "Operator",
                                         "TypeParameter",
-                                }
+                                },
                         },
                         lsp        = {
                                 valid_types = {
@@ -177,7 +178,7 @@ return {
                                         "Event",
                                         "Operator",
                                         "TypeParameter",
-                                }
+                                },
                         },
                 },
                 icons   = {

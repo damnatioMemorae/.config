@@ -164,7 +164,7 @@
                 },
                 "device": "intel_backlight",
                 "format": "{icon}",
-                "on-click": "$HOME/.local/share/bin/hyprsunset",
+                "on-click": "bash$HOME/.local/share/bin/hyprsunset",
                 "on-click-right": "$HOME/.local/share/bin/shaders",
                 "tooltip-format": "{icon} {percent}",
                 "format-icons": [
@@ -185,7 +185,7 @@
         "backlight": {
                 "device": "intel_backlight",
                 "format": "{percent}",
-                "on-click": "$HOME/.local/share/bin/hyprsunset",
+                "on-click": "bash $HOME/.local/share/bin/hyprsunset",
                 "on-click-right": "$HOME/.local/share/bin/shaders",
                 "tooltip-format": "{icon} {percent}%",
                 "on-scroll-up": "brightnessctl set 1%+",

@@ -22,10 +22,10 @@ export EDITOR=nvim
 LLS_Addons=$HOME/.config/nvim/LLS-Addons/
 
 export FZF_DEFAULT_OPTS='
---color=fg:#6c7086,fg+:,bg:,bg+:#11111b
+--color=fg:#6c7086,fg+:,bg:,bg+:#0e0e16
 --color=hl:#cdd6f4,hl+:#F38BA8,info:#f9e2af,marker:#F38BA8
 --color=prompt:#f9e2af,spinner:#f9e2af,pointer:#af5fff,header:#ababab
---color=gutter:#11111b,border:#0e0e16,label:#cdd6f4,query:#cdd6f4
+--color=gutter:#0e0e16,border:#0e0e16,label:#cdd6f4,query:#cdd6f4
 --border="none" --border-label-pos="0" --preview-window="border-bold"
 --padding="1" --margin="0" --prompt="> " --marker="󰨓 "
 --pointer="" --separator="" --scrollbar="" --layout="reverse" --preview-window=right,60%'
@@ -92,31 +92,28 @@ function in {
 }
 
 # Helpful aliases
-alias          c='clear'
-alias          l='eza -lh  --icons=auto'
-alias         ls='eza --tree --level=1 --icons=always --no-time --no-user --no-permissions'
-alias        ls2='eza --tree --level=2 --icons=always --no-time --no-user --no-permissions'
-alias        ls3='eza --tree --level=2 --icons=always --no-time --no-user --no-permissions'
-alias         lt='eza --tree --icons=always --no-time --no-user --no-permissions'
-alias         ld='eza -lhD --icons=auto'
-alias         un='$aurhelper -Rns'
-alias         up='clear && fastfetch -c ~/.config/fastfetch/pac.jsonc && $aurhelper -Syu'
-alias         pl='$aurhelper -Qs'
-alias         pa='$aurhelper -Ss'
-alias         pc='$aurhelper -Sc'
-alias         po='$aurhelper -Qtdq | $aurhelper -Rns -'
-alias          S='sudo pacman -S'
-alias          b='btm'
-alias          h='htop'
+alias           c='clear'
+alias           l='ls --format=single-column'
+alias          ls='ls -lhc --color'
+alias          lt='eza --tree --icons=always --no-time --no-user --no-permissions'
+alias          un='$aurhelper -Rns'
+alias          up='$aurhelper -Syu'
+alias          pl='$aurhelper -Qs'
+alias          pa='$aurhelper -Ss'
+alias          pc='$aurhelper -Sc'
+alias          po='$aurhelper -Qtdq | $aurhelper -Rns -'
+alias           S='sudo pacman -S'
+alias           b='btm'
+alias           h='htop'
 
-alias          f='clear && fastfetch -c ~/.config/fastfetch/arch.jsonc'
-alias         sz='clear && source ~/.zshrc && clear'
-alias         sb='clear && source ~/.bashrc && clear'
-alias          n='nvim'
-alias          t='tmux'
-alias    yayfind='$aurhelper -Slq | fzf --border-label="yay" --multi --preview "$aurhelper -Si {1}" | xargs -ro $aurhelper -S'
-alias    pacfind='pacman -Slq | fzf --multi --border-label="pacman" --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
-alias     rmfind='pacman -Qq | fzf --border-label="remove" --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
+alias           f='clear && fastfetch -c ~/.config/fastfetch/arch.jsonc'
+alias          sz='clear && source ~/.zshrc && clear'
+alias          sb='clear && source ~/.bashrc && clear'
+alias           n='nvim'
+alias           t='tmux'
+alias     yayfind='$aurhelper -Slq | fzf --border-label="yay" --multi --preview "$aurhelper -Si {1}" | xargs -ro $aurhelper -S'
+alias     pacfind='pacman -Slq | fzf --multi --border-label="pacman" --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
+alias      rmfind='pacman -Qq | fzf --border-label="remove" --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
 
 alias         gpp='g++'
 alias         nvz='nvim ~/.config/.zshrc'
@@ -258,7 +255,7 @@ bindkey -s "^z" 'zi \n'
 bindkey -s "^h" 'cd \n'
 bindkey -s "^h" 'cd \n'
 bindkey -s "^k" 'c \n'
-bindkey -s "^l" 'ls \n'
+bindkey -s "^l" 'l \n'
 bindkey -s "^f" 'fg \n'
 # bindkey -s "^\\ " 'n \n'
 # bindkey -s "^\\ " 'y \n'

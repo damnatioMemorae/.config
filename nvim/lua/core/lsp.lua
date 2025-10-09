@@ -73,8 +73,8 @@ vim.api.nvim_create_autocmd("FileType", {
 ------------------------------------------------------------------------------------------------------------------------
 -- DIAGNOSTICS
 
----@diagnostic disable-next-line: unused-local
-local _icons  = require("core.icons").diagnostics
+---@diagnostic disable-next-line: unused-local, unused
+local icons   = require("core.icons").diagnostics
 local numbers = {
         text = {
                 [vim.diagnostic.severity.ERROR] = "",
@@ -91,13 +91,13 @@ local numbers = {
         },
 }
 
-vim.diagnostic.config{
-        signs            = numbers,
+vim.diagnostic.config({
+        signs            = icons,
         jump             = { float = false },
         virtual_text     = false,
         update_in_insert = false,
         severity_sort    = true,
-}
+})
 
 ------------------------------------------------------------------------------------------------------------------------
 -- HANDLERS

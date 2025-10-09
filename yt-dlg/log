@@ -3284,3 +3284,9 @@
 2025-09-17 16:44:50,123-DEBUG-Worker_1-ERROR: [youtube] B9TZNQJqbII: Sign in to confirm your age. This video may be inappropriate for some users. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
 2025-09-17 16:44:50,123-DEBUG-Worker_1-Child process exited with non-zero code: 1
 2025-09-17 16:48:26,263-DEBUG-Worker_1-WARNING: [youtube] cDpT_EOPSA8: Signature extraction failed: Some formats may be missing
+2025-10-05 23:26:00,316-DEBUG-Worker_1-WARNING: [youtube] 32cfnvAjUHM: Signature extraction failed: Some formats may be missing
+2025-10-05 23:26:00,318-DEBUG-Worker_1-ERROR: [youtube] 32cfnvAjUHM: Requested format is not available. Use --list-formats for a list of available formats
+2025-10-05 23:26:00,318-DEBUG-Worker_1-Child process exited with non-zero code: 1
+2025-10-05 23:27:13,355-DEBUG-Worker_1-WARNING: [youtube] 32cfnvAjUHM: Signature extraction failed: Some formats may be missing
+2025-10-05 23:27:13,355-DEBUG-Worker_1-ERROR: [youtube] 32cfnvAjUHM: Requested format is not available. Use --list-formats for a list of available formats
+2025-10-05 23:27:13,355-DEBUG-Worker_1-Child process exited with non-zero code: 1

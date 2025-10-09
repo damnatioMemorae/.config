@@ -3,7 +3,7 @@ return {
         event        = "LspAttach",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts         = {
-                backend        = "delta",
+                -- backend        = "delta",
                 picker         = {
                         "snacks",
                         opts = {

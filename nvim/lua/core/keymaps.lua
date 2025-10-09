@@ -3,6 +3,7 @@
 ---@diagnostic disable: unused
 ---@diagnostic disable: unused-local
 
+local prefixLsp           = require("core.utils").prefix
 local map                 = require("core.utils").uniqueKeymap
 local comments            = require("functions.comment")
 local eval                = require("functions.inspect-and-eval")
@@ -66,24 +67,26 @@ map(ni, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Escape and Clear hlsearch
 map(n, "gm", "%", { desc = "󰅪 Goto match", remap = true, silent = true })
 
 -- Open first URL in file
--- map(n, "<A-u>", function()
---             local text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
---             local url = text:match([[%l%l%l-://[^%s)"'`]+]])
---             if url then
---                     vim.ui.open(url)
---             else
---                     vim.notify("No URL found in file.", vim.log.levels.WARN)
---             end
---     end, { desc = " Open first URL in file", silent = true })
+map(n, "<A-x>", function()
+            local text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+            local url = text:match([[%l%l%l-://[^%s)"'`]+]])
+            if url then
+                    vim.ui.open(url)
+            else
+                    vim.notify("No URL found in file.", vim.log.levels.WARN)
+            end
+    end, { desc = " Open first URL in file", silent = true })
 
 -- make `fF` use `nN` instead of `;,`
 map(n, "f", function() nano.fF("f") end, { desc = "f", silent = true })
 map(n, "F", function() nano.fF("F") end, { desc = "F", silent = true })
 
 -- Folds
+map(n, "<A-Right>", "zozz", { desc = "Open current fold", silent = true })
+map(n, "<A-Left>", "zczz", { desc = "Close current fold", silent = true })
 map(n, "zh", "zczz", { desc = "Close current fold", silent = true })
 map(n, "zl", "zozz", { desc = "Open current fold", silent = true })
-map(n, "<A-z>", "zjzz", { desc = "Goto next fold", silent = true })
+map(n, "<A-Down>", "zjzz", { desc = "Goto next fold", silent = true })
 map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
 
 -- Move to the end of previous word
@@ -160,7 +163,7 @@ map(i, "<A-`>", "``<Left>", { desc = " Inline Code", silent = true })
 -- TEXTOBJECTS
 
 local textobjRemaps = {
-        -- { "c", "}", "", "curly" },
+        { "c", "}", "", "curly" },
         { "r", "]", "󰅪", "rectangular" },
         { "m", "W", "󰬞", "WORD" },
         { "q", '"', "", "double" },
@@ -215,10 +218,10 @@ map(n, "<A-D>", function()
             vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Prev" })
 
--- GOTO
-local prefixLsp = ","
 map(n, "K", vim.lsp.buf.hover, { desc = "󰏪 Hover Documentation" })
 map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
+
+--[[ GOTO
 map(n, prefixLsp .. "f", "gf", { desc = "Goto File", silent = true })
 map(n, prefixLsp .. "e", vim.diagnostic.open_float, { desc = "󰨓 Diagnostic Float" })
 map(n, prefixLsp .. "D", vim.lsp.buf.declaration, { desc = " Goto Declaration" })
@@ -228,6 +231,7 @@ map(n, prefixLsp .. "r", vim.lsp.buf.references, { desc = " Goto Implementati
 map(n, prefixLsp .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
 map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
 map(n, prefixLsp .. "F", vim.lsp.buf.format, { desc = "LSP Format" })
+--]]
 
 --[[ RANGE FORMAT
 map(v, prefixLsp .. "F", function()
@@ -312,12 +316,10 @@ map(n, "L", "<cmd>bnext<cr>zz", { desc = "Next Buffer", silent = true })
 do
         local reg       = "r"
         local toggleKey = "0"
-        map(
-                "n",
-                toggleKey,
-                function() nano.startOrStopRecording(toggleKey, reg) end,
-                { desc = "󰃽 Start/stop recording", silent = true }
-        )
+        map("n",
+            toggleKey,
+            function() nano.startOrStopRecording(toggleKey, reg) end,
+            { desc = "󰃽 Start/stop recording", silent = true })
         -- stylua: ignore
         map(n, "c0", function() nano.editMacro(reg) end,
             { desc = "󰃽 Edit recording", silent = true })
@@ -350,12 +352,6 @@ local function retabber(use)
 end
 map(n, "<leader>f<Tab>", function() retabber("tabs") end, { desc = "󰌒 Use Tabs", silent = true })
 map(n, "<leader>f<Space>", function() retabber("spaces") end, { desc = "󱁐 Use Spaces", silent = true })
-
-------------------------------------------------------------------------------------------------------------------------
--- TEMPLATE STRINGS
-
-map(i, "<A-t>", function() require("functions.auto-template-str").insertTemplateStr() end,
-    { desc = "󰅳 Insert template string", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- OPTION TOGGLING

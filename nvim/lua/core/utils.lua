@@ -1,4 +1,6 @@
-local M = {}
+local M            = {}
+
+M.prefix           = ","
 
 M.extraTextobjMaps = {
         func      = "f",

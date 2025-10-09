@@ -7,11 +7,11 @@
         "/home/q/Videos",
         "/home/q/Music"
     ],
-    "video_format": "0",
+    "video_format": "37",
     "second_video_format": "0",
     "to_audio": true,
     "keep_video": false,
-    "audio_format": "mp3",
+    "audio_format": "",
     "audio_quality": "0",
     "restrict_filenames": false,
     "dark_mode": true,
@@ -62,7 +62,7 @@
         "m4a",
         "vorbis"
     ],
-    "selected_format": "mp3",
+    "selected_format": "37",
     "youtube_dl_debug": false,
     "ignore_config": true,
     "confirm_exit": true,

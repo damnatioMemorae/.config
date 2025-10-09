@@ -1,8 +1,8 @@
 local ivory     = "#dce0e8"
 ---@diagnostic disable-next-line: unused-local
-local spark    = "#add8e6"
+local spark     = "#add8e6"
 
-local noita    = {
+local noita     = {
         mocha = {
                 --[[
                 rosewater = "#",
@@ -50,11 +50,11 @@ local customCol = function(C)
                 DiagnosticUnderlineWarn          = { bg = "#312e2d"},
                 DiagnosticUnderlineInfo          = { bg = "#202d36"},
                 DiagnosticUnderlineHint          = { bg = "#222e33"},
-                --]]
                 DiagnosticUnderlineError         = { bg = "#251b25" },
                 DiagnosticUnderlineWarn          = { bg = "#28262a" },
                 DiagnosticUnderlineInfo          = { bg = "#1a232b" },
                 DiagnosticUnderlineHint          = { bg = "#1b2329" },
+                --]]
                 -- DiagnosticUnnecessary            = { link = "LspInlayHint" },
                 ActiveLineNumber                 = { fg = C.subtext0 },
                 Boolean                          = { fg = C.peach },
@@ -108,7 +108,7 @@ local customCol = function(C)
                 PreProc                          = { fg = C.pink },
                 Question                         = { fg = C.teal },
                 Repeat                           = { link = "Conditional" },
-                -- Search                        = { fg = colors., bg = colors.},
+                Search                           = { fg = ivory, reverse = true },
                 SignColumn                       = { link = "NonText" },
                 SpecialComment                   = { link = "Special" },
                 Special                          = { fg = C.pink },
@@ -134,6 +134,8 @@ local customCol = function(C)
                 WarningMsg                       = { fg = C.yellow },
                 WildMenu                         = { bg = C.mantle },
                 WinSeparator                     = { link = "LineNr" },
+                -- Exception                        = { fg = C.yellow },
+                Exception                        = { fg = C.yellow },
 
                 --------------------------------------------------------------------------------------------------------
                 -- TREESITTER
@@ -153,7 +155,7 @@ local customCol = function(C)
                 ["@function.macro"]              = { fg = C.teal },
                 ["@function.method.call"]        = { fg = ivory, bg = "none" },
                 ["@function.method"]             = { fg = ivory },
-                ["@keyword.exception"]           = { fg = C.mauve },
+                ["@keyword.exception"]           = { fg = C.red },
                 ["@keyword"]                     = { fg = C.yellow, bg = "none", italic = true },
                 ["@keyword.function"]            = { fg = ivory, bg = "none" },
                 ["@keyword.function.ruby"]       = { fg = ivory },
@@ -202,7 +204,7 @@ local customCol = function(C)
                 ["@module"]                      = { fg = C.yellow },
                 ["@operator"]                    = { fg = C.sapphire },
                 ["@property"]                    = { fg = C.lavender },
-                ["@lsp.type.keyword"]            = { fg = C.rosewater, bg = "none" },
+                ["@lsp.type.keyword"]            = { fg = C.yellow, bg = "none" },
                 ["@function.builtin"]            = { fg = C.peach },
                 ["@keyword.conditional"]         = { fg = C.sapphire, italic = true },
                 ["@keyword.repeat"]              = { fg = C.sapphire, italic = true },
@@ -246,7 +248,7 @@ local customCol = function(C)
                 BlinkCmpKindFolder               = { fg = ivory },
                 BlinkCmpKindFunction             = { link = "@lsp.type.function" },
                 BlinkCmpKindInterface            = { link = "@lsp.type.interface" },
-                BlinkCmpKindKeyword              = { link = "@lsp.type.keyword" },
+                BlinkCmpKindKeyword              = { fg = C.rosewater },
                 BlinkCmpKindMethod               = { link = "@lsp.type.method" },
                 BlinkCmpKindModule               = { link = "@module" },
                 BlinkCmpKindOperator             = { link = "@lsp.type.operator" },
@@ -523,7 +525,7 @@ local customCol = function(C)
                 --------------------------------------------------------------------------------------------------------
                 -- MISC
 
-                FoldMark                         = { link = "TinyInlineDiagnosticVirtualTextError" },
+                FoldMark                         = { link = "Comment" },
                 IBLScope                         = { fg = ivory },
                 SnacksIndentScope                = { fg = ivory },
                 LspInlayHint                     = { fg = C.overlay0, bg = C.base },
@@ -538,10 +540,8 @@ local customCol = function(C)
                 MiniFilesFile                    = { link = "Comment" },
                 MiniFilesCursorLine              = { link = "Visual" },
                 MiniFilesBorder                  = { link = "Normal" },
-                -- LightBulbSign                    = { fg = spark },
                 TreesitterContext                = { bg = C.mantle, bold = true },
                 LspReferenceText                 = { link = "Visual" },
-                -- LspReferenceText                 = { link = "LspInlayHint" },
                 LspReferenceWrite                = { link = "LspReferenceText" },
                 LspReferenceRead                 = { link = "LspReferenceWrite" },
                 MiniHipatternsNote               = { fg = C.crust, bg = C.sky, italic = true, bold = true },
@@ -550,6 +550,9 @@ local customCol = function(C)
                 MiniHipatternsFixme              = { fg = C.crust, bg = C.red, italic = true, bold = true },
                 DiffAdded                        = { link = "DiffDelete" },
                 DiffRemoved                      = { link = "DiffAdd" },
+                LspSignatureHint                 = { fg = C.crust, bg = C.rosewater, bold = true },
+                QuickFixLine                     = { link = "Visual" },
+                LspCodeLens                      = { link = "Comment" },
                 --[[ Treesitter Context highlights
                 TreesitterContextLineNumber       = { link = "LineNr" },
                 TreesitterContext                 = { link = "NormalFloat" },
