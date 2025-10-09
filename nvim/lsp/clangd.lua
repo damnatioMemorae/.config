@@ -91,6 +91,10 @@ return {
                                 ParameterNames = true,
                                 DeducedTypes   = true,
                         },
+                        Completion = {
+                                AllScopes = true,
+                                ArgumentLists = "Delimiters"
+                        },
                         CompileFlags  = { Add = "-Iinclude" },
                         fallbackFlags = { "-std=c++17" },
                 },

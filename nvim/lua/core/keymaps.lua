@@ -218,11 +218,11 @@ map(n, "<A-D>", function()
             vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Prev" })
 
+map(n, prefixLsp .. "f", "gf", { desc = "Goto File", silent = true })
 map(n, "K", vim.lsp.buf.hover, { desc = "󰏪 Hover Documentation" })
 map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
 
 --[[ GOTO
-map(n, prefixLsp .. "f", "gf", { desc = "Goto File", silent = true })
 map(n, prefixLsp .. "e", vim.diagnostic.open_float, { desc = "󰨓 Diagnostic Float" })
 map(n, prefixLsp .. "D", vim.lsp.buf.declaration, { desc = " Goto Declaration" })
 map(n, prefixLsp .. "d", vim.lsp.buf.definition, { desc = " Goto Definition" })
