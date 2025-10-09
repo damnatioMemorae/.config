@@ -82,11 +82,11 @@ map(n, "f", function() nano.fF("f") end, { desc = "f", silent = true })
 map(n, "F", function() nano.fF("F") end, { desc = "F", silent = true })
 
 -- Folds
-map(n, "<A-Right>", "zozz", { desc = "Open current fold", silent = true })
-map(n, "<A-Left>", "zczz", { desc = "Close current fold", silent = true })
+map(nx, "<A-Right>", "zozz", { desc = "Open current fold", silent = true })
+map(nx, "<A-Left>", "zczz", { desc = "Close current fold", silent = true })
+map(nx, "<A-Down>", "zjzz", { desc = "Goto next fold", silent = true })
 map(n, "zh", "zczz", { desc = "Close current fold", silent = true })
 map(n, "zl", "zozz", { desc = "Open current fold", silent = true })
-map(n, "<A-Down>", "zjzz", { desc = "Goto next fold", silent = true })
 map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
 
 -- Move to the end of previous word

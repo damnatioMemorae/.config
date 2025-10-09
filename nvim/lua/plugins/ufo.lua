@@ -59,6 +59,7 @@ return {
                                 require("ufo").openFoldsExceptKinds{ "comment", "imports", "region" }
                                 vim.cmd.normal("zz")
                         end,
+                        mode = { "n", "x" },
                         desc = "󱃄 Close all folds",
                 },
                 { -- CLOSE ALL
@@ -84,6 +85,7 @@ return {
                                 require("ufo").goPreviousStartFold()
                                 vim.cmd.normal("zz")
                         end,
+                        mode = { "n", "x" },
                         desc = "󱃄 Close all folds",
                 },
                 { -- GOTO PREVIOUS FOLD START
@@ -158,7 +160,7 @@ return {
                                 end
                                 curWidth = curWidth + chunkWidth
                         end
-                        table.insert(newVirtText, {suffix, hlgroup})
+                        table.insert(newVirtText, { suffix, hlgroup })
                         return newVirtText
                 end,
         },

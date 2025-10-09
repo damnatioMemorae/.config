@@ -21,7 +21,7 @@
                 "pulseaudio",
                 // "hyprland/window",
                 // "mpris",
-                // "cava",
+                "cava",
                 // "custom/media",
                 ""
         ],
@@ -110,26 +110,18 @@
         "cava": {
                 "framerate": 120,
                 "autosens": 1,
-                "bars": 40,
+                "bars": 20,
                 "method": "pulse",
                 "source": "auto",
                 "stereo": false,
+                "on-click": "playerctl play-pause",
                 "reverse": false,
                 "bar_delimiter": 0,
                 "monstercat": false,
                 "waves": true,
                 "noise_reduction": 0.77,
                 "input_delay": 0,
-                "format-icons": [
-                        "⣿",
-                        "⣾",
-                        "⣽",
-                        "⣻",
-                        "⢿",
-                        "⡿",
-                        "⣟",
-                        "⣿"
-                ],
+                "format-icons": ["⣿", "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣿"],
                 "actions": {
                         "on-click-right": "mode"
                 }
@@ -167,17 +159,7 @@
                 "on-click": "bash$HOME/.local/share/bin/hyprsunset",
                 "on-click-right": "$HOME/.local/share/bin/shaders",
                 "tooltip-format": "{icon} {percent}",
-                "format-icons": [
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
-                ],
+                "format-icons": ["", "", "", "", "", "", "", "", ""],
                 "on-scroll-up": "brightnessctl set 1%+",
                 "on-scroll-down": "brightnessctl set 1%-",
                 "min-length": 1
@@ -330,6 +312,7 @@
                 "format": "󰢮",
                 "tooltip": false,
                 "interval": 5,
+                "on-click": "$HOME/.local/share/bin/gpu",
                 "min-length": 1,
                 "max-length": 10
         },
@@ -339,6 +322,7 @@
                 "format": "{}",
                 "tooltip": true,
                 "interval": 5,
+                "on-click": "$HOME/.local/share/bin/gpu",
                 "min-length": 4,
                 "max-length": 8
         },
