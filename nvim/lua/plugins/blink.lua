@@ -19,7 +19,7 @@ return {
         opts         = {
                 snippets   = { preset = "luasnip" },
                 completion = {
-                        keyword       = { range = "prefix" },
+                        -- keyword       = { range = "prefix" },
                         trigger       = {
                                 prefetch_on_insert                   = true,
                                 show_on_backspace                    = false,

@@ -173,7 +173,7 @@ return {
                         mode = { "n" },
                 },
                 { -- BUFFER DIAGNOSTICS
-                        prefix .. "o",
+                        "<leader><leader>o",
                         function()
                                 Snacks.picker.diagnostics_buffer({
                                         layout = "vertical",
@@ -184,7 +184,7 @@ return {
                         mode = { "n" },
                 },
                 { -- WORKSPACE DIAGNOSTICS
-                        prefix .. "O",
+                        "<leader><leader>O",
                         function()
                                 Snacks.picker.diagnostics({
                                         layout = "vertical",
