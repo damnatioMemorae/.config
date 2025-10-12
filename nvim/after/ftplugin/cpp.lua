@@ -1,5 +1,6 @@
 ---[[ C/C++ SEMANTIC SYNTAX HIGHLIGHTING
 vim.cmd.highlight("cBlock                                   guifg=#f38ba8")
+vim.cmd.highlight("cCommentStartError                       guifg=#585b70")
 vim.cmd.highlight("cRepeat                                  guifg=#74c7ec")
 vim.cmd.highlight("cConditional                             guifg=#74c7ec")
 vim.cmd.highlight("cInclude                                 guifg=#cba6f7")

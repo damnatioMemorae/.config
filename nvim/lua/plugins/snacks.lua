@@ -20,8 +20,8 @@ return {
                 },
                 { "<leader>rf", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
                 { "<leader>lg", function() Snacks.lazygit() end,               desc = "Lazygit" },
-                { "<C-]>",      function() Snacks.words.jump(1) end,           desc = "Next Reference",      mode = { "n", "t" } },
-                { "<C-[>",      function() Snacks.words.jump(-1) end,          desc = "Prev Reference",      mode = { "n", "t" } },
+                { "<A-]>",      function() Snacks.words.jump(1) end,           desc = "Next Reference",      mode = { "n", "t" } },
+                { "<A-[>",      function() Snacks.words.jump(-1) end,          desc = "Prev Reference",      mode = { "n", "t" } },
                 { -- MAIN
                         "<leader><leader><leader>",
                         function() Snacks.picker({ layout = "vscode" }) end,
@@ -172,7 +172,7 @@ return {
                         desc = "Show Workspace Symbols",
                         mode = { "n" },
                 },
-                { -- BUFFER DIAGNOSTICS
+                { -- DIAGNOSTICS BUFFER
                         "<leader><leader>o",
                         function()
                                 Snacks.picker.diagnostics_buffer({
@@ -183,7 +183,7 @@ return {
                         desc = "Show Buffer Diagnostics",
                         mode = { "n" },
                 },
-                { -- WORKSPACE DIAGNOSTICS
+                { -- DIAGNOSTICS WORKSPACE
                         "<leader><leader>O",
                         function()
                                 Snacks.picker.diagnostics({
