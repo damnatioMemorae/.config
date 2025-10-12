@@ -5,12 +5,12 @@
 local function install(pack, version)
         local notifyOpts = { title = "Mason", icon = " ", id = "mason.install", style = "minimal" }
 
-        local msg = version and ("[%s] updating to `%s`…"):format(pack.name, version)
-            or ("[%s] installing…"):format(pack.name)
+        local msg        = version and ("[%s] updating to `%s`…"):format(pack.name, version)
+                   or ("[%s] installing…"):format(pack.name)
         vim.notify(msg, nil, notifyOpts)
 
         pack:once("install:success", function()
-                local msg2 = ("[%s] %s"):format(pack.name, version and "updated" or "installed")
+                local msg2      = ("[%s] %s"):format(pack.name, version and "updated" or "installed")
                 notifyOpts.icon = " "
                 vim.notify(msg2, nil, notifyOpts)
         end)
@@ -19,7 +19,7 @@ local function install(pack, version)
                 vim.notify(error, vim.log.levels.ERROR, notifyOpts)
         end)
 
-        pack:install { version = version }
+        pack:install{ version = version }
 end
 
 -- 1. install missing packages
@@ -60,40 +60,29 @@ local function syncPackages(ensurePacks)
         masonReg.refresh(refreshCallback)
 end
 
-
 return {
+
         "williamboman/mason.nvim",
-        keys = {
+        keys   = {
                 { "<leader>m", vim.cmd.Mason, desc = " Mason Home" },
         },
-        init = function() vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH end,
-        opts = {
-                -- PENDING https://github.com/mason-org/mason-registry/pull/7957
-                registries = {
-                        -- local one must come first to take priority
-                        -- add my own local registry: https://github.com/mason-org/mason-registry/pull/3671#issuecomment-1851976705
-                        -- also requires `yq` being available in the system
-                        ("file:%s/personal-mason-registry"):format(vim.fn.stdpath("config")),
-                        "github:mason-org/mason-registry",
-                },
-                ui = {
-                        border  = vim.g.borderStyle,
-                        height  = 0.85,
-                        width   = 0.8,
-                        icons   = {
-                                package_installed   = "󱧕",
-                                package_pending     = "󱧘",
-                                package_uninstalled = "󱧙",
+        config = function()
+                require("mason").setup({
+                        ui = {
+                                border  = vim.g.borderStyle,
+                                height  = 0.85,
+                                width   = 0.8,
+                                icons   = {
+                                        package_installed   = "󱧕",
+                                        package_pending     = "󱧘",
+                                        package_uninstalled = "󱧙",
+                                },
+                                keymaps = {
+                                        uninstall_package     = "x",
+                                        toggle_help           = "?",
+                                        toggle_package_expand = "<Tab>",
+                                },
                         },
-                        keymaps = { -- consistent with keymaps for lazy.nvim
-                                uninstall_package     = "x",
-                                toggle_help           = "?",
-                                toggle_package_expand = "<Tab>",
-                        },
-                },
-        },
-        config = function(_, opts)
-                require("functions.backdrop-mason")
-                require("mason").setup({ opts })
+                })
         end,
 }

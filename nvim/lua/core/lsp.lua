@@ -25,6 +25,7 @@ vim.lsp.enable({
         "clangd",
         -- "cssls",
         "css_variables",
+        "kotlin_lsp",
         "emmet",
         "emmylua_ls",
         "glsl_analyzer",
