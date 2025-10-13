@@ -1,5 +1,3 @@
--- these helper functions are a simplified version of `mason-tool-installer.nvim`
-
 ---@param pack Package
 ---@param version? string
 local function install(pack, version)
@@ -61,13 +59,21 @@ local function syncPackages(ensurePacks)
 end
 
 return {
-
         "williamboman/mason.nvim",
         keys   = {
                 { "<leader>m", vim.cmd.Mason, desc = " Mason Home" },
         },
+        init   = function() vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH end,
         config = function()
                 require("mason").setup({
+                        -- PENDING https://github.com/mason-org/mason-registry/pull/7957
+                        registries = {
+                                -- local one must come first to take priority
+                                -- add my own local registry: https://github.com/mason-org/mason-registry/pull/3671#issuecomment-1851976705
+                                -- also requires `yq` being available in the system
+                                ("file:%s/personal-mason-registry"):format(vim.fn.stdpath("config")),
+                                "github:mason-org/mason-registry",
+                        },
                         ui = {
                                 border  = vim.g.borderStyle,
                                 height  = 0.85,

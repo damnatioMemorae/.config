@@ -34,7 +34,6 @@ window-padding-balance     = true
 
 theme                      = theme
 
-gtk-adwaita                = false
 gtk-single-instance        = true
 
 keybind = ctrl+,=unbind
