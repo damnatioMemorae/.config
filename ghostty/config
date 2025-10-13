@@ -29,7 +29,7 @@ resize-overlay             = never
 cursor-style               = block
 # cursor-opacity             = 0.3
 cursor-invert-fg-bg        = true
-adjust-cursor-height       = 3
+adjust-cursor-height       = 6
 
 window-decoration          = false
 window-padding-x           = 9

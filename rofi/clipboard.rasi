@@ -7,11 +7,13 @@ configuration {
 
 @theme "~/.config/rofi/theme.rasi"
 
-
 // Main //
 window {
-    width:                       23em;
-    height:                      30em;
+    location:                    north east;
+    y-offset:                    -16;
+    x-offset:                    0;
+    width:                       40em;
+    height:                      72em;
     transparency:                "real";
     fullscreen:                  false;
     enabled:                     true;
@@ -66,7 +68,7 @@ listview {
     enabled:                     true;
     padding:                     0.5em;
     columns:                     1;
-    lines:                       11;
+    lines:                       31;
     cycle:                       true;
     fixed-height:                true;
     fixed-columns:               false;
@@ -139,12 +141,11 @@ mainbox {
 /* Inputbar --------------------------------------------------- */
 inputbar {
     children:                    [ "dummy", "entry", "dummy" ];
-    border-radius:               24px;
+    border-radius:               0px;
 
     spacing:                     0px;
     padding:                     128px 64px;
     orientation:                 horizontal;
-    background-image:            url("~/.config/hyde/themes/Catppuccin Mocha/wallpapers/002.jpg", width);
 }
 
 dummy {
@@ -155,7 +156,7 @@ textbox-help {
     expand: false;
     content: " [CTRL DEL]  Delete \n [ALT DEL]   Wipe";
 
-    border-radius:                 12px;
+    border-radius:                 0px;
     background-color:              #313244;
     text-color:                    #F5E0DC;
 
@@ -177,7 +178,7 @@ entry {
     placeholder:                 "Search";
     placeholder-color:           #F5E0DC;
 
-    border-radius:               12px;
+    border-radius:               0px;
     background-color:            black / 48%;
     text-color:                  #F5E0DC;
 
@@ -203,7 +204,7 @@ listview {
     reverse:                     false;
     fixed-height:                true;
     fixed-columns:               true;
-    
+
     background-color:            transparent;
     text-color:                  transparent;
 
@@ -215,7 +216,7 @@ listview {
 /* ---- Elements ---- */
 element {
     cursor:                      pointer;
-    border-radius:               10px;
+    border-radius:               0px;
     background-color:            transparent;
     text-color:                  transparent;
 

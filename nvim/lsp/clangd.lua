@@ -96,7 +96,7 @@ return {
                                 ArgumentLists = "Delimiters"
                         },
                         CompileFlags  = { Add = "-Iinclude" },
-                        fallbackFlags = { "-std=c++17" },
+                        fallbackFlags = { "-std=c++20" },
                 },
         },
         capabilities = {

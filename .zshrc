@@ -189,7 +189,7 @@ crun() {
         local outfile="${src}.out"
 
         if [[ "$src" == *.cpp ]]; then
-                clang++ -std=c++17 "$src" -o "$outfile" && ./"$outfile"
+                clang++ -std=c++20 "$src" -o "$outfile" && ./"$outfile"
         elif [[ "$src" == *.c ]]; then
                 clang "$src" -o "$outfile" && ./"$outfile"
         else
