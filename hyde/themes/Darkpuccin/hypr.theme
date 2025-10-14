@@ -66,7 +66,7 @@ decoration {
         }
 
         blur {
-                enabled                       = true
+                enabled                       = false
                 passes                        = 4
                 size                          = 1
                 new_optimizations             = false
