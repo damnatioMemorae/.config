@@ -10,6 +10,7 @@ vim.cmd.highlight("cppType                                  guifg=#6c7086 guibg=
 
 vim.cmd.highlight("@lsp.type.namespace.cpp                  guifg=#6c7086 guibg=#1e1e2e")
 vim.cmd.highlight("@lsp.type.type.cpp                       guifg=#6c7086 guibg=#1e1e2e")
+vim.cmd.highlight("@lsp.type.modifier.cpp                   guifg=#f9e2af")
 vim.cmd.highlight("@type.builtin.cpp                        guifg=#6c7086")
 vim.cmd.highlight("@keyword.conditional.cpp                 guifg=#74c7ec")
 vim.cmd.highlight("@keyword.repeat.cpp                      guifg=#74c7ec")

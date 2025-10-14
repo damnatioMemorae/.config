@@ -75,15 +75,16 @@ return {
                         --         "github:mason-org/mason-registry",
                         -- },
                         ui = {
-                                border  = vim.g.borderStyle,
-                                height  = 0.85,
-                                width   = 0.8,
-                                icons   = {
+                                border   = vim.g.borderStyle,
+                                height   = 0.9,
+                                width    = 0.6,
+                                backdrop = vim.g.backdrop,
+                                icons    = {
                                         package_installed   = "󱧕",
                                         package_pending     = "󱧘",
                                         package_uninstalled = "󱧙",
                                 },
-                                keymaps = {
+                                keymaps  = {
                                         uninstall_package     = "x",
                                         toggle_help           = "?",
                                         toggle_package_expand = "<Tab>",

@@ -1,3 +1,4 @@
+--[[
 local blend = vim.g.backdrop
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -36,3 +37,4 @@ vim.api.nvim_create_autocmd("FileType", {
                 })
         end,
 })
+--]]

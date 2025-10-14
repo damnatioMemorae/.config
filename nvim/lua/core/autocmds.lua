@@ -1,9 +1,10 @@
 local api = vim.api
+local map = require("core.utils").uniqueKeymap
 
 ------------------------------------------------------------------------------------------------------------------------
 -- AUTO-CD TO PROJECT ROOT
 
---[[
+--[[ AUTO CD TO PROJECT ROOT
 local autoCdConfig = {
         childOfRoot = {
                 ".git",
@@ -259,51 +260,56 @@ api.nvim_create_autocmd("CmdwinEnter", {
 })
 
 ------------------------------------------------------------------------------------------------------------------------
--- DOCUMENT HIGHLIGHTING
+-- LSP
 
 api.nvim_create_autocmd("LspAttach", {
         group    = api.nvim_create_augroup("lsp-attach", { clear = true }),
         callback = function(args)
                 local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+                local lsp    = vim.lsp
+                local buf    = args.buf
+
+                ------------------------------------------------------------------------------------------------------------------------
+                -- DOCUMENT HIGHLIGHTING
+
                 if vim.fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight") then
                         local highlight_augroup = api.nvim_create_augroup("lsp-highlight", { clear = false })
 
                         api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                                 buffer   = args.buf,
                                 group    = highlight_augroup,
-                                callback = vim.lsp.buf.document_highlight,
+                                callback = lsp.buf.document_highlight,
                         })
 
                         api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
                                 buffer   = args.buf,
                                 group    = highlight_augroup,
-                                callback = vim.lsp.buf.clear_references,
+                                callback = lsp.buf.clear_references,
                         })
 
                         api.nvim_create_autocmd("LspDetach", {
                                 group    = api.nvim_create_augroup("lsp-detach", { clear = true }),
                                 callback = function(event2)
-                                        vim.lsp.buf.clear_references()
+                                        lsp.buf.clear_references()
                                         -- api.nvim_clear_autocmd({ "lsp-highlight", buffer = event2.buf })
                                 end,
                         })
                 end
-        end,
-})
 
-------------------------------------------------------------------------------------------------------------------------
--- CODELENS
+                ------------------------------------------------------------------------------------------------------------------------
+                -- CODELENS
 
-api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-                if vim.fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight") then
+                map("n", "<leader>ol", lsp.codelens.run, { buffer = buf, desc = "LSP Codelens" })
+                if client:supports_method("textDocument/codeLens") then
                         api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-                                callback = function()
-                                        vim.lsp.codelens.refresh({ bufnr = 0 })
-                                end,
+                                buffer = buf,
+                                callback = function() lsp.codelens.refresh({ bufnr = buf }) end,
                         })
                 end
+
+                map("n", "<leader>oh", function() lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf }) end,
+                    { buffer = buf, desc = "Toggle Inlay Hints" }
+                )
         end,
 })
 

@@ -243,10 +243,10 @@ local customCol = function(C)
                 BlinkCmpKindEnum                 = { link = "@lsp.type.enum" },
                 BlinkCmpKindEnumMember           = { link = "@lsp.type.enumMember" },
                 BlinkCmpKindEvent                = { link = "@lsp.type.event" },
-                BlinkCmpKindField                = { link = "@lsp.type.property" },
+                BlinkCmpKindField                = { link = "@lsp.type.property", reverse = true },
                 BlinkCmpKindFile                 = { fg = C.teal },
                 BlinkCmpKindFolder               = { fg = ivory },
-                BlinkCmpKindFunction             = { link = "@lsp.type.function" },
+                BlinkCmpKindFunction             = { link = "@lsp.type.function", reverse = true },
                 BlinkCmpKindInterface            = { link = "@lsp.type.interface" },
                 BlinkCmpKindKeyword              = { fg = C.rosewater },
                 BlinkCmpKindMethod               = { link = "@lsp.type.method" },
@@ -288,7 +288,7 @@ local customCol = function(C)
                 DropBarIconUiIndicator           = { link = "NonText" },
                 DropBarIconUiSeparator           = { link = "NonText" },
                 DropBarMenuCurrentContext        = { link = "Visual" },
-                DropBarMenuFloatBorder           = { link = "NormalFloat" },
+                DropBarMenuFloatBorder           = { link = "FloatBorder" },
                 DropBarMenuHoverEntry            = { link = "Visual" },
                 DropBarMenuHoverIcon             = { link = "IncSearch" },
                 DropBarMenuHoverSymbol           = { link = "Visual" },
@@ -513,6 +513,22 @@ local customCol = function(C)
                 MiniStatuslineInactive           = { fg = C.text, bg = C.crust },
 
                 --------------------------------------------------------------------------------------------------------
+                -- MINI-FILES
+
+                MiniFilesDirectory               = { fg = ivory },
+                MiniFilesFile                    = { link = "Comment" },
+                MiniFilesCursorLine              = { link = "Visual" },
+                MiniFilesBorder                  = { link = "FloatBorder" },
+
+                --------------------------------------------------------------------------------------------------------
+                -- MINI-HIPATTERNS
+
+                MiniHipatternsNote               = { fg = C.crust, bg = C.sky, italic = true, bold = true },
+                MiniHipatternsTodo               = { fg = C.crust, bg = C.teal, italic = true, bold = true },
+                MiniHipatternsHack               = { fg = C.crust, bg = C.yellow, italic = true, bold = true },
+                MiniHipatternsFixme              = { fg = C.crust, bg = C.red, italic = true, bold = true },
+
+                --------------------------------------------------------------------------------------------------------
                 -- NOICE
 
                 NoiceCmdline                     = { link = "NormalFloat" },
@@ -536,18 +552,10 @@ local customCol = function(C)
                 FlashMatch                       = { link = "LspInlayHint" },
                 FlashCurrent                     = { link = "LspInlayHint" },
                 FlashLabel                       = { link = "DiagnosticError" },
-                MiniFilesDirectory               = { fg = ivory },
-                MiniFilesFile                    = { link = "Comment" },
-                MiniFilesCursorLine              = { link = "Visual" },
-                MiniFilesBorder                  = { link = "Normal" },
                 TreesitterContext                = { bg = C.mantle, bold = true },
                 LspReferenceText                 = { link = "Visual" },
                 LspReferenceWrite                = { link = "LspReferenceText" },
                 LspReferenceRead                 = { link = "LspReferenceWrite" },
-                MiniHipatternsNote               = { fg = C.crust, bg = C.sky, italic = true, bold = true },
-                MiniHipatternsTodo               = { fg = C.crust, bg = C.teal, italic = true, bold = true },
-                MiniHipatternsHack               = { fg = C.crust, bg = C.yellow, italic = true, bold = true },
-                MiniHipatternsFixme              = { fg = C.crust, bg = C.red, italic = true, bold = true },
                 DiffAdded                        = { link = "DiffDelete" },
                 DiffRemoved                      = { link = "DiffAdd" },
                 LspSignatureHint                 = { fg = C.crust, bg = C.rosewater, bold = true },

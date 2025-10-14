@@ -35,7 +35,7 @@ require("lazy").setup({
                 border      = vim.g.borderStyle,
                 -- border      = NONE,
                 pills       = false,
-                size        = { width = 0.70, height = 0.85 },
+                size        = { width = 0.60, height = 0.9 },
                 custom_keys = {
                         ["<localleader>l"] = false,
                         ["<localleader>t"] = false,

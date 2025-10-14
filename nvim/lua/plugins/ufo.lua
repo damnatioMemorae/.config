@@ -47,7 +47,8 @@ return {
                 { -- OPEN
                         "<A-C-right>",
                         function()
-                                require("ufo").openFoldsExceptKinds{ "comment", "imports" }
+                                -- require("ufo").openFoldsExceptKinds{ "comment", "imports" }
+                                require("ufo").openFoldsExceptKinds{}
                                 vim.cmd.normal("zz")
                         end,
                         desc = "󱃄 Open regular folds",
@@ -55,8 +56,8 @@ return {
                 { -- CLOSE
                         "<A-C-left>",
                         function()
-                                -- require("ufo").closeAllFolds()
-                                require("ufo").openFoldsExceptKinds{ "comment", "imports", "region" }
+                                require("ufo").closeAllFolds()
+                                -- require("ufo").openFoldsExceptKinds{ "comment", "imports", "region" }
                                 vim.cmd.normal("zz")
                         end,
                         mode = { "n", "x" },

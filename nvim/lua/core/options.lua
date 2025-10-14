@@ -9,45 +9,40 @@ local o      = vim.o
 
 opt.spelloptions:append("noplainbuffer")
 
-opt.undofile    = true
-opt.undolevels  = 10000
-opt.swapfile    = false
-opt.backup      = false
-opt.writebackup = false
-
-opt.spell       = false
--- opt.spellfile
-opt.spelllang   = "en_us"
-
-opt.splitright  = true
-opt.splitbelow  = true
-
-opt.cursorline  = true
-opt.signcolumn  = "yes"
--- opt.signcolumn  = "yes:1"
-opt.foldcolumn  = "1"
-
-opt.wrap        = false
-opt.breakindent = true
-
-opt.report      = 9901
-
 opt.iskeyword:append("-")
--- opt.nrformats = {}
+
+opt.undofile      = true
+opt.undolevels    = 10000
+opt.swapfile      = false
+opt.backup        = false
+opt.writebackup   = false
+
+opt.spell         = false
+opt.spelllang     = "en_us"
+
+opt.splitright    = true
+opt.splitbelow    = true
+
+opt.cursorline    = true
+opt.signcolumn    = "yes"
+opt.foldcolumn    = "1"
+
+opt.wrap          = false
+opt.breakindent   = true
+
+opt.report        = 9901
 
 opt.autowrite     = false
 opt.autowriteall  = false
 
-opt.jumpoptions   = { "stack" }
+opt.jumpoptions   = "view"
 opt.startofline   = true
-
--- opt.timeoutlen     = 666
 
 opt.scrolloff     = 14
 opt.sidescrolloff = 4
 
--- opt.messagesopt   = "wait:100"
-opt.shortmess     = "qFSIsoa"
+opt.shortmess     = "ltToOCFIc"
+opt.nrformats     = "bin,hex,blank"
 
 ------------------------------------------------------------------------------------------------------------------------
 -- EDITOR
@@ -132,7 +127,7 @@ opt.showmode       = false
 opt.syntax         = "on"
 opt.termguicolors  = true
 opt.termsync       = true
-opt.updatetime     = 300
+opt.updatetime     = 200
 opt.virtualedit    = "block"
 opt.wildmode       = "longest:full,full"
 opt.winminwidth    = 5

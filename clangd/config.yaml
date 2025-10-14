@@ -7,7 +7,7 @@ Style:
         FullyQualifiedNamespaces: []
 CompileFlags:
         BuiltinHeaders: Clangd
-        Add: [ -xc++, -Wall, -Includes ]
+        Add: [ -Wall, -Wextra, -Wshadow, -Wpedantic ]
 
         Compiler: clang++
 Index:

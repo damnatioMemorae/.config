@@ -34,7 +34,7 @@ vim.lsp.enable({
         "yamlls",
 })
 
--- golang
+--[[ golang
 vim.api.nvim_create_autocmd("FileType", {
         pattern  = "go",
         callback = function()
@@ -62,8 +62,9 @@ vim.api.nvim_create_autocmd("FileType", {
                 })
         end,
 })
+--]]
 
--- Hyprlang LSP
+--[[ Hyprlang LSP
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
         pattern  = { "*.hl", "hypr*.conf", "**/hypr/**" },
         callback = function(event)
@@ -75,6 +76,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
                 }
         end,
 })
+--]]
 
 ------------------------------------------------------------------------------------------------------------------------
 -- DIAGNOSTICS
@@ -215,6 +217,3 @@ vim.api.nvim_create_autocmd("LspProgress", {
                 })
         end,
 })
-
--- vim.lsp.document_color.enable()
--- vim.lsp.linked_editing_range(true, {})
