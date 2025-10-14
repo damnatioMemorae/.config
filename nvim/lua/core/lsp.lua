@@ -2,15 +2,6 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP SERVERS
 
-local _capabilities = {
-        textDocument = {
-                foldingRange = {
-                        dynamicRegistration = false,
-                        lineFoldingOnly     = true,
-                },
-        },
-}
-
 ---@diagnostic disable-next-line: unknown-diag-code
 ---@diagnostic disable-next-line: param-type-not-match
 vim.lsp.config("*", {
