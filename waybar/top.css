@@ -7,7 +7,7 @@
         min-height: 12px;
 }
 
-@import "theme.css";
+@import "colors.css";
 
 .main {
         background: @main-bg;
