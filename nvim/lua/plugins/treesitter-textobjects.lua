@@ -186,6 +186,20 @@ return { -- treesitter-based textobjs
                         desc =
                         "󰏪 Swap next parameter",
                 },
+                { -- PARAMETER PREV SWAP
+                        "<A-G>",
+                        "<cmd>TSTextobjectGotoPreviousStart @block.outer<CR>zz",
+                        mode = { "n", "x", "o" },
+                        desc =
+                        "󰏪 Swap prev block",
+                },
+                { -- PARAMETER NEXT SWAP
+                        "<A-g>",
+                        "<cmd>TSTextobjectGotoNextStart @block.outer<CR>zz",
+                        mode = { "n", "x", "o" },
+                        desc =
+                        "󰏪 Swap next block",
+                },
                 --]]
 
                 ---[[ TEXT OBJECTS

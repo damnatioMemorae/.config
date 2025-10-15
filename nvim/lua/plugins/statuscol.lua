@@ -3,7 +3,6 @@ return {
         enabled = false,
         event   = "VeryLazy",
         config  = function()
-                vim.opt.foldcolumn = "1"
                 local builtin      = require("statuscol.builtin")
                 require("statuscol").setup({
                         relculright = true,
@@ -19,11 +18,11 @@ return {
                                         click = "v:lua.ScSa",
                                 },
                                 { -- LNUM
-                                        text  = { builtin.lnumfunc, " " },
+                                        text  = { builtin.lnumfunc, "" },
                                         click = "v:lua.ScLa",
                                 },
                                 { -- FOLD
-                                        text = { builtin.foldfunc, " " },
+                                        text = { builtin.foldfunc },
                                         click = "v:lua.ScFa",
                                 },
                         },

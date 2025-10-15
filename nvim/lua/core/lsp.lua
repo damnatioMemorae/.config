@@ -2,10 +2,26 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP SERVERS
 
+local get_default_capabilities = function()
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+        capabilities.textDocument.foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly     = true,
+        }
+        return capabilities
+end
+
+local capabilities = get_default_capabilities()
+
 ---@diagnostic disable-next-line: unknown-diag-code
 ---@diagnostic disable-next-line: param-type-not-match
 vim.lsp.config("*", {
+        capabilities = capabilities,
         root_markers = { ".git" },
+        flags        = {
+                debounce_text_changes = 500,
+        },
 })
 
 vim.lsp.enable({

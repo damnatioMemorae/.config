@@ -25,7 +25,6 @@ opt.splitbelow    = true
 
 opt.cursorline    = true
 opt.signcolumn    = "yes"
-opt.foldcolumn    = "1"
 
 opt.wrap          = false
 opt.breakindent   = true
