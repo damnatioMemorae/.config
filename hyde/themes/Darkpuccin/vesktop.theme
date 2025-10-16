@@ -26,7 +26,9 @@ body {
         --dms-icon-svg-transition: 0.4s ease; /* transition for the dms icon */
 
         /* top bar options */
-        --top-bar-height: var(--gap); /* height of the top bar (discord default is 36px, old discord style is 24px, var(--gap) recommended if button position is set to titlebar) */
+        --top-bar-height: var(
+                --gap
+        ); /* height of the top bar (discord default is 36px, old discord style is 24px, var(--gap) recommended if button position is set to titlebar) */
         --top-bar-button-position: titlebar; /* off: default position, hide: hide buttons completely, serverlist: move inbox button to server list, titlebar: move inbox button to channel titlebar (will hide title) */
         --top-bar-title-position: off; /* off: default centered position, hide: hide title completely, left: left align title (like old discord) */
         --subtle-top-bar-title: off; /* off: default, on: hide the icon and use subtle text color (like old discord) */
@@ -40,13 +42,13 @@ body {
         --dms-icon-svg-url: url(""); /* icon svg url. MUST BE A SVG. */
         --dms-icon-svg-size: 90%; /* size of the svg (css mask-size property) */
         --dms-icon-color-before: var(--red-0); /* normal icon color */
-        --dms-icon-color-after: var(--red-4); /* icon color when button is hovered/selected */
+        --dms-icon-color-after: var(
+                --red-4
+        ); /* icon color when button is hovered/selected */
         --custom-dms-background: var(--red-0);
         --dms-background-image-size: cover;
-        --dms-background-color: var(--red-0)
-
-        /* background image options */
-        --background-image: off; /* off: no background image, on: enable background image (must set url variable below) */
+        --dms-background-color: var(--red-0) /* background image options */
+                --background-image: off; /* off: no background image, on: enable background image (must set url variable below) */
         --background-image-url: url(""); /* url of the background image */
 
         /* transparency/blur options */
@@ -55,9 +57,7 @@ body {
         --remove-bg-layer: off; /* off: no changes, on: remove the base --bg-3 layer for use with window transparency (WILL OVERRIDE BACKGROUND IMAGE) */
         --panel-blur: off; /* off: no changes, on: blur the background of panels */
         --blur-amount: 12px; /* amount of blur */
-        --bg-floating: var(
-                --bg-3
-        ); /* set this to a more opaque color if floating panels look too transparent. only applies if panel blur is on  */
+        --bg-floating: var(--bg-3);
 
         /* other options */
         --small-user-panel: on; /* off: default user panel, on: smaller user panel like in old discord */
@@ -93,53 +93,22 @@ body {
         --bg-2: #1e1e2e; /* dark buttons */
         --bg-3: #14141f; /* spacing, secondary elements */
         --bg-4: #0e0e16; /* main background color */
-        --hover: hsla(
-                235,
-                15%,
-                53%,
-                0.1
-        ); /* channels and buttons when hovered */
-        --active: hsla(
-                235,
-                15%,
-                53%,
-                0.2
-        ); /* channels and buttons when clicked or selected */
-        --active-2: hsla(
-                235,
-                15%,
-                53%,
-                0.3
-        ); /* extra state for transparent buttons */
-        --message-hover: hsla(235, 0%, 0%, 0.1); /* messages when hovered */
+        --hover: hsla(235, 15%, 53%, 0.1);
+        --active: hsla(235, 15%, 53%, 0.2);
+        --active-2: hsla(235, 15%, 53%, 0.3);
+        --message-hover: hsla(235, 0%, 0%, 0.1);
 
         /* accent colors */
-        --accent-1: var(--purple-1); /* links and other accent text */
-        --accent-2: var(--purple-2); /* small accent elements */
-        --accent-3: var(--purple-3); /* accent buttons */
-        --accent-4: var(--purple-4); /* accent buttons when hovered */
-        --accent-5: var(--purple-5); /* accent buttons when clicked */
+        --accent-1: var(--red-1); /* links and other accent text */
+        --accent-2: var(--red-1); /* small accent elements */
+        --accent-3: var(--red-1); /* accent buttons */
+        --accent-4: var(--red-1); /* accent buttons when hovered */
+        --accent-5: var(--red-1); /* accent buttons when clicked */
         --accent-new: #f38ba8; /* stuff that's normally red like mute/deafen buttons */
-        --mention: linear-gradient(
-                to right,
-                color-mix(in hsl, var(--accent-2), transparent 90%) 40%,
-                transparent
-        ); /* background of messages that mention you */
-        --mention-hover: linear-gradient(
-                to right,
-                color-mix(in hsl, var(--accent-2), transparent 95%) 40%,
-                transparent
-        ); /* background of messages that mention you when hovered */
-        --reply: linear-gradient(
-                to right,
-                color-mix(in hsl, var(--text-3), transparent 90%) 40%,
-                transparent
-        ); /* background of messages that reply to you */
-        --reply-hover: linear-gradient(
-                to right,
-                color-mix(in hsl, var(--text-3), transparent 95%) 40%,
-                transparent
-        ); /* background of messages that reply to you when hovered */
+        --mention: linear-gradient(to right, color-mix(in hsl, var(--accent-2), transparent 90%) 40%, transparent); /* background of messages that mention you */
+        --mention-hover: linear-gradient(to right, color-mix(in hsl, var(--accent-2), transparent 95%) 40%, transparent); /* background of messages that mention you when hovered */
+        --reply: linear-gradient(to right, color-mix(in hsl, var(--text-3), transparent 90%) 40%, transparent); /* background of messages that reply to you */
+        --reply-hover: linear-gradient(to right, color-mix(in hsl, var(--text-3), transparent 95%) 40%, transparent); /* background of messages that reply to you when hovered */
 
         /* status indicator colors */
         --online: var(--green-2); /* change to #43a25a for default */

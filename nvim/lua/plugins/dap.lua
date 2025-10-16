@@ -1,35 +1,33 @@
 return {
         "mfussenegger/nvim-dap",
-        enabled = false,
+        enabled      = true,
+        event        = "VeryLazy",
         dependencies = {
-                { -- DAP-UI
-                        "rcarriga/nvim-dap-ui",
-                        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-                },
-                { -- DAP-VIRTUAL-TEXT
-                        "theHamsta/nvim-dap-virtual-text",
-                        config = function()
-                                require("nvim-dap-virtual-text").setup()
-                        end,
-                },
+                "rcarriga/nvim-dap-ui",
+                "nvim-neotest/nvim-nio",
+                "theHamsta/nvim-dap-virtual-text",
         },
+        keys         = {
+                { "<F8>", "<cmd>DapToggleBreakpoint<CR>", desc = "Toggle Breakpoint" },
+                { "<F9>", "<cmd>DapToggleBreakpoint<CR>", desc = "Toggle Breakpoint" },
+        },
+        --[[
         keys         = function()
                 local dap = require("dap")
                 return {
                         { "[f",   dap.up,                                             desc = "DAP Up" },
                         { "]f",   dap.down,                                           desc = "DAP Down" },
-                        { "<F1>", require("dap.ui.widgets").hover,                    desc = "DAP Hover",    mode = { "n", "v" } },
+                        { "<F1>", dap.hover,                                          desc = "DAP Hover",    mode = { "n", "v" } },
                         { "<F4>", function() dap.terminate({ hierarchy = true }) end, desc = "DAP Terminate" },
                         { "<F5>", dap.continue,                                       desc = "DAP Continue" },
                         {
                                 "<F8>",
                                 function()
-                                        vim.ui.input(
-                                                { prompt = "Log point message: " },
-                                                function(input) dap.set_breakpoint(nil, nil, input) end
-                                        )
+                                        vim.ui.input({ prompt = "Log point message: " },
+                                                     function(input) dap.set_breakpoint(nil, nil, input) end)
                                 end,
-                                desc = "Toggle Logpoint",
+                                desc =
+                                "Toggle Logpoint",
                         },
                         { "<F9>",  dap.toggle_breakpoint, desc = "Toggle Breakpoint" },
                         { "<F10>", dap.step_over,         desc = "Step Over" },
@@ -49,8 +47,18 @@ return {
                         },
                 }
         end,
-        config       = function()
-                local dap                       = require("dap")
+        --]]
+        config = function()
+                local dap          = require("dap")
+                local ui           = require("dapui")
+                local virtual_text = require("nvim-dap-virtual-text")
+
+
+                dap.listeners.before.attach.ui_config           = function() ui.open() end
+                dap.listeners.before.launch.ui_config           = function() ui.open() end
+                dap.listeners.before.event_terminated.ui_config = function() ui.close() end
+                dap.listeners.before.event_exited.ui_config     = function() ui.close() end
+
 
                 dap.defaults.fallback.switchbuf = "usevisible,usetab,newtab"
                 dap.adapters.codelldb           = {

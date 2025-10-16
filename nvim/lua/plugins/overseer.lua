@@ -1,6 +1,7 @@
 return {
         "stevearc/overseer.nvim",
-        config = function ()
+        event  = "VeryLazy",
+        config = function()
                 require("overseer").setup()
         end,
 }
