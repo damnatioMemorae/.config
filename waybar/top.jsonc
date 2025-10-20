@@ -102,7 +102,7 @@
                 ]
         },
         "custom/updates": {
-                "exec": "$HOME/.local/share/bin/systemupdate",
+                "exec": "systemupdate",
                 "return-type": "json",
                 "format": "{}",
                 "rotate": 0,
@@ -149,7 +149,7 @@
                 "format-ru": "🬋",
                 // "format-en": "",
                 // "format-ru": "",
-                "on-click": "$HOME/.local/share/bin/keyboardswitch"
+                "on-click": "keyboardswitch"
         },
         "cava": {
                 "framerate": 120,
@@ -180,7 +180,7 @@
                 "device": "intel_backlight",
                 "format": "{icon}",
                 "on-click": "$HOME/.local/share/bin/hyprsunset",
-                "on-click-right": "$HOME/.local/share/bin/shaders",
+                "on-click-right": "shaders",
                 "tooltip-format": "{icon} {percent}",
                 "format-icons": ["", "", "", "", "", "", "", "", ""],
                 "on-scroll-up": "brightnessctl set 1%+",
@@ -190,8 +190,9 @@
         "backlight": {
                 "device": "intel_backlight",
                 "format": " {percent} ",
-                "on-click": "$HOME/.local/share/bin/hyprsunset",
-                "on-click-right": "$HOME/.local/share/bin/shaders",
+                // "on-click": "$HOME/.local/share/bin/hyprsunset",
+                "on-click": "shaders night",
+                "on-click-right": "shaders",
                 "tooltip-format": "{icon} {percent}%",
                 "on-scroll-up": "brightnessctl set 1%+",
                 "on-scroll-down": "brightnessctl set 1%-",
@@ -220,10 +221,10 @@
                 },
                 "tooltip": true,
                 "tooltip-format": "Device: {desc}",
-                "on-click": "$HOME/.local/share/bin/volumecontrol -o m",
+                "on-click": "volumecontrol -o m",
                 "on-click-right": "hyprctl dispatch exec pavucontrol",
-                "on-scroll-up": "$HOME/.local/share/bin/volumecontrol -o i",
-                "on-scroll-down": "$HOME/.local/share/bin/volumecontrol -o d",
+                "on-scroll-up": "volumecontrol -o i",
+                "on-scroll-down": "volumecontrol -o d",
                 "min-length": 1,
                 "max-length": 6
         },
@@ -231,9 +232,10 @@
                 "format": " {volume} ",
                 "tooltip": true,
                 "tooltip-format": "Device: {desc}",
-                "on-click": "$HOME/.local/share/bin/volumecontrol -o m",
-                "on-scroll-up": "$HOME/.local/share/bin/volumecontrol -o i",
-                "on-scroll-down": "$HOME/.local/share/bin/volumecontrol -o d",
+                "on-click": "volumecontrol -o m",
+                "on-click-right": "hyprctl dispatch exec pavucontrol",
+                "on-scroll-up": "volumecontrol -o i",
+                "on-scroll-down": "volumecontrol -o d",
                 "min-length": 2,
                 "max-length": 6
         },
@@ -248,18 +250,18 @@
                 "tooltip": false
         },
         "custom/recording": {
-                "exec": "$HOME/.local/share/bin/recording",
+                "exec": "recording",
                 "format": " {}",
                 "max-length": 8,
                 "tooltip": false,
                 "interval": 1
         },
         "custom/wifi": {
-                "exec": "$HOME/.config/waybar/scripts/wifiinfo",
+                "exec": "wifiinfo",
                 "return-type": "json",
                 "format": "{}",
                 "tooltip": true,
-                "on-click": "$HOME/.local/share/bin/wifimenu -o i",
+                "on-click": "wifimenu -o i",
                 "interval": 1,
                 "min-length": 1,
                 "max-length": 7
@@ -268,7 +270,7 @@
                 "format-wifi": " {essid} ",
                 "format-ethernet": " {ifname} ",
                 "tooltip": false,
-                "on-click": "$HOME/.local/share/bin/wifimenu -o i",
+                "on-click": "wifimenu -o i",
                 "interval": 1,
                 "min-length": 1,
                 "max-length": 20
@@ -280,7 +282,7 @@
                         "critical": 80
                 },
                 "format": "",
-                "on-click": "$HOME/.local/share/bin/cpu",
+                "on-click": "cpu",
                 "interval": 1,
                 "tooltip": false,
                 "min-length": 1,
@@ -293,6 +295,7 @@
                         "critical": 80
                 },
                 "format": " {usage}% ",
+                "on-click": "cpu",
                 "tooltip": true,
                 "interval": 1,
                 "min-length": 1,
@@ -316,15 +319,17 @@
         },
         "custom/gpuinfo#icon": {
                 "format": "󰢮",
+                "on-click": "gpu",
                 "tooltip": false,
                 "interval": 5,
                 "min-length": 1,
                 "max-length": 10
         },
         "custom/gpuinfo": {
-                "exec": "$HOME/.local/share/bin/gpuinfo",
+                "exec": "gpuinfo",
                 "return-type": "json",
                 "format": " {} ",
+                "on-click": "gpu",
                 "tooltip": true,
                 "interval": 5,
                 "min-length": 4,
