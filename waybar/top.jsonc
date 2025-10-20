@@ -251,7 +251,7 @@
         },
         "custom/recording": {
                 "exec": "recording",
-                "format": " {}",
+                "format": "{}",
                 "max-length": 8,
                 "tooltip": false,
                 "interval": 1
