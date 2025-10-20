@@ -31,7 +31,7 @@ return {
                                         "lua/?/init.lua",
                                 },
                         },
-                        hover         = { enable = false },
+                        hover         = { enable = true },
                         signatureHelp = { enable = true },
                         telemetry     = { enable = false },
                         workspace     = {

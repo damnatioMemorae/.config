@@ -257,7 +257,7 @@ local customCol = function(C)
                 ["@lsp.type.function.cpp"]                   = { link = "Function" },
                 ["@lsp.type.method.cpp"]                     = { link = "Function" },
                 ["@lsp.type.class.cpp"]                      = { link = "Function" },
-                ["@lsp.typemod.class.defaultLibrary.cpp"]    = { link = "@lsp.type.class" },
+                ["@lsp.typemod.class.defaultLibrary.cpp"]    = { link = "@class" },
                 ["@lsp.typemod.variable.defaultLibrary.cpp"] = { link = "Function" },
                 ["@lsp.typemod.function.defaultLibrary.cpp"] = { link = "Function" },
                 ["@lsp.typemod.variable.globalScope"]        = { link = "Function" },

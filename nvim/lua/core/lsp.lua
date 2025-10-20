@@ -34,7 +34,7 @@ vim.lsp.enable({
         "css_variables",
         "kotlin_lsp",
         "emmet",
-        "emmylua_ls",
+        -- "emmylua_ls",
         "glsl_analyzer",
         "gopls",
         "jsonls",
@@ -80,7 +80,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 --]]
 
---[[ Hyprlang LSP
+---[[ Hyprlang LSP
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
         pattern  = { "*.hl", "hypr*.conf", "**/hypr/**" },
         callback = function(event)

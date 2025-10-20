@@ -19,6 +19,8 @@ export PATH="$PATH:$HOME/.cargo/bin/"
 
 export EDITOR=nvim
 
+export ZSH="$HOME/.oh-my-zsh"
+
 LLS_Addons=$HOME/.config/nvim/LLS-Addons/
 
 export FZF_DEFAULT_OPTS='
@@ -32,17 +34,61 @@ export FZF_DEFAULT_OPTS='
 
 GOPATH=/home/q/go/bin
 
-# Path to your oh-my-zsh installation.
-ZSH=/usr/share/oh-my-zsh/
-
-# Path to powerlevel10k theme
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
-# List of plugins used
-plugins=( z git fzf sudo zsh-syntax-highlighting )
+plugins=(
+        z
+        git
+        fzf
+        sudo
+        vi-mode
+        zsh-autosuggestions
+        zsh-syntax-highlighting
+)
+
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+
+ZVM_CLIPBOARD_COPY_CMD="wl-copy"
+ZVM_CLIPBOARD_PASTE_CMD="wl-copy paste -n"
+
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+# autoload -U compinit && compinit
+# fpath+=~/.zfunc; autoload -Uz compinit; compinit
+
 # source "$ZSH"/oh-my-zsh.sh
 
+# bindkey -v
+# export EDITOR="nvim"
+# autoload edit-command-line
+# zle -N edit-command-line
+# bindkey -M vicmd v edit-command-line
+#
+# export VI_MODE_SET_CURSOR=true
+#
+# function zle-keymap-select {
+#         if [[ ${KEYMAP} == vimcd ]]; then
+#                         echo -ne "\e[2 q"
+#                 else
+#                         echo -ne "\e[6] q"
+#         fi
+# }
+# zle -N zle-keymap-select
+#
+# function zle-line-init() {
+#         zle -K viins
+#         echo -ne "\e[6 q"
+# }
+# zle -N zle-line-init
+#
+# function vi-yank-clipboard {
+#         zle vi-yank
+#         echo "$CUTBUFFER" | pbcopy -i
+# }
+# zle -N vi-yank-clipboard
+# bindkey -M vicmd "y" vi-yank-clipboard
+#
 # In case a command is not found, try to find the package that has it
+
 function command_not_found_handler {
         local purple='\e[1;35m' bright='\e[0;1m' green='\e[1;32m' reset='\e[0m'
         printf 'zsh: command not found: %s\n' "$1"
@@ -247,8 +293,6 @@ eval "$(zoxide init --cmd cd zsh)"
 
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.local/share/bin
-
-fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 bindkey -s "^p" 'yayfind \n'
 bindkey -s "^z" 'zi \n'

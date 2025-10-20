@@ -12,7 +12,13 @@
         ],
         "runtime.version": "LuaJIT",
         "diagnostics.globals": ["Snacks"],
-    "workspace.maxPreload": 1100
+    "workspace.maxPreload": 1100,
+    "diagnostics.disable": [
+        "trailing-space",
+        "unused-function",
+        "lowercase-global",
+        "redundant-value"
+    ]
         // "hover.enable": false,
         // "signatureHelp.enable": true
 }

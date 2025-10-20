@@ -299,6 +299,7 @@ api.nvim_create_autocmd("LspAttach", {
                 ------------------------------------------------------------------------------------------------------------------------
                 -- CODELENS
 
+                --[[
                 map("n", "<leader>ol", lsp.codelens.run, { buffer = buf, desc = "LSP Codelens" })
                 if client:supports_method("textDocument/codeLens") then
                         api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
@@ -307,9 +308,11 @@ api.nvim_create_autocmd("LspAttach", {
                         })
                 end
 
-                map("n", "<leader>oh", function() lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf }) end,
+                map("n", "<leader>oh",
+                    function() lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf }) end,
                     { buffer = buf, desc = "Toggle Inlay Hints" }
                 )
+                --]]
         end,
 })
 
@@ -338,3 +341,10 @@ api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave" }, 
         pattern = "*",
         command = "if &nu | set nornu | endif",
 })
+
+------------------------------------------------------------------------------------------------------------------------
+-- ALWAYS SPLIT VERTICALLY
+
+-- api.nvim_create_autocmd({ "WinNew" }, {
+--         command = "wincmd L",
+-- })

@@ -51,13 +51,18 @@ end
 return {
         cmd          = {
                 "clangd",
+                "--all-scopes-completion=true",
                 "--background-index",
+                "--background-index-priority=background",
                 "--clang-tidy",
-                "--header-insertion=iwyu",
                 "--completion-style=detailed",
-                "--function-arg-placeholders",
                 "--fallback-style=llvm",
+                "--function-arg-placeholders=0",
+                "--header-insertion-decorators",
+                "--header-insertion=iwyu",
+                "--import-insertions",
                 "--log=verbose",
+                "--malloc-trim",
 
         },
         filetypes    = {

@@ -27,7 +27,7 @@ return {
                                 show_on_backspace_after_accept       = false,
                                 show_on_backspace_after_insert_enter = false,
                                 show_on_insert                       = false,
-                                show_on_accept_on_trigger_characters = false,
+                                show_on_accept_on_trigger_character  = false,
                                 show_on_blocked_trigger_characters   = {},
                         },
                         list          = {
@@ -35,8 +35,8 @@ return {
                                 cycle     = { from_bottom = true, from_top = true },
                         },
                         menu          = {
-                                min_width          = 30,
-                                max_height         = 20,
+                                min_width          = 40,
+                                max_height         = 30,
                                 border             = nil,
                                 winblend           = 0,
                                 scrolloff          = 4,
@@ -74,11 +74,11 @@ return {
                                 },
                         },
                         documentation = { auto_show = true, auto_show_delay_ms = 50 },
-                        signature     = {
-                                enabled = true,
-                                trigger = { enabled = true },
-                                window  = { show_documentation = true },
-                        },
+                        -- signature     = {
+                        --         enabled = true,
+                        --         trigger = { enabled = true },
+                        --         window  = { show_documentation = true },
+                        -- },
                 },
                 fuzzy      = {
                         implementation    = "prefer_rust",
@@ -274,6 +274,8 @@ return {
                         ["<C-j>"]     = { "select_next", "fallback" },
                         ["<C-k>"]     = { "select_prev", "fallback" },
                         ["<C-c>"]     = { function(cmp) if cmp.is_menu_visible() then cmp.hide() else cmp.show() end end },
+                        ["<C-l>"]     = { "snippet_forward", "fallback" },
+                        ["<C-h>"]     = { "snippet_backward", "fallback" },
                         ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
                         ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
                         ["<C-Space>"] = {

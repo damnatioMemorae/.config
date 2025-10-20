@@ -84,7 +84,7 @@ map(n, "F", function() nano.fF("F") end, { desc = "F", silent = true })
 -- Folds
 map(nx, "<A-Right>", "zozz", { desc = "Open current fold", silent = true })
 map(nx, "<A-Left>", "zczz", { desc = "Close current fold", silent = true })
-map(nx, "<A-Down>", "zjzz", { desc = "Goto next fold", silent = true })
+map(nx, "<A-Down>", "zjzz^", { desc = "Goto next fold", silent = true })
 map(n, "zh", "zczz", { desc = "Close current fold", silent = true })
 map(n, "zl", "zozz", { desc = "Open current fold", silent = true })
 map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
@@ -313,18 +313,18 @@ map(n, "L", "<cmd>bnext<cr>zz", { desc = "Next Buffer", silent = true })
 ------------------------------------------------------------------------------------------------------------------------
 -- MACROS
 
-do
-        local reg       = "r"
-        local toggleKey = "0"
-        map("n",
-            toggleKey,
-            function() nano.startOrStopRecording(toggleKey, reg) end,
-            { desc = "󰃽 Start/stop recording", silent = true })
-        -- stylua: ignore
-        map(n, "c0", function() nano.editMacro(reg) end,
-            { desc = "󰃽 Edit recording", silent = true })
-        map(n, "9", "@" .. reg, { desc = "󰃽 Play recording", silent = true })
-end
+-- do
+--         local reg       = "r"
+--         local toggleKey = "0"
+--         map("n",
+--             toggleKey,
+--             function() nano.startOrStopRecording(toggleKey, reg) end,
+--             { desc = "󰃽 Start/stop recording", silent = true })
+--         -- stylua: ignore
+--         map(n, "c0", function() nano.editMacro(reg) end,
+--             { desc = "󰃽 Edit recording", silent = true })
+--         map(n, "9", "@" .. reg, { desc = "󰃽 Play recording", silent = true })
+-- end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- REFACTORING

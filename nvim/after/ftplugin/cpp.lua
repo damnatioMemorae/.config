@@ -9,10 +9,10 @@ vim.api.nvim_create_autocmd("LspTokenUpdate", {
         callback = function(args)
                 local token = args.data.token
                 if
-                    token.type == "variable"
-                    and token.modifiers.globalScope
-                    and not token.modifiers.readonly
-                    and not token.modifiers.defaultLibrary
+                           token.type == "variable"
+                           and token.modifiers.globalScope
+                           and not token.modifiers.readonly
+                           and not token.modifiers.defaultLibrary
                 then
                         vim.lsp.semantic_tokens.highlight_token(
                                 token, args.buf, args.data.client_id, "varGlobScope")
@@ -48,6 +48,22 @@ vim.api.nvim_create_autocmd("LspTokenUpdate", {
                 then
                         vim.lsp.semantic_tokens.highlight_token(
                                 token, args.buf, args.data.client_id, "varClassScope")
+                end
+        end,
+})
+--]]
+
+---[[
+vim.api.nvim_create_autocmd("LspTokenUpdate", {
+        callback = function(args)
+                local token = args.data.token
+                if
+                           token.type == "cppType"
+                           and token.modifiers.identifier
+                           and not token.modifiers.readonly
+                then
+                        vim.lsp.semantic_tokens.highlight_token(
+                                token, args.buf, args.data.client_id, "LspInlayHint")
                 end
         end,
 })
