@@ -47,6 +47,7 @@ safeRequire("core.yank-paste")
 safeRequire("functions.quickfix")
 safeRequire("core.backdrop-underline-fix")
 safeRequire("functions.beacon")
+-- safeRequire("functions.treesitter-diagnostics")
 -- safeRequire("core.fold")
 
 if os.getenv("DISPLAY") ~= nil or os.getenv("WAYLAND_DISPLAY") ~= nil then

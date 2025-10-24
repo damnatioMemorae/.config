@@ -3,7 +3,7 @@ icons = require("core.icons").diagnostics.HINT
 return {
         "rachartier/tiny-inline-diagnostic.nvim",
         event    = "VeryLazy",
-        priority = 1000,
+        -- priority = 1000,
         opts     = {
                 signs   = {
                         left         = "",
@@ -30,7 +30,7 @@ return {
                         overwrite_events             = nil,
                         overflow                     = { mode = "wrap" },
                         break_line                   = { enabled = false, after = 30 },
-                        virt_texts                   = { priority = 99 },
+                        virt_texts                   = { priority = 10000 },
                         format                       = function(diagnostic)
                                 return diagnostic.message .. " [" .. diagnostic.source .. "]"
                         end,

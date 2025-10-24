@@ -1,4 +1,29 @@
 local M            = {}
+local api          = vim.api
+local cmd          = vim.cmd
+local fn           = vim.fn
+local count        = vim.v.count1
+
+local foldClosed   = function(winid, lnum)
+        local winCall = function(winid, f)
+                if winid == 0 or winid == api.nvim_get_current_win() then
+                        return f()
+                else
+                        return api.nvim_win_call(winid, f)
+                end
+        end
+        return M.winCall(winid, function()
+                return fn.foldclosed(lnum)
+        end)
+end
+
+-- function M.winCall(winid, f)
+--         if winid == 0 or winid == api.nvim_get_current_win() then
+--                 return f()
+--         else
+--                 return api.nvim_win_call(winid, f)
+--         end
+-- end
 
 M.prefix           = ","
 
@@ -197,6 +222,7 @@ end
  * @param   Number  l       The lightness
  * @return  String           The hex representation
 ]]
+
 function M.hslToHex(h, s, l)
         local r, g, b = M.hslToRgb(h / 360, s / 100, l / 100)
 
@@ -218,6 +244,94 @@ function M.replaceHexWithHSL()
 
         -- Set the line content back
         vim.api.nvim_buf_set_lines(0, line_number - 1, line_number, false, { line_content })
+end
+
+function M.prevFoldStart()
+        -- local api = vim.api
+        -- local cmd = vim.cmd
+        -- local fn  = vim.fn
+        local function getCurLnum()
+                return api.nvim_win_get_cursor(0)[1]
+        end
+
+        local cnt     = vim.v.count1
+        local curLnum = getCurLnum()
+        cmd("norm! m`")
+        local previousLnum
+        local previousLnumList = {}
+        while cnt > 0 do
+                cmd([[keepj norm! zk]])
+                local tLnum = getCurLnum()
+                cmd([[keepj norm! [z]])
+                local nextLnum = getCurLnum()
+                while curLnum > nextLnum do
+                        tLnum = nextLnum
+                        table.insert(previousLnumList, nextLnum)
+                        cmd([[keepj norm! zj]])
+                        nextLnum = getCurLnum()
+                        if nextLnum == tLnum then
+                                break
+                        end
+                end
+                if #previousLnumList == 0 then
+                        break
+                end
+                if #previousLnumList < cnt then
+                        cnt          = cnt - #previousLnumList
+                        curLnum      = previousLnumList[1]
+                        previousLnum = curLnum
+                        cmd(("keepj norm! %dgg"):format(curLnum))
+                        previousLnumList = {}
+                else
+                        while cnt > 0 do
+                                previousLnum = table.remove(previousLnumList)
+                                cnt          = cnt - 1
+                        end
+                end
+        end
+        if previousLnum then
+                cmd(("norm! %dgg_"):format(previousLnum))
+        end
+end
+
+function M.prevClosedFold()
+        local curLnum = api.nvim_win_get_cursor(0)[1]
+        local cnt = 0
+        local lnum
+        for i = curLnum - 1, 1, -1 do
+                if foldClosed(0, i) == i then
+                        cnt = cnt + 1
+                        lnum = i
+                        if cnt == count then
+                                break
+                        end
+                end
+        end
+        if lnum then
+                cmd("norm! m`")
+                api.nvim_win_set_cursor(0, { lnum, 0 })
+        end
+end
+
+function M.nextClosedFold()
+        local curLnum   = api.nvim_win_get_cursor(0)[1]
+        local lineCount = api.nvim_buf_line_count(0)
+        local cnt       = 0
+        local lnum
+        for i = curLnum + 1, lineCount do
+                if foldClosed(0, i) == i then
+                        cnt  = cnt + 1
+                        lnum = i
+                        if cnt == count then
+                                break
+                        end
+                end
+        end
+
+        if lnum then
+                cmd("norm! m`")
+                api.nvim_win_set_cursor(0, { lnum, 0 })
+        end
 end
 
 --------------------------------------------------------------------------------

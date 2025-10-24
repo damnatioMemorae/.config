@@ -6,6 +6,10 @@ M.diagnostics      = {
         WARN      = "■",
         HINT      = "■",
         INFO      = "■",
+        Error     = "■",
+        Warn      = "■",
+        Hint      = "■",
+        Info      = "■",
         lightbulb = "󱠀",
 }
 
