@@ -2,17 +2,12 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 
-if [[ -n "$ZSH_DEBUGRC" ]]; then
-        zmodload zsh/zprof
-fi
+# if [[ -n "$ZSH_DEBUGRC" ]]; then
+#         zmodload zsh/zprof
+# fi
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-        mkdir -p ~/.cache
-        exec Hyprland > ~/.cache/hyprland.log 2>&1
 fi
 
 export PATH="$PATH:$HOME/.cargo/bin/"
@@ -276,8 +271,13 @@ bindkey -s "^[z" 'sz \n'
 bindkey -s "^[t" 'tmux attach \n'
 bindkey -s "^[u" 'up \n'
 
-if [[ -n "$ZSH_DEBUGRC" ]]; then
-        zprof
+# if [[ -n "$ZSH_DEBUGRC" ]]; then
+#         zprof
+# fi
+
+if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+        mkdir -p ~/.cache
+        exec Hyprland > ~/.cache/hyprland.log 2>&1
 fi
 
 # Added by LM Studio CLI (lms)

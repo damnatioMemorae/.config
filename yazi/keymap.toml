@@ -162,7 +162,6 @@ prepend_keymap = [
         { on = ["J"],            run = "plugin parent-arrow 1" },
         { on = ["K"],            run = "plugin parent-arrow -1" },
         { on = ["l"],            run = "plugin smart-enter" },
-        { on = ["i"],            run = "plugin keyjump" },
         { on = ["1"],            run = "plugin toggle-pane min-parent" },
         { on = ["2"],            run = "plugin toggle-pane min-current" },
         { on = ["3"],            run = "plugin toggle-pane min-preview" },
