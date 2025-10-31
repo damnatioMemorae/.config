@@ -43,6 +43,8 @@ opt.sidescrolloff = 4
 opt.shortmess     = "ltToOCFIc"
 opt.nrformats     = "bin,hex,blank"
 
+-- opt.statuscolumn  = "%s%l%C"
+
 ------------------------------------------------------------------------------------------------------------------------
 -- EDITOR
 
@@ -75,14 +77,55 @@ vim.filetype.add{
 ------------------------------------------------------------------------------------------------------------------------
 -- SEARCH & CMDLINE
 
-opt.ignorecase   = true
-opt.smartcase    = true
-opt.hlsearch     = false
-opt.inccommand   = "split"
-opt.cmdheight    = 0
+opt.ignorecase = true
+opt.smartcase  = true
+opt.hlsearch   = false
+opt.inccommand = "split"
+opt.cmdheight  = 0
 
 ------------------------------------------------------------------------------------------------------------------------
 -- INVISIBLE CHARS
+
+local function fold_virt_text(result, s, lnum, coloff)
+        if not coloff then
+                coloff = 0
+        end
+        local text = ""
+        local hl
+        for i = 1, #s do
+                local char = s:sub(i, i)
+                local hls  = vim.treesitter.get_captures_at_pos(0, lnum, coloff + i - 1)
+                local _hl  = hls[#hls]
+                if _hl then
+                        -- local new_hl = "@" .. _hl.capture
+                        local new_hl = "LspInlayHint"
+                        if new_hl ~= hl then
+                                table.insert(result, { text, hl })
+                                text = ""
+                                hl   = nil
+                        end
+                        text = text .. char
+                        hl   = new_hl
+                else
+                        text = text .. char
+                end
+        end
+        table.insert(result, { text, hl })
+end
+
+function _G.custom_foldtext()
+        local start   = vim.fn.getline(vim.v.foldstart):gsub("\t", string.rep(" ", o.tabstop))
+        local end_str = vim.fn.getline(vim.v.foldend + 1)
+        local end_    = vim.trim(end_str)
+        local result  = {}
+        fold_virt_text(result, start, vim.v.foldstart - 1)
+        -- table.insert(result, { "...", "Comment" })
+        table.insert(result, { "...", "LspInlayHint" })
+        fold_virt_text(result, end_, vim.v.foldend - 1, #(end_str:match("^(%s+)") or ""))
+        return result
+end
+
+opt.foldtext     = "v:lua.custom_foldtext()"
 
 opt.list         = true
 opt.conceallevel = 3

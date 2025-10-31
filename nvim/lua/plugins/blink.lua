@@ -293,7 +293,7 @@ return {
                         nerd_font_variant = "normal",
                         kind_icons        = require("core.icons").symbol_kinds,
                 },
-                signature  = { enabled = false, window = { scrollbar = false } },
+                signature  = { enabled = true, window = { scrollbar = false } },
         },
         opts_extend  = { "sources.default" },
         config       = function(_, opts)

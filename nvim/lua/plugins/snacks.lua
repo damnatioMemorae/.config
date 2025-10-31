@@ -1,6 +1,6 @@
 local button = "Function"
 local label  = "Comment"
--- local prefix = "<leader><leader>"
+-- local prefix  = "<leader><leader>"
 local prefix = ","
 local icons  = require("core.icons")
 
@@ -10,7 +10,11 @@ return {
         priority = 1000,
         keys     = {
                 { "<C-n>",      function() Snacks.notifier.show_history() end, desc = "Notification History" },
-                {
+                { "<leader>fr", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
+                { "<leader>lg", function() Snacks.lazygit() end,               desc = "Lazygit" },
+                { "<A-]>",      function() Snacks.words.jump(1) end,           desc = "Next Reference",      mode = { "n", "t" } },
+                { "<A-[>",      function() Snacks.words.jump(-1) end,          desc = "Prev Reference",      mode = { "n", "t" } },
+                { -- DELETE BUFFER
                         "<A-b>",
                         function()
                                 Snacks.bufdelete()
@@ -18,10 +22,6 @@ return {
                         end,
                         desc = "Delete Buffer",
                 },
-                { "<leader>rf", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
-                { "<leader>lg", function() Snacks.lazygit() end,               desc = "Lazygit" },
-                { "<A-]>",      function() Snacks.words.jump(1) end,           desc = "Next Reference",      mode = { "n", "t" } },
-                { "<A-[>",      function() Snacks.words.jump(-1) end,          desc = "Prev Reference",      mode = { "n", "t" } },
                 { -- MAIN
                         "<leader><leader><leader>",
                         function() Snacks.picker({ layout = "vscode" }) end,
@@ -79,8 +79,8 @@ return {
                                         format  = "buffer",
                                         hidden  = false,
                                         win     = {
-                                                -- input = { keys = { ["Backspace"] = "bufdelete" } },
-                                                -- list  = { keys = { ["Backspace"] = "bufdelete" } },
+                                                input = { keys = { ["d"] = "bufdelete" } },
+                                                -- list   = { keys  = { ["Backspace"]  = "bufdelete" } },
                                         },
                                 })
                         end,
@@ -96,8 +96,8 @@ return {
                                         format  = "buffer",
                                         hidden  = false,
                                         win     = {
-                                                -- input = { keys = { ["Backspace"] = "bufdelete" } },
-                                                -- list  = { keys = { ["Backspace"] = "bufdelete" } },
+                                                -- input  = { keys  = { ["Backspace"]  = "bufdelete" } },
+                                                -- list   = { keys  = { ["Backspace"]  = "bufdelete" } },
                                         },
                                 })
                         end,
@@ -110,7 +110,7 @@ return {
                         prefix .. "r",
                         function()
                                 Snacks.picker.lsp_references({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -121,7 +121,7 @@ return {
                         prefix .. "i",
                         function()
                                 Snacks.picker.lsp_implementations({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -132,7 +132,7 @@ return {
                         prefix .. "d",
                         function()
                                 Snacks.picker.lsp_definitions({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -143,7 +143,7 @@ return {
                         prefix .. "D",
                         function()
                                 Snacks.picker.lsp_declarations({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -154,7 +154,7 @@ return {
                         prefix .. "s",
                         function()
                                 Snacks.picker.lsp_symbols({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -165,7 +165,7 @@ return {
                         prefix .. "S",
                         function()
                                 Snacks.picker.lsp_workspace_symbols({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -176,7 +176,7 @@ return {
                         "<leader><leader>o",
                         function()
                                 Snacks.picker.diagnostics_buffer({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -187,7 +187,7 @@ return {
                         "<leader><leader>O",
                         function()
                                 Snacks.picker.diagnostics({
-                                        layout = "vertical",
+                                        layout  = "vertical",
                                         on_show = function() vim.cmd.stopinsert() end,
                                 })
                         end,
@@ -196,17 +196,27 @@ return {
                 },
         },
         opts     = {
-                lazygit      = { enabled = true },
                 words        = { enabled = false },
-                win          = { border = vim.g.borderStyle },
-                statuscolumn = {
-                        enabled = true,
-                        left    = { "git" },
-                        right   = { "fold" },
-                        folds   = {
-                                open   = true,
-                                git_hl = false,
+                quickfile    = { enabled = true },
+                lazygit      = { enabled = true },
+                input        = { enabled = true },
+                win          = {
+                        border = vim.g.borderStyle,
+                        wo     = {
+                                signcolumn     = "no",
+                                statuscolumn   = " ",
+                                winbar         = "",
+                                number         = false,
+                                relativenumber = false,
+                                cursorcolumn   = false,
                         },
+                },
+                statuscolumn = {
+                        enabled = false,
+                        left    = { "git", "sign" },
+                        right   = { "fold" },
+                        folds   = { open = true, git_hl = false },
+                        git     = { pattern = { "GitSign", "MiniDiffSign" } },
                         refresh = 50,
                 },
                 styles       = {
@@ -224,7 +234,7 @@ return {
                         notification         = {
                                 border  = vim.g.borderStyle,
                                 wo      = { winblend = 40 },
-                                icons   = { error = " ■", warn = " ■", info = " ■", debug = " ■", trace = " ■" },
+                                icons   = icons.notifier,
                                 enabled = true,
                                 timeout = 2000,
                                 style   = "minimal",
@@ -235,6 +245,26 @@ return {
                                 height   = 0.6,
                                 border   = vim.g.borderStyle,
                                 title    = " 󰆽 Git blame ",
+                        },
+                },
+                scope        = {
+                        treesitter = {
+                                blocks = {
+                                        enabled     = true,
+                                        textobjects = {
+                                                ii = {
+                                                        min_size   = 1,
+                                                        cursor     = true,
+                                                        edge       = true,
+                                                        treesitter = { blocks = { enable = true } },
+                                                },
+                                                ai = {
+                                                        min_size   = 1,
+                                                        cursor     = true,
+                                                        treesitter = { blocks = { enable = true } },
+                                                },
+                                        },
+                                },
                         },
                 },
                 indent       = {
@@ -250,7 +280,7 @@ return {
                         },
                 },
                 notifier     = {
-                        icons   = { error = " ■", warn = " ■", info = " ■", debug = " ■", trace = " ■" },
+                        icons   = icons.notifier,
                         style   = "minimal",
                         enabled = true,
                         timeout = 2000,
@@ -356,7 +386,7 @@ return {
                                                         title_pos = "center",
                                                         { win = "input", height = 1,     border = "bottom" },
                                                         { win = "list",  border = "none" },
-                                                        -- { win = "preview", title = "{preview}", height = 0.6,     border = "rounded" },
+                                                        -- { win  = "preview", title  = "{preview}", height  = 0.6,     border  = "rounded" },
                                                 },
                                         },
                                 },
@@ -392,13 +422,13 @@ return {
                         formats  = { "png", "jpg", "jpeg", "gif", "bmp", "webp", "tiff", "heic", "avif", "mp4", "mov", "avi", "mkv", "webm", "pdf" },
                         force    = false,
                         doc      = {
-                                enabled = true,
-                                inline = true,
-                                float = true,
-                                max_width = 80,
+                                enabled    = true,
+                                inline     = true,
+                                float      = true,
+                                max_width  = 80,
                                 max_height = 40,
 
-                                conceal = function(lang, type)
+                                conceal    = function(lang, type)
                                         return type == "math"
                                 end,
                         },
@@ -442,7 +472,7 @@ return {
                         },
                         math     = {
                                 enabled = true,
-                                typst = {
+                                typst   = {
                                         tpl = [[
                                                         #set page(width: auto, height: auto, margin: (x: 2pt, y: 2pt))
                                                         #show math.equation.where(block: false): set text(top-edge: "bounds", bottom-edge: "bounds")
@@ -451,10 +481,10 @@ return {
                                                         ${content}
                                                 ]],
                                 },
-                                latex = {
+                                latex   = {
                                         font_size = "Large",
-                                        packages = { "amsmath", "amssymb", "amsfonts", "amscd", "mathtools" },
-                                        tpl = [[
+                                        packages  = { "amsmath", "amssymb", "amsfonts", "amscd", "mathtools" },
+                                        tpl       = [[
                                                         \documentclass[preview,border=0pt,varwidth,12pt]{standalone}
                                                         \usepackage{${packages}}
                                                         \begin{document}
@@ -555,7 +585,7 @@ return {
                                                 { "]", hl = button },
                                         },
                                         key     = "s",
-                                        action  = [[<cmd> lua require("persistence").load({ last = false }) <cr>]],
+                                        action  = [[<cmd> lua require("persistence").load({ last  = false }) <cr>]],
                                         padding = 1,
                                         align   = "center",
                                 },

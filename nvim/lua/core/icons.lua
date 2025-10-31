@@ -6,11 +6,22 @@ M.diagnostics      = {
         WARN      = "■",
         HINT      = "■",
         INFO      = "■",
+
         Error     = "■",
         Warn      = "■",
         Hint      = "■",
         Info      = "■",
+
         lightbulb = "󱠀",
+}
+
+-- NOTIFIER
+M.notifier         = {
+        error = "■",
+        warn  = "■",
+        info  = "■",
+        debug = "■",
+        trace = "■",
 }
 
 -- FOLDING
@@ -106,31 +117,31 @@ M.symbol_kinds     = {
 }
 
 M.symbol_kinds_alt = {
-        Text          = '󰉿',
-        Method        = '󰊕',
-        Function      = '󰊕',
-        Constructor   = '󰒓',
-        Field         = '󰜢',
-        Variable      = '󰆦',
-        Property      = '󰖷',
-        Class         = '󱡠',
-        Interface     = '󱡠',
-        Struct        = '󱡠',
-        Module        = '󰅩',
-        Unit          = '󰪚',
-        Value         = '󰦨',
-        Enum          = '󰦨',
-        EnumMember    = '󰦨',
-        Keyword       = '󰻾',
-        Constant      = '󰏿',
-        Snippet       = '󱄽',
-        Color         = '󰏘',
-        File          = '󰈔',
-        Reference     = '󰬲',
-        Folder        = '󰉋',
-        Event         = '󱐋',
-        Operator      = '󰪚',
-        TypeParameter = '󰬛',
+        Text          = "󰉿",
+        Method        = "󰊕",
+        Function      = "󰊕",
+        Constructor   = "󰒓",
+        Field         = "󰜢",
+        Variable      = "󰆦",
+        Property      = "󰖷",
+        Class         = "󱡠",
+        Interface     = "󱡠",
+        Struct        = "󱡠",
+        Module        = "󰅩",
+        Unit          = "󰪚",
+        Value         = "󰦨",
+        Enum          = "󰦨",
+        EnumMember    = "󰦨",
+        Keyword       = "󰻾",
+        Constant      = "󰏿",
+        Snippet       = "󱄽",
+        Color         = "󰏘",
+        File          = "󰈔",
+        Reference     = "󰬲",
+        Folder        = "󰉋",
+        Event         = "󱐋",
+        Operator      = "󰪚",
+        TypeParameter = "󰬛",
 
 }
 
@@ -138,11 +149,13 @@ M.symbol_kinds_alt = {
 M.misc             = {
         bug          = "",
         ellipsis     = "…",
+        folded       = "…",
         Variable     = "",
         git          = "",
         search       = "",
         vertical_bar = "▏",
         dashed_bar   = "󰨕",
+        prompt       = ">",
 }
 
 return M

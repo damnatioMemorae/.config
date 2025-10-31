@@ -10,10 +10,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-#if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-        #mkdir -p ~/.cache
-        #exec Hyprland > ~/.cache/hyprland.log 2>&1
-#fi
+if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+        mkdir -p ~/.cache
+        exec Hyprland > ~/.cache/hyprland.log 2>&1
+fi
 
 export PATH="$PATH:$HOME/.cargo/bin/"
 
@@ -138,10 +138,8 @@ function in {
 }
 
 # Helpful aliases
-alias           c='clear'
 alias           l='ls --format=single-column'
 alias          ls='ls -lhc --color'
-alias          lt='eza --tree --icons=always --no-time --no-user --no-permissions'
 alias          un='$aurhelper -Rns'
 alias          up='$aurhelper -Syu'
 alias          pl='$aurhelper -Qs'
@@ -149,30 +147,16 @@ alias          pa='$aurhelper -Ss'
 alias          pc='$aurhelper -Sc'
 alias          po='$aurhelper -Qtdq | $aurhelper -Rns -'
 alias           S='sudo pacman -S'
-alias           b='btm'
-alias           h='htop'
 
-alias           f='clear && fastfetch -c ~/.config/fastfetch/arch.jsonc'
 alias          sz='clear && source ~/.zshrc && clear'
 alias          sb='clear && source ~/.bashrc && clear'
-alias           n='nvim'
 alias           t='tmux'
 alias     yayfind='$aurhelper -Slq | fzf --border-label="yay" --multi --preview "$aurhelper -Si {1}" | xargs -ro $aurhelper -S'
 alias     pacfind='pacman -Slq | fzf --multi --border-label="pacman" --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
 alias      rmfind='pacman -Qq | fzf --border-label="remove" --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
 
-alias         gpp='g++'
 alias         nvz='nvim ~/.config/.zshrc'
-alias         inv='clear && nvim $(fzf -m --preview="bat --color=always {}") && clear'
-alias         cnv='clear && rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim && rm -rf ~/.local/state/nvim && rm -rf ~/.cache/nvim'
 alias         fzf='fzf -m --preview="bat --color=always {}"'
-alias           p='clear && goplaying && clear'
-alias         btc='clear && bluetoothctl connect 2C:BE:EB:71:C9:5C'
-alias         btd='clear && bluetoothctl disconnect 2C:BE:EB:71:C9:5C'
-alias       clock='clear && tty-clock -c && clear'
-alias         umx='clear && unimatrix --color=red -a -f -n -s 97 -l o && clear'
-alias         cmx='clear && cmatrix && clear'
-alias     arttime='arttime --nolearn -a skull3 --hours 24 -t "Nothing ever lasts forever"'
 
 alias           2='hyprctl dispatch exit'
 alias           1='reboot'
@@ -191,9 +175,6 @@ alias    start_12='/usr/lib/jvm/java-8-openjdk/jre/bin/java -Xmx1024M -Xms1024M 
 alias    start_21='/usr/lib/jvm/java-23-openjdk/bin/java -Xmx1024M -Xms1024M -jar server.jar nogui'
 alias    start_20='/usr/lib/jvm/java-24-openjdk/bin/java -Xmx6144M -Xms1024M -jar fabric-server-mc.1.20.1-loader.0.16.10-launcher.1.0.1.jar nogui'
 
-# Tmux
-alias          ta='tmux attach'
-
 # Git aliases
 alias        dots='git add --all && git commit --allow-empty-message -m "" && git push'
 alias          ga='git add --all'
@@ -211,15 +192,6 @@ repo() {
         git push -u origin main
 }
 
-# Select Ghostty shader
-shader() {
-        shader="$(find "$HOME/.config/ghostty/shaders/" -type f | fzf)"
-        if [[ -n "$shader" ]]; then
-                escaped_shader=$(printf '%s\n' "$shader" | sed 's/[&/\]/\\&/g')
-                sed -i "s|\(custom-shader = \).*|\1$escaped_shader|" "$HOME/.config/ghostty/config"
-        fi
-}
-
 # FFmpeg aliases
 mp3() {
         ffmpeg -i "$1" -q:a 0 -map a "$1.mp3"
@@ -235,9 +207,9 @@ crun() {
         local outfile="${src}.out"
 
         if [[ "$src" == *.cpp ]]; then
-                clang++ -std=c++20 "$src" -o "$outfile" && ./"$outfile"
+                clang++ -std=c++23 -O3 -fsanitize=address,undefined,leak "$src" -o "$outfile" && ./"$outfile"
         elif [[ "$src" == *.c ]]; then
-                clang "$src" -o "$outfile" && ./"$outfile"
+                clang -O3 -fsanitize=address,undefined,leak "$src" -o "$outfile" && ./"$outfile"
         else
                 echo "Unsupported file type: $src"
                 return 1
@@ -252,13 +224,6 @@ y() {
                 builtin cd -- "$cwd"
         fi
         rm -f -- "$tmp"
-}
-
-# Select neovim config
-vv() {
-        local config=$(fd --max-depth 1 --glob 'nvim-*' ~/.config | fzf --prompt="Neovim Configs > " --height=~50% --layout=reverse --border --exit-0)
-        [[ -z $config ]] && echo "No config selected" && return
-        NVIM_APPNAME=$(basename "$config") nvim "$@"
 }
 
 # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
@@ -297,19 +262,18 @@ export PATH=$PATH:$HOME/.local/share/bin
 bindkey -s "^p" 'yayfind \n'
 bindkey -s "^z" 'zi \n'
 bindkey -s "^h" 'cd \n'
-bindkey -s "^h" 'cd \n'
-bindkey -s "^k" 'c \n'
+bindkey -s "^k" 'clear \n'
 bindkey -s "^l" 'l \n'
 bindkey -s "^f" 'fg \n'
 # bindkey -s "^\\ " 'n \n'
 # bindkey -s "^\\ " 'y \n'
 bindkey -s "^\\ " 'fzf \n'
-bindkey -s "^n" 'n \n'
+bindkey -s "^n" 'nvim \n'
 bindkey -s "^y" 'y \n'
 bindkey -s "^[g" 'dots \n'
-bindkey -s "^[b" 'b \n'
+bindkey -s "^[b" 'btm \n'
 bindkey -s "^[z" 'sz \n'
-bindkey -s "^[t" 'ta \n'
+bindkey -s "^[t" 'tmux attach \n'
 bindkey -s "^[u" 'up \n'
 
 if [[ -n "$ZSH_DEBUGRC" ]]; then

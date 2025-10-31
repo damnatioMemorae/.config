@@ -4,7 +4,7 @@ return {
         "kosayoda/nvim-lightbulb",
         event = "LspAttach",
         opts  = {
-                priority        = 100,
+                priority        = 10000,
                 link_highlights = true,
                 code_lenses     = true,
                 sign            = {

@@ -32,8 +32,8 @@ return { -- pattern-based textobjs
                 { "in", "<cmd>lua require('various-textobjs').number('inner')<CR>", mode = { "x", "o" }, desc = " inner number" },
                 { "an", "<cmd>lua require('various-textobjs').number('outer')<CR>", mode = { "x", "o" }, desc = " outer number" },
 
-                { "ii", "<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>", mode = { "x", "o" }, desc = "󰉶 inner indent" },
-                { "ai", "<cmd>lua require('various-textobjs').indentation('outer', 'outer')<CR>", mode = { "x", "o" }, desc = "󰉶 outer indent" },
+                -- { "ii", "<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>", mode = { "x", "o" }, desc = "󰉶 inner indent" },
+                -- { "ai", "<cmd>lua require('various-textobjs').indentation('outer', 'outer')<CR>", mode = { "x", "o" }, desc = "󰉶 outer indent" },
                 { "aj", "<cmd>lua require('various-textobjs').indentation('outer', 'inner')<CR>", mode = { "x", "o" }, desc = "󰉶 top-border indent" },
                 { "ig", "<cmd>lua require('various-textobjs').greedyOuterIndentation('inner')<CR>", mode = { "x", "o" }, desc = "󰉶 inner greedy indent" },
                 { "ag", "<cmd>lua require('various-textobjs').greedyOuterIndentation('outer')<CR>", mode = { "x", "o" }, desc = "󰉶 outer greedy indent" },
@@ -60,7 +60,7 @@ return { -- pattern-based textobjs
                 { "a|", "<cmd>lua require('various-textobjs').shellPipe('outer')<CR>", mode = "o", ft = "sh", desc = "󰟥 outer pipe" },
                 -- stylua: ignore end
 
-                { -- indent last paste
+                --[[ indent last paste
                         "^",
                         function()
                                 require("various-textobjs").lastChange()
@@ -69,6 +69,7 @@ return { -- pattern-based textobjs
                         end,
                         desc = "󰉶 Indent Last Paste",
                 },
+                --]]
                 { -- delete surrounding indentation
                         "dsi",
                         function()
@@ -76,7 +77,7 @@ return { -- pattern-based textobjs
                                 local indentationFound = vim.fn.mode():find("V")
                                 if not indentationFound then return end
 
-                                vim.cmd.normal{ "<", bang = true }  -- dedent indentation
+                                vim.cmd.normal{ "<", bang = true } -- dedent indentation
                                 local endBorderLn   = vim.api.nvim_buf_get_mark(0, ">")[1]
                                 local startBorderLn = vim.api.nvim_buf_get_mark(0, "<")[1]
                                 vim.cmd(tostring(endBorderLn) .. " delete") -- delete end first so line index is not shifted

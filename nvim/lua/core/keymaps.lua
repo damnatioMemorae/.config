@@ -82,20 +82,23 @@ map(n, "<A-x>", function()
 map(n, "f", function() nano.fF("f") end, { desc = "f", silent = true })
 map(n, "F", function() nano.fF("F") end, { desc = "F", silent = true })
 
--- Folds
--- map(nx, "<A-Up>", utils.prevClosedFold, { desc = "Goto prev fold", silent = true })
--- map(nx, "<A-Down>",utils.nextClosedFold, { desc = "Goto next fold", silent = true })
+--[[ Folds
 map(nx, "<A-Up>", utils.prevFoldStart, { desc = "Goto prev fold", silent = true })
 map(nx, "<A-Down>", "zjzz^", { desc = "Goto next fold", silent = true })
 map(nx, "<A-Z>", utils.prevFoldStart, { desc = "Goto prev fold", silent = true })
 map(nx, "<A-z>", "zjzz^", { desc = "Goto next fold", silent = true })
 map(n, "<A-Left>", "zczz^", { desc = "Close current fold", silent = true })
 map(n, "<A-Right>", "zozz^", { desc = "Open current fold", silent = true })
-map(n, "<C-A-Left>", "zMzz^", { desc = "Goto next fold", silent = true })
-map(n, "<C-A-Right>", "zRzz^", { desc = "Goto next fold", silent = true })
+map(n, "<C-Left>", "zMzz^", { desc = "Close All Folds", silent = true })
+map(n, "<C-Right>", "zRzz^", { desc = "Open All Folds", silent = true })
 map(n, "zh", "zczz", { desc = "Close current fold", silent = true })
 map(n, "zl", "zozz", { desc = "Open current fold", silent = true })
 map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
+--]]
+
+map(nx, "<A-Down>", "zjzz^", { desc = "Goto next fold", silent = true })
+map(n, "<A-Left>", "zczz^", { desc = "Close current fold", silent = true })
+map(n, "<A-Right>", "zozz^", { desc = "Open current fold", silent = true })
 
 -- Move to the end of previous word
 map(nv, "W", "ge", { desc = "Jump to the end of previous word", silent = true })
@@ -139,6 +142,7 @@ end
 
 -- Whitespace
 map(n, "<CR>", "o<Esc>k", { desc = " blank below", silent = true })
+-- map(n, "<CR>", "] ", { desc = " blank below", silent = true })
 map(n, "<S-CR>", "O<Esc>j", { desc = " blank above", silent = true })
 map(n, "<A-CR>", "O<Esc>j", { desc = " blank above", silent = true })
 
@@ -315,8 +319,8 @@ map(n, "<A-Bslash>", "<C-W>vzz", { desc = "Split Window Right", silent = true })
 -- BUFFERS & FILES
 
 map(n, "<A-r>", vim.cmd.edit, { desc = "󰽙 Reload buffer", silent = true })
-map(n, "H", "<cmd>bprevious<cr>zz", { desc = "Prev Buffer", silent = true })
-map(n, "L", "<cmd>bnext<cr>zz", { desc = "Next Buffer", silent = true })
+map(n, "H", "<cmd>bprevious<cr>", { desc = "Prev Buffer", silent = true })
+map(n, "L", "<cmd>bnext<cr>", { desc = "Next Buffer", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- MACROS
@@ -374,10 +378,6 @@ map(n, "<leader>od", function()
 
 map(n, "<leader>oc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0 end,
     { desc = "󰈉 Conceal", silent = true })
-
-map(n, "<leader>oo", function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-    end, { desc = "Toggle IDE stuff", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- RELOAD PLUGINS

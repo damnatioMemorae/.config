@@ -3,7 +3,7 @@
 
 vim.hl                = vim.highlight
 
-vim.g.projects_dir    = vim.env.HOME .. '/dev/'
+vim.g.projects_dir    = vim.env.HOME .. "/deeznuts/"
 
 ------------------------------------------------------------------------------------------------------------------------
 -- CONFIG

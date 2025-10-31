@@ -1,7 +1,8 @@
 return {
         "chrisgrieser/nvim-lsp-endhints",
+        event = "LspAttach",
         keys  = {
-                { "<leader>oH", function() require("lsp-endhints").toggle() end, desc = "󰑀 Endhints" },
+                { "<leader>oh", function() require("lsp-endhints").toggle() end, desc = "󰑀 Endhints" },
         },
         opts  = {
                 icons = {

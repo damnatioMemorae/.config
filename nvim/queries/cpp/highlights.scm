@@ -1,1 +1,7 @@
-((auto) @lsp.typemod.class.defaultLibrary.cpp (#set! priority 130))
+; extends
+
+; add hlgroup `@namespace.builtin.lua`:
+; - nvim: `vim`
+; - hammerspon: `hs`
+((auto) @keyword
+  (#any-of? @keyword))

@@ -6,7 +6,7 @@ local get_default_capabilities = function()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
 
         capabilities.textDocument.foldingRange = {
-                dynamicRegistration = false,
+                dynamicRegistration = true,
                 lineFoldingOnly     = true,
         }
         return capabilities
@@ -19,14 +19,13 @@ local capabilities = get_default_capabilities()
 vim.lsp.config("*", {
         capabilities = capabilities,
         root_markers = { ".git" },
-        flags        = {
-                debounce_text_changes = 500,
-        },
+        ---@diagnostic disable-next-line: missing-fields
+        flags        = { debounce_text_changes = 500 },
 })
 
 vim.lsp.enable({
         -- "asm",
-        -- "basedpyright",
+        "basedpyright",
         "bashls",
         "biome",
         "clangd",
@@ -34,13 +33,15 @@ vim.lsp.enable({
         "css_variables",
         "kotlin_lsp",
         "emmet",
-        -- "emmylua_ls",
+        "emmylua_ls",
+        "hsl",
         "glsl_analyzer",
         "gopls",
         "jsonls",
         "lua_ls",
-        -- "pylsp",
-        -- "pylyzer",
+        "nixd",
+        "pylsp",
+        "pylyzer",
         "pyright",
         "qmlls",
         "ruff",
@@ -116,7 +117,7 @@ local numbers = {
 }
 
 vim.diagnostic.config({
-        signs            = icons,
+        signs            = numbers,
         jump             = { float = false },
         virtual_text     = false,
         update_in_insert = false,

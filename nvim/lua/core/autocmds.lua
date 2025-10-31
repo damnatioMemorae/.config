@@ -1,5 +1,10 @@
-local api = vim.api
-local map = require("core.utils").uniqueKeymap
+local api     = vim.api
+local map     = require("core.utils").uniqueKeymap
+local augroup = api.nvim_create_augroup
+local fn      = vim.fn
+local o       = vim.o
+local wo      = vim.wo
+local g       = vim.g
 
 ------------------------------------------------------------------------------------------------------------------------
 -- AUTO-CD TO PROJECT ROOT
@@ -25,13 +30,14 @@ api.nvim_create_autocmd("VimEnter", {
                 end)
                 if root and root ~= "" then vim.uv.chdir(root) end
         end,
-}) --]]
+})
+--]]
 
 ------------------------------------------------------------------------------------------------------------------------
 -- <q>
 
 api.nvim_create_autocmd("FileType", {
-        group    = api.nvim_create_augroup("Close with <q>", { clear = true }),
+        group    = augroup("Close with <q>", { clear = true }),
         pattern  = {
                 "PlenaryTestPopup",
                 "help",
@@ -54,15 +60,11 @@ api.nvim_create_autocmd("FileType", {
 })
 
 ------------------------------------------------------------------------------------------------------------------------
--- RESIZE NEOVIM WHEN TERMINAL IS RESIZED
-
-api.nvim_command("autocmd VimResized * wincmd =")
-
-------------------------------------------------------------------------------------------------------------------------
 
 api.nvim_create_autocmd("FocusGained", {
         desc     = "User: FIX `cwd` being not available when it is deleted outside nvim.",
         callback = function()
+                ---@diagnostic disable-next-line: undefined-field
                 if not vim.uv.cwd() then vim.uv.chdir("/") end
         end,
 })
@@ -71,9 +73,10 @@ api.nvim_create_autocmd("FocusGained", {
         desc     = "User: Close all non-existing buffers on `FocusGained`.",
         callback = function()
                 local closedBuffers = {}
-                local allBufs       = vim.fn.getbufinfo{ buflisted = 1 }
+                local allBufs       = fn.getbufinfo{ buflisted = 1 }
                 vim.iter(allBufs):each(function(buf)
                         if not api.nvim_buf_is_valid(buf.bufnr) then return end
+                        ---@diagnostic disable-next-line: undefined-field
                         local stillExists   = vim.uv.fs_stat(buf.name) ~= nil
                         local specialBuffer = vim.bo[buf.bufnr].buftype ~= ""
                         local newBuffer     = buf.name == ""
@@ -94,6 +97,7 @@ api.nvim_create_autocmd("FocusGained", {
                 vim.defer_fn(function()
                                      if api.nvim_buf_get_name(0) ~= "" then return end
                                      for _, file in ipairs(vim.v.oldfiles) do
+                                             ---@diagnostic disable-next-line: undefined-field
                                              if vim.uv.fs_stat(file) and vim.fs.basename(file) ~= "COMMIT_EDITMSG" then
                                                      vim.cmd.edit(file)
                                                      return
@@ -115,14 +119,16 @@ local function searchCountIndicator(mode)
         if mode == "clear" then return end
 
         local row   = api.nvim_win_get_cursor(0)[1]
-        local count = vim.fn.searchcount()
+        local count = fn.searchcount()
         if count.total == 0 then return end
         local text     = (" %d/%d "):format(count.current, count.total)
         local line     = api.nvim_get_current_line():gsub("\t", (" "):rep(vim.bo.shiftwidth))
         local lineFull = #line + signColumnPlusScrollbarWidth >= api.nvim_win_get_width(0)
         local margin   = { (" "):rep(lineFull and signColumnPlusScrollbarWidth or 0) }
 
-        api.nvim_buf_set_extmark(0, countNs, row - 1, 0, {
+        ---@diagnostic disable-next-line: unknown-diag-code
+        ---@diagnostic disable-next-line: param-type-not-match
+        api.nvim_buf_set_extmark(0, countNs, row --[[@cast -?]] - 1, 0, {
                 virt_text     = { { text, "IncSearch" }, margin },
                 virt_text_pos = lineFull and "right_align" or "eol",
                 priority      = 200,
@@ -131,8 +137,8 @@ end
 
 -- without the `searchCountIndicator`, this `on_key` simply does `auto-nohl`
 vim.on_key(function(key, _typed)
-                   key                   = vim.fn.keytrans(key)
-                   local isCmdlineSearch = vim.fn.getcmdtype():find("[/?]") ~= nil
+                   key                   = fn.keytrans(key)
+                   local isCmdlineSearch = fn.getcmdtype():find("[/?]") ~= nil
                    local isNormalMode    = api.nvim_get_mode().mode == "n"
                    local searchStarted   = (key == "/" or key == "?") and isNormalMode
                    local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
@@ -141,7 +147,7 @@ vim.on_key(function(key, _typed)
 
                    -- works for RHS, therefore no need to consider remaps
                    local searchMovement = vim.tbl_contains({ "n", "N", "*", "#" }, key)
-                   local shortPattern   = vim.fn.getreg("/"):gsub([[\V\C]], ""):len() <= 1 -- for `fF` function
+                   local shortPattern   = fn.getreg("/"):gsub([[\V\C]], ""):len() <= 1 -- for `fF` function
 
                    if searchCancelled or (not searchMovement and not searchConfirmed) then
                            vim.opt.hlsearch = false
@@ -156,23 +162,27 @@ vim.on_key(function(key, _typed)
 -- SKELETONS (TEMPLATES)
 
 -- CONFIG
-local templateDir       = vim.fn.stdpath("config") .. "/templates"
+local templateDir       = fn.stdpath("config") .. "/templates"
 local globToTemplateMap = {
-        [vim.g.localRepos .. "/**/*.lua"]                    = "module.lua",
-        [vim.fn.stdpath("config") .. "/lua/functions/*.lua"] = "module.lua",
-        [vim.fn.stdpath("config") .. "/lua/plugins/*.lua"]   = "plugin-spec.lua",
-        [vim.fn.stdpath("config") .. "/lsp/*.lua"]           = "lsp.lua",
+        [g.localRepos .. "/**/*.lua"]                    = "module.lua",
+        [fn.stdpath("config") .. "/lua/functions/*.lua"] = "module.lua",
+        [fn.stdpath("config") .. "/lua/plugins/*.lua"]   = "plugin-spec.lua",
+        [fn.stdpath("config") .. "/lsp/*.lua"]           = "lsp.lua",
 
         -- ["**/*.py"]                                          = "template.py",
-        ["**/*.sh"]                                          = "template.zsh",
-        ["**/*.*sh"]                                         = "template.zsh",
+        ["**/*.sh"]                                      = "template.zsh",
+        ["**/*.*sh"]                                     = "template.zsh",
 }
 
+---@diagnostic disable-next-line: need-check-nil
 api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
         desc     = "User: Apply templates (`BufReadPost` for files created outside of nvim.)",
         callback = function(ctx)
                 vim.defer_fn(
-                        function()                                              -- defer, to ensure new files are written
+                ---@diagnostic disable-next-line: undefined-field
+                        function()
+                                ---@diagnostic disable-next-line: undefined-field
+                                -- defer, to ensure new files are written
                                 local stats = vim.uv.fs_stat(ctx.file)
                                 if not stats or stats.size > 10 then return end -- 10 bytes for file metadata
                                 local filepath, bufnr = ctx.file, ctx.buf
@@ -185,6 +195,7 @@ api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
                                 if not matchedGlob then return end
                                 local templateFile = globToTemplateMap[matchedGlob]
                                 local templatePath = vim.fs.normalize(templateDir .. "/" .. templateFile)
+                                ---@diagnostic disable-next-line: undefined-field
                                 if not vim.uv.fs_stat(templatePath) then return end
 
                                 -- read template & move to cursor placeholder
@@ -201,10 +212,13 @@ api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
                                         row = row + 1
                                 end
                                 api.nvim_buf_set_lines(0, 0, -1, false, content)
+                                ---@diagnostic disable-next-line: unknown-diag-code
+                                ---@diagnostic disable-next-line: unnecessary-if
                                 if cursor then api.nvim_win_set_cursor(0, cursor) end
 
                                 -- adjust filetype if needed (e.g. when applying a zsh template to .sh files)
                                 local newFt = vim.filetype.match{ buf = bufnr }
+                                ---@diagnostic disable-next-line: assign-type-mismatch
                                 if vim.bo[bufnr].ft ~= newFt then vim.bo[bufnr].ft = newFt end
                         end, 100)
         end,
@@ -213,34 +227,36 @@ api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
 ------------------------------------------------------------------------------------------------------------------------
 -- ENFORCE SCROLLOFF AT EOF
 
-api.nvim_create_autocmd("CursorMoved", {
-        desc     = "User: Enforce scrolloff at EoF",
-        callback = function(ctx)
-                if vim.bo[ctx.buf].buftype ~= "" then return end
+api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "WinScrolled" }, {
+        desc = "Fix scrolloff when you are at the EOF",
+        group = augroup("ScrollEOF", { clear = true }),
+        callback = function()
+                if api.nvim_win_get_config(0).relative ~= "" then
+                        return -- Ignore floating windows
+                end
 
-                local winHeight           = api.nvim_win_get_height(0)
-                local visualDistanceToEof = winHeight - vim.fn.winline()
-                local scrolloff           = math.min(vim.o.scrolloff, math.floor(winHeight / 2))
+                local win_height = fn.winheight(0)
+                local scrolloff = math.min(o.scrolloff, math.floor(win_height / 2))
+                local visual_distance_to_eof = win_height - fn.winline()
 
-                if visualDistanceToEof < scrolloff then
-                        local topline = vim.fn.winsaveview().topline
-                        -- topline is inaccurate if it is a folded line, thus add number of folded lines
-                        local toplineFoldAmount = vim.fn.foldclosedend(topline) - vim.fn.foldclosed(topline)
-                        topline = topline + toplineFoldAmount
-                        vim.fn.winrestview{ topline = topline + scrolloff - visualDistanceToEof }
+                if visual_distance_to_eof < scrolloff then
+                        local win_view = fn.winsaveview()
+                        fn.winrestview({ topline = win_view.topline + scrolloff - visual_distance_to_eof })
                 end
         end,
 })
 
 -- FIX: for some reason `scrolloff` sometimes being set to `0` on new buffers
-local originalScrolloff = vim.o.scrolloff
+local originalScrolloff = o.scrolloff
 api.nvim_create_autocmd({ "BufReadPost", "BufNew" }, {
         desc     = "User: FIX scrolloff on entering new buffer",
         callback = function(ctx)
                 vim.defer_fn(function()
                                      if not api.nvim_buf_is_valid(ctx.buf) or vim.bo[ctx.buf].buftype ~= "" then return end
+                                     ---@diagnostic disable-next-line: unknown-diag-code
+                                     ---@diagnostic disable-next-line: preferred-local-alias
                                      if vim.o.scrolloff == 0 then
-                                             vim.o.scrolloff = originalScrolloff
+                                             o.scrolloff = originalScrolloff
                                              vim.notify("Triggered by [" .. ctx.event .. "]", nil,
                                                         { title = "Scrolloff fix" })
                                      end
@@ -252,8 +268,8 @@ api.nvim_create_autocmd({ "BufReadPost", "BufNew" }, {
 -- STAY IN CMD
 
 api.nvim_create_autocmd("CmdwinEnter", {
-        group    = api.nvim_create_augroup("mariasolos/execute_cmd_and_stay", { clear = true }),
         desc     = "Execute command and stay in the command-line window",
+        group    = augroup("mariasolos/execute_cmd_and_stay", { clear = true }),
         callback = function(args)
                 vim.keymap.set({ "n", "i" }, "<S-CR>", "<cr>q:", { buffer = args.buf })
         end,
@@ -263,7 +279,7 @@ api.nvim_create_autocmd("CmdwinEnter", {
 -- LSP
 
 api.nvim_create_autocmd("LspAttach", {
-        group    = api.nvim_create_augroup("lsp-attach", { clear = true }),
+        group    = augroup("lsp-attach", { clear = true }),
         callback = function(args)
                 local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
                 local lsp    = vim.lsp
@@ -272,23 +288,27 @@ api.nvim_create_autocmd("LspAttach", {
                 ------------------------------------------------------------------------------------------------------------------------
                 -- DOCUMENT HIGHLIGHTING
 
-                if vim.fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight") then
-                        local highlight_augroup = api.nvim_create_augroup("lsp-highlight", { clear = false })
+                ---@diagnostic disable-next-line: unknown-diag-code
+                ---@diagnostic disable-next-line: unnecessary-if
+                if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight") then
+                        local highlight_augroup = augroup("lsp-highlight", { clear = false })
 
                         api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                                buffer   = args.buf,
+                                buffer   = buf,
                                 group    = highlight_augroup,
                                 callback = lsp.buf.document_highlight,
                         })
 
                         api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                                buffer   = args.buf,
+                                buffer   = buf,
                                 group    = highlight_augroup,
                                 callback = lsp.buf.clear_references,
                         })
 
                         api.nvim_create_autocmd("LspDetach", {
-                                group    = api.nvim_create_augroup("lsp-detach", { clear = true }),
+                                group    = augroup("lsp-detach", { clear = true }),
+                                ---@diagnostic disable-next-line: unknown-diag-code
+                                ---@diagnostic disable-next-line: unused
                                 callback = function(event2)
                                         lsp.buf.clear_references()
                                         -- api.nvim_clear_autocmd({ "lsp-highlight", buffer = event2.buf })
@@ -302,7 +322,7 @@ api.nvim_create_autocmd("LspAttach", {
                 --[[
                 map("n", "<leader>ol", lsp.codelens.run, { buffer = buf, desc = "LSP Codelens" })
                 if client:supports_method("textDocument/codeLens") then
-                        api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+                        autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
                                 buffer = buf,
                                 callback = function() lsp.codelens.refresh({ bufnr = buf }) end,
                         })
@@ -322,7 +342,7 @@ api.nvim_create_autocmd("LspAttach", {
 api.nvim_create_autocmd("ModeChanged", {
         pattern  = "*:*",
         callback = function()
-                local mode = vim.fn.mode()
+                local mode = fn.mode()
                 if mode == "n" or mode == "\22" then vim.opt.virtualedit = "all" end
                 if mode == "i" then vim.opt.virtualedit = "block" end
                 if mode == "v" or mode == "V" then vim.opt.virtualedit = "onemore" end
@@ -334,17 +354,61 @@ api.nvim_create_autocmd("ModeChanged", {
 
 api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter" }, {
         pattern = "*",
-        command = "if &nu && mode() != 'i' | set rnu | endif",
+        callback = function()
+                if wo.number and api.nvim_get_mode().mode ~= "i" then
+                        wo.relativenumber = true
+                        wo.signcolumn     = "yes"
+                        -- wo.foldcolumn     = "1"
+                end
+        end,
 })
 
 api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave" }, {
         pattern = "*",
-        command = "if &nu | set nornu | endif",
+        callback = function()
+                if wo.number then
+                        wo.relativenumber = false
+                        wo.signcolumn     = "no"
+                        wo.foldcolumn     = "0"
+                        -- vim.cmd("redraw!")
+                end
+        end,
 })
 
 ------------------------------------------------------------------------------------------------------------------------
--- ALWAYS SPLIT VERTICALLY
+-- RESTORE CURSOR POSITION
 
--- api.nvim_create_autocmd({ "WinNew" }, {
---         command = "wincmd L",
--- })
+api.nvim_create_autocmd({ "BufReadPost", "BufReadPre", "BufWinEnter" }, {
+        desc     = "Restore cursor position",
+        pattern  = "*",
+        callback = function(args)
+                local mark       = api.nvim_buf_get_mark(args.buf, '"')
+                local line_count = api.nvim_buf_line_count(args.buf)
+                if mark[1] > 0 and mark[1] <= line_count then
+                        api.nvim_buf_call(args.buf, function() vim.cmd('normal! g`"zz') end)
+                end
+        end,
+})
+
+------------------------------------------------------------------------------------------------------------------------
+-- CLEAR TRAILING WHITESPACE
+
+api.nvim_create_autocmd({ "BufWritePre" }, {
+        desc     = "Remove trailing whitespace",
+        pattern  = "*",
+        callback = function() vim.cmd([[%s/\s\+$//e]]) end,
+})
+
+------------------------------------------------------------------------------------------------------------------------
+-- SPLITS
+
+api.nvim_create_autocmd("FileType", {
+        desc    = "Automatically split help buffers to the right",
+        pattern = "help",
+        command = "wincmd L",
+})
+
+api.nvim_create_autocmd("VimResized", {
+        desc = "Automatically resize splits, when terminal window is moved",
+        command = "wincmd =",
+})

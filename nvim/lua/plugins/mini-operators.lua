@@ -2,13 +2,13 @@ return {
         "echasnovski/mini.operators",
         enabled = false,
         keys    = {
-                { "s", desc = "󰅪 Substitute Operator" }, -- in visual mode, `s` surrounds
-                { "sw", mode = { "n", "x" }, desc = "󰅪 Multiply Operator" },
-                { "sy", desc = "󰅪 Sort Operator" },
-                { "sx", desc = "󰅪 Exchange Operator" },
-                { "S", "s$", desc = "󰅪 Substitute to EoL", remap = true },
-                { "sW", "w$", desc = "󰅪 Multiply to EoL", remap = true },
-                { "sX", "sx$", desc = "󰅪 Exchange to EoL", remap = true },
+                { "g", desc = "󰅪 Substitute Operator" }, -- in visual mode, `s` surrounds
+                { "gw", mode = { "n", "x" }, desc = "󰅪 Multiply Operator" },
+                { "gy", desc = "󰅪 Sort Operator" },
+                { "gx", desc = "󰅪 Exchange Operator" },
+                { "G", "s$", desc = "󰅪 Substitute to EoL", remap = true },
+                { "gW", "w$", desc = "󰅪 Multiply to EoL", remap = true },
+                { "gX", "sx$", desc = "󰅪 Exchange to EoL", remap = true },
         },
         opts    = {
                 evaluate = { prefix = "" }, -- disable
@@ -21,7 +21,7 @@ return {
                                 -- IF LINEWISE, TRANSFORM 1ST LNE
                                 if content.submode == "V" then
                                         local line = content.lines[1]
-                                        local ft = vim.bo.filetype
+                                        local ft   = vim.bo.filetype
 
                                         if ft == "css" then
                                                 if line:find("top:") then
@@ -36,8 +36,7 @@ return {
                                                 end
                                         elseif ft == "javascript" or ft == "typescript" then
                                                 if line:find("^%s*if.+{$") then
-                                                        line = line:gsub("^(%s*)if",
-                                                                "%1} else if")
+                                                        line = line:gsub("^(%s*)if", "%1} else if")
                                                 end
                                         elseif ft == "lua" then
                                                 if line:find("^%s*if.+then%s*$") then
@@ -57,15 +56,15 @@ return {
                                 -- called only *before* multiplication
                                 local rowBefore = vim.api.nvim_win_get_cursor(0)[1]
                                 vim.defer_fn(function()
-                                        local rowAfter       = vim.api.nvim_win_get_cursor(0)[1]
-                                        local line           = vim.api.nvim_get_current_line()
-                                        local _, valuePos    = line:find("[:=] %S")   -- find value
-                                        local _, _, fieldPos = line:find("@.-()%w+$") -- luadoc
-                                        local col            = fieldPos or valuePos
-                                        if rowBefore ~= rowAfter and col then
-                                                vim.api.nvim_win_set_cursor(0, { rowAfter, col - 1 })
-                                        end
-                                end, 1)
+                                                     local rowAfter       = vim.api.nvim_win_get_cursor(0)[1]
+                                                     local line           = vim.api.nvim_get_current_line()
+                                                     local _, valuePos    = line:find("[:=] %S")   -- find value
+                                                     local _, _, fieldPos = line:find("@.-()%w+$") -- luadoc
+                                                     local col            = fieldPos or valuePos
+                                                     if rowBefore ~= rowAfter and col then
+                                                             vim.api.nvim_win_set_cursor(0, { rowAfter, col - 1 })
+                                                     end
+                                             end, 1)
 
                                 return content.lines
                         end,

@@ -9,11 +9,8 @@ return {
                 },
         },
         {
-                "cappyzawa/trim.nvim",
-                event  = "VeryLazy",
-                config = function()
-                        require("trim").setup()
-                end
+                "OXY2DEV/helpview.nvim",
+                event = "VeryLazy",
         },
         {
                 "anuvyklack/keymap-amend.nvim",
