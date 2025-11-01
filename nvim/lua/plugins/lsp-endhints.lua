@@ -5,12 +5,18 @@ return {
                 { "<leader>oh", function() require("lsp-endhints").toggle() end, desc = "󰑀 Endhints" },
         },
         opts  = {
-                icons = {
+                icons   = {
                         type      = "󰜁 ",
                         parameter = "󰏪 ",
-                        offspec   = " ", -- hint kind not defined in official LSP spec
-                        unknown   = "? ", -- hint kind is nil
+                        offspec   = " ",
+                        unknown   = "? ",
                 },
-                label = { sameKindSeparator = " " },
+                label   = {
+                        truncateAtChars   = 40,
+                        sameKindSeparator = " ",
+                        marginLeft        = 0,
+                        padding           = 1,
+                },
+                extmark = { priority = 1000 },
         },
 }

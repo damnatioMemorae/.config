@@ -580,6 +580,7 @@ local customCol = function(C)
 
                 -- FoldMark                                     = { link = "LspInlayHint" },
                 FoldMark                                     = { fg = C.none, bg = C.base },
+                LightBulbSign                                = { link = "DiagnosticSignHint" },
                 IBLScope                                     = { fg = ivory },
                 SnacksIndentScope                            = { fg = ivory },
                 LspInlayHint                                 = { fg = C.overlay0, bg = C.base },
