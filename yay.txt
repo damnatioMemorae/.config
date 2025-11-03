@@ -1,0 +1,6 @@
+adbfs-rootless-git
+kanata
+librewolf-bin
+hyprshade
+lact-git
+kvantum

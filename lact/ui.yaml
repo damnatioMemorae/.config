@@ -1,0 +1,13 @@
+selected_gpu: 10DE:2560-17AA:3A81-0000:01:00.0
+plots_time_period: 20
+plots_per_row: 2
+stats_poll_interval_ms: 500
+gpus:
+  10DE:2560-17AA:3A81-0000:01:00.0:
+    plots:
+    - - VramClock
+      - !Temperature VRAM
+    - - GpuClock
+      - GpuVoltage
+      - !Temperature GPU
+      - !Temperature GPU Hotspot

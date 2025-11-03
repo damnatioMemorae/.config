@@ -1,0 +1,44 @@
+If:
+        PathExclude: include/llvm-c/.*
+        PathMatch: .*\\.h
+Style:
+        AngledHeaders: []
+        QuotedHeaders: []
+        FullyQualifiedNamespaces: []
+CompileFlags:
+        BuiltinHeaders: Clangd
+        Add: [ -Wall, -Wextra, -Wshadow, -Wpedantic ]
+
+        Compiler: clang++
+Index:
+        Background: Build
+        StandardLibrary: true
+Diagnostics:
+        ClangTidy:
+                Add: modernize*
+                Remove: modernize-use-trailing-return-type
+                CheckOptions:
+                        readability-identifier-naming.VariableCase: CamelCase
+                FastCheckFilter: Strict
+        UnusedIncludes: Strict
+        Includes:
+                AnalyzeAngledIncludes: true
+        MissingIncludes: Strict
+Completion:
+        AllScopes: true
+        ArgumentLists: Delimiters
+        HeaderInsertion: IWYU
+        CodePatterns: All
+InlayHints:
+        BlockEnd: true
+        Designators: true
+        Enabled: true
+        ParameterNames: true
+        DeducedTypes: true
+        DefaultArguments: true
+        TypeNameLimit: 24
+Hover:
+        ShowAKA: true
+SemanticTokens:
+        DisabledModifiers: []
+        DisabledKinds: []
