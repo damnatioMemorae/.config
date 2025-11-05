@@ -1,6 +1,9 @@
-function cmd() vim.cmd.normal("zz") end
+function cmd()
+        vim.cmd.normal("^zz")
+end
 
 local folded = require("core.icons").misc.folded
+local modes  = { "n", "x" }
 
 return {
         "kevinhwang91/nvim-ufo",
@@ -16,6 +19,7 @@ return {
                                 -- require("ufo").openFoldsExceptKinds{ "region" }
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Close L0 folds",
                 },
                 { -- 1
@@ -24,6 +28,7 @@ return {
                                 require("ufo").closeFoldsWith(1)
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Close L1 folds",
                 },
                 { -- 2
@@ -32,6 +37,7 @@ return {
                                 require("ufo").closeFoldsWith(2)
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Close L2 folds",
                 },
                 { -- 3
@@ -40,6 +46,7 @@ return {
                                 require("ufo").closeFoldsWith(3)
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Close L3 folds",
                 },
                 { -- 4
@@ -48,6 +55,7 @@ return {
                                 require("ufo").closeFoldsWith(4)
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Close L4 folds",
                 },
                 { -- 5
@@ -56,6 +64,7 @@ return {
                                 require("ufo").closeFoldsWith(5)
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Close L5 folds",
                 },
                 { -- 6
@@ -64,6 +73,7 @@ return {
                                 require("ufo").closeFoldsWith(6)
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Close L5 folds",
                 },
                 { -- OPEN ALL
@@ -72,6 +82,7 @@ return {
                                 require("ufo").openFoldsExceptKinds{}
                                 cmd()
                         end,
+                        mode = modes,
                         desc = "󱃄 Open regular folds",
                 },
                 { -- CLOSE ALL
@@ -80,7 +91,7 @@ return {
                                 require("ufo").openFoldsExceptKinds{ "region" }
                                 cmd()
                         end,
-                        mode = { "n", "x" },
+                        mode = modes,
                         desc = "󱃄 Close all folds",
                 },
                 { -- FOLD PREVIEW
@@ -98,7 +109,7 @@ return {
                                 require("ufo").goPreviousStartFold()
                                 cmd()
                         end,
-                        mode = { "n", "x" },
+                        mode = modes,
                         desc = "󱃄 Close all folds",
                 },
         },
@@ -144,7 +155,7 @@ return {
                         -- return custom_foldtext()
                         -- vim.o.foldmethod = "expr"
                         -- vim.o.foldexpr   = "nvim_treesitter#foldexpr()"
-                        vim.wo.foldtext  =
+                        vim.wo.foldtext =
                         [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) ]]
                 end,
         },

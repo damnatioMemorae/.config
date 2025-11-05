@@ -237,7 +237,7 @@ local customCol = function(C)
                 --------------------------------------------------------------------------------------------------------
                 -- C++
 
-                cType                                        = { fg = C.overlay0, bg = C.crust, bold = true },
+                cType                                        = { fg = C.mauve, bg = C.crust, bold = false },
                 cppType                                      = { link = "cType" },
                 cParen                                       = { link = "@lsp.type.bracket.cpp" },
                 cBracket                                     = { link = "@lsp.type.bracket.cpp" },
@@ -250,7 +250,7 @@ local customCol = function(C)
                 cppModifier                                  = { link = "@keyword" },
 
                 -- ["@lsp.type.bracket.cpp"]                    = { link = "Comment" },
-                ["@lsp.type.namespace.cpp"]                  = { fg = C.yellow, bg = C.base },
+                ["@lsp.type.namespace.cpp"]                  = { fg = C.yellow, bg = C.crust },
                 ["@lsp.type.type.cpp"]                       = { link = "cppType" },
                 ["@lsp.type.modifier.cpp"]                   = { link = "@type.builtin" },
                 ["@type.builtin.cpp"]                        = { link = "LspInlayHint" },
@@ -592,7 +592,8 @@ local customCol = function(C)
                 FlashCurrent                                 = { link = "LspInlayHint" },
                 FlashLabel                                   = { link = "DiagnosticError" },
                 TreesitterContext                            = { bg = C.mantle, bold = true },
-                LspReferenceText                             = { link = "Visual" },
+                -- LspReferenceText                             = { link = "Visual" },
+                LspReferenceText                             = { bg = C.base, bold = true },
                 LspReferenceWrite                            = { link = "LspReferenceText" },
                 LspReferenceRead                             = { link = "LspReferenceWrite" },
                 DiffAdded                                    = { link = "DiffDelete" },

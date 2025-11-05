@@ -1,40 +1,62 @@
 return {
         "nvim-treesitter/nvim-treesitter",
-        event = "BufReadPre",
-        build = ":TSUpdate",
-        main  = "nvim-treesitter.configs",
-        opts  = {
-                ensure_installed      = "all",
-                ignore_install        = { "comment" },
-                highlight             = {
-                        additional_vim_regex_highlighting = false,
-                        enable                            = true,
-                        disable                           = function(_, bufnr)
-                                local maxFilesizeKb = 100
-                                local ok, stats     = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
-                                if ok and stats and stats.size > maxFilesizeKb * 1024 then return true end
-                        end,
-                },
-                indent                = {
-                        enable  = true,
-                        disable = { "markdown" },
-                },
-                textobjects           = {
-                        select = {
-                                lookahead                      = true,
-                                include_surrounding_whitespace = false,
+        "nvim-treesitter/nvim-treesitter-refactor",
+        event  = "BufReadPre",
+        build  = ":TSUpdate",
+        config = function()
+                require("nvim-treesitter.configs").setup({
+                        ensure_installed      = "all",
+                        ignore_install        = { "comment" },
+                        auto_install          = true,
+                        highlight             = {
+                                enable  = true,
+                                ---@diagnostic disable-next-line: unused-local
+                                disable = function(lang, buf)
+                                        local max_filesize = 100 * 1024
+                                        local ok, stats    = pcall(vim.loop.fs_stat,
+                                                                   vim.api.nvim_buf_get_name(buf))
+                                        if ok and stats and stats.size > max_filesize then
+                                                return true
+                                        end
+                                end,
                         },
-                },
-                incremental_selection = {
-                        enable  = true,
-                        keymaps = {
-                                init_selection    = "<leader>v",
-                                node_incremental  = "<CR>",
-                                node_decremental  = "<Backspace>",
-                                scope_incremental = false,
+                        indent                = {
+                                enable  = true,
+                                disable = { "markdown" },
                         },
-                },
-        },
+                        textobjects           = {
+                                select = {
+                                        lookahead                      = true,
+                                        include_surrounding_whitespace = false,
+                                },
+                        },
+                        incremental_selection = {
+                                enable  = true,
+                                keymaps = {
+                                        init_selection    = "<leader><leader>v",
+                                        node_incremental  = "<CR>",
+                                        node_decremental  = "<Backspace>",
+                                        scope_incremental = false,
+                                },
+                        },
+                        refactor              = {
+                                highlight_definitions   = { enable = true },
+                                highlight_current_scope = { enable = true },
+                                smart_rename            = { enable = true, keymaps = { smart_rename = "grr" } },
+                                navigation              = {
+                                        enable  = true,
+                                        keymaps = {
+                                                goto_definition      = "gnd",
+                                                list_definitions     = "gnD",
+                                                list_definitions_toc = "gO",
+                                                goto_next_usage      = "<A-^>",
+                                                goto_previous_usage  = "<A-#>",
+                                        },
+                                },
+                        },
+                })
+        end
+        ,
         { -- NODE ACTIONS
                 "ckolkey/ts-node-action",
                 dependencies = { "nvim-treesitter" },

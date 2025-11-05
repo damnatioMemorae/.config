@@ -1,3 +1,7 @@
+local function cmd()
+        vim.cmd.normal("^zz")
+end
+
 return {
         "mrjones2014/smart-splits.nvim",
         event = "VeryLazy",
@@ -6,35 +10,35 @@ return {
                         "<C-h>",
                         function()
                                 require("smart-splits").move_cursor_left()
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                 },
                 { -- MOVE DOWN
                         "<C-j>",
                         function()
                                 require("smart-splits").move_cursor_down()
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                 },
                 { -- MOVE UP
                         "<C-k>",
                         function()
                                 require("smart-splits").move_cursor_up()
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                 },
                 { -- MOVE RIGHT
                         "<C-l>",
                         function()
                                 require("smart-splits").move_cursor_right()
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                 },
                 { -- MOVE PREVIOUS
                         "<C-S-o>",
                         function()
                                 require("smart-splits").move_cursor_previous()
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                 },
                 { -- RESIZE LEFT

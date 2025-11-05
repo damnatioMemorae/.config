@@ -1,5 +1,7 @@
 local textObj = require("core.utils").extraTextobjMaps
---------------------------------------------------------------------------------
+local function cmd()
+        vim.cmd.normal("^zz")
+end
 
 return { -- treesitter-based textobjs
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -25,7 +27,7 @@ return { -- treesitter-based textobjs
                                 local prevCursor = vim.api.nvim_win_get_cursor(0)
                                 vim.cmd.TSTextobjectSelect("@comment.outer")
                                 vim.cmd.normal{ "d", bang = true }
-                                vim.cmd.normal("zz")
+                                cmd()
                                 vim.api.nvim_win_set_cursor(0, prevCursor)
                         end,
                         desc = "󰆈 Sticky Delete Comment",
@@ -35,7 +37,7 @@ return { -- treesitter-based textobjs
                         function()
                                 vim.cmd.TSTextobjectSelect("@comment.outer")
                                 vim.cmd.normal{ "d", bang = true }
-                                vim.cmd.normal("zz")
+                                cmd()
                                 local comStr = vim.trim{ vim.bo.commentstring:format("") }
                                 local line   = vim.api.nvim_get_current_line():gsub("%s+$", "")
                                 vim.api.nvim_set_current_line(line .. " " .. comStr .. " ")
@@ -207,7 +209,7 @@ return { -- treesitter-based textobjs
                         "a<CR>",
                         function()
                                 vim.cmd.TSTextobjectSelect("@return.outer")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = "↩ outer return",
@@ -216,7 +218,7 @@ return { -- treesitter-based textobjs
                         "<CR>",
                         function()
                                 vim.cmd.TSTextobjectSelect("@return.inner")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = "o",
                         desc = "↩ inner return",
@@ -225,7 +227,7 @@ return { -- treesitter-based textobjs
                         "a/",
                         function()
                                 vim.cmd.TSTextobjectSelect("@regex.outer")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = " outer regex",
@@ -234,7 +236,7 @@ return { -- treesitter-based textobjs
                         "i/",
                         function()
                                 vim.cmd.TSTextobjectSelect("@regex.inner")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = "󰛤 inner regex",
@@ -243,7 +245,7 @@ return { -- treesitter-based textobjs
                         "a" .. textObj.func,
                         function()
                                 vim.cmd.TSTextobjectSelect("@function.outer")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = " outer function",
@@ -252,7 +254,7 @@ return { -- treesitter-based textobjs
                         "i" .. textObj.func,
                         function()
                                 vim.cmd.TSTextobjectSelect("@function.inner")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = " inner function",
@@ -261,7 +263,7 @@ return { -- treesitter-based textobjs
                         "a" .. textObj.condition,
                         function()
                                 vim.cmd.TSTextobjectSelect("@condition.outer")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = "󱕆 outer condition",
@@ -270,7 +272,7 @@ return { -- treesitter-based textobjs
                         "i" .. textObj.condition,
                         function()
                                 vim.cmd.TSTextobjectSelect("@condition.inner")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = "󱕆 inner condition",
@@ -279,7 +281,7 @@ return { -- treesitter-based textobjs
                         "a" .. textObj.call,
                         function()
                                 vim.cmd.TSTextobjectSelect("@call.outer")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = "󰡱 outer call",
@@ -288,7 +290,7 @@ return { -- treesitter-based textobjs
                         "i" .. textObj.call,
                         function()
                                 vim.cmd.TSTextobjectSelect("@call.inner")
-                                vim.cmd.normal("zz")
+                                cmd()
                         end,
                         mode = { "x", "o" },
                         desc = "󰡱 inner call",

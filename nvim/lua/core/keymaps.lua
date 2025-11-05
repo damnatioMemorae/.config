@@ -3,6 +3,10 @@
 ---@diagnostic disable: unused
 ---@diagnostic disable: unused-local
 
+local function cmd()
+        vim.cmd.normal("^zz")
+end
+
 local utils               = require("core.utils")
 local prefixLsp           = require("core.utils").prefix
 local map                 = require("core.utils").uniqueKeymap
@@ -96,9 +100,18 @@ map(n, "zl", "zozz", { desc = "Open current fold", silent = true })
 map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
 --]]
 
-map(nx, "<A-Down>", "zjzz^", { desc = "Goto next fold", silent = true })
-map(n, "<A-Left>", "zczz^", { desc = "Close current fold", silent = true })
-map(n, "<A-Right>", "zozz^", { desc = "Open current fold", silent = true })
+map(nx, "<A-Down>", function()
+            vim.cmd.norm("zj")
+            cmd()
+    end, { desc = "Goto next fold", silent = true })
+map(nx, "<A-Left>", function()
+            vim.cmd.norm("zc")
+            cmd()
+    end, { desc = "Close current fold", silent = true })
+map(nx, "<A-Right>", function()
+            vim.cmd.norm("zo")
+            cmd()
+    end, { desc = "Open current fold", silent = true })
 
 -- Move to the end of previous word
 map(nv, "W", "ge", { desc = "Jump to the end of previous word", silent = true })
@@ -223,11 +236,11 @@ map(n, "<leader>rq", function()
 map(n, "<A-d>", function()
             -- vim.diagnostic.goto_next({ float = false })
             vim.diagnostic.jump({ count = 1, float = false })
-            vim.cmd.normal("zz")
+            cmd()
     end, { desc = "■ Diagnostic Next" })
 map(n, "<A-D>", function()
             vim.diagnostic.jump({ count = -1, float = false })
-            vim.cmd.normal("zz")
+            cmd()
     end, { desc = "■ Diagnostic Prev" })
 
 map(n, prefixLsp .. "f", "gf", { desc = "Goto File", silent = true })
@@ -379,8 +392,8 @@ map(n, "<leader>od", function()
 map(n, "<leader>oc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0 end,
     { desc = "󰈉 Conceal", silent = true })
 
-    map(n, "<leader>oh", function ()
-        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
+map(n, "<leader>oh", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
     end, {})
 
 ------------------------------------------------------------------------------------------------------------------------

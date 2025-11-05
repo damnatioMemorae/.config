@@ -291,8 +291,7 @@ api.nvim_create_autocmd("LspAttach", {
 
                 ---@diagnostic disable-next-line: unknown-diag-code
                 ---@diagnostic disable-next-line: unnecessary-if
-                -- if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight") then
-                if fn.has("nvim-0.11") == 1 and client.server_capabilities.documentHighlightProvider then
+                if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight", 0) then
                         local highlight_augroup = augroup("lsp-highlight", { clear = false })
 
                         api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -310,7 +309,7 @@ api.nvim_create_autocmd("LspAttach", {
                         api.nvim_create_autocmd("LspDetach", {
                                 group    = augroup("lsp-detach", { clear = true }),
                                 ---@diagnostic disable-next-line: unknown-diag-code
-                                ---@diagnostic disable-next-line: unused
+                                ---@diagnostic disable-next-line: unused, unused-local
                                 callback = function(event2)
                                         lsp.buf.clear_references()
                                         -- api.nvim_clear_autocmd({ "lsp-highlight", buffer = event2.buf })
