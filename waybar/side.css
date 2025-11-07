@@ -1,0 +1,214 @@
+/* Global Styling */
+* {
+        font-family: "Monocraft";
+        font-weight: normal;
+        /*font-size: 13.9px;*/
+        font-size: 13px;
+        min-height: 12px;
+}
+
+@import "colors.css";
+
+.main {
+        background: @main-bg;
+}
+#custom-recording {
+        color: #f38ba8;
+}
+#custom-updates,
+#language,
+#submap {
+        color: #add8e6;
+        padding-right: 8px;
+        margin-top: -4px;
+        margin-bottom: -4px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* MODULES */
+
+#cpu,
+#memory,
+#battery,
+#network,
+#backlight,
+#pulseaudio,
+#temperature,
+#custom-gpuinfo {
+        color: @main-fg;
+        background: @normTr;
+        margin-top: 6px;
+        margin-bottom: 6px;
+}
+#cpu.icon,
+#memory.icon,
+#custom-wifi,
+#backlight.icon,
+#pulseaudio.icon,
+#temperature.icon,
+#custom-gpuinfo.icon {
+        color: @main-bg;
+        background: @norm;
+        margin-top: 6px;
+        margin-bottom: 6px;
+        padding-left: 7px;
+        padding-right: 9px;
+}
+#battery.icon {
+        color: @blank-fg;
+        background: @main-fg;
+        margin-top: 6px;
+        margin-bottom: 6px;
+        padding-left: 9px;
+        padding-right: 7px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* GROUPS AND SLIDERS */
+
+#group.backlight {
+        /* margin-top: 6px; */
+        /* margin-bottom: 6px; */
+}
+#pulseaudio-slider {
+        padding: 0;
+        margin: 0;
+}
+#backlight-slider slider {
+        min-height: 0px;
+        min-width: 0px;
+        opacity: 0;
+        background-image: none;
+        border: none;
+        box-shadow: none;
+}
+#backlight-slider trough {
+        min-height: 6px;
+        min-width: 80px;
+        border-radius: 5px;
+        background-color: black;
+}
+#backlight-slider highlight {
+        min-width: 10px;
+        border-radius: 0px;
+        background-color: red;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* BACKLIGHT AND AUDIO */
+
+#backlight.icon.min,
+#pulseaudio.icon.min {
+        color: @max;
+        background: @min;
+}
+#backlight.icon.midl,
+#pulseaudio.icon.midl {
+        color: @midh;
+        background: @midl;
+}
+#backlight.icon.mid,
+#pulseaudio.icon.mid {
+        color: @min;
+        background: @mid;
+}
+#backlight.icon.midh,
+#pulseaudio.icon.midh {
+        color: @min;
+        background: @midh;
+}
+#backlight.icon.max,
+#pulseaudio.icon.max {
+        color: @main-bg;
+        background: @max;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* LEVEL COLORS */
+
+#cpu.norm,
+#memory.norm,
+#temperature {
+        color: @norm;
+        background-color: @normTr;
+}
+#cpu.warning,
+#memory.warning,
+#battery.warning {
+        color: @warning;
+        background: @warningTr;
+}
+#cpu.critical,
+#memory.critical,
+#battery.critical,
+#temperature.critical {
+        color: @critical;
+        background: @criticalTr;
+}
+#cpu.icon.norm,
+#memory.icon.norm,
+#temperature.icon {
+        color: @main-bg;
+        background: @norm;
+}
+#cpu.icon.warning,
+#memory.icon.warning,
+#battery.icon.warning {
+        color: @warningTr;
+        background: @warning;
+}
+#cpu.icon.critical,
+#memory.icon.critical,
+#battery.icon.critical,
+#temperature.icon.critical {
+        color: @criticalTr;
+        background: @critical;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* BATTERY LEVEL COLORS */
+
+#battery.icon.full {
+        color: @fullTr;
+        background: @full;
+}
+#battery.icon.good {
+        color: @goodTr;
+        background: @good;
+}
+#battery.icon.charging {
+        color: @chargingTr;
+        background: @charging;
+}
+#battery.full {
+        color: @full;
+        background: @fullTr;
+}
+#battery.good {
+        color: @good;
+        background: @goodTr;
+}
+#battery.charging {
+        color: @charging;
+        background: @chargingTr;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* SOME ADJUSTMENTS */
+
+#custom-wifi {
+        padding-right: 10px;
+}
+#cpu.icon {
+        padding-right: 11px;
+}
+#memory.icon {
+        padding-left: 9px;
+        padding-right: 9px;
+}
+#temperature.icon {
+        padding-left: 9px;
+}
+#custom-gpuinfo.icon {
+        padding-left: 8px;
+}

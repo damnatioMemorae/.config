@@ -1,13 +1,14 @@
 return {
         "Wansmer/symbol-usage.nvim",
-        event  = "VeryLazy",
-        keys   = {
+        enabled = true,
+        event   = "VeryLazy",
+        keys    = {
                 { "<leader>os", function()
                         require("symbol-usage").toggle_globally()
                         require("symbol-usage").refresh()
                 end },
         },
-        config = function()
+        config  = function()
                 local bg = "Normal"
                 local function h(name) return vim.api.nvim_get_hl(0, { name = name }) end
                 vim.api.nvim_set_hl(0, "SymbolUsageDef",
@@ -30,7 +31,7 @@ return {
                                 if #res > 0 then table.insert(res, { " ", "NonText" }) end
                                 table.insert(res, { empt, "SymbolUsageDef" })
                                 table.insert(res,
-                                        { icons.LspDef .. " " .. tostring(symbol.definition), "SymbolUsageDef" })
+                                             { icons.LspDef .. " " .. tostring(symbol.definition), "SymbolUsageDef" })
                                 table.insert(res, { empt, "SymbolUsageDef" })
                         end
 

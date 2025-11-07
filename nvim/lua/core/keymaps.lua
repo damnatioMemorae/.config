@@ -69,7 +69,8 @@ map(n, "N", "Nzz", { desc = "Search previous", silent = true })
 map(ni, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Escape and Clear hlsearch", silent = true })
 
 -- Goto matching parenthesis (`remap` needed to use builtin `MatchIt` plugin)
-map(n, "gm", "%", { desc = "󰅪 Goto match", remap = true, silent = true })
+map(n, "gm", "%zz", { desc = "󰅪 Goto match", remap = true, silent = true })
+map(n, "%", "%zz", { desc = "󰅪 Goto match", remap = true, silent = true })
 
 -- Open first URL in file
 map(n, "<A-x>", function()
@@ -101,9 +102,9 @@ map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
 --]]
 
 map(nx, "<A-Down>", function()
-            vim.cmd.norm("zj")
-            cmd()
-    end, { desc = "Goto next fold", silent = true })
+        vim.cmd.norm("zj")
+        cmd()
+end, { desc = "Goto next fold", silent = true })
 map(nx, "<A-Left>", function()
             vim.cmd.norm("zc")
             cmd()
@@ -234,13 +235,12 @@ map(n, "<leader>rq", function()
 -- LSP
 
 map(n, "<A-d>", function()
-            -- vim.diagnostic.goto_next({ float = false })
             vim.diagnostic.jump({ count = 1, float = false })
-            cmd()
+            vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Next" })
 map(n, "<A-D>", function()
             vim.diagnostic.jump({ count = -1, float = false })
-            cmd()
+            vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Prev" })
 
 map(n, prefixLsp .. "f", "gf", { desc = "Goto File", silent = true })

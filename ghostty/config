@@ -32,8 +32,8 @@ cursor-invert-fg-bg        = true
 adjust-cursor-height       = 6
 
 window-decoration          = false
-window-padding-x           = 9
-window-padding-y           = 9
+window-padding-x           = 5
+window-padding-y           = 5
 window-padding-balance     = true
 
 theme                      = theme
