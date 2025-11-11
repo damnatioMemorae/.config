@@ -9,7 +9,7 @@ configuration {
 /* Main Window */
 window {
     location:                    north;
-    y-offset:                    3;
+    y-offset:                    0;
     x-offset:                    90;
     width:                       12em;
     height:                      30em;

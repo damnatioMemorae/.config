@@ -78,28 +78,6 @@ tooltip {
         margin-top: 6px;
         margin-bottom: 6px;
 }
-#cpu.icon,
-#memory.icon,
-#custom-wifi,
-#backlight.icon,
-#pulseaudio.icon,
-#temperature.icon,
-#custom-gpuinfo.icon {
-        color: @main-bg;
-        background: @norm;
-        margin-top: 6px;
-        margin-bottom: 6px;
-        padding-left: 7px;
-        padding-right: 9px;
-}
-#battery.icon {
-        color: @blank-fg;
-        background: @main-fg;
-        margin-top: 6px;
-        margin-bottom: 6px;
-        padding-left: 9px;
-        padding-right: 7px;
-}
 
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
 /* GROUPS AND SLIDERS */
