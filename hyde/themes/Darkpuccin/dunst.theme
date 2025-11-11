@@ -5,7 +5,7 @@ $HOME/.config/dunst/dunstrc && killall dunst
         width                         = (0, 300)
         height                        = 300
         origin                        = top
-        offset                        = 40x40
+        offset                        = 20x20
         scale                         = 0
         notification_limit            = 20
         progress_bar                  = true

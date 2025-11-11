@@ -23,6 +23,17 @@
         margin-top: -4px;
         margin-bottom: -4px;
 }
+menuitem {
+        background: @tooltip-bg
+}
+menu,
+tooltip {
+        color: @main-fg;
+        background: @tooltip-bg;
+        /* background: @media; */
+        border-radius: 0;
+        border: 0;
+}
 
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
 /* MODULES */

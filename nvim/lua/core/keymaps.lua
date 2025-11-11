@@ -102,9 +102,9 @@ map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
 --]]
 
 map(nx, "<A-Down>", function()
-        vim.cmd.norm("zj")
-        cmd()
-end, { desc = "Goto next fold", silent = true })
+            vim.cmd.norm("zj")
+            cmd()
+    end, { desc = "Goto next fold", silent = true })
 map(nx, "<A-Left>", function()
             vim.cmd.norm("zc")
             cmd()
@@ -214,21 +214,36 @@ map(x, "<S-Space>", '"_d', { desc = "󰬞 delete selection", silent = true })
 ------------------------------------------------------------------------------------------------------------------------
 -- COMMENTS
 
-map(nx, "q", "gc", { desc = "󰆈 Comment operator", remap = true, silent = true })
-map(n, "qq", "gcc", { desc = "󰆈 Comment line", remap = true, silent = true })
+map(nx, "q", "gc^zz", { desc = "󰆈 Comment operator", remap = true, silent = true })
+map(n, "qq", "gcc^zz", { desc = "󰆈 Comment line", remap = true, silent = true })
 do
         map(o, "u", "gc", { desc = "󰆈 Multiline comment", remap = true })
         map(n, "guu", "guu") -- prevent `omap u` above from overwriting `guu`
 end
 
-map(n, "qw", function() comments.commentHr() end, { desc = "󰆈 Horizontal Divider", silent = true })
-map(n, "qy", function() comments.duplicateLineAsComment() end,
-    { desc = "󰆈 Duplicate Line as Comment", silent = true })
-map(n, "Q", function() comments.addComment("eol") end, { desc = "󰆈 Append Comment", silent = true })
-map(n, "qo", function() comments.addComment("below") end, { desc = "󰆈 Comment Below", silent = true })
-map(n, "qO", function() comments.addComment("above") end, { desc = "󰆈 Comment Above", silent = true })
+map(n, "qw", function()
+            comments.commentHr()
+            cmd()
+    end, { desc = "󰆈 Horizontal Divider", silent = true })
+map(n, "qy", function()
+            comments.duplicateLineAsComment()
+            cmd()
+    end, { desc = "󰆈 Duplicate Line as Comment", silent = true })
+map(n, "Q", function()
+            comments.addComment("eol")
+            cmd()
+    end, { desc = "󰆈 Append Comment", silent = true })
+map(n, "qo", function()
+            comments.addComment("below")
+            cmd()
+    end, { desc = "󰆈 Comment Below", silent = true })
+map(n, "qO", function()
+            comments.addComment("above")
+            cmd()
+    end, { desc = "󰆈 Comment Above", silent = true })
 map(n, "<leader>rq", function()
-            vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~")))
+            vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~"),
+                    cmd()))
     end, { desc = "󰆈  Delete Comments", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -271,7 +286,7 @@ map(v, prefixLsp .. "F", function()
 
 map(n, prefixLsp .. "q", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
 -- map(n, prefixLsp .. " ", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
-map(n, "<leader><leader>c", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
+map(n, ",a", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
 
 --[[ HOVER
 do

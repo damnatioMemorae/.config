@@ -1,10 +1,10 @@
-$HOME/.config/waybar/top.jsonc|killall waybar && $HOME/.local/share/bin/waybarswitch ht
+$HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/waybarswitch ht
 {
         "mod": "dock",
         "name": "main",
         "layer": "top",
-        "position": "top",
-        "margin": "10 40 -30 40",
+        "position": "bottom",
+        "margin": "-10 20 10 20",
         "height": 36,
         "fixed-center": true,
         "exclusive": true,
@@ -100,7 +100,7 @@ $HOME/.config/waybar/top.jsonc|killall waybar && $HOME/.local/share/bin/waybarsw
                 ]
         },
         "custom/updates": {
-                "exec": "systemupdate",
+                "exec": "systemupdate t",
                 "return-type": "json",
                 "format": "{}",
                 "rotate": 0,
@@ -248,7 +248,8 @@ $HOME/.config/waybar/top.jsonc|killall waybar && $HOME/.local/share/bin/waybarsw
                 "tooltip": false
         },
         "custom/recording": {
-                "exec": "recording",
+                "exec": "recording w",
+                "return-type": "json",
                 "format": "{}",
                 "max-length": 8,
                 "tooltip": false,
@@ -317,21 +318,33 @@ $HOME/.config/waybar/top.jsonc|killall waybar && $HOME/.local/share/bin/waybarsw
         },
         "custom/gpuinfo#icon": {
                 "format": "󰢮",
-                "on-click": "gpu",
                 "tooltip": false,
                 "interval": 5,
                 "min-length": 1,
-                "max-length": 10
+                "max-length": 10,
+                "menu": "on-click",
+                "menu-file": "~/.config/waybar/menu/gpu.xml",
+                "menu-actions": {
+                        "Default": "gpu d",
+                        "Overclock": "gpu o",
+                        "Low": "gpu l"
+                }
         },
         "custom/gpuinfo": {
                 "exec": "gpuinfo",
                 "return-type": "json",
                 "format": " {} ",
-                "on-click": "gpu",
                 "tooltip": true,
                 "interval": 5,
                 "min-length": 4,
-                "max-length": 8
+                "max-length": 8,
+                "menu": "on-click",
+                "menu-file": "~/.config/waybar/menu/gpu.xml",
+                "menu-actions": {
+                        "Default": "gpu d",
+                        "Overclock": "gpu o",
+                        "Low": "gpu l"
+                }
         },
         "memory#icon": {
                 "states": {

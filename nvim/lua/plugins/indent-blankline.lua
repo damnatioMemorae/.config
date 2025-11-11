@@ -1,6 +1,5 @@
 return {
         "lukas-reineke/indent-blankline.nvim",
-        lazy   = false,
         event  = "VeryLazy",
         main   = "ibl",
         keys   = { { "<leader>oi", "<cmd>IBLToggle<CR>", desc = "󰖶 Indent guides", mode = { "n" } } },

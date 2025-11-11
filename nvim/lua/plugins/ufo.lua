@@ -10,7 +10,7 @@ return {
         dependencies = "kevinhwang91/promise-async",
         event        = "LspAttach",
         keys         = {
-                { "<leader>if", vim.cmd.UfoInspect, cmd(), desc = " Fold info" },
+                { "<leader>if", function() require("ufo").inspect() end, cmd(), desc = " Fold info" },
 
                 { -- 0
                         "<A-0>",
@@ -88,7 +88,25 @@ return {
                 { -- CLOSE ALL
                         "<A-C-left>",
                         function()
-                                require("ufo").openFoldsExceptKinds{ "region" }
+                                local msg = require("ufo.main").inspectBuf()[6]
+                                vim.notify(msg[2], vim.log.levels.DEBUG)
+                                require("ufo").openFoldsExceptKinds{
+
+                                        "region",
+                                        "table_constructor",
+                                        "function_definition",
+                                        "arguments",
+                                        "function_declaration",
+                                        "if_statement",
+                                        "case_statement",
+                                        "comment",
+                                        "class_specifier",
+                                        "function_definition",
+                                        "array",
+                                        "object",
+                                        "pair",
+                                        "rule_set",
+                                }
                                 cmd()
                         end,
                         mode = modes,

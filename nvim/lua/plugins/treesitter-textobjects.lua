@@ -204,7 +204,7 @@ return { -- treesitter-based textobjs
                 },
                 --]]
 
-                ---[[ TEXT OBJECTS
+                ---[[ TEXT OBJECT SELECT
                 { -- RETURN INNER
                         "a<CR>",
                         function()

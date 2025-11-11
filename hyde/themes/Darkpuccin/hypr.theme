@@ -20,8 +20,8 @@ general {
         border_size                           = 0
         col.active_border                     = rgb(a6adc8)
         col.inactive_border                   = rgb(a6adc8)
-        gaps_in                               = 8
-        gaps_out                              = 40
+        gaps_in                               = 10
+        gaps_out                              = 20
         snap {
                 enabled = false
         }

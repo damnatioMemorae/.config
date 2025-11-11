@@ -12,11 +12,18 @@
 @define-color module-fg             #f5e0dc;
 @define-color module-bg             #1e1e2e;
 
+@define-color tooltip-bg            #14141f;
 @define-color media                 #1e1e2e;
 @define-color blank-fg              #0e0e0e;
 @define-color blank-bg              #313244;
 @define-color block-bg              #0e0e16;
 @define-color empty-fg              #1e1e2e;
+@define-color active-fg             #cba6f7;
+@define-color current-fg            #add8e6;
+@define-color xp                    #8fff0d;
+@define-color pink                  #8fff0d;
+@define-color ivory                 #dce0e8;
+@define-color doom                  #fa0000;
 
 @define-color full                  #a6e3a1;
 @define-color good                  #a6e3a1;

@@ -276,7 +276,18 @@ return {
                         ["<C-c>"]     = { function(cmp) if cmp.is_menu_visible() then cmp.hide() else cmp.show() end end },
                         ["<C-l>"]     = { "snippet_forward", "fallback" },
                         ["<C-h>"]     = { "snippet_backward", "fallback" },
-                        ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
+                        -- ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
+                        ["<Tab>"]     = { function(cmp)
+                                if vim.b[vim.api.nvim_get_current_buf()].nes_state then
+                                        cmp.hide()
+                                        return (require("copilot-lsp.nes").apply_pending_nes()
+                                                and require("copilot-lsp.nes").walk_cursor_end_edit())
+                                end
+                                return cmp.select_next()
+                        end,
+                                "snippet_forward",
+                                "fallback",
+                        },
                         ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
                         ["<C-Space>"] = {
                                 function(cmp)
