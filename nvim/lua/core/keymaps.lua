@@ -214,7 +214,7 @@ map(x, "<S-Space>", '"_d', { desc = "󰬞 delete selection", silent = true })
 ------------------------------------------------------------------------------------------------------------------------
 -- COMMENTS
 
-map(nx, "q", "gc^zz", { desc = "󰆈 Comment operator", remap = true, silent = true })
+map(nx, "q", "^zzgc", { desc = "󰆈 Comment operator", remap = true, silent = true })
 map(n, "qq", "gcc^zz", { desc = "󰆈 Comment line", remap = true, silent = true })
 do
         map(o, "u", "gc", { desc = "󰆈 Multiline comment", remap = true })

@@ -49,8 +49,8 @@ tooltip {
         color: @active-fg;
 }
 #workspaces button.empty {
-        /* color: @hover-bg; */
-        color: @main-bg;
+        color: @hover-bg;
+        /* color: @main-bg; */
 }
 #workspaces button.active {
         color: @current-fg;

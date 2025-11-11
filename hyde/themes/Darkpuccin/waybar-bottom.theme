@@ -13,88 +13,39 @@ $HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/wayba
         "reload_style_on_change": true,
         "modules-left": [
                 "custom/separators",
-                "backlight#icon",
-                // "group/backlight",
-                "backlight",
-                "custom/separators",
-                "pulseaudio#icon",
-                // "group/pulseaudio",
-                "pulseaudio",
-                // "pulseaudio/slider",
+                "hyprland/workspaces",
                 ""
         ],
         "modules-center": [
-                "hyprland/submap",
-                "hyprland/language",
-                "custom/updates",
-                "custom/recording",
+                "custom/separators",
+                "backlight",
+                "custom/separators",
+                "pulseaudio",
                 ""
         ],
-        "modules-right": [
-                // "custom/separators",
-                // "custom/wifi",
-                // "network",
-                // "custom/separators",
-                // "cpu#icon",
-                // "cpu",
-                // "custom/separators",
-                // "memory#icon",
-                // "memory",
-                // "custom/separators",
-                // "temperature#icon",
-                // "temperature",
-                // "custom/separators",
-                // "custom/gpuinfo#icon",
-                // "custom/gpuinfo",
-                // "custom/separators",
-                "group/hardware",
-                // "battery#icon",
-                // "battery",
-                // "custom/separators",
-                ""
-        ],
-        "group/backlight": {
+        "modules-right": ["group/hardware", ""],
+        "group/updates": {
                 "orientation": "horizontal",
-                "drawer": {
-                        "transition-duration": 500,
-                        "children-class": "not-power",
-                        "transition-left-to-right": true
-                },
-                "modules": ["backlight", "backlight/slider"]
-        },
-        "group/pulseaudio": {
-                "orientation": "horizontal",
-                "drawer": {
-                        "transition-duration": 500,
-                        "children-class": "not-power",
-                        "transition-left-to-right": true
-                },
-                "modules": ["pulseaudio", "pulseaudio/slider"]
+                "modules": [
+                        "hyprland/language",
+                        "hyprland/submap",
+                        "custom/updates",
+                        "custom/recording"
+                ]
         },
         "group/hardware": {
                 "orientation": "horizontal",
-                // "drawer": {
-                //         "transition-duration": 500,
-                //         "children-class": "not-power",
-                //         "transition-left-to-right": false
-                // },
                 "modules": [
-                        "custom/wifi",
                         "network",
                         "custom/separators",
-                        "cpu#icon",
                         "cpu",
                         "custom/separators",
-                        "memory#icon",
                         "memory",
                         "custom/separators",
-                        "temperature#icon",
                         "temperature",
                         "custom/separators",
-                        "custom/gpuinfo#icon",
                         "custom/gpuinfo",
                         "custom/separators",
-                        "battery#icon",
                         "battery",
                         "custom/separators"
                 ]
@@ -118,16 +69,33 @@ $HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/wayba
                 "on-scroll-up": "hyprctl dispatch workspace +1",
                 "format": "{icon}",
                 "format-icons": {
-                        "1": "󰨓",
-                        "2": "󰨓",
-                        "3": "󰨓",
-                        "4": "󰨓",
-                        "5": "󰨓",
-                        "6": "󰨓",
-                        "7": "󰨓",
-                        "8": "󰨓",
-                        "9": "󰨓",
-                        "active": "󰮯"
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "5": "",
+                        "6": "",
+                        "7": "",
+                        "8": "",
+                        "9": "",
+                        "10": "",
+                        "11": "",
+                        "12": "",
+                        "13": "",
+                        "14": "",
+                        "15": "",
+                        "16": "",
+                        "17": "",
+                        "18": "",
+                        "19": "",
+                        "20": "",
+                        "21": "",
+                        "22": "",
+                        "23": "",
+                        "24": "",
+                        "25": "",
+                        "26": "",
+                        "default": "󰨓"
                 },
                 "persistent-workspaces": {
                         "1": [],
@@ -138,7 +106,24 @@ $HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/wayba
                         "6": [],
                         "7": [],
                         "8": [],
-                        "9": []
+                        "9": [],
+                        "10": [],
+                        "11": [],
+                        "12": [],
+                        "13": [],
+                        "14": [],
+                        "15": [],
+                        "16": [],
+                        "17": [],
+                        "18": [],
+                        "19": [],
+                        "20": [],
+                        "21": [],
+                        "22": [],
+                        "23": [],
+                        "24": [],
+                        "25": [],
+                        "26": []
                 }
         },
         "hyprland/language": {

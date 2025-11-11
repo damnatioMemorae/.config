@@ -12,68 +12,27 @@
         "reload_style_on_change": true,
         "modules-left": [
                 "custom/separators",
+                "group/updates",
+                // "custom/separators",
                 "hyprland/workspaces",
-                // "backlight#icon",
-                // "group/backlight",
-                "backlight",
-                "custom/separators",
-                // "pulseaudio#icon",
-                // "group/pulseaudio",
-                "pulseaudio",
-                // "pulseaudio/slider",
                 ""
         ],
         "modules-center": [
-                // "hyprland/submap",
-                // "hyprland/language",
-                // "custom/updates",
-                // "custom/recording",
+                "custom/separators",
+                "backlight",
+                "custom/separators",
+                "pulseaudio",
                 ""
         ],
-        "modules-right": [
-                // "custom/separators",
-                // "custom/wifi",
-                // "network",
-                // "custom/separators",
-                // "cpu#icon",
-                // "cpu",
-                // "custom/separators",
-                // "memory#icon",
-                // "memory",
-                // "custom/separators",
-                // "temperature#icon",
-                // "temperature",
-                // "custom/separators",
-                // "custom/gpuinfo#icon",
-                // "custom/gpuinfo",
-                // "custom/separators",
-                "custom/updates",
-                "hyprland/language",
-                "hyprland/submap",
-                "custom/recording",
-                "group/hardware",
-                // "battery#icon",
-                // "battery",
-                // "custom/separators",
-                ""
-        ],
-        "group/backlight": {
+        "modules-right": ["group/hardware", ""],
+        "group/updates": {
                 "orientation": "horizontal",
-                "drawer": {
-                        "transition-duration": 500,
-                        "children-class": "not-power",
-                        "transition-left-to-right": true
-                },
-                "modules": ["backlight", "backlight/slider"]
-        },
-        "group/pulseaudio": {
-                "orientation": "horizontal",
-                "drawer": {
-                        "transition-duration": 500,
-                        "children-class": "not-power",
-                        "transition-left-to-right": true
-                },
-                "modules": ["pulseaudio", "pulseaudio/slider"]
+                "modules": [
+                        "hyprland/language",
+                        "hyprland/submap",
+                        "custom/updates",
+                        "custom/recording"
+                ]
         },
         "group/hardware": {
                 "orientation": "horizontal",
@@ -131,6 +90,23 @@
                         "7": "",
                         "8": "",
                         "9": "",
+                        "10": "",
+                        "11": "",
+                        "12": "",
+                        "13": "",
+                        "14": "",
+                        "15": "",
+                        "16": "",
+                        "17": "",
+                        "18": "",
+                        "19": "",
+                        "20": "",
+                        "21": "",
+                        "22": "",
+                        "23": "",
+                        "24": "",
+                        "25": "",
+                        "26": "",
                         "default": "󰨓"
                 },
                 "persistent-workspaces": {
@@ -142,7 +118,24 @@
                         "6": [],
                         "7": [],
                         "8": [],
-                        "9": []
+                        "9": [],
+                        "10": [],
+                        "11": [],
+                        "12": [],
+                        "13": [],
+                        "14": [],
+                        "15": [],
+                        "16": [],
+                        "17": [],
+                        "18": [],
+                        "19": [],
+                        "20": [],
+                        "21": [],
+                        "22": [],
+                        "23": [],
+                        "24": [],
+                        "25": [],
+                        "26": []
                 }
         },
         "hyprland/language": {
