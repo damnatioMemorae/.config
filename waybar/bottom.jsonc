@@ -164,39 +164,15 @@
                         "on-click-right": "mode"
                 }
         },
-        "backlight#icon": {
-                "states": {
-                        "min": 0,
-                        "midl": 25,
-                        "mid": 50,
-                        "midh": 75,
-                        "max": 100
-                },
-                "device": "intel_backlight",
-                "format": "{icon}",
-                "on-click": "$HOME/.local/share/bin/hyprsunset",
-                "on-click-right": "shaders",
-                "tooltip-format": "{icon} {percent}",
-                "format-icons": ["", "", "", "", "", "", "", "", ""],
-                "on-scroll-up": "brightnessctl set 1%+",
-                "on-scroll-down": "brightnessctl set 1%-",
-                "min-length": 1
-        },
         "backlight": {
                 "device": "intel_backlight",
                 "format": " {percent} ",
-                // "on-click": "$HOME/.local/share/bin/hyprsunset",
-                "on-click": "shaders night",
+                "on-click": "darkshader",
                 "on-click-right": "shaders",
                 "tooltip-format": "{icon} {percent}%",
                 "on-scroll-up": "brightnessctl set 1%+",
                 "on-scroll-down": "brightnessctl set 1%-",
                 "min-length": 1
-        },
-        "backlight-slider": {
-                "min": 0,
-                "max": 100,
-                "orientation": "horizontal"
         },
         "pulseaudio#icon": {
                 "states": {

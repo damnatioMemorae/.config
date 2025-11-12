@@ -246,7 +246,7 @@ local customCol = function(C)
                 cRepeat                                      = { link = "@conditional" },
                 cConditional                                 = { link = "@conditional" },
                 cInclude                                     = { fg = C.mauve },
-                cTypedef                                     = { link = "LspInlayHint" },
+                cTypedef                                     = { link = "cType" },
                 cppModifier                                  = { link = "@keyword" },
 
                 -- ["@lsp.type.bracket.cpp"]                    = { link = "Comment" },

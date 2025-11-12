@@ -66,8 +66,8 @@ return {
 
                 require("symbol-usage").setup({
                         text_format    = text_format,
-                        vt_position    = "textwidth",
-                        -- vt_position    = "end_of_line",
+                        -- vt_position    = "textwidth",
+                        vt_position    = "end_of_line",
                         -- vt_position    = "above",
                         vt_priority    = 1000,
                         references     = { enabled = true, include_declaration = false },

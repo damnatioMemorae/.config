@@ -89,7 +89,7 @@ return {
                         "<A-C-left>",
                         function()
                                 local msg = require("ufo.main").inspectBuf()[6]
-                                vim.notify(msg[2], vim.log.levels.DEBUG)
+                                vim.notify(msg, vim.log.levels.DEBUG)
                                 require("ufo").openFoldsExceptKinds{
 
                                         "region",
