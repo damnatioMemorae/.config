@@ -235,7 +235,7 @@ map(n, "Q", function()
     end, { desc = "󰆈 Append Comment", silent = true })
 map(n, "qo", function()
             comments.addComment("below")
-            cmd()
+            vim.cmd.normal("zz")
     end, { desc = "󰆈 Comment Below", silent = true })
 map(n, "qO", function()
             comments.addComment("above")
@@ -243,7 +243,7 @@ map(n, "qO", function()
     end, { desc = "󰆈 Comment Above", silent = true })
 map(n, "<leader>rq", function()
             vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~"),
-                    cmd()))
+                                      cmd()))
     end, { desc = "󰆈  Delete Comments", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------

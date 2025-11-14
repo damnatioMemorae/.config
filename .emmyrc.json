@@ -80,7 +80,7 @@
                 "special": {}
         },
         "semanticTokens": {
-                "enable": false
+                "enable": true
         },
         "signature": {
                 "detailSignatureHelper": true

@@ -2,6 +2,34 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP SERVERS
 
+local lspServers = {
+        "asm_lsp",
+        "basedpyright",
+        "bashls",
+        "biome",
+        "clangd",
+        -- "cssls",
+        "css_variables",
+        "kotlin_lsp",
+        "emmet",
+        -- "emmylua_ls",
+        "hsl",
+        "glsl_analyzer",
+        "gopls",
+        "jsonls",
+        "lua_ls",
+        "nixd",
+        "pylsp",
+        -- "pylyzer",
+        -- "pyright",
+        "qmlls",
+        "ruff",
+        "rust_analyzer",
+        "superhtml",
+        "ts_ls",
+        "yamlls",
+}
+
 local get_default_capabilities = function()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
 
@@ -21,67 +49,42 @@ vim.lsp.config("*", {
         flags        = { debounce_text_changes = 500 },
 })
 
-vim.lsp.enable({
-        -- "asm",
-        "basedpyright",
-        "bashls",
-        "biome",
-        "clangd",
-        -- "cssls",
-        "css_variables",
-        "kotlin_lsp",
-        "emmet",
-        "emmylua_ls",
-        "hsl",
-        "glsl_analyzer",
-        "gopls",
-        "jsonls",
-        -- "lua_ls",
-        "nixd",
-        "pylsp",
-        -- "pylyzer",
-        -- "pyright",
-        "qmlls",
-        "ruff",
-        "rust_analyzer",
-        "superhtml",
-        "ts_ls",
-        "yamlls",
-})
+vim.lsp.enable(lspServers)
 
 --[[ golang
 vim.api.nvim_create_autocmd("FileType", {
-        pattern  = "go",
-        callback = function()
-                local root = vim.fs.dirname(vim.fs.find({ "go.work", "go.mod", ".git" }, { upward = true })[1])
-                if not root then return end
+		pattern  = "go",
+		callback = function()
+				local root = vim.fs.dirname(vim.fs.find({ "go.work", "go.mod", ".git" }, { upward = true })[1])
+				if not root then return end
 
-                local settings_path  = root .. "/gopls.json" or "/gopls.jsonc"
+				local settings_path  = root .. "/gopls.json" or "/gopls.jsonc"
 
-                local gopls_settings = {}
-                ---@diagnostic disable-next-line: undefined-field
-                local stat           = vim.uv.fs_stat(settings_path)
-                if stat and stat.type == "file" then
-                        local ok, parsed = pcall(function()
-                                return vim.fn.json_decode(vim.fn.readfile(settings_path))
-                        end)
-                        ---@diagnostic disable-next-line: assign-type-mismatch
-                        if ok then gopls_settings = parsed end
-                end
+				local gopls_settings = {}
+				---@diagnostic disable-next-line: undefined-field
+				local stat			 = vim.uv.fs_stat(settings_path)
+				if stat and stat.type == "file" then
+						local ok, parsed = pcall(function()
+								return vim.fn.json_decode(vim.fn.readfile(settings_path))
+						end)
+						---@diagnostic disable-next-line: assign-type-mismatch
+						if ok then gopls_settings = parsed end
+				end
 
-                vim.lsp.start({
-                        name     = "gopls",
-                        cmd      = { "gopls" },
-                        root_dir = root,
-                        settings = { gopls = gopls_settings },
-                })
-        end,
+				vim.lsp.start({
+						name	 = "gopls",
+						cmd		 = { "gopls" },
+						root_dir = root,
+						settings = { gopls = gopls_settings },
+				})
+		end,
 })
 --]]
 
 ---[[ Hyprlang LSP
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
         pattern  = { "*.hl", "hypr*.conf", "**/hypr/**" },
+        ---@diagnostic disable-next-line: unused
         callback = function(event)
                 -- print(string.format("starting hyprls for %s", vim.inspect(event)))
                 vim.lsp.start{
@@ -101,16 +104,16 @@ local icons   = require("core.icons").diagnostics
 local numbers = {
         text = {
                 [vim.diagnostic.severity.ERROR] = "",
-                [vim.diagnostic.severity.WARN]  = "",
-                [vim.diagnostic.severity.INFO]  = "",
-                [vim.diagnostic.severity.HINT]  = "",
+                [vim.diagnostic.severity.WARN] = "",
+                [vim.diagnostic.severity.INFO] = "",
+                [vim.diagnostic.severity.HINT] = "",
         },
 
         numhl = {
                 [vim.diagnostic.severity.ERROR] = "ErrorMsg",
-                [vim.diagnostic.severity.WARN]  = "WarningMsg",
-                [vim.diagnostic.severity.INFO]  = "DiagnosticInfo",
-                [vim.diagnostic.severity.HINT]  = "DiagnosticHint",
+                [vim.diagnostic.severity.WARN] = "WarningMsg",
+                [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+                [vim.diagnostic.severity.HINT] = "DiagnosticHint",
         },
 }
 
@@ -146,11 +149,7 @@ vim.lsp.handlers["textDocument/rename"] = function(err, result, ctx, config)
         local pluralS = changeCount > 1 and "s" or ""
         local msg = ("[%d] instance%s"):format(changeCount, pluralS)
         if #changedFiles > 1 then
-                msg = ("**%s in [%d] files**\n%s"):format(
-                        msg,
-                        #changedFiles,
-                        table.concat(changedFiles, "\n")
-                )
+                msg = ("**%s in [%d] files**\n%s"):format(msg, #changedFiles, table.concat(changedFiles, "\n"))
         end
         vim.notify(msg, nil, { title = "Renamed with LSP", icon = "󰑕" })
 

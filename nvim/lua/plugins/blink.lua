@@ -2,7 +2,6 @@ return {
         "saghen/blink.cmp",
         lazy         = false,
         dependencies = {
-                { "samiulsami/cmp-go-deep" },
                 { "saghen/blink.compat" },
                 { "niuiic/blink-cmp-rg.nvim" },
                 { "joelazar/blink-calc" },
@@ -90,6 +89,7 @@ return {
                         },
                         use_proximity     = true,
                         sorts             = {
+                                ---@diagnostic disable-next-line: unused
                                 function(a, b)
                                         if a.label:sub(1, 1) == "_" ~= a.label:sub(1, 1) == "_" then
                                                 return not a.label:sub(1, 1) == "_"
@@ -163,7 +163,6 @@ return {
                                 css                = { inherit_defaults = true, "ripgrep" },
                                 json               = { inherit_defaults = true, "ripgrep" },
                                 jsons              = { inherit_defaults = true, "ripgrep" },
-                                go                 = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
                                 calc     = {
@@ -175,22 +174,16 @@ return {
                                         score_offset       = 140,
                                         min_keyword_length = 2,
                                 },
-                                go_deep  = {
-                                        name         = "GO",
-                                        module       = "blink.compat.source",
-                                        score_offset = 180,
-                                        opts         = {},
-                                },
                                 lsp      = {
                                         enabled      = function()
                                                 if vim.bo.ft ~= "lua" then return true end
                                                 local col                 = vim.api.nvim_win_get_cursor(0)[2]
-                                                ---@diagnostic disable-next-line: unknown-diag-code
+                                                ---@diagnostic disable-next-line: unknown-diag-code, param-type-mismatch
                                                 ---@diagnostic disable-next-line: param-type-not-match, need-check-nil
                                                 local charsBefore         = vim.api.nvim_get_current_line():sub(col - 2,
                                                                                                                 col)
-                                                local luadocButNotComment = not charsBefore:find("^%-%-?$")
-                                                           and not charsBefore:find("%s%-%-?")
+                                                local luadocButNotComment = not charsBefore:find("^%-%-?$") and
+                                                           not charsBefore:find("%s%-%-?")
                                                 return luadocButNotComment
                                         end,
                                         name         = "LSP",
@@ -213,7 +206,6 @@ return {
                                                 trailing_slash               = true,
                                                 label_trailing_slash         = true,
                                                 get_cwd                      = function(_)
-                                                        -- return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
                                                         return vim.fn.getcwd()
                                                 end,
                                                 show_hidden_files_by_default = true,
@@ -223,22 +215,13 @@ return {
                                         name         = "Buf",
                                         score_offset = 60,
                                         max_items    = 8,
-                                        opts         = {
-                                                get_bufnrs = vim.api.nvim_list_bufs,
-                                                -- get_bufnrs = function()
-                                                --         return vim.tbl_filter(function(bufnr)
-                                                --                 return vim.bo[bufnr].buftype == ''
-                                                --         end, vim.api.nvim_list_bufs())
-                                                -- end
-                                        },
+                                        opts         = { get_bufnrs = vim.api.nvim_list_bufs },
                                 },
                                 omni     = {
                                         name         = "Omni",
                                         module       = "blink.cmp.sources.complete_func",
                                         score_offset = 60,
-                                        opts         = {
-                                                disable_omnifunc = { "v:lua.vim.lsp.omnifunc" },
-                                        },
+                                        opts         = { disable_omnifunc = { "v:lua.vim.lsp.omnifunc" } },
                                 },
                                 ripgrep  = {
                                         module       = "blink-cmp-rg",
@@ -247,6 +230,7 @@ return {
                                         max_items    = 4,
                                         opts         = {
                                                 prefix_min_len = 3,
+                                                ---@diagnostic disable-next-line: unused
                                                 get_command    = function(context, prefix)
                                                         return {
                                                                 "rg",
@@ -276,18 +260,7 @@ return {
                         ["<C-c>"]     = { function(cmp) if cmp.is_menu_visible() then cmp.hide() else cmp.show() end end },
                         ["<C-l>"]     = { "snippet_forward", "fallback" },
                         ["<C-h>"]     = { "snippet_backward", "fallback" },
-                        -- ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
-                        ["<Tab>"]     = { function(cmp)
-                                if vim.b[vim.api.nvim_get_current_buf()].nes_state then
-                                        cmp.hide()
-                                        return (require("copilot-lsp.nes").apply_pending_nes()
-                                                and require("copilot-lsp.nes").walk_cursor_end_edit())
-                                end
-                                return cmp.select_next()
-                        end,
-                                "snippet_forward",
-                                "fallback",
-                        },
+                        ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
                         ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
                         ["<C-Space>"] = {
                                 function(cmp)

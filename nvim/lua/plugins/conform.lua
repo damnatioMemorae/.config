@@ -22,7 +22,7 @@ return {
 
                 local options = {
                         clang_format = { args = { "--style=file" } },
-                        shfmt        = { args = { "-ln=bash", "-i=8", "-ci", "-fn" } },
+                        shfmt        = { args = { "-ln=bash", "-i=8", "-ci" } },
                 }
 
                 conform.setup({
@@ -33,7 +33,7 @@ return {
                 vim.keymap.set({ "n", "v" }, "<leader>f", function()
                         conform.format({
                                 lsp_fallback = true,
-                                async        = false,
+                                async        = true,
                                 timeout_ms   = 2000,
                         })
                 end)

@@ -45,44 +45,31 @@ return {
         end,
         --]]
         settings     = {
-                completion    = {
-                        callSnippet = "Both",
-                        postfix     = "@",
-                        showWord    = "Enable",
-                },
-                hint          = {
-                        enable         = true,
-                        awaitPropagate = true,
-                        setType        = true,
-                },
-                hover         = { enable = false },
-                signatureHelp = { enable = true },
-                semantic      = {
-                        enable     = true,
-                        annotation = true,
-                        keyword    = true,
-                        variable   = true,
-                },
-                telemetry     = { enable = false },
-                Lua           = {
-                        diagnostics = {
-                                disable = { "trailing-space", "unused-function", "lowercase-global" },
-                                -- workspaceEvent = "OnSave",
+                Lua = {
+                        completion    = {
+                                displayContext = 999,
+                                callSnippet    = "Both",
+                                keywordSnippet = "Both",
+                                showWord       = "Fallback",
+                                workspaceWord  = true,
+                                postfix        = "@",
                         },
-                        hint        = { enable = true, setType = true, arrayIndex = "Auto", semicolon = "Disable" },
-                        format      = { enable = true },
-                        semantic    = {
-                                enable   = false,
-                                -- keyword   = true,
-                                variable = false,
+                        diagnostics   = {
+                                -- workspaceEvent = "OnChange",
+                                workspaceEvent = "OnSave",
+                                workspaceDelay = 5000,
+                                workspaceRate  = 100,
+                                libraryFiles   = "Enable",
+                                disable        = { "trailing-space", "unused-function", "lowercase-global" },
                         },
-                        completion  = {
-                                callSnippet    = "Replace", -- functions -> no replace snippet
-                                keywordSnippet = "Replace", -- keywords -> replace
-                                showWord       = "Enable",  -- already done by completion plugin
-                                workspaceWord  = true,      -- already done by completion plugin
-                                postfix        = "@",       -- useful for `table.insert` and the like
-                        },
+                        hover         = { enable = true, enumsLimit = 999, previewFields = 0 },
+                        hint          = { enable = true, setType = true, arrayIndex = "Disable", semicolon = "Sameline" },
+                        semantic      = { enable = false, annotation = true, keyword = true, variable = true },
+                        typeFormat    = { config = { auto_complete_end = true, auto_complete_table_sep = true, format_line = true } },
+                        codeLens      = { enable = true },
+                        signatureHelp = { enable = true },
+                        format        = { enable = true },
+                        telemetry     = { enable = false },
                 },
         },
 }

@@ -5,7 +5,6 @@ return {
                 ".emmyrc.json",
                 ".git",
                 ".luacheckrc",
-                ".luarc.jsonc",
                 ".selene.yml",
                 "selene.yml",
                 ".stylua.toml",

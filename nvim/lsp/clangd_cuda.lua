@@ -53,27 +53,8 @@ local function symbol_info()
 end
 
 return {
-        cmd          = {
-                "clangd",
-                "--all-scopes-completion=true",
-                "--background-index",
-                "--background-index-priority=normal",
-                "--clang-tidy",
-                "--completion-style=detailed",
-                "--fallback-style=llvm",
-                "--function-arg-placeholders=0",
-                "--header-insertion-decorators",
-                "--header-insertion=iwyu",
-                "--import-insertions",
-                "--log=verbose",
-                "--malloc-trim",
-                "--debug-origin",
-                "--completion-parse=always",
-                -- "--completion-parse=never",
-                "--use-dirty-headers",
-                "--ranking-model=decision_forest",
-        },
-        filetypes    = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+        cmd          = { "clangd", "--background-index", "--background-index-priority=normal", "--query-driver=/opt/cuda/bin/nvcc" },
+        filetypes    = { "cuda" },
         root_markers = {
                 "build.ninja",
                 ".clangd",
@@ -97,12 +78,24 @@ return {
                                 ParameterNames = true,
                                 DeducedTypes   = true,
                         },
-                        Completion         = { AllScopes = true, ArgumentLists = "Delimiters" },
+                        Completion         = {
+                                AllScopes     = true,
+                                ArgumentLists = "Delimiters",
+                        },
                         CompileFlags       = { Add = "-Iinclude" },
                         usePlaceholders    = true,
                         completeUnimported = true,
                         clangdFileStatus   = true,
-                        fallbackFlags      = { "-std=c++20" },
+                        fallbackFlags      = {
+                                "-xcuda",
+                                "--cuda-path=/opt/cuda",
+                                "-I/opt/cuda/include",
+                                "-I/opt/cuda/include/cccl",
+                                "--no-cuda-version-check",
+                                "-std=c++17",
+                                "-D__CUDACC__",
+                                "-D_LIBCUDACXX_STD_VER=17",
+                        },
                 },
         },
         capabilities = {
@@ -123,8 +116,5 @@ return {
                 vim.api.nvim_buf_create_user_command(bufnr, "LspClangdShowSymbolInfo", function()
                                                              symbol_info()
                                                      end, { desc = "Show symbol info" })
-                vim.api.nvim_buf_create_user_command(bufnr, "LspClangdShowMemoryUsage", function()
-                                                             memory_usage()
-                                                     end, { desc = "Show memory usage" })
         end,
 }

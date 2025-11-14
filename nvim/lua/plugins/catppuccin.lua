@@ -76,7 +76,7 @@ local customCol = function(C)
                 -- FoldColumn                    = {},
                 FoldColumn                                   = { link = "NonText" },
                 -- Folded                                       = { link = "Visual" },
-                Folded                                       = { fg = C.overlay0, bg = C.crust },
+                Folded                                       = { fg = C.overlay0, bg = C.none },
                 Function                                     = { fg = ivory },
                 String                                       = { fg = C.green, bg = C.crust },
                 GitSignsAdd                                  = { fg = C.yellow, bg = C.crust },
