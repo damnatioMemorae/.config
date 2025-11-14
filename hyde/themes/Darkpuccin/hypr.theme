@@ -20,7 +20,7 @@ general {
         border_size                           = 0
         col.active_border                     = rgb(a6adc8)
         col.inactive_border                   = rgb(a6adc8)
-        gaps_in                               = 10
+        gaps_in                               = 5
         gaps_out                              = 20
         snap {
                 enabled = false
@@ -109,9 +109,9 @@ plugin {
                         col.urgent.text       = rgb(f38ba8)
                         col.urgent.border     = rgb(281d29)
 
-                        col.locked            = rgba(0e0e16)
-                        col.locked.border     = rgba(0e0e16)
-                        col.locked.text       = rgba(cdd6f4)
+                        col.locked            = rgba(0e0e16ff)
+                        col.locked.border     = rgba(0e0e16ff)
+                        col.locked.text       = rgba(cdd6f4ff)
                 }
                 autotile {
                         enable                = false
