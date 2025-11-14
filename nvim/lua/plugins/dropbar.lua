@@ -192,9 +192,7 @@ return {
                 icons   = {
                         enable = true,
                         ui     = { bar = { separator = " > ", extends = "…" }, menu = { separator = " ", indicator = "󰨓 " } },
-                        kinds  = {
-                                symbols = require("core.icons").symbol_kinds,
-                        },
+                        kinds  = { symbols = require("core.icons").symbol_kinds },
                 },
         },
 }

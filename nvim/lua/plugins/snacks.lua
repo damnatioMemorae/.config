@@ -576,6 +576,19 @@ return {
                                         padding = 1,
                                         align   = "center",
                                 },
+                                { -- YAZI
+                                        text    = {
+                                                { "󰦪  ", hl = button },
+                                                { "Yazi", hl = label, width = 45 },
+                                                { "[", hl = button },
+                                                { "y", hl = label },
+                                                { "]", hl = button },
+                                        },
+                                        action  = "<cmd>Yazi<CR>",
+                                        key     = "y",
+                                        padding = 1,
+                                        align   = "center",
+                                },
                                 { -- RESTORE SESSION
                                         text    = {
                                                 { "󰦛  ", hl = button },

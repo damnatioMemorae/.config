@@ -19,6 +19,7 @@ adjust-cell-width          = 6%
 adjust-cell-height         = 18%
 adjust-underline-position  = 2
 adjust-underline-thickness = 10%
+adjust-icon-height         = 100%
 
 shell-integration          = none
 shell-integration-features = no-cursor
