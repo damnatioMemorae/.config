@@ -1,4 +1,4 @@
-$HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/waybarswitch ht
+$HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/waybarswitch b
 {
         "mod": "dock",
         "name": "main",
@@ -13,6 +13,8 @@ $HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/wayba
         "reload_style_on_change": true,
         "modules-left": [
                 "custom/separators",
+                "group/updates",
+                // "custom/separators",
                 "hyprland/workspaces",
                 ""
         ],
@@ -35,17 +37,28 @@ $HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/wayba
         },
         "group/hardware": {
                 "orientation": "horizontal",
+                // "drawer": {
+                //         "transition-duration": 500,
+                //         "children-class": "not-power",
+                //         "transition-left-to-right": false
+                // },
                 "modules": [
+                        // "custom/wifi",
                         "network",
                         "custom/separators",
+                        // "cpu#icon",
                         "cpu",
                         "custom/separators",
+                        // "memory#icon",
                         "memory",
                         "custom/separators",
+                        // "temperature#icon",
                         "temperature",
                         "custom/separators",
+                        // "custom/gpuinfo#icon",
                         "custom/gpuinfo",
                         "custom/separators",
+                        // "battery#icon",
                         "battery",
                         "custom/separators"
                 ]
@@ -65,8 +78,8 @@ $HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/wayba
                 "active-only": false,
                 "on-click": "activate",
                 "disable-scroll": false,
-                "on-scroll-down": "hyprctl dispatch workspace -1",
-                "on-scroll-up": "hyprctl dispatch workspace +1",
+                "on-scroll-down": "hyprctl dispatch workspace +1",
+                "on-scroll-up": "hyprctl dispatch workspace -1",
                 "format": "{icon}",
                 "format-icons": {
                         "1": "",
@@ -152,39 +165,15 @@ $HOME/.config/waybar/bottom.jsonc|killall waybar && $HOME/.local/share/bin/wayba
                         "on-click-right": "mode"
                 }
         },
-        "backlight#icon": {
-                "states": {
-                        "min": 0,
-                        "midl": 25,
-                        "mid": 50,
-                        "midh": 75,
-                        "max": 100
-                },
-                "device": "intel_backlight",
-                "format": "{icon}",
-                "on-click": "$HOME/.local/share/bin/hyprsunset",
-                "on-click-right": "shaders",
-                "tooltip-format": "{icon} {percent}",
-                "format-icons": ["", "", "", "", "", "", "", "", ""],
-                "on-scroll-up": "brightnessctl set 1%+",
-                "on-scroll-down": "brightnessctl set 1%-",
-                "min-length": 1
-        },
         "backlight": {
                 "device": "intel_backlight",
                 "format": " {percent} ",
-                // "on-click": "$HOME/.local/share/bin/hyprsunset",
-                "on-click": "shaders night",
+                "on-click": "darkshader",
                 "on-click-right": "shaders",
                 "tooltip-format": "{icon} {percent}%",
                 "on-scroll-up": "brightnessctl set 1%+",
                 "on-scroll-down": "brightnessctl set 1%-",
                 "min-length": 1
-        },
-        "backlight-slider": {
-                "min": 0,
-                "max": 100,
-                "orientation": "horizontal"
         },
         "pulseaudio#icon": {
                 "states": {

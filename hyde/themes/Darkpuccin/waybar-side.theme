@@ -1,4 +1,4 @@
-$HOME/.config/waybar/side.jsonc|killall waybar && $HOME/.local/share/bin/waybarswitch ht
+$HOME/.config/waybar/side.jsonc|killall waybar && $HOME/.local/share/bin/waybarswitch s
 {
         "mod": "dock",
         "name": "main",
