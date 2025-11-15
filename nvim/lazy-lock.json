@@ -59,6 +59,7 @@
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6fea601bd2b694c6f2ae08a6c6fab14930c60e2c" },
   "tiny-code-action.nvim": { "branch": "main", "commit": "b6c9ee6444196c1ca616bf4ff381124b140db21f" },
   "tiny-inline-diagnostic.nvim": { "branch": "main", "commit": "08e65d82d48416ab140b3dea26eea4fb9739bc47" },
+  "tree-sitter-ghostty": { "branch": "main", "commit": "2a9ae7233b6707e84b3a79c8778427f58aa4b6d0" },
   "ts-node-action": { "branch": "master", "commit": "6dad0b229b3d63cc7e36bf54a96683074af7c701" },
   "ultimate-autopair.nvim": { "branch": "v0.6", "commit": "72e160cb1ce8c0db2ac4315f77d97420a2f4223d" },
   "undotree": { "branch": "master", "commit": "0f1c9816975b5d7f87d5003a19c53c6fd2ff6f7f" },
