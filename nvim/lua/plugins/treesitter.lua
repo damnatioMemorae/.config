@@ -20,16 +20,8 @@ return {
                                         end
                                 end,
                         },
-                        indent                = {
-                                enable  = true,
-                                disable = { "markdown" },
-                        },
-                        textobjects           = {
-                                select = {
-                                        lookahead                      = true,
-                                        include_surrounding_whitespace = false,
-                                },
-                        },
+                        indent                = { enable = true, disable = { "markdown" } },
+                        textobjects           = { select = { lookahead = true, include_surrounding_whitespace = false } },
                         incremental_selection = {
                                 enable  = true,
                                 keymaps = {

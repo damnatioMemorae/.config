@@ -181,10 +181,10 @@
         q mrgt
         g mmtp
 
-        w (mwheel-up    50 220)
-        e (mwheel-down  50 220)
-        u (mwheel-down  50 120)
-        i (mwheel-up    50 120)
+        w (mwheel-up    100 220)
+        e (mwheel-down  100 220)
+        u (mwheel-down  100 120)
+        i (mwheel-up    100 120)
 
         h (movemouse-left  8 1)
         j (movemouse-down  8 1)
