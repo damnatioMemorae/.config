@@ -58,7 +58,7 @@ keymap = [
         { on = [";"],            run = "shell --interactive", desc = "Run a shell command" },
         { on = [":"],            run = "shell --interactive",       desc = "Run a shell command (block the UI until the command finishes)" },
         { on = ["."],            run = "hidden toggle",       desc = "Toggle the visibility of hidden files" },
-        { on = ["s"],            run = "search fd",           desc = "Search files by name using fd" },
+        { on = ["/"],            run = "search fd",           desc = "Search files by name using fd" },
         { on = ["S"],            run = "search rg",           desc = "Search files by content using ripgrep" },
         { on = ["<C-s>"],        run = "search none",         desc = "Cancel the ongoing search" },
         { on = ["z"],            run = "plugin zoxide",       desc = "Jump to a directory using zoxide" },
@@ -86,7 +86,7 @@ keymap = [
         #───────────────────────────────────────────────────────────────────────
         # Find
 
-        { on = ["/"],            run = "find --smart" },
+        { on = ["s"],            run = "find --smart" },
         { on = ["?"],            run = "find --previous --smart" },
         { on = ["n"],            run = "find_arrow" },
         { on = ["N"],            run = "find_arrow --previous" },
