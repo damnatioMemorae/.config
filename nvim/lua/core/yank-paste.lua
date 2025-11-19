@@ -2,7 +2,6 @@ local map = require("core.utils").uniqueKeymap
 --------------------------------------------------------------------------------
 
 -- OPTIONS
-vim.opt.clipboard = "unnamedplus"
 
 vim.api.nvim_create_autocmd("TextYankPost", {
         desc     = "User: Highlighted Yank",

@@ -86,7 +86,7 @@ keymap = [
         #───────────────────────────────────────────────────────────────────────
         # Find
 
-        { on = ["s"],            run = "find --smart" },
+        # { on = ["s"],            run = "find --smart" },
         { on = ["?"],            run = "find --previous --smart" },
         { on = ["n"],            run = "find_arrow" },
         { on = ["N"],            run = "find_arrow --previous" },
@@ -168,7 +168,7 @@ prepend_keymap = [
         { on = ["7"],            run = "plugin toggle-pane max-parent" },
         { on = ["8"],            run = "plugin toggle-pane max-current" },
         { on = ["9"],            run = "plugin toggle-pane max-preview" },
-        { on = ["/"],            run = "plugin smart-filter" },
+        { on = ["s"],            run = "plugin smart-filter" },
         { on = ["<C-m>"],        run = "plugin chmod" },
         { on = ["c", "i"],       run = "plugin sxiv" },
         { on = ["C"],            run = [ '''shell --confirm 'zip -r "'$@'.zip" "$1"' ''' ] },
