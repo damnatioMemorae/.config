@@ -41,15 +41,13 @@ body {
         --custom-dms-icon: off; /* off: use default discord icon, hide: remove icon entirely, custom: use custom icon */
         --dms-icon-svg-url: url(""); /* icon svg url. MUST BE A SVG. */
         --dms-icon-svg-size: 90%; /* size of the svg (css mask-size property) */
-        --dms-icon-color-before: var(--red-0); /* normal icon color */
-        --dms-icon-color-after: var(
-                --red-4
-        ); /* icon color when button is hovered/selected */
-        --custom-dms-background: var(--red-0);
+        --dms-icon-color-before: var(--red-2);
+        --dms-icon-color-after: var(--crust);
+        --custom-dms-background: #000000;
         --dms-background-image-size: cover;
-        --dms-background-color: var(--red-0) /* background image options */
-                --background-image: off; /* off: no background image, on: enable background image (must set url variable below) */
-        --background-image-url: url(""); /* url of the background image */
+        --dms-background-color: var(--red-0)
+        --background-image: off;
+        --background-image-url: url("");
 
         /* transparency/blur options */
         /* NOTE: TO USE TRANSPARENCY/BLUR, YOU MUST HAVE TRANSPARENT BG COLORS. FOR EXAMPLE: --bg-4: hsla(220, 15%, 10%, 0.7); */
