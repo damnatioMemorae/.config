@@ -47,7 +47,7 @@ local customCol = function(C)
                 DiagnosticHint                               = { bg = C.crust },
                 ---[[ Diagnostic colors
                 DiagnosticUnderlineError                     = { bg = "#251b25" },
-                DiagnosticUnderlineWarn                      = { bg = "#28262a" },
+                DiagnosticUnderlineWarn                      = { bg = "#262325" },
                 DiagnosticUnderlineInfo                      = { bg = "#1a232b" },
                 DiagnosticUnderlineHint                      = { bg = "#1b2329" },
                 --]]
@@ -76,7 +76,7 @@ local customCol = function(C)
                 -- FoldColumn                    = {},
                 FoldColumn                                   = { link = "NonText" },
                 -- Folded                                       = { link = "Visual" },
-                Folded                                       = { fg = C.overlay0, bg = C.none },
+                Folded                                       = { fg = C.overlay0, bg = C.mantle },
                 Function                                     = { fg = ivory },
                 String                                       = { fg = C.green, bg = C.crust },
                 GitSignsAdd                                  = { fg = C.yellow, bg = C.crust },

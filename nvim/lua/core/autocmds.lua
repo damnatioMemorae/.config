@@ -405,9 +405,18 @@ api.nvim_create_autocmd({ "BufWritePre" }, {
 -- SPLITS
 
 api.nvim_create_autocmd("FileType", {
-        desc    = "Automatically split help buffers to the right",
-        pattern = "help",
-        command = "wincmd L",
+        pattern  = "help",
+        desc     = "Automatically split help buffers to the right",
+        callback = function()
+                if vim.o.filetype ~= "help" then return end
+                local function has_diffview_in_current_tab()
+                        return vim.tbl_contains(
+                                vim.tbl_map(function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype end,
+                                        vim.api.nvim_tabpage_list_wins(0)), "DiffviewFiles")
+                end
+                if has_diffview_in_current_tab() then return end
+                vim.cmd.wincmd("L")
+        end,
 })
 
 api.nvim_create_autocmd("VimResized", {
