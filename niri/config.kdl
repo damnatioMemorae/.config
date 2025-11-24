@@ -58,7 +58,7 @@ layout {
     }
     shadow {
         softness 30
-        spread 5
+        spread 0
         offset x=0 y=5
         color "#0007"
     }
@@ -109,7 +109,7 @@ binds {
     Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn-sh "pkill -x fuzzel || fuzzel"; }
     Mod+U hotkey-overlay-title="Toggle: waybar" { spawn-sh "~/.local/share/bin/waybarswitch b"; }
     Mod+Y { spawn-sh "pkill -x rofi || ~/.local/share/bin/cliphist c"; }
-    // Ctrl+Ctrl { switch-layout; }
+    Mod+semicolon { switch-layout "next"; }
 
     F2 allow-when-locked=true { spawn-sh "~/.local/share/bin/volumecontrol -o d"; }
     F3 allow-when-locked=true { spawn-sh "~/.local/share/bin/volumecontrol -o i"; }
