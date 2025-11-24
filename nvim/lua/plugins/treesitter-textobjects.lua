@@ -1,11 +1,36 @@
 local textObj = require("core.utils").extraTextobjMaps
+local modes   = { "n", "v", "x", "o" }
+
 local function cmd()
         vim.cmd.normal("^zz")
 end
 
+local function jump(direction, obj)
+        if direction == 0 then
+                direction = "Previous"
+        elseif direction == 1 then
+                direction = "Next"
+        end
+        vim.cmd("TSTextobjectGoto" .. direction .. "Start" .. " @" .. obj)
+        cmd()
+end
+
+local function swap(direction, obj)
+        if direction == 0 then
+                direction = "Previous"
+        elseif direction == 1 then
+                direction = "Next"
+        end
+        vim.cmd("TSTextobjectSwap" .. direction .. " @" .. obj)
+        cmd()
+end
+
 return { -- treesitter-based textobjs
         "nvim-treesitter/nvim-treesitter-textobjects",
+        -- enabled      = true,
+        branch       = "master",
         dependencies = "nvim-treesitter/nvim-treesitter",
+        event        = "VeryLazy",
         cmd          = { -- commands need to be defined, since used in various utility functions
                 "TSTextobjectSelect",
                 "TSTextobjectSwapNext",
@@ -50,157 +75,123 @@ return { -- treesitter-based textobjs
                 ---[[ MOVE & SWAP
                 { -- COMMENT PREV
                         "<A-Q>",
-                        "<cmd>TSTextobjectGotoPreviousStart @comment.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        " Goto prev comment",
+                        function() jump(0, "comment.outer") end,
+                        mode = modes,
+                        desc = " Goto prev comment",
                 },
                 { -- COMMENT NEXT
-                        "<a-q>",
-                        "<cmd>TSTextobjectGotoNextStart @comment.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        " Goto next comment",
+                        "<A-q>",
+                        function() jump(1, "comment.outer") end,
+                        mode = modes,
+                        desc = " Goto next comment",
                 },
                 { -- FUNCTION PREV
                         "<A-F>",
-                        "<cmd>TSTextobjectGotoPreviousStart @function.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        " Goto prev function",
+                        function() jump(0, "function.outer") end,
+                        mode = modes,
+                        desc = " Goto prev function",
                 },
                 { -- FUNCTION NEXT
                         "<A-f>",
-                        "<cmd>TSTextobjectGotoNextStart @function.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        " Goto next function",
+                        function() jump(1, "function.outer") end,
+                        mode = modes,
+                        desc = " Goto next function",
                 },
                 { -- CONDITION PREV
                         "<A-O>",
-                        "<cmd>TSTextobjectGotoPreviousStart @conditional.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󱕆 Goto prev condition",
+                        function() jump(0, "conitional.outer") end,
+                        mode = modes,
+                        desc = "󱕆 Goto prev condition",
                 },
                 { -- CONDITION NEXT
                         "<A-o>",
-                        "<cmd>TSTextobjectGotoNextStart @conditional.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󱕆 Goto next condition",
+                        function() jump(1, "conitional.outer") end,
+                        mode = modes,
+                        desc = "󱕆 Goto next condition",
                 },
                 { -- CALL PREV
                         "<A-C>",
-                        "<cmd>TSTextobjectGotoPreviousStart @call.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰡱 Goto prev call",
+                        function() jump(0, "call.outer") end,
+                        mode = modes,
+                        desc = "󰡱 Goto prev call",
                 },
                 { -- CALL NEXT
                         "<A-c>",
-                        "<cmd>TSTextobjectGotoNextStart @call.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰡱 Goto next call",
+                        function() jump(1, "call.outer") end,
+                        mode = modes,
+                        desc = "󰡱 Goto next call",
                 },
                 { -- LOOP PREV
                         "<A-U>",
-                        "<cmd>TSTextobjectGotoPreviousStart @loop.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto prev loop",
+                        function() jump(0, "loop.outer") end,
+                        mode = modes,
+                        desc = "󰛤 Goto prev loop",
                 },
                 { -- LOOP NEXT
                         "<A-u>",
-                        "<cmd>TSTextobjectGotoNextStart @loop.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto next loop",
+                        function() jump(1, "loop.outer") end,
+                        mode = modes,
+                        desc = "󰛤 Goto next loop",
                 },
                 { -- ASSIGNMENT PREV
                         "<A-S>",
-                        "<cmd>TSTextobjectGotoPreviousStart @assignment.lhs<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto prev assignment",
+                        function() jump(0, "assignment.lhs") end,
+                        mode = modes,
+                        desc = "󰛤 Goto prev assignment",
                 },
                 { -- ASSIGNMENT NEXT
                         "<A-s>",
-                        "<cmd>TSTextobjectGotoNextStart @assignment.lhs<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto next assignment",
+                        function() jump(1, "assignment.lhs") end,
+                        mode = modes,
+                        desc = "󰛤 Goto next assignment",
                 },
                 { -- VALUE PREV
                         "<A-V>",
-                        "<cmd>TSTextobjectGotoPreviousStart @assignment.rhs<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto prev value",
+                        function() jump(0, "assignment.rhs") end,
+                        mode = modes,
+                        desc = "󰛤 Goto prev value",
                 },
                 { -- VALUE NEXT
                         "<A-v>",
-                        "<cmd>TSTextobjectGotoNextStart @assignment.rhs<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto next value",
+                        function() jump(1, "assignment.rhs") end,
+                        mode = modes,
+                        desc = "󰛤 Goto next value",
                 },
                 { -- TYPE PREV
                         "<A-T>",
-                        "<cmd>TSTextobjectGotoPreviousStart @assignment.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto prev type",
+                        function() jump(0, "assignment.outer") end,
+                        mode = modes,
+                        desc = "󰛤 Goto prev type",
                 },
                 { -- TYPE NEXT
                         "<A-t>",
-                        "<cmd>TSTextobjectGotoNextStart @assignment.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰛤 Goto next type",
+                        function() jump(1, "assignment.outer") end,
+                        mode = modes,
+                        desc = "󰛤 Goto next type",
                 },
                 { -- PARAMETER PREV
                         "<A-A>",
-                        "<cmd>TSTextobjectGotoPreviousStart @parameter.inner<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰏪 Goto prev parameter",
+                        function() jump(0, "parameter.inner") end,
+                        mode = modes,
+                        desc = "󰏪 Goto prev parameter",
                 },
                 { -- PARAMETER NEXT
                         "<A-a>",
-                        "<cmd>TSTextobjectGotoNextStart @parameter.inner<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰏪 Goto next parameter",
+                        function() jump(1, "parameter.inner") end,
+                        mode = modes,
+                        desc = "󰏪 Goto next parameter",
                 },
                 { -- PARAMETER PREV SWAP
                         "<A-{>",
-                        "<cmd>TSTextobjectSwapPrevious @parameter.inner<CR>zz",
+                        function() swap(0, "parameter.inner") end,
                         mode = { "n", "x", "o" },
-                        desc =
-                        "󰏪 Swap prev parameter",
+                        desc = "󰏪 Swap prev parameter",
                 },
                 { -- PARAMETER NEXT SWAP
                         "<A-}>",
-                        "<cmd>TSTextobjectSwapNext @parameter.inner<CR>zz",
+                        function() swap(1, "parameter.inner") end,
                         mode = { "n", "x", "o" },
-                        desc =
-                        "󰏪 Swap next parameter",
-                },
-                { -- PARAMETER PREV SWAP
-                        "<A-G>",
-                        "<cmd>TSTextobjectGotoPreviousStart @block.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰏪 Swap prev block",
-                },
-                { -- PARAMETER NEXT SWAP
-                        "<A-g>",
-                        "<cmd>TSTextobjectGotoNextStart @block.outer<CR>zz",
-                        mode = { "n", "x", "o" },
-                        desc =
-                        "󰏪 Swap next block",
+                        desc = "󰏪 Swap next parameter",
                 },
                 --]]
 

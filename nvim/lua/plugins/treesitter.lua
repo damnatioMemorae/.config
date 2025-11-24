@@ -1,24 +1,25 @@
 return {
-        {
+        { -- TREESITTER
                 "nvim-treesitter/nvim-treesitter",
-                event = "BufReadPre",
-                build = ":TSUpdate",
-                opts  = {
+                branch = "master",
+                event  = "BufReadPre",
+                build  = ":TSUpdate",
+                opts   = {
+                        auto_install          = true,
                         ensure_installed      = "all",
                         ignore_install        = { "comment", "ipkg" },
-                        auto_install          = true,
                         highlight             = {
                                 additional_vim_regex_highlighting = false,
                                 enable                            = true,
                                 ---@diagnostic disable-next-line: unused-local
-                                disable                           = function(lang, buf)
-                                        local max_filesize = 100 * 1024
-                                        local ok, stats    = pcall(vim.loop.fs_stat,
-                                                                   vim.api.nvim_buf_get_name(buf))
-                                        if ok and stats and stats.size > max_filesize then
-                                                return true
-                                        end
-                                end,
+                                -- disable                           = function(lang, buf)
+                                --         local max_filesize = 100 * 1024
+                                --         local ok, stats    = pcall(vim.loop.fs_stat,
+                                --                                    vim.api.nvim_buf_get_name(buf))
+                                --         if ok and stats and stats.size > max_filesize then
+                                --                 return true
+                                --         end
+                                -- end,
                         },
                         indent                = { enable = true, disable = { "markdown" } },
                         textobjects           = { select = { lookahead = true, include_surrounding_whitespace = false } },
@@ -35,13 +36,15 @@ return {
                 { -- NODE ACTIONS
                         "ckolkey/ts-node-action",
                         dependencies = { "nvim-treesitter" },
+                        event        = "VeryLazy",
                         -- config = function()
                         --     require("ts-node-action").setup({})
                         -- end
                 },
-                { -- HYPRLANG
+                { -- HYPR
                         "theRealCarneiro/hyprland-vim-syntax",
                         dependencies = { "nvim-treesitter/nvim-treesitter" },
+                        event        = "VeryLazy",
                         ft           = "hypr",
                 },
                 { -- CONTEXT
@@ -49,7 +52,7 @@ return {
                         dependencies = { "nvim-treesitter/nvim-treesitter" },
                         event        = "VeryLazy",
                         config       = function()
-                                require"treesitter-context".setup{
+                                require("treesitter-context").setup{
                                         enable              = true,
                                         multiwindow         = false,
                                         max_lines           = 2,
@@ -70,6 +73,26 @@ return {
                                                        require("treesitter-context").go_to_context(vim.v.count1)
                                                end, { silent = true })
                         end,
+                },
+                {
+                        "aaronik/treewalker.nvim",
+                        enabled = false,
+                        event   = "VeryLazy",
+                        keys    = {
+                                { "<A-H>", "<cmd>Treewalker Left<CR>",      mode = { "n", "v", "x", "o" } },
+                                { "<A-J>", "<cmd>Treewalker Down<CR>",      mode = { "n", "v", "x", "o" } },
+                                { "<A-K>", "<cmd>Treewalker Up<CR>",        mode = { "n", "v", "x", "o" } },
+                                { "<A-L>", "<cmd>Treewalker Right<CR>",     mode = { "n", "v", "x", "o" } },
+
+                                { "<A-A>", "<cmd>Treewalker SwapLeft<CR>",  mode = { "n", "v", "x", "o" } },
+                                { "<A-S>", "<cmd>Treewalker SwapUp<CR>",    mode = { "n", "v", "x", "o" } },
+                                { "<A-D>", "<cmd>Treewalker SwapDown<CR>",  mode = { "n", "v", "x", "o" } },
+                                { "<A-F>", "<cmd>Treewalker SwapRight<CR>", mode = { "n", "v", "x", "o" } },
+                        },
+                        opts    = {
+                                highlight_duration = 400,
+                                highlight_group    = "Visual",
+                        },
                 },
         },
 }

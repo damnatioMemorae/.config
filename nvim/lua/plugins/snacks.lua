@@ -196,7 +196,7 @@ return {
                 },
         },
         opts     = {
-                words        = { enabled = false },
+                words        = { enabled = true },
                 quickfile    = { enabled = true },
                 lazygit      = { enabled = true },
                 input        = { enabled = true },
@@ -245,38 +245,6 @@ return {
                                 height   = 0.6,
                                 border   = vim.g.borderStyle,
                                 title    = " 󰆽 Git blame ",
-                        },
-                },
-                scope        = {
-                        treesitter = {
-                                blocks = {
-                                        enabled     = true,
-                                        textobjects = {
-                                                ii = {
-                                                        min_size   = 1,
-                                                        cursor     = true,
-                                                        edge       = true,
-                                                        treesitter = { blocks = { enable = true } },
-                                                },
-                                                ai = {
-                                                        min_size   = 1,
-                                                        cursor     = true,
-                                                        treesitter = { blocks = { enable = true } },
-                                                },
-                                        },
-                                },
-                        },
-                },
-                indent       = {
-                        animate = { enabled = false },
-                        char    = { vertical = require("core.icons").misc.vertical_bar },
-                        indent  = { enabled = false },
-                        scope   = {
-                                enabled      = false,
-                                char         = require("core.icons").misc.vertical_bar,
-                                underline    = true,
-                                only_current = true,
-                                hl           = "SnacksIndentScope",
                         },
                 },
                 notifier     = {

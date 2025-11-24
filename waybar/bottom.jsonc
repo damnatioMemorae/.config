@@ -3,7 +3,7 @@
         "name": "main",
         "layer": "top",
         "position": "bottom",
-        "margin": "-10 20 10 20",
+        "margin": "-5 300 5 300",
         "height": 36,
         "fixed-center": true,
         "exclusive": true,
@@ -14,7 +14,7 @@
                 "custom/separators",
                 "group/updates",
                 // "custom/separators",
-                "hyprland/workspaces",
+                "niri/workspaces",
                 ""
         ],
         "modules-center": [
@@ -28,8 +28,7 @@
         "group/updates": {
                 "orientation": "horizontal",
                 "modules": [
-                        "hyprland/language",
-                        "hyprland/submap",
+                        "niri/language",
                         "custom/updates",
                         "custom/recording"
                 ]
@@ -71,7 +70,7 @@
                 "tooltip": true,
                 "signal": 20
         },
-        "hyprland/workspaces": {
+        "niri/workspaces": {
                 "rotate": 0,
                 "all-outputs": true,
                 "active-only": false,
@@ -138,7 +137,7 @@
                         "26": []
                 }
         },
-        "hyprland/language": {
+        "niri/language": {
                 "format": "{}",
                 "format-en": "🮋",
                 "format-ru": "🬋",

@@ -56,9 +56,9 @@ return {
                         },
                         diagnostics   = {
                                 -- workspaceEvent = "OnChange",
-                                workspaceEvent = "OnSave",
-                                workspaceDelay = 5000,
-                                workspaceRate  = 100,
+                                -- workspaceEvent = "OnSave",
+                                -- workspaceDelay = 5000,
+                                -- workspaceRate  = 100,
                                 libraryFiles   = "Enable",
                                 disable        = { "trailing-space", "unused-function", "lowercase-global" },
                         },

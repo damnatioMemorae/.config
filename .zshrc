@@ -158,7 +158,7 @@ alias         fzf='fzf -m --preview="bat --color=always {}"'
 alias           2='hyprctl dispatch exit'
 alias           1='reboot'
 alias           0='shutdown now'
-alias           .='exec Hyprland'
+alias           .='niri --config ~/.config/niri/config.kdl'
 # alias .=' /usr/lib/plasma-dbus-run-session-if-needed \
 #         /usr/bin/startplasma-wayland'
 
@@ -277,10 +277,10 @@ bindkey -s "^[u" 'up \n'
 #         zprof
 # fi
 
-if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-        mkdir -p ~/.cache
-        exec Hyprland > ~/.cache/hyprland.log 2>&1
-fi
+# if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+#         mkdir -p ~/.cache
+#         exec Hyprland > ~/.cache/hyprland.log 2>&1
+# fi
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/q/.lmstudio/bin"

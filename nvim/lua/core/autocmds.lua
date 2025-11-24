@@ -291,6 +291,7 @@ api.nvim_create_autocmd("LspAttach", {
 
                 ---@diagnostic disable-next-line: unknown-diag-code
                 ---@diagnostic disable-next-line: unnecessary-if
+                --[[
                 if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight", 0) then
                         local highlight_augroup = augroup("lsp-highlight", { clear = false })
 
@@ -316,13 +317,15 @@ api.nvim_create_autocmd("LspAttach", {
                                 end,
                         })
                 end
+                --]]
 
                 --------------------------------------------------------------------------------------------------------
                 -- INLAY HINTS
 
                 if fn.has("nvim-0.10") == 1 and client.server_capabilities.inlayHintProvider and lsp.inlay_hint then
+                        -- lsp.inlay_hint.enable(true, nil)
                         lsp.inlay_hint.enable(true, nil)
-                elseif mode ~= "n" then
+                elseif mode == "i" then
                         lsp.inlay_hint.enable(false, nil)
                 end
 

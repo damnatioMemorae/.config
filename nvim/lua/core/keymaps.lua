@@ -15,22 +15,23 @@ local eval                = require("functions.inspect-and-eval")
 local nano                = require("functions.nano-plugins")
 local n, i, c, v, o, x, t = "n", "i", "c", "v", "o", "x", "t"
 
+local opts                = { opts }
 
-local ni    = { n, i }
-local nx    = { n, x }
-local nc    = { n, c }
-local nv    = { n, v }
-local no    = { n, o }
-local nix   = { n, i, x }
-local nic   = { n, i, c }
-local niv   = { n, i, v }
-local nio   = { n, i, o }
-local nxcvo = { n, x, c, v, o }
+local ni                  = { n, i }
+local nx                  = { n, x }
+local nc                  = { n, c }
+local nv                  = { n, v }
+local no                  = { n, o }
+local nix                 = { n, i, x }
+local nic                 = { n, i, c }
+local niv                 = { n, i, v }
+local nio                 = { n, i, o }
+local nxcvo               = { n, x, c, v, o }
 
 ------------------------------------------------------------------------------------------------------------------------
 -- META
 
--- map(n, "ZZ", require("core.utils").safeQuit, { desc = " Safe Quit", silent = true })
+-- map(n, "ZZ", require("core.utils").safeQuit, { desc = " Safe Quit",silent = true })
 map(n, "ZZ", "<cmd>qa<cr>", { desc = " Safe Quit", silent = true })
 
 local pluginDir = vim.fn.stdpath("data") --[[@as string]]
@@ -41,8 +42,8 @@ map(n, "<leader>pd", function() vim.ui.open(pluginDir) end, { desc = "󰝰 Plugi
 
 map(n, "_", "0")
 
-map(nx, "{", "{zz", { silent = true })
-map(nx, "}", "}zz", { silent = true })
+map(nx, "{", "{zz", { opts })
+map(nx, "}", "}zz", { opts })
 
 -- j/k should on wrapped lines
 map(nx, "j", "gj")
@@ -88,17 +89,17 @@ map(n, "f", function() nano.fF("f") end, { desc = "f", silent = true })
 map(n, "F", function() nano.fF("F") end, { desc = "F", silent = true })
 
 --[[ Folds
-map(nx, "<A-Up>", utils.prevFoldStart, { desc = "Goto prev fold", silent = true })
-map(nx, "<A-Down>", "zjzz^", { desc = "Goto next fold", silent = true })
-map(nx, "<A-Z>", utils.prevFoldStart, { desc = "Goto prev fold", silent = true })
-map(nx, "<A-z>", "zjzz^", { desc = "Goto next fold", silent = true })
-map(n, "<A-Left>", "zczz^", { desc = "Close current fold", silent = true })
-map(n, "<A-Right>", "zozz^", { desc = "Open current fold", silent = true })
-map(n, "<C-Left>", "zMzz^", { desc = "Close All Folds", silent = true })
-map(n, "<C-Right>", "zRzz^", { desc = "Open All Folds", silent = true })
-map(n, "zh", "zczz", { desc = "Close current fold", silent = true })
-map(n, "zl", "zozz", { desc = "Open current fold", silent = true })
-map(n, "zj", "zjzz", { desc = "Goto next fold", silent = true })
+map(nx, "<A-Up>", utils.prevFoldStart, { desc = "Goto prev fold",silent = true })
+map(nx, "<A-Down>", "zjzz^", { desc = "Goto next fold",silent = true })
+map(nx, "<A-Z>", utils.prevFoldStart, { desc = "Goto prev fold",silent = true })
+map(nx, "<A-z>", "zjzz^", { desc = "Goto next fold",silent = true })
+map(n, "<A-Left>", "zczz^", { desc = "Close current fold",silent = true })
+map(n, "<A-Right>", "zozz^", { desc = "Open current fold",silent = true })
+map(n, "<C-Left>", "zMzz^", { desc = "Close All Folds",silent = true })
+map(n, "<C-Right>", "zRzz^", { desc = "Open All Folds",silent = true })
+map(n, "zh", "zczz", { desc = "Close current fold",silent = true })
+map(n, "zl", "zozz", { desc = "Open current fold",silent = true })
+map(n, "zj", "zjzz", { desc = "Goto next fold",silent = true })
 --]]
 
 map(nx, "<A-Down>", function()
@@ -118,7 +119,7 @@ map(nx, "<A-Right>", function()
 map(nv, "W", "ge", { desc = "Jump to the end of previous word", silent = true })
 
 -- center Ctrl-o
-map(n, "<C-o>", "<C-o>zz", { silent = true })
+map(n, "<C-o>", "<C-o>zz", { opts })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- EDITING
@@ -151,14 +152,14 @@ map(n, "<C-S-x>", function()
 local trailChars = { ",", "\\", "[", "]", "{", "}", ")", ";", "." }
 for _, key in pairs(trailChars) do
         local pad = key == "\\" and " " or ""
-        map(n, "<leader>" .. key, ("mzA%s%s<Esc>`z"):format(pad, key), { silent = true })
+        map(n, "<leader>" .. key, ("mzA%s%s<Esc>`z"):format(pad, key), { opts })
 end
 
 -- Whitespace
 map(n, "<CR>", "o<Esc>k", { desc = " blank below", silent = true })
--- map(n, "<CR>", "] ", { desc = " blank below", silent = true })
-map(n, "<S-CR>", "O<Esc>j", { desc = " blank above", silent = true })
-map(n, "<A-CR>", "O<Esc>j", { desc = " blank above", silent = true })
+-- map(n, "<CR>", "] ", { desc = " blank below",silent = true })
+map(n, "<S-Space>", "O<Esc>j", { desc = " blank above", silent = true })
+map(n, "<A-Space>", "O<Esc>j", { desc = " blank above", silent = true })
 
 -- Merging
 map(n, "m", "J", { desc = "󰽜 Merge line up", silent = true })
@@ -176,7 +177,7 @@ map({ "i", "c" }, "<C-d>", "<Backspace>", { desc = "Delete", silent = true })
 -- Save file
 vim.keymap.del(i, "<C-s>")
 map(ni, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save File", silent = true })
--- map(ni, "<C-s>", "<cmd>wa<CR>", { desc = "Save File", silent = true })
+-- map(ni, "<C-s>", "<cmd>wa<CR>", { desc = "Save File",silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- SURROUND
@@ -299,8 +300,8 @@ do
                         vim.fn.winrestview{ topline = topline + lines }
                 end)
         end
-        map(n, "<PageDown>", function() scrollLspWin(5) end, { desc = "↓ Scroll LSP window", silent = true })
-        map(n, "<PageUp>", function() scrollLspWin(-5) end, { desc = "↑ Scroll LSP window", silent = true })
+        map(n, "<PageDown>", function() scrollLspWin(5) end, { desc = "↓ Scroll LSP window",silent = true })
+        map(n, "<PageUp>", function() scrollLspWin(-5) end, { desc = "↑ Scroll LSP window",silent = true })
 end
 --]]
 
@@ -359,11 +360,11 @@ map(n, "L", "<cmd>bnext<cr>", { desc = "Next Buffer", silent = true })
 --         map("n",
 --             toggleKey,
 --             function() nano.startOrStopRecording(toggleKey, reg) end,
---             { desc = "󰃽 Start/stop recording", silent = true })
+--             { desc = "󰃽 Start/stop recording",silent = true })
 --         -- stylua: ignore
 --         map(n, "c0", function() nano.editMacro(reg) end,
---             { desc = "󰃽 Edit recording", silent = true })
---         map(n, "9", "@" .. reg, { desc = "󰃽 Play recording", silent = true })
+--             { desc = "󰃽 Edit recording",silent = true })
+--         map(n, "9", "@" .. reg, { desc = "󰃽 Play recording",silent = true })
 -- end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -396,20 +397,37 @@ map(n, "<leader>f<Space>", function() retabber("spaces") end, { desc = "󱁐 Use
 ------------------------------------------------------------------------------------------------------------------------
 -- OPTION TOGGLING
 
-map(n, "<leader>or", "<cmd>set relativenumber!<CR>", { desc = " Relative line numbers", silent = true })
-map(n, "<leader>on", "<cmd>set number!<CR>", { desc = " Line numbers", silent = true })
-map(n, "<leader>ow", "<cmd>set wrap!<CR>", { desc = "󰖶 Wrap", silent = true })
+-- map(n, "<leader>or", "<cmd>set relativenumber!<CR>", { desc = " Relative line numbers",silent = true })
+-- map(n, "<leader>on", "<cmd>set number!<CR>", { desc = " Line numbers",silent = true })
+-- map(n, "<leader>ow", "<cmd>set wrap!<CR>", { desc = "󰖶 Wrap",silent = true })
 
-map(n, "<leader>od", function()
-            vim.diagnostic.enable(not vim.diagnostic.is_enabled)
-    end, { desc = "󰨓 Toggle Diagnostics" })
+-- map(n, "<leader>od", function()
+--             vim.diagnostic.enable(not vim.diagnostic.is_enabled)
+--     end, { desc = "󰨓 Toggle Diagnostics" })
 
-map(n, "<leader>oc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0 end,
-    { desc = "󰈉 Conceal", silent = true })
+-- map(n, "<leader>oc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0 end,
+--     { desc = "󰈉 Conceal",silent = true })
 
-map(n, "<leader>oh", function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
-    end, {})
+-- map(n, "<leader>oh", function()
+--             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
+--     end, {})
+
+local loaded, _ = pcall(require, "snacks")
+
+map(n, "<leader>d", function() Snacks.dashboard() end, { desc = "Dashboard", silent = true })
+
+if loaded then
+        Snacks.toggle.option("relativenumber", { name = " Relative Line Number" }):map("<leader>or")
+        Snacks.toggle.option("number", { name = " Line Number" }):map("<leader>on")
+        Snacks.toggle.option("wrap", { name = "󰖶 Wrap" }):map("<leader>ow")
+        Snacks.toggle.option("conceallevel",
+                             { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "󰈉 Conceal",
+                             }):map("<leader>oc")
+        Snacks.toggle.treesitter({ name = " Treesitter Highlight" }):map("<leader>ot")
+        Snacks.toggle.diagnostics({ name = "󰨓 LSP Diagnostics" }):map("<leader>od")
+        Snacks.toggle.inlay_hints({ name = "󰨓 LSP Inlay Hints" }):map("<leader>oh")
+        Snacks.toggle.words({ name = "󰨓 LSP Document Highlight" }):map("<leader>ol")
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- RELOAD PLUGINS

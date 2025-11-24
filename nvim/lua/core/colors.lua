@@ -1,0 +1,36 @@
+local M = {}
+------------------------------------------------------------------------------------------------------------------------
+
+M.C = {
+        ["ivory"]       = "#dce0e8",
+        ["spark"]       = "#add8e6",
+        ["C.rosewater"] = "#f5e0dc",
+        ["C.flamingo"]  = "#f2cdcd",
+        ["C.pink"]      = "#f5c2e7",
+        ["C.mauve"]     = "#cba6f7",
+        ["C.red"]       = "#f38ba8",
+        ["C.maroon"]    = "#eba0ac",
+        ["C.peach"]     = "#fab387",
+        ["C.yellow"]    = "#f9e2af",
+        ["C.green"]     = "#a6e3a1",
+        ["C.teal"]      = "#94e2d5",
+        ["C.sky"]       = "#89dceb",
+        ["C.sapphire"]  = "#74c7ec",
+        ["C.blue"]      = "#89b4fa",
+        ["C.lavender"]  = "#b4befe",
+        ["C.text"]      = "#cdd6f4",
+        ["C.subtext1"]  = "#bac2de",
+        ["C.subtext0"]  = "#a6adc8",
+        ["C.overlay2"]  = "#9399b2",
+        ["C.overlay1"]  = "#7f849c",
+        ["C.overlay0"]  = "#6c7086",
+        ["C.surface2"]  = "#585b70",
+        ["C.surface1"]  = "#45475a",
+        ["C.surface0"]  = "#313244",
+        ["C.base"]      = "#1e1e2e",
+        ["C.mantle"]    = "#14141f",
+        ["C.crust"]     = "#0e0e16",
+}
+
+------------------------------------------------------------------------------------------------------------------------
+return M
