@@ -1,5 +1,10 @@
-spawn-sh-at-startup "udiskie --automount --no-tray"
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+spawn-sh-at-startup "dbus-update-activation-environment --systemd --all"
+spawn-sh-at-startup "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+spawn-at-startup "udiskie" "--automount" "--no-tray"
 spawn-sh-at-startup "~/.local/share/bin/waybarswitch b"
+spawn-sh-at-startup "~/.local/share/bin/polkitkdeauth"
+spawn-sh-at-startup "~/.local/share/bin/batterynotify"
 spawn-at-startup "dunst"
 spawn-at-startup "ghostty"
 spawn-at-startup "librewolf"
@@ -63,8 +68,8 @@ layout {
         color "#0007"
     }
     struts {
-        // left 14
-        // right 14
+        left 6
+        right 6
         bottom 5
     }
     tab-indicator {
@@ -101,15 +106,15 @@ layer-rule {
         place-within-backdrop true
 }
 
-screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+screenshot-path "~/Pictures/Screenshots/screenshot_%Y-%m-%d_%H-%M-%S.png"
 
 binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+B hotkey-overlay-title="Open a Browser: librewolf" { spawn "librewolf"; }
     Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn-sh "pkill -x fuzzel || fuzzel"; }
     Mod+U hotkey-overlay-title="Toggle: waybar" { spawn-sh "~/.local/share/bin/waybarswitch b"; }
-    Mod+Y { spawn-sh "pkill -x rofi || ~/.local/share/bin/cliphist c"; }
-    Mod+semicolon { switch-layout "next"; }
+    Mod+Y                                       { spawn-sh "pkill -x rofi || ~/.local/share/bin/cliphist c"; }
+    Mod+semicolon                               { switch-layout "next"; }
 
     F2 allow-when-locked=true { spawn-sh "~/.local/share/bin/volumecontrol -o d"; }
     F3 allow-when-locked=true { spawn-sh "~/.local/share/bin/volumecontrol -o i"; }
@@ -117,14 +122,21 @@ binds {
     F5 allow-when-locked=true { spawn-sh "~/.local/share/bin/brightnesscontrol -o d"; }
     F6 allow-when-locked=true { spawn-sh "~/.local/share/bin/brightnesscontrol -o i"; }
 
+    Prior       { spawn "playerctl" "position 10-"; }
+    Next        { spawn "playerctl" "position 10+"; }
+    Home        { spawn "playerctl" "play-pause"; }
+    End         { spawn "playerctl" "play-pause"; }
+    Shift+Prior { spawn "playerctl" "previous"; }
+    Shift+Next  { spawn "playerctl" "next"; }
+
     Mod+O repeat=false { toggle-overview; }
 
     Mod+Escape repeat=false { close-window; }
 
     Mod+H         { focus-column-left; }
     Mod+L         { focus-column-right; }
-    Mod+J         { focus-workspace-down; }
-    Mod+K         { focus-workspace-up; }
+    Mod+J         { focus-window-or-workspace-down; }
+    Mod+K         { focus-window-or-workspace-up; }
 
     Mod+Shift+H    { move-column-left; }
     Mod+Shift+L    { move-column-right; }
@@ -181,7 +193,7 @@ binds {
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
-    Mod+W      { toggle-column-tabbed-display; }
+    Mod+G      { toggle-column-tabbed-display; }
 
     Print      { screenshot; }
     Ctrl+Print { screenshot-screen; }

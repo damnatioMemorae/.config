@@ -14,7 +14,7 @@
                 "custom/separators",
                 "group/updates",
                 // "custom/separators",
-                "niri/workspaces",
+                "_hyprland/workspaces",
                 ""
         ],
         "modules-center": [
@@ -28,7 +28,7 @@
         "group/updates": {
                 "orientation": "horizontal",
                 "modules": [
-                        "niri/language",
+                        "hyprland/language",
                         "custom/updates",
                         "custom/recording"
                 ]
@@ -70,7 +70,7 @@
                 "tooltip": true,
                 "signal": 20
         },
-        "niri/workspaces": {
+        "hyprland/workspaces": {
                 "rotate": 0,
                 "all-outputs": true,
                 "active-only": false,
@@ -137,7 +137,7 @@
                         "26": []
                 }
         },
-        "niri/language": {
+        "hyprland/language": {
                 "format": "{}",
                 "format-en": "🮋",
                 "format-ru": "🬋",
