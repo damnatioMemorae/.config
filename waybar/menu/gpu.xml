@@ -2,13 +2,13 @@
 <interface>
     <object class="GtkMenu" id="menu">
         <child>
-            <object class="GtkMenuItem" id="Default">
-                <property name="label">Default</property>
+            <object class="GtkMenuItem" id="Overclock">
+                <property name="label">Overclock</property>
             </object>
         </child>
         <child>
-            <object class="GtkMenuItem" id="Overclock">
-                <property name="label">Overclock</property>
+            <object class="GtkMenuItem" id="Default">
+                <property name="label">Default</property>
             </object>
         </child>
         <child>

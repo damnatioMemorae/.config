@@ -3,7 +3,7 @@
         "name": "main",
         "layer": "top",
         "position": "bottom",
-        "margin": "-5 300 5 300",
+        "margin": "-15 300 5 300",
         "height": 36,
         "fixed-center": true,
         "exclusive": true,
