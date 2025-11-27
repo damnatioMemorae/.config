@@ -24,7 +24,7 @@ return {
                                 end,
                         },
                         indent                = { enable = true, disable = { "markdown" } },
-                        -- textobjects           = { select = { lookahead = true, include_surrounding_whitespace = false } },
+                        textobjects           = { lsp_interop = {}, select = { lookahead = true, include_surrounding_whitespace = false } },
                         incremental_selection = {
                                 enable  = true,
                                 keymaps = {

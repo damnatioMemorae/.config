@@ -18,6 +18,11 @@ return { -- treesitter-based textobjs
                 "TSTextobjectSwapPrevious",
                 "TSTextobjectGotoNextStart",
                 "TSTextobjectGotoPreviousStart",
+                "TSTextobjectPeekDefinitionCode",
+                "TSTextobjectRepeatLastMove",
+                "TSTextobjectRepeatLastMoveNext",
+                "TSTextobjectRepeatLastMoveOpposite",
+                "TSTextobjectRepeatLastMovePrevious",
         },
         keys         = {
                 ---[[ COMMENT OPERATIONS
@@ -164,13 +169,13 @@ return { -- treesitter-based textobjs
                 },
                 { -- PARAMETER PREV SWAP
                         "<A-{>",
-                        "<cmd>TSTextobjectSwapPrevious @parameter.inner",
+                        "<cmd>TSTextobjectSwapPrevious @parameter.inner<CR>",
                         mode = { "n", "x", "o" },
                         desc = "󰏪 Swap prev parameter",
                 },
                 { -- PARAMETER NEXT SWAP
                         "<A-}>",
-                        "<cmd>TSTextobjectSwapNext @parameter.inner",
+                        "<cmd>TSTextobjectSwapNext @parameter.inner<CR>",
                         mode = { "n", "x", "o" },
                         desc = "󰏪 Swap next parameter",
                 },
@@ -268,5 +273,24 @@ return { -- treesitter-based textobjs
                         desc = "󰡱 inner call",
                 },
                 --]]
+
+                ---[[ REPEATABLE ACTIONS
+                {
+                        "<C-Up>",
+                        "<cmd>TSTextobjectRepeatLastMovePrevious<CR>",
+                        mode = modes,
+                },
+                {
+                        "<C-Down>",
+                        "<cmd>TSTextobjectRepeatLastMove<CR>",
+                        mode = modes,
+                },
+                --]]
+                {
+                        ",,",
+                        "<cmd>TSTextobjectPeekDefinitionCode @class.outer<CR>",
+                        mode = modes,
+                        desc = "󰏪 Swap prev parameter",
+                },
         },
 }
