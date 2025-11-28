@@ -45,13 +45,13 @@ tooltip {
         border-radius: 0;
 }
 #workspaces button {
-        color: @empty-fg;
+        color: @text;
 }
 #workspaces button.empty {
         color: @empty-fg;
 }
 #workspaces button.active {
-        color: @pink;
+        color: @red;
 }
 #workspaces button,
 #workspaces button:hover,
@@ -64,15 +64,19 @@ tooltip {
         margin-right: 6;
 }
 
+#backlight,
+#pulseaudio {
+        color: @pink;
+        background: @crust;
+}
+
 #cpu,
 #memory,
 #battery,
 #network,
-#backlight,
-#pulseaudio,
 #temperature,
 #custom-gpuinfo {
-        color: @main-fg;
+        color: @text;
         background: @crust;
         margin-top: 6px;
         margin-bottom: 6px;
@@ -84,7 +88,7 @@ tooltip {
 #cpu.good,
 #memory.green,
 #temperature {
-        color: @main-fg;
+        color: @text;
         background-color: @main-bg;
 }
 #cpu.warning,
