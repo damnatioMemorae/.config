@@ -88,7 +88,7 @@ return {
                                        end, { silent = true })
                 end,
         },
-        {
+        { -- TREEWALKER
                 "aaronik/treewalker.nvim",
                 enabled = false,
                 event   = "VeryLazy",

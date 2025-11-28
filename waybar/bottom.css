@@ -45,13 +45,13 @@ tooltip {
         border-radius: 0;
 }
 #workspaces button {
-        color: @yellow;
+        color: @empty-fg;
 }
 #workspaces button.empty {
         color: @empty-fg;
 }
 #workspaces button.active {
-        color: @red;
+        color: @pink;
 }
 #workspaces button,
 #workspaces button:hover,

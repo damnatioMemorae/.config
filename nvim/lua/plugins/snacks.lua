@@ -196,7 +196,7 @@ return {
                 },
         },
         opts     = {
-                words        = { enabled = true },
+                words        = { enabled = true, debounce = 0 },
                 quickfile    = { enabled = true },
                 lazygit      = { enabled = true },
                 input        = { enabled = true },

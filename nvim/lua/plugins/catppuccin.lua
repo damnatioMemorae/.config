@@ -125,7 +125,7 @@ local customCol = function(C)
                 -- Substitute                    = { fg = colors., bg = colors., bold = true },
                 Title                                        = { fg = C.pink },
                 -- Todo                          = { fg = colors., bold = true, italic = true },
-                TSDefinitionUsage                            = { bg = C.surface0 },
+                TSDefinitionUsage                            = { link = "LspReferenceText" },
                 TypeDef                                      = { link = "Type" },
                 Type                                         = { link = "Keyword" },
                 -- Underlined                    = { fg = colors., underline = true },
