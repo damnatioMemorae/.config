@@ -279,18 +279,22 @@ return { -- treesitter-based textobjs
                         "<C-Up>",
                         "<cmd>TSTextobjectRepeatLastMovePrevious<CR>",
                         mode = modes,
+                        desc = "󰑖 Repeat to Prev",
                 },
                 {
                         "<C-Down>",
-                        "<cmd>TSTextobjectRepeatLastMove<CR>",
+                        "<cmd>TSTextobjectRepeatLastMoveNext<CR>",
                         mode = modes,
+                        desc = "󰑖 Repeat to Next",
                 },
                 --]]
+                ---[[ PEEK DEFINITION
                 {
                         ",,",
                         "<cmd>TSTextobjectPeekDefinitionCode @class.outer<CR>",
                         mode = modes,
-                        desc = "󰏪 Swap prev parameter",
+                        desc = "󰏪 Peek Definition",
                 },
+                --]]
         },
 }

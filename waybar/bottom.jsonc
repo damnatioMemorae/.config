@@ -3,7 +3,7 @@
         "name": "main",
         "layer": "top",
         "position": "bottom",
-        "margin": "-15 300 5 300",
+        "margin": "0 300 -5 300",
         "height": 36,
         "fixed-center": true,
         "exclusive": true,
@@ -248,7 +248,7 @@
         },
         "cpu#icon": {
                 "states": {
-                        "norm": 30,
+                        "good": 30,
                         "warning": 50,
                         "critical": 80
                 },
@@ -261,7 +261,7 @@
         },
         "cpu": {
                 "states": {
-                        "norm": 30,
+                        "good": 30,
                         "warning": 50,
                         "critical": 80
                 },
@@ -320,7 +320,7 @@
         },
         "memory#icon": {
                 "states": {
-                        "norm": 30,
+                        "good": 30,
                         "warning": 50,
                         "critical": 80
                 },
@@ -335,7 +335,7 @@
         },
         "memory": {
                 "states": {
-                        "norm": 30,
+                        "good": 30,
                         "warning": 50,
                         "critical": 80
                 },

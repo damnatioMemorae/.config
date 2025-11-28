@@ -15,7 +15,7 @@ local eval                = require("functions.inspect-and-eval")
 local nano                = require("functions.nano-plugins")
 local n, i, c, v, o, x, t = "n", "i", "c", "v", "o", "x", "t"
 
-local opts                = { opts }
+local opts                = { silent = true }
 
 local ni                  = { n, i }
 local nx                  = { n, x }
@@ -42,8 +42,8 @@ map(n, "<leader>pd", function() vim.ui.open(pluginDir) end, { desc = "󰝰 Plugi
 
 map(n, "_", "0")
 
-map(nx, "{", "{zz", { opts })
-map(nx, "}", "}zz", { opts })
+map(nx, "{", "{zz", opts)
+map(nx, "}", "}zz", opts)
 
 -- j/k should on wrapped lines
 map(nx, "j", "gj")
@@ -119,7 +119,7 @@ map(nx, "<A-Right>", function()
 map(nv, "W", "ge", { desc = "Jump to the end of previous word", silent = true })
 
 -- center Ctrl-o
-map(n, "<C-o>", "<C-o>zz", { opts })
+map(n, "<C-o>", "<C-o>zz", opts)
 
 ------------------------------------------------------------------------------------------------------------------------
 -- EDITING
@@ -152,14 +152,14 @@ map(n, "<C-S-x>", function()
 local trailChars = { ",", "\\", "[", "]", "{", "}", ")", ";", "." }
 for _, key in pairs(trailChars) do
         local pad = key == "\\" and " " or ""
-        map(n, "<leader>" .. key, ("mzA%s%s<Esc>`z"):format(pad, key), { opts })
+        map(n, "<leader>" .. key, ("mzA%s%s<Esc>`z"):format(pad, key), opts)
 end
 
 -- Whitespace
 map(n, "<CR>", "o<Esc>k", { desc = " blank below", silent = true })
 -- map(n, "<CR>", "] ", { desc = " blank below",silent = true })
 map(n, "<S-Space>", "O<Esc>j", { desc = " blank above", silent = true })
-map(n, "<A-Space>", "O<Esc>j", { desc = " blank above", silent = true })
+map(n, "<A-CR>", "O<Esc>j", { desc = " blank above", silent = true })
 
 -- Merging
 map(n, "m", "J", { desc = "󰽜 Merge line up", silent = true })

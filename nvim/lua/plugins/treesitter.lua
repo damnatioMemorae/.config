@@ -7,7 +7,7 @@ return {
                 build  = ":TSUpdate",
                 opts   = {
                         parser_install_dir    = "~/.local/share/nvim/site",
-                        auto_install          = false,
+                        auto_install          = true,
                         ensure_installed      = "all",
                         ignore_install        = { "comment", "ipkg" },
                         highlight             = {

@@ -2,7 +2,7 @@
         "mod": "dock",
         "name": "main",
         "layer": "top",
-        "margin": "20 10 20 -10",
+        "margin": "10 10 10 0",
         "width": 36,
         "position": "right",
         "fixed-center": true,
@@ -326,16 +326,7 @@
                 "max-length": 8
         },
         "memory": {
-                "format-icons": [
-                        "⡀",
-                        "⣀",
-                        "⣄",
-                        "⣤",
-                        "⣦",
-                        "⣶",
-                        "⣷",
-                        "⣿"
-                ],
+                "format-icons": ["⡀", "⣀", "⣄", "⣤", "⣦", "⣶", "⣷", "⣿"],
                 // "format-icons": ["", "", "", "", "", "", "", ""],
                 "format": "{icon}",
                 "interval": 1,

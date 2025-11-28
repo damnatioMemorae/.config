@@ -1,3 +1,5 @@
+local C = require("core.colors").C
+
 return {
         "nvim-lualine/lualine.nvim",
         lazy         = false,
@@ -5,9 +7,9 @@ return {
         config       = function()
                 local colors = {
                         text     = "#cdd6f4",
-                        surface0 = "#45475a",
+                        surface1 = "#45475a",
                         base     = "#1e1e2e",
-                        mantle   = "#181825",
+                        mantle   = "#14141f",
                         crust    = "#0e0e16",
                         -- crust    = "#000000",
                         red      = "#f38ba8",
@@ -18,7 +20,7 @@ return {
                         normal   = {
                                 a = { fg = colors.crust, bg = colors.text, bold = true },
                                 b = { fg = colors.text, bg = colors.crust },
-                                c = { fg = colors.surface0, bg = colors.crust },
+                                c = { fg = colors.surface1, bg = colors.crust },
                                 x = { fg = colors.text, bg = colors.crust },
                                 y = { fg = colors.text, bg = colors.crust },
                                 z = { fg = colors.text, bg = colors.crust },
@@ -29,7 +31,7 @@ return {
                         replace  = { a = { fg = colors.crust, bg = colors.text, bold = true } },
 
                         inactive = {
-                                a = { fg = colors.surface0, bg = colors.crust },
+                                a = { fg = colors.surface1, bg = colors.crust },
                                 b = { fg = colors.text, bg = colors.crust },
                                 c = { fg = colors.text, bg = colors.crust },
                                 x = { fg = colors.text, bg = colors.crust },
@@ -37,42 +39,27 @@ return {
                                 z = { fg = colors.text, bg = colors.crust },
                         },
                 }
+
                 require("lualine").setup({
-                        disabled_filetypes = {
-                                "neo-tree",
-                        },
+                        disabled_filetypes = { "neo-tree" },
                         options            = {
                                 theme                = theme,
                                 section_separators   = "",
                                 component_separators = "",
                         },
                         sections           = {
-                                lualine_a = {
-                                        {
-                                                "mode",
-                                                fmt = function(str) return str:sub(1, 1) end,
-                                        },
-                                },
+                                lualine_a = { { "mode", fmt = function(str) return str:sub(1, 1) end } },
                                 lualine_b = {
                                         "branch",
                                         {
                                                 "diff",
                                                 colored    = true,
-                                                diff_color = {
-                                                        added    = "String",
-                                                        modified = "GitSignsAdd",
-                                                        removed  = "GitSignsDelete",
-                                                },
+                                                diff_color = { added = "String", modified = "GitSignsAdd", removed = "GitSignsDelete" },
                                                 symbols    = { added = "+", modified = "~", removed = "-" },
                                                 source     = nil,
                                         },
                                 },
-                                lualine_c = {
-                                        {
-                                                "filename",
-                                                file_status = false,
-                                        },
-                                },
+                                lualine_c = { { "filename", file_status = false } },
                                 lualine_x = {},
                                 lualine_y = {
                                         {
@@ -101,23 +88,14 @@ return {
                                 },
                         },
                         inactive_sections  = {
-                                lualine_a = {
-                                        { "filename", file_status = true },
-                                },
-                                lualine_b = {
-                                },
-                                lualine_c = {
-                                },
-                                lualine_x = {
-                                },
-                                lualine_y = {
-                                },
-                                lualine_z = {
-                                },
+                                lualine_a = { { "filename", file_status = true } },
+                                lualine_b = {},
+                                lualine_c = {},
+                                lualine_x = {},
+                                lualine_y = {},
+                                lualine_z = {},
                         },
-                        extensions         = {
-                                "neo-tree",
-                        },
+                        extensions         = { "neo-tree" },
                 })
         end,
 }
