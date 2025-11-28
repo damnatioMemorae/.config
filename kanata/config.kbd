@@ -19,9 +19,9 @@
 (deflayer default
         @esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12  @ins  prnt @del home end prev next
         grv  1    2    3    4    5    6    7    8    9    0     -     =    bspc
-        tab  @q    w    @e    r    t    y    u    i    @o    @p     [     ]    \
+        tab  @q    w   @e    r    t    y   @u    i    @o    @p     [     ]    \
         @caps @a    @s    @d    @f    g    @h    @j    @k    @l    ;     '     ret
-        lsft z    x    c    v    b    @n    @m    ,    .    /     rsft
+        lsft z    x    c   @v   @b    @n    @m    ,    .    /     rsft
         lctl lmet lalt           @spc            ralt rctl
 )
 
@@ -64,6 +64,9 @@
         m    (tap-hold-release $tt $ht m   (layer-while-held fuckeys))
         p    (tap-hold-release $tt $ht p   (layer-while-held player))
         e    (tap-hold-release $tt $ht e   (layer-while-held hjkl))
+        u    (tap-hold-release $tt $ht u   (layer-while-held hjkl))
+        v    (tap-hold-release $tt $ht v   (layer-while-held hjkl))
+        b    (tap-hold-release $tt $ht b   (layer-while-held hjkl))
         o    (tap-hold-release $tt $ht o   (layer-while-held symbols-left))
         q    (tap-hold-release $tt $ht q   (layer-while-held symbols-right))
 )
@@ -119,11 +122,10 @@
         k up
         l right
 
-        a a
-        s s
-        d d
-        f f
-        u u
+        a left
+        s up
+        d down
+        f right
 
         n h
         m j
@@ -173,7 +175,6 @@
 )
 
 (deflayermap (mouse)
-        n ret
         c esc
         y mlft
         o mrgt
@@ -195,4 +196,9 @@
         s (movemouse-accel-up    5 300 1 7)
         d (movemouse-accel-down  5 300 1 7)
         f (movemouse-accel-right 5 300 1 7)
+
+        n left
+        m down
+        , up
+        . right
 )

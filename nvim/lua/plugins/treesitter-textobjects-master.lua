@@ -85,13 +85,13 @@ return { -- treesitter-based textobjs
                 },
                 { -- CONDITION PREV
                         "<A-O>",
-                        "<cmd>TSTextobjectGotoPreviousStart @conditional.outer<CR>",
+                        "<cmd>TSTextobjectGotoPreviousStart @conditional.inner<CR>",
                         mode = modes,
                         desc = "󱕆 Goto prev condition",
                 },
                 { -- CONDITION NEXT
                         "<A-o>",
-                        "<cmd>TSTextobjectGotoNextStart @conditional.outer<CR>",
+                        "<cmd>TSTextobjectGotoNextStart @conditional.inner<CR>",
                         mode = modes,
                         desc = "󱕆 Goto next condition",
                 },
