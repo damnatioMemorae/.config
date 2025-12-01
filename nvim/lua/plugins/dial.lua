@@ -96,6 +96,15 @@ return {
                         cyclic   = true,
                 })
 
+                local operator = augend.constant.new({
+                        elements = {
+                                "yes",
+                                "no",
+                        },
+                        word     = true,
+                        cyclic   = true,
+                })
+
                 return {
                         dials_by_ft = {
                                 css             = "css",

@@ -56,6 +56,7 @@ api.nvim_create_autocmd("FileType", {
         callback = function(event)
                 vim.bo[event.buf].buflisted = false
                 vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+                vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", { buffer = event.buf, silent = true })
         end,
 })
 
@@ -283,7 +284,6 @@ api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
                 local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
                 local lsp    = vim.lsp
-                local buf    = args.buf
                 local mode   = fn.mode()
 
                 --------------------------------------------------------------------------------------------------------
@@ -293,6 +293,7 @@ api.nvim_create_autocmd("LspAttach", {
                 ---@diagnostic disable-next-line: unnecessary-if
                 --[[
                 if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight", 0) then
+                        local buf               = args.buf
                         local highlight_augroup = augroup("lsp-highlight", { clear = false })
 
                         api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" }, {
@@ -328,16 +329,6 @@ api.nvim_create_autocmd("LspAttach", {
                 elseif mode == "i" then
                         lsp.inlay_hint.enable(false, nil)
                 end
-
-                --------------------------------------------------------------------------------------------------------
-                -- CODELENS
-
-                --[[
-                map("n", "<leader>oh",
-                    function() lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf }) end,
-                    { buffer = buf, desc = "Toggle Inlay Hints" }
-                )
-                --]]
         end,
 })
 
@@ -415,7 +406,7 @@ api.nvim_create_autocmd("FileType", {
                 local function has_diffview_in_current_tab()
                         return vim.tbl_contains(
                                 vim.tbl_map(function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype end,
-                                        vim.api.nvim_tabpage_list_wins(0)), "DiffviewFiles")
+                                            vim.api.nvim_tabpage_list_wins(0)), "DiffviewFiles")
                 end
                 if has_diffview_in_current_tab() then return end
                 vim.cmd.wincmd("L")

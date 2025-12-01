@@ -13,8 +13,7 @@
         "reload_style_on_change": true,
         "modules-left": [
                 "custom/separators",
-                "group/updates",
-                // "custom/separators",
+                "hyprland/language",
                 "hyprland/workspaces",
                 ""
         ],
@@ -23,54 +22,22 @@
                 "backlight",
                 "custom/separators",
                 "pulseaudio",
+                // "custom/privacy",
                 ""
         ],
-        "modules-right": ["group/hardware", ""],
-        "group/updates": {
-                "orientation": "horizontal",
-                "modules": [
-                        "hyprland/language",
-                        "custom/updates",
-                        "custom/recording"
-                ]
-        },
-        "group/hardware": {
-                "orientation": "horizontal",
-                // "drawer": {
-                //         "transition-duration": 500,
-                //         "children-class": "not-power",
-                //         "transition-left-to-right": false
-                // },
-                "modules": [
-                        // "custom/wifi",
-                        "network",
-                        "custom/separators",
-                        // "cpu#icon",
-                        "cpu",
-                        "custom/separators",
-                        // "memory#icon",
-                        "memory",
-                        "custom/separators",
-                        // "temperature#icon",
-                        "temperature",
-                        "custom/separators",
-                        // "custom/gpuinfo#icon",
-                        "custom/gpuinfo",
-                        "custom/separators",
-                        // "battery#icon",
-                        "battery",
-                        "custom/separators"
-                ]
-        },
-        "custom/updates": {
-                "exec": "systemupdate t",
-                "return-type": "json",
-                "format": "{}",
-                "rotate": 0,
-                "interval": 43200,
-                "tooltip": true,
-                "signal": 20
-        },
+        "modules-right": [
+                "custom/privacy",
+                "custom/separators",
+                "custom/recording",
+                "custom/separators",
+                "custom/updates",
+                "group/hardware",
+                ""
+        ],
+
+        //──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        // HYPRLAND
+
         "hyprland/workspaces": {
                 "rotate": 0,
                 "all-outputs": true,
@@ -118,7 +85,7 @@
                         "6": [],
                         "7": [],
                         "8": [],
-                        "9": [],
+                        "9": []
                         // "10": [],
                         // "11": [],
                         // "12": [],
@@ -146,23 +113,28 @@
                 // "format-ru": "",
                 "on-click": "keyboardswitch"
         },
-        "cava": {
-                "framerate": 120,
-                "autosens": 1,
-                "bars": 40,
-                "method": "pulse",
-                "source": "auto",
-                "stereo": false,
-                "reverse": false,
-                "bar_delimiter": 0,
-                "monstercat": false,
-                "waves": true,
-                "noise_reduction": 0.77,
-                "input_delay": 0,
-                "format-icons": ["⣿", "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣿"],
-                "actions": {
-                        "on-click-right": "mode"
-                }
+        "hyprland/submap": {
+                "format": "🮋",
+                "max-length": 8,
+                "tooltip": false
+        },
+
+        "group/hardware": {
+                "orientation": "horizontal",
+                "modules": [
+                        "network",
+                        "custom/separators",
+                        "cpu",
+                        "custom/separators",
+                        "memory",
+                        "custom/separators",
+                        "temperature",
+                        "custom/separators",
+                        "custom/gpuinfo",
+                        "custom/separators",
+                        "battery",
+                        "custom/separators"
+                ]
         },
         "backlight": {
                 "device": "intel_backlight",
@@ -173,31 +145,6 @@
                 "on-scroll-up": "brightnessctl set 1%+",
                 "on-scroll-down": "brightnessctl set 1%-",
                 "min-length": 1
-        },
-        "pulseaudio#icon": {
-                "states": {
-                        "min": 0,
-                        "midl": 25,
-                        "mid": 50,
-                        "midh": 75,
-                        "max": 100
-                },
-                "format": "{icon}",
-                "format-muted": "󰝟",
-                "format-icons": {
-                        "headphone": "󰋋",
-                        "hands-free": "󰥰",
-                        "headset": "󰥰",
-                        "default": ["󰕿", "󰖀", "󰕾"]
-                },
-                "tooltip": true,
-                "tooltip-format": "Device: {desc}",
-                "on-click": "volumecontrol -o m",
-                "on-click-right": "hyprctl dispatch exec pavucontrol",
-                "on-scroll-up": "volumecontrol -o i",
-                "on-scroll-down": "volumecontrol -o d",
-                "min-length": 1,
-                "max-length": 6
         },
         "pulseaudio": {
                 "format": " {volume} ",
@@ -215,10 +162,91 @@
                 "max": 100,
                 "orientation": "horizontal"
         },
-        "hyprland/submap": {
-                "format": "🮋",
-                "max-length": 8,
-                "tooltip": false
+        "network": {
+                "format-wifi": " {essid} ",
+                "format-ethernet": " {ifname} ",
+                "tooltip": false,
+                "on-click": "wifimenu -o i",
+                "interval": 1,
+                "min-length": 1,
+                "max-length": 20
+        },
+        "cpu": {
+                "states": {
+                        "good": 30,
+                        "warning": 50,
+                        "critical": 80
+                },
+                "format": " {usage}% ",
+                "on-click": "cpu",
+                "tooltip": true,
+                "interval": 1,
+                "min-length": 1,
+                "max-length": 6
+        },
+
+        //──────────────────────────────────────────────────────────────────────────────────────────────────────
+        // CPU TEMPERATURE
+
+        "temperature": {
+                "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input",
+                "critical-treshold": 10,
+                "interval": 1,
+                "format": " {temperatureC}°C "
+        },
+        "memory": {
+                "states": {
+                        "good": 30,
+                        "warning": 50,
+                        "critical": 80
+                },
+                "format": " {used} ",
+                "format-critical": " {percentage}% ",
+                "tooltip": true,
+                "tooltip-format": "Memory Used: {used:0.1f} GB / {total:0.1f} GB",
+                "interval": 5,
+                "min-length": 1,
+                "max-length": 7
+        },
+        "battery": {
+                "states": {
+                        "full": 100,
+                        "good": 99,
+                        "warning": 50,
+                        "critical": 15
+                },
+                "format": " {capacity} ",
+                "format-full": " {capacity} ",
+                "format-warning": " {capacity} ",
+                "format-critical": " {capacity} ",
+                "format-charging": " {capacity} ",
+                "tooltip-format": "Time to Empty: {time}",
+                "tooltip-format-charging": "Time to Full: {time}",
+                "interval": 1,
+                "min-length": 1,
+                "max-length": 5
+        },
+
+        //──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        // CUSTOM
+
+        "custom/updates": {
+                "exec": "systemupdate t",
+                "return-type": "json",
+                "format": "{}",
+                "rotate": 0,
+                "interval": 43200,
+                "tooltip": true,
+                "signal": 20
+        },
+        "custom/privacy": {
+                "exec": "privacy",
+                "return-type": "json",
+                "format": "{text}",
+                "interval": 1,
+                "tooltip": true,
+                "escape": false,
+                "markup": "pango"
         },
         "custom/recording": {
                 "exec": "recording w",
@@ -238,71 +266,6 @@
                 "min-length": 1,
                 "max-length": 7
         },
-        "network": {
-                "format-wifi": " {essid} ",
-                "format-ethernet": " {ifname} ",
-                "tooltip": false,
-                "on-click": "wifimenu -o i",
-                "interval": 1,
-                "min-length": 1,
-                "max-length": 20
-        },
-        "cpu#icon": {
-                "states": {
-                        "good": 30,
-                        "warning": 50,
-                        "critical": 80
-                },
-                "format": "",
-                "on-click": "cpu",
-                "interval": 1,
-                "tooltip": false,
-                "min-length": 1,
-                "max-length": 7
-        },
-        "cpu": {
-                "states": {
-                        "good": 30,
-                        "warning": 50,
-                        "critical": 80
-                },
-                "format": " {usage}% ",
-                "on-click": "cpu",
-                "tooltip": true,
-                "interval": 1,
-                "min-length": 1,
-                "max-length": 6
-        },
-
-        //──────────────────────────────────────────────────────────────────────────────────────────────────────
-        // CPU TEMPERATURE
-
-        "temperature#icon": {
-                "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input",
-                "critical-treshold": 40,
-                "interval": 1,
-                "format": ""
-        },
-        "temperature": {
-                "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input",
-                "critical-treshold": 10,
-                "interval": 1,
-                "format": " {temperatureC}°C "
-        },
-        "custom/gpuinfo#icon": {
-                "format": "󰢮",
-                "tooltip": false,
-                "interval": 5,
-                "min-length": 1,
-                "max-length": 10,
-                "menu": "on-click",
-                "menu-file": "~/.config/waybar/menu/gpu.xml",
-                "menu-actions": {
-                        "Default": "gpu d",
-                        "Overclock": "gpu o",
-                        "Low": "gpu l"
-                }
-        },
         "custom/gpuinfo": {
                 "exec": "gpuinfo",
                 "return-type": "json",
@@ -318,72 +281,6 @@
                         "Overclock": "gpu o",
                         "Low": "gpu l"
                 }
-        },
-        "memory#icon": {
-                "states": {
-                        "good": 30,
-                        "warning": 50,
-                        "critical": 80
-                },
-                "format": "󰘚",
-                // "format": "",
-                "format-critical": "󰀦",
-                "tooltip": false,
-                "tooltip-format": "Memory Used: {used:0.1f} GB / {total:0.1f} GB",
-                "interval": 5,
-                "min-length": 1,
-                "max-length": 8
-        },
-        "memory": {
-                "states": {
-                        "good": 30,
-                        "warning": 50,
-                        "critical": 80
-                },
-                "format": " {used} ",
-                "format-critical": " {percentage}% ",
-                "tooltip": true,
-                "tooltip-format": "Memory Used: {used:0.1f} GB / {total:0.1f} GB",
-                "interval": 5,
-                "min-length": 1,
-                "max-length": 7
-        },
-        "battery#icon": {
-                "states": {
-                        "full": 100,
-                        "good": 99,
-                        "warning": 50,
-                        "critical": 15
-                },
-                "format": "{icon}",
-                "format-icons": ["󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂"],
-                "format-full": "󱃌",
-                "format-warning": "󰁻",
-                "format-critical": "󱃍",
-                "format-charging": "󰚥",
-                "tooltip-format": "Time to Empty: {time}",
-                "tooltip-format-charging": "Time to Full: {time}",
-                "interval": 1,
-                "min-length": 1,
-                "max-length": 8
-        },
-        "battery": {
-                "states": {
-                        "full": 100,
-                        "good": 99,
-                        "warning": 50,
-                        "critical": 15
-                },
-                "format": " {capacity} ",
-                "format-full": " {capacity} ",
-                "format-warning": " {capacity} ",
-                "format-critical": " {capacity} ",
-                "format-charging": " {capacity} ",
-                "tooltip-format": "Time to Empty: {time}",
-                "tooltip-format-charging": "Time to Full: {time}",
-                "interval": 1,
-                "min-length": 1,
-                "max-length": 5
         },
         "custom/separator": {
                 "format": ""

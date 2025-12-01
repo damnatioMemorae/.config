@@ -1,3 +1,10 @@
+local parsers       = "all"
+-- local parsers       = { "all" }
+local ignoreParsers = {
+        "comment",
+        "ipkg",
+}
+
 return {
         ---[[
         { -- TREESITTER MASTER BRANCH
@@ -8,8 +15,8 @@ return {
                 opts   = {
                         parser_install_dir    = "~/.local/share/nvim/site",
                         auto_install          = true,
-                        ensure_installed      = "all",
-                        ignore_install        = { "comment", "ipkg" },
+                        ensure_installed      = parsers,
+                        ignore_install        = ignoreParsers,
                         highlight             = {
                                 additional_vim_regex_highlighting = false,
                                 enable                            = true,
@@ -40,20 +47,15 @@ return {
                 end,
         },
         --]]
-        --[[
-        { -- TREESITTER MAIN BRANCH
-                "nvim-treesitter/nvim-treesitter",
-                branch = "main",
-                build  = ":TSUpdate",
-        },
-        --]]
         { -- NODE ACTIONS
                 "ckolkey/ts-node-action",
                 dependencies = { "nvim-treesitter" },
                 event        = "VeryLazy",
-                -- config = function()
-                --     require("ts-node-action").setup({})
-                -- end
+                config       = function()
+                        local tsn = require("ts-node-action.actions")
+                        require("ts-node-action").setup({})
+                        vim.keymap.set("n", ">", function() tsn.toggle_operator() end)
+                end,
         },
         { -- HYPR
                 "theRealCarneiro/hyprland-vim-syntax",

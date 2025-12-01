@@ -1,6 +1,7 @@
----@diagnostic disable: assign-type-mismatch
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP SERVERS
+
+local borders = require("core.icons").borders
 
 local lspServers = {
         "asm_lsp",
@@ -8,14 +9,15 @@ local lspServers = {
         "bashls",
         "biome",
         "clangd",
+        "cmake",
         "css_variables",
-        "kotlin_lsp",
         "emmet",
         "emmet-language-server",
-        "hsl",
         "glsl_analyzer",
         "gopls",
+        "hsl",
         "jsonls",
+        "kotlin_lsp",
         "lua_ls",
         "pylsp",
         "qmlls",
@@ -80,9 +82,8 @@ vim.api.nvim_create_autocmd("FileType", {
 ---[[ Hyprlang LSP
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
         pattern  = { "*.hl", "hypr*.conf", "**/hypr/**" },
-        ---@diagnostic disable-next-line: unused
+        ---@diagnostic disable-next-line: unused-local
         callback = function(event)
-                -- print(string.format("starting hyprls for %s", vim.inspect(event)))
                 vim.lsp.start{
                         name     = "hyprlang",
                         cmd      = { "hyprls" },
@@ -95,8 +96,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 ------------------------------------------------------------------------------------------------------------------------
 -- DIAGNOSTICS
 
----@diagnostic disable-next-line: unused-local, unused
-local icons   = require("core.icons").diagnostics
 local numbers = {
         text = {
                 [vim.diagnostic.severity.ERROR] = "",
@@ -104,7 +103,6 @@ local numbers = {
                 [vim.diagnostic.severity.INFO] = "",
                 [vim.diagnostic.severity.HINT] = "",
         },
-
         numhl = {
                 [vim.diagnostic.severity.ERROR] = "ErrorMsg",
                 [vim.diagnostic.severity.WARN] = "WarningMsg",
@@ -157,7 +155,7 @@ local hover                             = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.buf.hover                       = function()
         return hover{
-                border     = { " ", " ", " ", " ", " ", " ", " ", " " },
+                border     = borders,
                 title      = "Hover",
                 wrap       = false,
                 max_height = math.floor(vim.o.lines * 0.5),
@@ -169,7 +167,7 @@ local signature_help                    = vim.lsp.buf.signature_help
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.buf.signature_help              = function()
         return signature_help{
-                border     = { " ", " ", " ", " ", " ", " ", " ", " " },
+                border     = borders,
                 title      = "Signature Help",
                 wrap       = false,
                 max_height = math.floor(vim.o.lines * 0.5),
@@ -194,7 +192,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
                 local p = progress[client.id]
 
                 for i = 1, #p + 1 do
-                        if i == #p + 1 or p[i] --[[@cast -?]].token == ev.data.params.token then
+                        if i == #p + 1 or p[i].token == ev.data.params.token then
                                 p[i] = {
                                         token = ev.data.params.token,
                                         msg   = ("[%3d%%] %s%s"):format(
@@ -209,18 +207,15 @@ vim.api.nvim_create_autocmd("LspProgress", {
                 end
 
                 local msg = {} ---@type string[]
-                progress[client.id] = vim.tbl_filter(function(v)
-                                                             ---@diagnostic disable-next-line: return-type-mismatch
-                                                             return table.insert(msg, v.msg) or not v.done
-                                                     end, p)
+                progress[client.id] = vim.tbl_filter(function(v) return table.insert(msg, v.msg) or not v.done end, p)
 
                 local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-                ---@diagnostic disable-next-line: param-type-not-match
+                ---@diagnostic disable-next-line: param-type-mismatch
                 vim.notify(table.concat(msg, "\n"), "info", {
                         id    = "lsp_progress",
                         title = client.name,
                         opts  = function(notif)
-                                notif.icon = #progress[client.id] == 0 and "■"
+                                notif.icon = #progress[client.id] == 0 and require("core.icons").notifier.info
                                            ---@diagnostic disable-next-line: undefined-field
                                            or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
                         end,

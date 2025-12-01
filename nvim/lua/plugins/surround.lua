@@ -3,6 +3,7 @@ local textObjMaps = require("core.utils").extraTextobjMaps
 
 return {
         "kylechui/nvim-surround",
+        enabled = false,
         event = "VeryLazy",
         keys  = {
                 { "ys", desc = "󰅪 Add Surround Op." },

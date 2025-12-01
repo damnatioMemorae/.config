@@ -1,8 +1,8 @@
-local button = "Function"
-local label  = "Comment"
--- local prefix  = "<leader><leader>"
-local prefix = ","
-local icons  = require("core.icons")
+local button       = "Function"
+local label        = "Comment"
+local prefix       = ","
+local icons        = require("core.icons")
+local insertOnShow = function() vim.cmd.stopinsert() end
 
 return {
         "folke/snacks.nvim",
@@ -12,8 +12,6 @@ return {
                 { "<C-n>",      function() Snacks.notifier.show_history() end, desc = "Notification History" },
                 { "<leader>fr", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
                 { "<leader>lg", function() Snacks.lazygit() end,               desc = "Lazygit" },
-                { "<A-]>",      function() Snacks.words.jump(1) end,           desc = "Next Reference",      mode = { "n", "t" } },
-                { "<A-[>",      function() Snacks.words.jump(-1) end,          desc = "Prev Reference",      mode = { "n", "t" } },
                 { -- DELETE BUFFER
                         "<A-b>",
                         function()
@@ -74,7 +72,7 @@ return {
                         "<leader><leader>b",
                         function()
                                 Snacks.picker.buffers({
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                         layout  = "default",
                                         format  = "buffer",
                                         hidden  = false,
@@ -91,7 +89,7 @@ return {
                         "<leader><leader>u",
                         function()
                                 Snacks.picker.undo({
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                         layout  = "default",
                                         format  = "buffer",
                                         hidden  = false,
@@ -111,7 +109,7 @@ return {
                         function()
                                 Snacks.picker.lsp_references({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show References",
@@ -122,7 +120,7 @@ return {
                         function()
                                 Snacks.picker.lsp_implementations({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show Implementations",
@@ -133,7 +131,7 @@ return {
                         function()
                                 Snacks.picker.lsp_definitions({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show Definitions",
@@ -144,51 +142,51 @@ return {
                         function()
                                 Snacks.picker.lsp_declarations({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show Declarations",
                         mode = { "n" },
                 },
                 { -- SYMBOLS
-                        prefix .. "s",
+                        "<leader><leader>s",
                         function()
                                 Snacks.picker.lsp_symbols({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show LSP Symbols",
                         mode = { "n" },
                 },
                 { -- WORKSPACE SYMBOLS
-                        prefix .. "S",
+                        "<leader><leader>S",
                         function()
                                 Snacks.picker.lsp_workspace_symbols({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show Workspace Symbols",
                         mode = { "n" },
                 },
                 { -- DIAGNOSTICS BUFFER
-                        "<leader><leader>o",
+                        "<leader><leader>d",
                         function()
                                 Snacks.picker.diagnostics_buffer({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show Buffer Diagnostics",
                         mode = { "n" },
                 },
                 { -- DIAGNOSTICS WORKSPACE
-                        "<leader><leader>O",
+                        "<leader><leader>D",
                         function()
                                 Snacks.picker.diagnostics({
                                         layout  = "vertical",
-                                        on_show = function() vim.cmd.stopinsert() end,
+                                        on_show = insertOnShow,
                                 })
                         end,
                         desc = "Show Workspace Symbols",

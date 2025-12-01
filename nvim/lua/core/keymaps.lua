@@ -139,8 +139,8 @@ map(n, "~", "v~", { desc = "󰬴 Toggle char case (w/o moving)", silent = true }
 map(n, "<", function() nano.toggleWordCasing() end,
     { desc = "󰬴 Toggle lower/Title case", silent = true })
 
-map(n, ">", function() nano.camelSnakeToggle() end,
-    { desc = "󰬴 Toggle camel and snake case", silent = true })
+-- map(n, ">", function() nano.camelSnakeToggle() end,
+--     { desc = "󰬴 Toggle camel and snake case", silent = true })
 
 -- Delete trailing character
 map(n, "<C-S-x>", function()
@@ -413,8 +413,6 @@ map(n, "<leader>f<Space>", function() retabber("spaces") end, { desc = "󱁐 Use
 --     end, {})
 
 local loaded, _ = pcall(require, "snacks")
-
-map(n, "<leader>d", function() Snacks.dashboard() end, { desc = "Dashboard", silent = true })
 
 if loaded then
         Snacks.toggle.option("relativenumber", { name = " Relative Line Number" }):map("<leader>or")

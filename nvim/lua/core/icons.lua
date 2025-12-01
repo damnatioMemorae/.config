@@ -161,4 +161,7 @@ M.misc             = {
         LspImpl      = "󰃐",
 }
 
+-- BORDER
+M.borders          = { " ", " ", " ", " ", " ", " ", " ", " " }
+
 return M

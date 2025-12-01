@@ -1,7 +1,6 @@
 local arrows = require("core.icons").arrows
 local misc   = require("core.icons").misc
 local opt    = vim.opt
----@diagnostic disable-next-line: unused-local
 local o      = vim.o
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -146,19 +145,10 @@ opt.wildmode       = "longest:full,full"
 opt.winminwidth    = 5
 opt.wrapmargin     = 120
 o.hidden           = true
-
 opt.smoothscroll   = true
 
 
-vim.g.markdown_recommended_style = 0
-
 vim.cmd("autocmd BufEnter * set fo-=c fo-=r fo-=o")
-
-vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
-        group    = vim.api.nvim_create_augroup("Color", {}),
-        pattern  = "*",
-        callback = function() end,
-})
 
 for _, plugin in pairs({
         "netrwFileHandler",

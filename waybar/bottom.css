@@ -24,12 +24,12 @@
         margin-bottom: -4px;
 }
 menuitem {
-        background: @tooltip-bg
+        background: @tooltip-bg;
 }
 menu,
 tooltip {
         color: @main-fg;
-        background: @tooltip-bg;
+        background: @main-bg;
         /* background: @media; */
         border-radius: 0;
         border: 0;
@@ -64,16 +64,15 @@ tooltip {
         margin-right: 6;
 }
 
-#backlight,
-#pulseaudio {
+#network {
         color: @pink;
-        background: @crust;
 }
 
 #cpu,
 #memory,
 #battery,
-#network,
+#backlight,
+#pulseaudio,
 #temperature,
 #custom-gpuinfo {
         color: @text;
