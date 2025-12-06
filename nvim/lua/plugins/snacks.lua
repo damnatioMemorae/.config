@@ -1,6 +1,6 @@
 local button       = "Function"
 local label        = "Comment"
-local prefix       = ","
+local prefix       = require("core.utils").prefix
 local icons        = require("core.icons")
 local insertOnShow = function() vim.cmd.stopinsert() end
 
@@ -16,7 +16,6 @@ return {
                         "<A-b>",
                         function()
                                 Snacks.bufdelete()
-                                vim.cmd.normal("zz")
                         end,
                         desc = "Delete Buffer",
                 },
@@ -96,6 +95,20 @@ return {
                                         win     = {
                                                 -- input  = { keys  = { ["Backspace"]  = "bufdelete" } },
                                                 -- list   = { keys  = { ["Backspace"]  = "bufdelete" } },
+                                        },
+                                })
+                        end,
+                        desc = "Buffer Picker",
+                        mode = { "n" },
+                },
+                { -- EXPLORER
+                        "<leader><leader>e",
+                        function()
+                                Snacks.explorer({
+                                        layout = {
+                                                preset  = "sidebar",
+                                                preview = false,
+                                                input   = false,
                                         },
                                 })
                         end,
@@ -360,19 +373,12 @@ return {
                                         preview = false,
                                         layout  = {
                                                 backdrop  = true,
-                                                width     = 20,
+                                                width     = 35,
                                                 min_width = 20,
                                                 height    = 0,
-                                                position  = "left",
+                                                position  = "right",
                                                 border    = "none",
                                                 box       = "vertical",
-                                                {
-                                                        win       = "input",
-                                                        height    = 1,
-                                                        border    = "rounded",
-                                                        title     = "{title} {live} {flags}",
-                                                        title_pos = "center",
-                                                },
                                                 { win = "list",    border = "none" },
                                                 { win = "preview", title = "{preview}", height = 0.4, border = "top" },
                                         },
@@ -381,6 +387,33 @@ return {
                         icons     = {
                                 diagnostics = icons.diagnostics,
                                 kinds       = icons.symbol_kinds,
+                                tree        = {
+                                        vertical = " ",
+                                        middle   = " ",
+                                        last     = " ",
+                                },
+                                files       = {
+                                        enabled  = true,
+                                        dir      = icons.symbol_kinds.Folder,
+                                        dir_open = icons.misc.FolderOpen,
+                                        file     = icons.symbol_kinds.File,
+                                },
+                                ui          = {
+                                        selected   = icons.diagnostics.HINT,
+                                        unselected = "",
+                                },
+                                git         = {
+                                        added     = icons.git.Added,
+                                        deleted   = icons.git.Deleted,
+                                        modified  = icons.git.Modified,
+                                        enabled   = true,
+                                        commit    = "󰜘 ",
+                                        staged    = "●",
+                                        ignored   = " ",
+                                        renamed   = "",
+                                        unmerged  = " ",
+                                        untracked = "?",
+                                },
                         },
                 },
                 image        = {
@@ -394,7 +427,8 @@ return {
                                 max_width  = 80,
                                 max_height = 40,
 
-                                conceal    = function(lang, type)
+                                ---@diagnostic disable-next-line: unused-local
+                                conceal = function(lang, type)
                                         return type == "math"
                                 end,
                         },

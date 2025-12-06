@@ -18,7 +18,7 @@ return {
         opts         = {
                 snippets   = { preset = "luasnip" },
                 completion = {
-                        -- keyword       = { range = "prefix" },
+                        documentation = { auto_show = true, auto_show_delay_ms = 50 },
                         trigger       = {
                                 prefetch_on_insert                   = true,
                                 show_on_backspace                    = false,
@@ -72,16 +72,9 @@ return {
                                         },
                                 },
                         },
-                        documentation = { auto_show = true, auto_show_delay_ms = 50 },
-                        -- signature     = {
-                        --         enabled = true,
-                        --         trigger = { enabled = true },
-                        --         window  = { show_documentation = true },
-                        -- },
                 },
                 fuzzy      = {
                         implementation    = "prefer_rust",
-                        -- implementation = "lua",
                         max_typos         = 0,
                         frecency          = {
                                 enabled = true,
@@ -89,20 +82,14 @@ return {
                         },
                         use_proximity     = true,
                         sorts             = {
-                                ---@diagnostic disable-next-line: unused
+                                ---@diagnostic disable-next-line: unused-local
                                 function(a, b)
                                         if a.label:sub(1, 1) == "_" ~= a.label:sub(1, 1) == "_" then
                                                 return not a.label:sub(1, 1) == "_"
                                         end
-                                end,
-                                "exact",
-                                "score",
-                                "sort_text",
+                                end, "exact", "score", "sort_text",
                         },
-                        prebuilt_binaries = {
-                                download      = true,
-                                force_version = "1.*",
-                        },
+                        prebuilt_binaries = { download = true, force_version = "1.*" },
                 },
                 cmdline    = {
                         enabled    = true,
@@ -142,18 +129,7 @@ return {
                         },
                 },
                 sources    = {
-                        default = { "snippets", "lsp", "path", "buffer", "calc" },
-
-                        --[[ COMMENT AWARE COMPLETION
-                        default      = function(ctx)
-                                local success, node = pcall(vim.treesitter.get_node)
-                                if success and node and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type()) then
-                                        return { "buffer", "ripgrep" }
-                                else
-                                        return { "snippets", "lsp", "path", "buffer" }
-                                end
-                        end,
-                        --]]
+                        default      = { "snippets", "lsp", "path", "buffer", "calc" },
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
@@ -165,27 +141,9 @@ return {
                                 jsons              = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
-                                calc     = {
-                                        name   = "calc",
-                                        module = "blink-calc",
-                                },
-                                snippets = {
-                                        name               = "Snip",
-                                        score_offset       = 140,
-                                        min_keyword_length = 2,
-                                },
+                                calc     = { name = "calc", module = "blink-calc" },
+                                snippets = { name = "Snip", score_offset = 140, min_keyword_length = 2 },
                                 lsp      = {
-                                        enabled      = function()
-                                                if vim.bo.ft ~= "lua" then return true end
-                                                local col                 = vim.api.nvim_win_get_cursor(0)[2]
-                                                ---@diagnostic disable-next-line: unknown-diag-code, param-type-mismatch
-                                                ---@diagnostic disable-next-line: param-type-not-match, need-check-nil
-                                                local charsBefore         = vim.api.nvim_get_current_line():sub(col - 2,
-                                                                                                                col)
-                                                local luadocButNotComment = not charsBefore:find("^%-%-?$") and
-                                                           not charsBefore:find("%s%-%-?")
-                                                return luadocButNotComment
-                                        end,
                                         name         = "LSP",
                                         module       = "blink.cmp.sources.lsp",
                                         score_offset = 160,
@@ -230,7 +188,7 @@ return {
                                         max_items    = 4,
                                         opts         = {
                                                 prefix_min_len = 3,
-                                                ---@diagnostic disable-next-line: unused
+                                                ---@diagnostic disable-next-line: unused-local
                                                 get_command    = function(context, prefix)
                                                         return {
                                                                 "rg",
@@ -245,7 +203,7 @@ return {
                                                 end,
                                                 get_prefix     = function(context)
                                                         return context.line:sub(1, context.cursor[2]):match("[%w_-]+$") or
-                                                                   ""
+                                                        ""
                                                 end,
                                         },
                                 },

@@ -1,5 +1,8 @@
+local icons = require("core.icons")
+
 return {
         "nvim-neo-tree/neo-tree.nvim",
+        enabled      = true,
         lazy         = true,
         branch       = "v3.x",
         keys         = { { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Tree", mode = { "n" } } },
@@ -63,22 +66,22 @@ return {
                         default_component_configs        = {
                                 indent      = {
                                         with_expanders     = false,
-                                        indent_marker      = "",
-                                        last_indent_marker = "",
-                                        expander_collapsed = "",
-                                        expander_expanded  = "",
+                                        indent_marker      = " ",
+                                        last_indent_marker = " ",
+                                        expander_collapsed = " ",
+                                        expander_expanded  = " ",
                                 },
                                 icon        = {
-                                        folder_closed = "",
-                                        folder_open   = "",
-                                        folder_empty  = "",
+                                        folder_closed = icons.symbol_kinds.Folder,
+                                        folder_open   = icons.misc.FolderOpen,
+                                        folder_empty  = icons.misc.FolderEmpty,
                                 },
                                 diagnostics = {
                                         symbols    = {
-                                                hint  = "󰨓",
-                                                info  = "󰨓",
-                                                warn  = "󰨓",
-                                                error = "󰨓",
+                                                hint  = icons.diagnostics.HINT,
+                                                info  = icons.diagnostics.INFO,
+                                                warn  = icons.diagnostics.WARN,
+                                                error = icons.diagnostics.ERROR,
                                         },
                                         highlights = {
                                                 hint  = "DiagnosticSignHint",
@@ -88,7 +91,7 @@ return {
                                         },
                                 },
                                 modified    = {
-                                        symbol    = "󰨓",
+                                        symbol    =icons.git.Modified,
                                         highlight = "NeoTreeModified",
                                 },
                         },

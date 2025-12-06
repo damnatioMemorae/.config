@@ -1,31 +1,9 @@
-local M            = {}
-local api          = vim.api
-local cmd          = vim.cmd
-local fn           = vim.fn
-local count        = vim.v.count1
+local M   = {}
+local api = vim.api
+local cmd = vim.cmd
+local fn  = vim.fn
 
-local foldClosed   = function(winid, lnum)
-        local winCall = function(winid, f)
-                if winid == 0 or winid == api.nvim_get_current_win() then
-                        return f()
-                else
-                        return api.nvim_win_call(winid, f)
-                end
-        end
-        return M.winCall(winid, function()
-                return fn.foldclosed(lnum)
-        end)
-end
-
--- function M.winCall(winid, f)
---         if winid == 0 or winid == api.nvim_get_current_win() then
---                 return f()
---         else
---                 return api.nvim_win_call(winid, f)
---         end
--- end
-
-M.prefix           = ","
+M.prefix = ","
 
 M.extraTextobjMaps = {
         func      = "f",
@@ -67,8 +45,8 @@ function M.clientHas(args)
 end
 
 function M.safeQuit()
-        for _, buf in pairs(vim.api.nvim_list_bufs()) do
-                if vim.bo[buf].buftype == "terminal" and vim.fn.bufloaded(buf) == 1 then
+        for _, buf in pairs(api.nvim_list_bufs()) do
+                if vim.bo[buf].buftype == "terminal" and fn.bufloaded(buf) == 1 then
                         local pid    = vim.b[buf].terminal_job_pid
                         local handle = io.popen("pgrep -P " .. pid)
 
@@ -76,8 +54,8 @@ function M.safeQuit()
                                 local child_pids_string = handle:read("*a")
                                 handle:close()
                                 if #child_pids_string > 0 then
-                                        vim.api.nvim_echo(
-                                                { { vim.fn.bufname(buf) .. " has running process", "ErrorMsg" } },
+                                        api.nvim_echo(
+                                                { { fn.bufname(buf) .. " has running process", "ErrorMsg" } },
                                                 false, {})
                                         return
                                 end
@@ -86,11 +64,11 @@ function M.safeQuit()
         end
         for _, arg in ipairs(vim.v.argv) do
                 if arg == "--embed" then
-                        vim.cmd.quit()
+                        cmd.quit()
                         return
                 end
         end
-        vim.cmd.detatch()
+        cmd.detatch()
 end
 
 -- craftzdog/utils.lua
@@ -222,38 +200,6 @@ end
  * @param   Number  l       The lightness
  * @return  String           The hex representation
 --]]
-
-M.colors = {
-        ivory     = "#dce0e8",
-        spark     = "#add8e6",
-        rosewater = "#f5e0dc",
-        flamingo  = "#f2cdcd",
-        pink      = "#f5c2e7",
-        mauve     = "#cba6f7",
-        red       = "#f38ba8",
-        maroon    = "#eba0ac",
-        peach     = "#fab387",
-        yellow    = "#f9e2af",
-        green     = "#a6e3a1",
-        teal      = "#94e2d5",
-        sky       = "#89dceb",
-        sapphire  = "#74c7ec",
-        blue      = "#89b4fa",
-        lavender  = "#b4befe",
-        text      = "#cdd6f4",
-        subtext1  = "#bac2de",
-        subtext0  = "#a6adc8",
-        overlay2  = "#9399b2",
-        overlay1  = "#7f849c",
-        overlay0  = "#6c7086",
-        surface2  = "#585b70",
-        surface1  = "#45475a",
-        surface0  = "#313244",
-        base      = "#1e1e2e",
-        mantle    = "#14141f",
-        crust     = "#0e0e16",
-}
-
 
 --------------------------------------------------------------------------------
 return M

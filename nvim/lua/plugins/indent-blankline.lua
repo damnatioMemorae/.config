@@ -15,7 +15,7 @@ return {
                         scope      = {
                                 show_start = true,
                                 show_end   = true,
-                                char       = require("core.icons").misc.vertical_bar,
+                                char       = require("core.icons").misc.Vertical_bar,
                         },
                 })
         end,

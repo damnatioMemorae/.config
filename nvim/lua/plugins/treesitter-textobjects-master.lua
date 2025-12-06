@@ -29,7 +29,7 @@ return { -- treesitter-based textobjs
                         desc = "󰆈 Single Comment",
                 },
                 { -- COMMENT STICKY DELETE
-                        "dq",
+                        "qd",
                         function()
                                 local prevCursor = vim.api.nvim_win_get_cursor(0)
                                 vim.cmd.TSTextobjectSelect("@comment.outer")
@@ -40,7 +40,7 @@ return { -- treesitter-based textobjs
                         desc = "󰆈 Sticky Delete Comment",
                 },
                 { -- COMMENT CHANGE
-                        "cq",
+                        "qc",
                         function()
                                 vim.cmd.TSTextobjectSelect("@comment.outer")
                                 vim.cmd.normal{ "d", bang = true }

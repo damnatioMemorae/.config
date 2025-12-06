@@ -15,6 +15,7 @@
                 "custom/separators",
                 "hyprland/language",
                 "hyprland/workspaces",
+                "custom/waypick",
                 ""
         ],
         "modules-center": [
@@ -28,9 +29,8 @@
         "modules-right": [
                 "custom/privacy",
                 "custom/separators",
-                "custom/recording",
-                "custom/separators",
                 "custom/updates",
+                "custom/recording",
                 "group/hardware",
                 ""
         ],
@@ -138,7 +138,7 @@
         },
         "backlight": {
                 "device": "intel_backlight",
-                "format": " {percent} ",
+                "format": "{percent}",
                 "on-click": "darkshader",
                 "on-click-right": "shaders",
                 "tooltip-format": "{icon} {percent}%",
@@ -147,7 +147,9 @@
                 "min-length": 1
         },
         "pulseaudio": {
-                "format": " {volume} ",
+                "format": "{volume}",
+                // "format-muted": "{volume}🬁",
+                "format-muted": "{volume}",
                 "tooltip": true,
                 "tooltip-format": "Device: {desc}",
                 "on-click": "volumecontrol -o m",
@@ -156,11 +158,6 @@
                 "on-scroll-down": "volumecontrol -o d",
                 "min-length": 2,
                 "max-length": 6
-        },
-        "pulseaudio-slider": {
-                "min": 0,
-                "max": 100,
-                "orientation": "horizontal"
         },
         "network": {
                 "format-wifi": " {essid} ",
@@ -251,7 +248,7 @@
         "custom/recording": {
                 "exec": "recording w",
                 "return-type": "json",
-                "format": "{}",
+                "format": "{} ",
                 "max-length": 8,
                 "tooltip": false,
                 "interval": 1
@@ -281,6 +278,17 @@
                         "Overclock": "gpu o",
                         "Low": "gpu l"
                 }
+        },
+        "custom/waypick": {
+                "exec": "waypick",
+                "return-type": "json",
+                "format": " {} ",
+                "tooltip": true,
+                "interval": "once",
+                "signal": 9,
+                "on-click": "waypick pick && pkill -RTMIN+9 waybar",
+                "on-click-right": "waypick copy",
+                "escape": false
         },
         "custom/separator": {
                 "format": ""

@@ -1,31 +1,35 @@
-local M            = {}
+local M = {}
+------------------------------------------------------------------------------------------------------------------------
+
+local filledSquare = "■"
+local emptySquare  = "󰝣"
 
 -- DIAGNOSTICS
-M.diagnostics      = {
-        ERROR     = "■",
-        WARN      = "■",
-        HINT      = "■",
-        INFO      = "■",
+M.diagnostics = {
+        ERROR = filledSquare,
+        WARN  = filledSquare,
+        HINT  = filledSquare,
+        INFO  = filledSquare,
 
-        Error     = "■",
-        Warn      = "■",
-        Hint      = "■",
-        Info      = "■",
+        Error = filledSquare,
+        Warn  = filledSquare,
+        Hint  = filledSquare,
+        Info  = filledSquare,
 
         lightbulb = "󱠀",
 }
 
 -- NOTIFIER
-M.notifier         = {
-        error = "■",
-        warn  = "■",
-        info  = "■",
-        debug = "■",
-        trace = "■",
+M.notifier = {
+        error = filledSquare,
+        warn  = filledSquare,
+        info  = filledSquare,
+        debug = filledSquare,
+        trace = filledSquare,
 }
 
 -- FOLDING
-M.arrows           = {
+M.arrows = {
         close = "+",
         open  = "-",
         -- close = "󰜄",
@@ -37,7 +41,7 @@ M.arrows           = {
 }
 
 -- LSP KINDS
-M.symbol_kinds     = {
+M.symbol_kinds = {
         Array             = "󰅪 ",
         Boolean           = " ",
         BreakStatement    = "󰙧 ",
@@ -146,22 +150,31 @@ M.symbol_kinds_alt = {
 }
 
 -- MISC
-M.misc             = {
-        bug          = "",
-        ellipsis     = "…",
-        folded       = "…",
+M.misc = {
+        Bug          = "",
+        Ellipsis     = "…",
         Variable     = "",
-        git          = "",
-        search       = "",
-        vertical_bar = "▏",
-        dashed_bar   = "󰨕",
-        prompt       = ">",
-        LspDef       = "■",
+        Git          = "",
+        Search       = "",
+        Vertical_bar = "▏",
+        Prompt       = ">",
+        Dashed_bar   = filledSquare,
+        LspDef       = filledSquare,
         LspRef       = "󰘷",
         LspImpl      = "󰃐",
+        FolderOpen   = "",
+        FolderEmpty  = "",
+        Borders      = { " ", " ", " ", " ", " ", " ", " ", " " },
+        Spinner      = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
 }
 
--- BORDER
-M.borders          = { " ", " ", " ", " ", " ", " ", " ", " " }
+-- GIT
+M.git = {
+        Git      = "",
+        Added    = filledSquare,
+        Modified = emptySquare,
+        Deleted  = emptySquare,
+}
 
+------------------------------------------------------------------------------------------------------------------------
 return M

@@ -1,13 +1,13 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP SERVERS
 
-local borders = require("core.icons").borders
-
+local icons      = require("core.icons")
 local lspServers = {
         "asm_lsp",
         "basedpyright",
         "bashls",
         "biome",
+        "hyprls",
         "clangd",
         "cmake",
         "css_variables",
@@ -43,71 +43,26 @@ local capabilities = get_default_capabilities()
 vim.lsp.config("*", {
         capabilities = capabilities,
         root_markers = { ".git" },
-        ---@diagnostic disable-next-line: missing-fields
         flags        = { debounce_text_changes = 500 },
 })
 
 vim.lsp.enable(lspServers)
 
---[[ golang
-vim.api.nvim_create_autocmd("FileType", {
-		pattern  = "go",
-		callback = function()
-				local root = vim.fs.dirname(vim.fs.find({ "go.work", "go.mod", ".git" }, { upward = true })[1])
-				if not root then return end
-
-				local settings_path  = root .. "/gopls.json" or "/gopls.jsonc"
-
-				local gopls_settings = {}
-				---@diagnostic disable-next-line: undefined-field
-				local stat			 = vim.uv.fs_stat(settings_path)
-				if stat and stat.type == "file" then
-						local ok, parsed = pcall(function()
-								return vim.fn.json_decode(vim.fn.readfile(settings_path))
-						end)
-						---@diagnostic disable-next-line: assign-type-mismatch
-						if ok then gopls_settings = parsed end
-				end
-
-				vim.lsp.start({
-						name	 = "gopls",
-						cmd		 = { "gopls" },
-						root_dir = root,
-						settings = { gopls = gopls_settings },
-				})
-		end,
-})
---]]
-
----[[ Hyprlang LSP
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-        pattern  = { "*.hl", "hypr*.conf", "**/hypr/**" },
-        ---@diagnostic disable-next-line: unused-local
-        callback = function(event)
-                vim.lsp.start{
-                        name     = "hyprlang",
-                        cmd      = { "hyprls" },
-                        root_dir = vim.fn.getcwd(),
-                }
-        end,
-})
---]]
-
 ------------------------------------------------------------------------------------------------------------------------
 -- DIAGNOSTICS
 
 local numbers = {
-        text = {
+        text  = {
                 [vim.diagnostic.severity.ERROR] = "",
-                [vim.diagnostic.severity.WARN] = "",
-                [vim.diagnostic.severity.INFO] = "",
-                [vim.diagnostic.severity.HINT] = "",
+                [vim.diagnostic.severity.WARN]  = "",
+                [vim.diagnostic.severity.INFO]  = "",
+                [vim.diagnostic.severity.HINT]  = "",
         },
         numhl = {
                 [vim.diagnostic.severity.ERROR] = "ErrorMsg",
-                [vim.diagnostic.severity.WARN] = "WarningMsg",
-                [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
-                [vim.diagnostic.severity.HINT] = "DiagnosticHint",
+                [vim.diagnostic.severity.WARN]  = "WarningMsg",
+                [vim.diagnostic.severity.INFO]  = "DiagnosticInfo",
+                [vim.diagnostic.severity.HINT]  = "DiagnosticHint",
         },
 }
 
@@ -122,38 +77,35 @@ vim.diagnostic.config({
 ------------------------------------------------------------------------------------------------------------------------
 -- HANDLERS
 
--- `vim.lsp.buf.rename`: add notification & writeall to renaming
+local borders                           = icons.misc.Borders
 local originalRenameHandler             = vim.lsp.handlers["textDocument/rename"]
 vim.lsp.handlers["textDocument/rename"] = function(err, result, ctx, config)
         originalRenameHandler(err, result, ctx, config)
         if err or not result then return end
 
-        -- count changes
-        local changes = result.changes or result.documentChanges or {}
+        local changes      = result.changes or result.documentChanges or {}
         local changedFiles = vim.iter(vim.tbl_keys(changes))
                    :filter(function(file) return #changes[file] > 0 end)
                    :map(function(file) return "- " .. vim.fs.basename(file) end)
                    :totable()
-        local changeCount = 0
+        local changeCount  = 0
         for _, change in pairs(changes) do
                 changeCount = changeCount + #(change.edits or change)
         end
 
-        -- notification
         local pluralS = changeCount > 1 and "s" or ""
-        local msg = ("[%d] instance%s"):format(changeCount, pluralS)
+        local msg     = ("[%d] instance%s"):format(changeCount, pluralS)
         if #changedFiles > 1 then
                 msg = ("**%s in [%d] files**\n%s"):format(msg, #changedFiles, table.concat(changedFiles, "\n"))
         end
         vim.notify(msg, nil, { title = "Renamed with LSP", icon = "󰑕" })
 
-        -- save all
         if #changedFiles > 1 then vim.cmd.wall() end
 end
 
-local hover                             = vim.lsp.buf.hover
+local hover       = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field
-vim.lsp.buf.hover                       = function()
+vim.lsp.buf.hover = function()
         return hover{
                 border     = borders,
                 title      = "Hover",
@@ -163,9 +115,9 @@ vim.lsp.buf.hover                       = function()
         }
 end
 
-local signature_help                    = vim.lsp.buf.signature_help
+local signature_help       = vim.lsp.buf.signature_help
 ---@diagnostic disable-next-line: duplicate-set-field
-vim.lsp.buf.signature_help              = function()
+vim.lsp.buf.signature_help = function()
         return signature_help{
                 border     = borders,
                 title      = "Signature Help",
@@ -178,14 +130,11 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP PROGRESS
 
----@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
-local progress                          = vim.defaulttable()
+local progress = vim.defaulttable()
 vim.api.nvim_create_autocmd("LspProgress", {
-        ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
         callback = function(ev)
                 local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                local value  = ev.data.params
-                           .value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+                local value  = ev.data.params.value
                 if not client or type(value) ~= "table" then
                         return
                 end
@@ -206,16 +155,15 @@ vim.api.nvim_create_autocmd("LspProgress", {
                         end
                 end
 
-                local msg = {} ---@type string[]
+                local msg           = {}
                 progress[client.id] = vim.tbl_filter(function(v) return table.insert(msg, v.msg) or not v.done end, p)
 
-                local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-                ---@diagnostic disable-next-line: param-type-mismatch
+                local spinner = icons.misc.Spinner
                 vim.notify(table.concat(msg, "\n"), "info", {
                         id    = "lsp_progress",
                         title = client.name,
                         opts  = function(notif)
-                                notif.icon = #progress[client.id] == 0 and require("core.icons").notifier.info
+                                notif.icon = #progress[client.id] == 0 and icons.notifier.info
                                            ---@diagnostic disable-next-line: undefined-field
                                            or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
                         end,

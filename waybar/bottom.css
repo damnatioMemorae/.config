@@ -68,6 +68,14 @@ tooltip {
         color: @pink;
 }
 
+#custom-waypick {
+        color: @pink;
+}
+
+#pulseaudio.muted {
+        color: @red;
+}
+
 #cpu,
 #memory,
 #battery,

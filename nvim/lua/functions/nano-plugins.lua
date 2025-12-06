@@ -85,7 +85,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 -- Simplified implementation of `coerce.nvim`
-function M.camelSnakeLspRename()
+function M.camel_snake_lsp_rename()
         local cword        = vim.fn.expand("<cword>")
         local snakePattern = "_(%w)"
         local camelPattern = "([%l%d])(%u)"

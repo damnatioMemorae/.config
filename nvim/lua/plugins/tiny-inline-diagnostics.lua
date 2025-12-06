@@ -2,8 +2,9 @@ icons = require("core.icons").diagnostics.HINT
 
 return {
         "rachartier/tiny-inline-diagnostic.nvim",
-        event = "VeryLazy",
-        opts  = {
+        enabled = false,
+        event   = "VeryLazy",
+        opts    = {
                 signs   = {
                         left         = "",
                         right        = "",

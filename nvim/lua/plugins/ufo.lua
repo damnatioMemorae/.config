@@ -2,15 +2,14 @@ function cmd()
         vim.cmd.normal("^zz")
 end
 
-local folded = require("core.icons").misc.folded
-local modes  = { "n", "x" }
+local modes = { "n", "x" }
 
 return {
         "kevinhwang91/nvim-ufo",
         dependencies = "kevinhwang91/promise-async",
         event        = "LspAttach",
         keys         = {
-                { "<leader>if", function() require("ufo").inspect() end, cmd(), desc = " Fold info" },
+                { "<leader>if", function() require("ufo").inspect() end, cmd(), desc = " Fold Info" },
 
                 { -- 0
                         "<A-0>",
@@ -20,7 +19,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close L0 folds",
+                        desc = " Close L0 Folds",
                 },
                 { -- 1
                         "<A-1>",
@@ -29,7 +28,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close L1 folds",
+                        desc = "d Close L1 Folds",
                 },
                 { -- 2
                         "<A-2>",
@@ -38,7 +37,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close L2 folds",
+                        desc = " Close L2 Folds",
                 },
                 { -- 3
                         "<A-3>",
@@ -47,7 +46,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close L3 folds",
+                        desc = " Close L3 Folds",
                 },
                 { -- 4
                         "<A-4>",
@@ -56,7 +55,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close L4 folds",
+                        desc = " Close L4 Folds",
                 },
                 { -- 5
                         "<A-5>",
@@ -65,7 +64,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close L5 folds",
+                        desc = " Close L5 Folds",
                 },
                 { -- 6
                         "<A-6>",
@@ -74,7 +73,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close L5 folds",
+                        desc = " Close L5 Folds",
                 },
                 { -- OPEN ALL
                         "<A-C-right>",
@@ -83,42 +82,42 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Open regular folds",
+                        desc = " Open All Folds",
                 },
                 { -- CLOSE ALL
                         "<A-C-left>",
                         function()
-                                local msg = require("ufo.main").inspectBuf()[6]
-                                vim.notify(msg[2], vim.log.levels.DEBUG)
+                                -- local msg = require("ufo.main").inspectBuf()[6]
+                                -- vim.notify(msg[2], vim.log.levels.DEBUG)
                                 require("ufo").openFoldsExceptKinds{
                                         "region",
                                         "table_constructor",
                                         "function_definition",
                                         "arguments",
                                         "function_declaration",
-                                        "if_statement",
-                                        "case_statement",
-                                        "comment",
-                                        "class_specifier",
-                                        "function_definition",
-                                        "array",
-                                        "object",
-                                        "pair",
-                                        "rule_set",
+                                        "for_statement",
+                                        -- "if_statement",
+                                        -- "case_statement",
+                                        -- "comment",
+                                        -- "class_specifier",
+                                        -- "array",
+                                        -- "object",
+                                        -- "pair",
+                                        -- "rule_set",
                                 }
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close all folds",
+                        desc = " Close All Folds",
                 },
                 { -- FOLD PREVIEW
-                        "<A-C-Up>",
+                        "<A-,>",
                         function()
                                 local winid = require("ufo").peekFoldedLinesUnderCursor()
                                 if not winid then vim.lsp.buf.hover() end
                                 cmd()
                         end,
-                        desc = "󱃄 Fold Preview",
+                        desc = " Fold Preview",
                 },
                 { -- GOTO PREVIOUS FOLD START
                         "<A-Up>",
@@ -127,7 +126,7 @@ return {
                                 cmd()
                         end,
                         mode = modes,
-                        desc = "󱃄 Close all folds",
+                        desc = " Goto Previous Fold",
                 },
         },
         init         = function()
@@ -137,7 +136,6 @@ return {
                 vim.opt.foldenable     = true
         end,
         opts         = {
-                -- when opening the buffer, close these fold kinds
                 close_fold_kinds_for_ft = {
                         cpp      = { "comment" },
                         c        = { "comment" },
@@ -145,23 +143,21 @@ return {
                         json     = { "array" },
                         -- lua      = { "comment" },
                         lua      = {},
-                        markdown = {}, -- avoid everything becoming folded
+                        markdown = {},
                         python   = { "imports", "comment" },
                         sh       = { "imports", "comment" },
                         toml     = { "imports", "comment" },
                         zsh      = { "if_statement", "for_statement", "function_definition" },
-                        -- use `:UfoInspect` to get see available fold kinds
                 },
                 open_fold_hl_timeout    = 0,
                 preview                 = {
                         win_config = {
-                                border       = "single",
+                                border       = require("core.icons").misc.Borders,
                                 winblend     = 0,
                                 winhighlight = "NormalFloat:NormalFloat",
                         },
                 },
                 provider_selector       = function(_bufnr, ft, _buftype)
-                        -- ufo accepts only two kinds as priority, see https://github.com/kevinhwang91/nvim-ufo/issues/256
                         local lspWithOutFolding = { "markdown", "zsh", "bash", "css", "json" }
                         if vim.tbl_contains(lspWithOutFolding, ft) then
                                 return { "treesitter", "indent" }
@@ -170,8 +166,6 @@ return {
                 end,
                 fold_virt_text_handler  = function()
                         -- return custom_foldtext()
-                        -- vim.o.foldmethod = "expr"
-                        -- vim.o.foldexpr   = "nvim_treesitter#foldexpr()"
                         vim.wo.foldtext =
                         [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) ]]
                 end,

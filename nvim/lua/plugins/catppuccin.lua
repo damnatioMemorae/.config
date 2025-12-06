@@ -253,7 +253,7 @@ local customCol = function(C)
                 -- ["@lsp.type.bracket.cpp"]                    = { link = "Comment" },
                 ["@lsp.type.namespace.cpp"]                  = { fg = C.yellow, bg = C.crust },
                 ["@lsp.type.type.cpp"]                       = { link = "cppType" },
-                ["@lsp.type.modifier.cpp"]                   = { link = "@type.builtin" },
+                ["@lsp.type.modifier.cpp"]                   = { link = "@conditional" },
                 ["@type.builtin.cpp"]                        = { link = "cppType" },
                 ["@keyword.conditional.cpp"]                 = { link = "@conditional" },
                 ["@keyword.repeat.cpp"]                      = { link = "@conditional" },
@@ -497,6 +497,8 @@ local customCol = function(C)
                 SnacksNotifierInfo                           = { link = "TinyInlineDiagnosticVirtualTextInfo" },
                 SnacksNotifierWarn                           = { link = "TinyInlineDiagnosticVirtualTextWarn" },
                 SnacksNotifierError                          = { link = "TinyInlineDiagnosticVirtualTextError" },
+                SnacksPickerIconFile                         = { fg = C.teal },
+                -- SnacksPickerFile                             = { fg = C.teal },
 
                 --------------------------------------------------------------------------------------------------------
                 -- NEOTREE
@@ -597,8 +599,8 @@ local customCol = function(C)
                 -- LspReferenceText                             = { bg = C.base, bold = true },
                 LspReferenceWrite                            = { link = "LspReferenceText" },
                 LspReferenceRead                             = { link = "LspReferenceWrite" },
-                DiffAdded                                    = { link = "DiffDelete" },
-                DiffRemoved                                  = { link = "DiffAdd" },
+                DiffAdded                                    = { link = "DiffAdd" },
+                DiffRemoved                                  = { link = "DiffDelete" },
                 LspSignatureHint                             = { fg = C.crust, bg = C.rosewater, bold = true },
                 QuickFixLine                                 = { link = "Visual" },
                 LspCodeLens                                  = { link = "Comment" },

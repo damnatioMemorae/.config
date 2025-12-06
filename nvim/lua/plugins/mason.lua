@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-field
+---@diagnostic disable-next-line: undefined-doc-name
 ---@param pack Package
 ---@param version? string
 local function install(pack, version)
@@ -24,6 +26,7 @@ end
 -- 2. update installed ones
 -- 3. uninstall unused packages
 ---@param ensurePacks string[]
+---@diagnostic disable-next-line: unused-local
 local function syncPackages(ensurePacks)
         local masonReg = require("mason-registry")
 

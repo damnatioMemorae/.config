@@ -1,6 +1,3 @@
----@diagnostic disable: missing-parameter
----@diagnostic disable-next-line: unknown-diag-code
----@diagnostic disable: unused
 ---@diagnostic disable: unused-local
 
 local function cmd()
@@ -8,31 +5,30 @@ local function cmd()
 end
 
 local utils               = require("core.utils")
-local prefixLsp           = require("core.utils").prefix
+local prefix              = require("core.utils").prefix
 local map                 = require("core.utils").uniqueKeymap
 local comments            = require("functions.comment")
 local eval                = require("functions.inspect-and-eval")
 local nano                = require("functions.nano-plugins")
 local n, i, c, v, o, x, t = "n", "i", "c", "v", "o", "x", "t"
 
-local opts                = { silent = true }
+local opts = { silent = true }
 
-local ni                  = { n, i }
-local nx                  = { n, x }
-local nc                  = { n, c }
-local nv                  = { n, v }
-local no                  = { n, o }
-local nix                 = { n, i, x }
-local nic                 = { n, i, c }
-local niv                 = { n, i, v }
-local nio                 = { n, i, o }
-local nxcvo               = { n, x, c, v, o }
+local ni    = { n, i }
+local nx    = { n, x }
+local nc    = { n, c }
+local nv    = { n, v }
+local no    = { n, o }
+local nix   = { n, i, x }
+local nic   = { n, i, c }
+local niv   = { n, i, v }
+local nio   = { n, i, o }
+local nxcvo = { n, x, c, v, o }
 
 ------------------------------------------------------------------------------------------------------------------------
 -- META
 
--- map(n, "ZZ", require("core.utils").safeQuit, { desc = " Safe Quit",silent = true })
-map(n, "ZZ", "<cmd>qa<cr>", { desc = " Safe Quit", silent = true })
+map(n, "ZZ", "<cmd>qa<cr>", { desc = " Quit", silent = true })
 
 local pluginDir = vim.fn.stdpath("data") --[[@as string]]
 map(n, "<leader>pd", function() vim.ui.open(pluginDir) end, { desc = "󰝰 Plugin dir", silent = true })
@@ -50,20 +46,18 @@ map(nx, "j", "gj")
 map(nx, "k", "gk")
 
 -- hjkl in INSERT mode
-map(i, "<C-h>", "<Left>", { desc = "Left with h in INSERT mode", silent = true })
-map(i, "<C-j>", "<Down>", { desc = "Down with j in INSERT mode", silent = true })
-map(i, "<C-k>", "<Up>", { desc = "Up with k in INSERT mode", silent = true })
-map(i, "<C-l>", "<Right>", { desc = "Right with l in INSERT mode", silent = true })
-map(i, "<A-l>", "<C-o>A", { desc = "Right with l in INSERT mode", silent = true })
+map(i, "<C-h>", "<Left>", opts)
+map(i, "<C-j>", "<Down>", opts)
+map(i, "<C-k>", "<Up>", opts)
+map(i, "<C-l>", "<Right>", opts)
 
 -- Better scroll
-map(n, "<C-d>", "<C-d>zz", { desc = "Scroll down half page", silent = true })
-map(n, "<C-u>", "<C-u>zz", { desc = "Scroll up half a page", silent = true })
-map(n, "<C-f>", "<C-f>zz", { desc = "Scroll down a page", silent = true })
-map(n, "<C-b>", "<C-b>zz", { desc = "Scroll up a page", silent = true })
+map(n, "<C-d>", "<C-d>zz", opts)
+map(n, "<C-u>", "<C-u>zz", opts)
+map(n, "<C-f>", "<C-f>zz", opts)
+map(n, "<C-b>", "<C-b>zz", opts)
 
 -- Search
--- map(n, "-", "/")
 map(x, "-", "<Esc>/\\%V", { desc = " Search in sel" })
 map(n, "n", "nzz", { desc = "Search next", silent = true })
 map(n, "N", "Nzz", { desc = "Search previous", silent = true })
@@ -131,22 +125,14 @@ map(n, "<leader>uu", ":earlier ", { desc = "󰜊 Undo to earlier", silent = true
 map(n, "<leader>ur", function() vim.cmd.later(vim.o.undolevels) end, { desc = "󰛒 Redo all", silent = true })
 
 -- Duplicate
-map(n, "<C-w>", function() nano.smartDuplicate() end,
-    { desc = "󰲢 Duplicate line", nowait = true, silent = true })
+map(n, "<C-w>", function() nano.smartDuplicate() end, { desc = "󰲢 Duplicate line", nowait = true, silent = true })
 
 -- Toggles
 map(n, "~", "v~", { desc = "󰬴 Toggle char case (w/o moving)", silent = true })
-map(n, "<", function() nano.toggleWordCasing() end,
-    { desc = "󰬴 Toggle lower/Title case", silent = true })
+map(n, "<", function() nano.toggleWordCasing() end, { desc = "󰬴 Toggle lower/Title case", silent = true })
 
 -- map(n, ">", function() nano.camelSnakeToggle() end,
 --     { desc = "󰬴 Toggle camel and snake case", silent = true })
-
--- Delete trailing character
-map(n, "<C-S-x>", function()
-            local updatedLine = vim.api.nvim_get_current_line():gsub("%S%s*$", "")
-            vim.api.nvim_set_current_line(updatedLine)
-    end, { desc = "󱎘 Delete char at EoL", silent = true })
 
 -- Append to EoL
 local trailChars = { ",", "\\", "[", "]", "{", "}", ")", ";", "." }
@@ -156,10 +142,8 @@ for _, key in pairs(trailChars) do
 end
 
 -- Whitespace
-map(n, "<CR>", "o<Esc>k", { desc = " blank below", silent = true })
--- map(n, "<CR>", "] ", { desc = " blank below",silent = true })
-map(n, "<S-Space>", "O<Esc>j", { desc = " blank above", silent = true })
 map(n, "<A-CR>", "O<Esc>j", { desc = " blank above", silent = true })
+map(n, "<CR>", "o<Esc>k", { desc = " blank below", silent = true })
 
 -- Merging
 map(n, "m", "J", { desc = "󰽜 Merge line up", silent = true })
@@ -177,7 +161,6 @@ map({ "i", "c" }, "<C-d>", "<Backspace>", { desc = "Delete", silent = true })
 -- Save file
 vim.keymap.del(i, "<C-s>")
 map(ni, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save File", silent = true })
--- map(ni, "<C-s>", "<cmd>wa<CR>", { desc = "Save File",silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- SURROUND
@@ -198,8 +181,6 @@ local textobjRemaps = {
         { "e", "`", "", "backtick" },
 }
 for _, value in pairs(textobjRemaps) do
-        ---@diagnostic disable-next-line: unknown-diag-code
-        ---@diagnostic disable-next-line: access-invisible
         local remap, original, icon, label = unpack(value)
         map({ "o", "x" }, "i" .. remap, "i" .. original, { desc = icon .. " inner " .. label })
         map({ "o", "x" }, "a" .. remap, "a" .. original, { desc = icon .. " outer " .. label })
@@ -209,8 +190,8 @@ end
 map(o, "J", "2j")
 map(n, "<C-Space>", '"_ciw', { desc = "󰬞 change word", silent = true })
 map(x, "<C-Space>", '"_c', { desc = "󰒅 change selection", silent = true })
-map(n, "<S-Space>", '"_daw', { desc = "󰬞 delete word", silent = true })
-map(x, "<S-Space>", '"_d', { desc = "󰬞 delete selection", silent = true })
+map(n, "<A-Space>", '"_daw', { desc = "󰬞 delete word", silent = true })
+map(x, "<A-Space>", '"_d', { desc = "󰬞 delete selection", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- COMMENTS
@@ -242,7 +223,7 @@ map(n, "qO", function()
             comments.addComment("above")
             vim.cmd.normal("zz")
     end, { desc = "󰆈 Comment Above", silent = true })
-map(n, "<leader>rq", function()
+map(n, "dQ", function()
             vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~"),
                                       cmd()))
     end, { desc = "󰆈  Delete Comments", silent = true })
@@ -259,7 +240,7 @@ map(n, "<A-D>", function()
             vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Prev" })
 
-map(n, prefixLsp .. "f", "gf", { desc = "Goto File", silent = true })
+map(n, prefix .. "f", "gf", { desc = "Goto File", silent = true })
 map(n, "K", vim.lsp.buf.hover, { desc = "󰏪 Hover Documentation" })
 map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
 
@@ -274,36 +255,8 @@ map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
 map(n, prefixLsp .. "F", vim.lsp.buf.format, { desc = "LSP Format" })
 --]]
 
---[[ RANGE FORMAT
-map(v, prefixLsp .. "F", function()
-            vim.lsp.buf.format({
-                    range = {
-                            ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
-                            ["end"]   = vim.api.nvim_buf_get_mark(0, ">"),
-                    },
-            })
-    end, { desc = "󱠀 Code Action" })
---]]
-
-map(n, prefixLsp .. "q", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
--- map(n, prefixLsp .. " ", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
-map(n, ",a", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
-
---[[ HOVER
-do
-        map(nx, "K", vim.lsp.buf.hover, { desc = "󰋽 LSP hover" })
-        local function scrollLspWin(lines)
-                local winid = vim.b.lsp_floating_preview --> stores id of last `vim.lsp`-generated win
-                if not winid or not vim.api.nvim_win_is_valid(winid) then return end
-                vim.api.nvim_win_call(winid, function()
-                        local topline = vim.fn.winsaveview().topline
-                        vim.fn.winrestview{ topline = topline + lines }
-                end)
-        end
-        map(n, "<PageDown>", function() scrollLspWin(5) end, { desc = "↓ Scroll LSP window",silent = true })
-        map(n, "<PageUp>", function() scrollLspWin(-5) end, { desc = "↑ Scroll LSP window",silent = true })
-end
---]]
+map(n, prefix .. "q", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
+map(n, prefix .. "a", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- INSERT MODE
@@ -354,23 +307,25 @@ map(n, "L", "<cmd>bnext<cr>", { desc = "Next Buffer", silent = true })
 ------------------------------------------------------------------------------------------------------------------------
 -- MACROS
 
--- do
---         local reg       = "r"
---         local toggleKey = "0"
---         map("n",
---             toggleKey,
---             function() nano.startOrStopRecording(toggleKey, reg) end,
---             { desc = "󰃽 Start/stop recording",silent = true })
---         -- stylua: ignore
---         map(n, "c0", function() nano.editMacro(reg) end,
---             { desc = "󰃽 Edit recording",silent = true })
---         map(n, "9", "@" .. reg, { desc = "󰃽 Play recording",silent = true })
--- end
+--[[
+do
+        local reg       = "r"
+        local toggleKey = "0"
+        map("n",
+            toggleKey,
+            function() nano.startOrStopRecording(toggleKey, reg) end,
+            { desc = "󰃽 Start/stop recording",silent = true })
+        -- stylua: ignore
+        map(n, "c0", function() nano.editMacro(reg) end,
+            { desc = "󰃽 Edit recording",silent = true })
+        map(n, "9", "@" .. reg, { desc = "󰃽 Play recording",silent = true })
+end
+]]
 
 ------------------------------------------------------------------------------------------------------------------------
 -- REFACTORING
 
-map(n, ",n", vim.lsp.buf.rename, { desc = "󰑕 LSP rename", silent = true })
+map(n, prefix .. "n", vim.lsp.buf.rename, { desc = "󰑕 LSP rename", silent = true })
 
 map(n, "<leader>fd", ":global //d<Left><Left>", { desc = " delete matching lines", silent = true })
 
@@ -397,21 +352,6 @@ map(n, "<leader>f<Space>", function() retabber("spaces") end, { desc = "󱁐 Use
 ------------------------------------------------------------------------------------------------------------------------
 -- OPTION TOGGLING
 
--- map(n, "<leader>or", "<cmd>set relativenumber!<CR>", { desc = " Relative line numbers",silent = true })
--- map(n, "<leader>on", "<cmd>set number!<CR>", { desc = " Line numbers",silent = true })
--- map(n, "<leader>ow", "<cmd>set wrap!<CR>", { desc = "󰖶 Wrap",silent = true })
-
--- map(n, "<leader>od", function()
---             vim.diagnostic.enable(not vim.diagnostic.is_enabled)
---     end, { desc = "󰨓 Toggle Diagnostics" })
-
--- map(n, "<leader>oc", function() vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0 end,
---     { desc = "󰈉 Conceal",silent = true })
-
--- map(n, "<leader>oh", function()
---             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
---     end, {})
-
 local loaded, _ = pcall(require, "snacks")
 
 if loaded then
@@ -431,7 +371,6 @@ end
 -- RELOAD PLUGINS
 
 map(n, "<leader>lr", function()
-            ---@diagnostic disable-next-line: undefined-field
             local plugins      = require("lazy").plugins()
             local plugin_names = {}
             for _, plugin in ipairs(plugins) do
@@ -442,7 +381,6 @@ map(n, "<leader>lr", function()
                     plugin_names,
                     { title = "Reload plugin" },
                     function(selected)
-                            ---@diagnostic disable-next-line: undefined-field
                             require("lazy").reload({ plugins = { selected } })
                     end
             )

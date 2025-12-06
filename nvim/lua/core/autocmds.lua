@@ -1,5 +1,4 @@
 local api     = vim.api
-local map     = require("core.utils").uniqueKeymap
 local augroup = api.nvim_create_augroup
 local fn      = vim.fn
 local o       = vim.o
@@ -34,7 +33,7 @@ api.nvim_create_autocmd("VimEnter", {
 --]]
 
 ------------------------------------------------------------------------------------------------------------------------
--- <q>
+-- <q> and <Esc>
 
 api.nvim_create_autocmd("FileType", {
         group    = augroup("Close with <q>", { clear = true }),
@@ -52,11 +51,12 @@ api.nvim_create_autocmd("FileType", {
                 "checkhealth",
                 "neotest-summary",
                 "neotest-output-panel",
+                "neo-tree",
         },
         callback = function(event)
                 vim.bo[event.buf].buflisted = false
-                vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-                vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+                vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = event.buf, silent = true })
+                vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = event.buf, silent = true })
         end,
 })
 
@@ -115,7 +115,7 @@ api.nvim_create_autocmd("FocusGained", {
 local function searchCountIndicator(mode)
         local signColumnPlusScrollbarWidth = 2 + 3
 
-        local countNs                      = api.nvim_create_namespace("searchCounter")
+        local countNs = api.nvim_create_namespace("searchCounter")
         api.nvim_buf_clear_namespace(0, countNs, 0, -1)
         if mode == "clear" then return end
 
@@ -127,8 +127,6 @@ local function searchCountIndicator(mode)
         local lineFull = #line + signColumnPlusScrollbarWidth >= api.nvim_win_get_width(0)
         local margin   = { (" "):rep(lineFull and signColumnPlusScrollbarWidth or 0) }
 
-        ---@diagnostic disable-next-line: unknown-diag-code
-        ---@diagnostic disable-next-line: param-type-not-match
         api.nvim_buf_set_extmark(0, countNs, row --[[@cast -?]] - 1, 0, {
                 virt_text     = { { text, "IncSearch" }, margin },
                 virt_text_pos = lineFull and "right_align" or "eol",
@@ -137,6 +135,7 @@ local function searchCountIndicator(mode)
 end
 
 -- without the `searchCountIndicator`, this `on_key` simply does `auto-nohl`
+---@diagnostic disable-next-line: unused-local
 vim.on_key(function(key, _typed)
                    key                   = fn.keytrans(key)
                    local isCmdlineSearch = fn.getcmdtype():find("[/?]") ~= nil
@@ -171,24 +170,19 @@ local globToTemplateMap = {
         [fn.stdpath("config") .. "/lsp/*.lua"]           = "lsp.lua",
 
         -- ["**/*.py"]                                          = "template.py",
-        ["**/*.sh"]                                      = "template.zsh",
-        ["**/*.*sh"]                                     = "template.zsh",
+        ["**/*.sh"]  = "template.zsh",
+        ["**/*.*sh"] = "template.zsh",
 }
 
----@diagnostic disable-next-line: need-check-nil
 api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
         desc     = "User: Apply templates (`BufReadPost` for files created outside of nvim.)",
         callback = function(ctx)
                 vim.defer_fn(
-                ---@diagnostic disable-next-line: undefined-field
                         function()
-                                ---@diagnostic disable-next-line: undefined-field
-                                -- defer, to ensure new files are written
                                 local stats = vim.uv.fs_stat(ctx.file)
-                                if not stats or stats.size > 10 then return end -- 10 bytes for file metadata
+                                if not stats or stats.size > 10 then return end
                                 local filepath, bufnr = ctx.file, ctx.buf
 
-                                -- determine template from glob
                                 local matchedGlob = vim.iter(globToTemplateMap):find(function(glob)
                                         local globMatchesFilename = vim.glob.to_lpeg(glob):match(filepath)
                                         return globMatchesFilename
@@ -196,10 +190,8 @@ api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
                                 if not matchedGlob then return end
                                 local templateFile = globToTemplateMap[matchedGlob]
                                 local templatePath = vim.fs.normalize(templateDir .. "/" .. templateFile)
-                                ---@diagnostic disable-next-line: undefined-field
                                 if not vim.uv.fs_stat(templatePath) then return end
 
-                                -- read template & move to cursor placeholder
                                 local content = {}
                                 local cursor
                                 local row = 1
@@ -213,11 +205,8 @@ api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
                                         row = row + 1
                                 end
                                 api.nvim_buf_set_lines(0, 0, -1, false, content)
-                                ---@diagnostic disable-next-line: unknown-diag-code
-                                ---@diagnostic disable-next-line: unnecessary-if
                                 if cursor then api.nvim_win_set_cursor(0, cursor) end
 
-                                -- adjust filetype if needed (e.g. when applying a zsh template to .sh files)
                                 local newFt = vim.filetype.match{ buf = bufnr }
                                 ---@diagnostic disable-next-line: assign-type-mismatch
                                 if vim.bo[bufnr].ft ~= newFt then vim.bo[bufnr].ft = newFt end
@@ -262,17 +251,6 @@ api.nvim_create_autocmd({ "BufReadPost", "BufNew" }, {
                                                         { title = "Scrolloff fix" })
                                      end
                              end, 150)
-        end,
-})
-
-------------------------------------------------------------------------------------------------------------------------
--- STAY IN CMD
-
-api.nvim_create_autocmd("CmdwinEnter", {
-        desc     = "Execute command and stay in the command-line window",
-        group    = augroup("mariasolos/execute_cmd_and_stay", { clear = true }),
-        callback = function(args)
-                vim.keymap.set({ "n", "i" }, "<S-CR>", "<cr>q:", { buffer = args.buf })
         end,
 })
 
@@ -354,7 +332,6 @@ api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter" }
                 if wo.number and api.nvim_get_mode().mode ~= "i" then
                         wo.relativenumber = true
                         wo.signcolumn     = "yes"
-                        -- wo.foldcolumn     = "1"
                 end
         end,
 })
@@ -364,9 +341,7 @@ api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave" }, 
         callback = function()
                 if wo.number then
                         wo.relativenumber = false
-                        wo.signcolumn     = "no"
                         wo.foldcolumn     = "0"
-                        -- vim.cmd("redraw!")
                 end
         end,
 })
@@ -414,6 +389,6 @@ api.nvim_create_autocmd("FileType", {
 })
 
 api.nvim_create_autocmd("VimResized", {
-        desc = "Automatically resize splits, when terminal window is moved",
+        desc    = "Automatically resize splits, when terminal window is moved",
         command = "wincmd =",
 })

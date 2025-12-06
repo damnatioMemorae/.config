@@ -43,13 +43,13 @@ end
 
 safeRequire("core.commands")
 safeRequire("core.autocmds")
--- safeRequire("core.diagnostics")
 safeRequire("core.lsp")
 safeRequire("core.keymaps")
 safeRequire("core.yank-paste")
 safeRequire("functions.quickfix")
 safeRequire("core.backdrop-underline-fix")
 safeRequire("functions.beacon")
+safeRequire("core.diagnostics")
 -- safeRequire("functions.treesitter-diagnostics")
 -- safeRequire("core.fold")
 
