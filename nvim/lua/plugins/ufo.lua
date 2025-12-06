@@ -7,6 +7,7 @@ local modes = { "n", "x" }
 return {
         "kevinhwang91/nvim-ufo",
         dependencies = "kevinhwang91/promise-async",
+        enabled = false,
         event        = "LspAttach",
         keys         = {
                 { "<leader>if", function() require("ufo").inspect() end, cmd(), desc = " Fold Info" },
@@ -164,10 +165,11 @@ return {
                         end
                         return { "treesitter", "indent" }
                 end,
-                fold_virt_text_handler  = function()
-                        -- return custom_foldtext()
-                        vim.wo.foldtext =
-                        [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) ]]
-                end,
+                fold_virt_text_handler = false
+                -- fold_virt_text_handler  = function()
+                --         -- return custom_foldtext()
+                --         vim.wo.foldtext =
+                --         [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) ]]
+                -- end,
         },
 }

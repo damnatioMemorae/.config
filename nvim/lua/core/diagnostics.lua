@@ -244,7 +244,7 @@ local function virt_text_to_sign(virt_text)
         ---|fE
 end
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 
 ---@type integer Decoration namespace.
 diagnostics.ns = vim.api.nvim_create_namespace("fancy_diagnostics");
@@ -436,7 +436,7 @@ diagnostics.__win_args = function(window, w, h)
         ---|fE
 end
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 
 --[[ Closes diagnostics window. ]]
 diagnostics.close = function()

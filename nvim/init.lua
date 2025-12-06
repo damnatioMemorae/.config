@@ -41,6 +41,7 @@ if not vim.env.NO_PLUGINS then
         if vim.g.setColorscheme then vim.g.setColorscheme("init") end
 end
 
+-- safeRequire("core.diagnostics")
 safeRequire("core.commands")
 safeRequire("core.autocmds")
 safeRequire("core.lsp")
@@ -49,7 +50,6 @@ safeRequire("core.yank-paste")
 safeRequire("functions.quickfix")
 safeRequire("core.backdrop-underline-fix")
 safeRequire("functions.beacon")
-safeRequire("core.diagnostics")
 -- safeRequire("functions.treesitter-diagnostics")
 -- safeRequire("core.fold")
 

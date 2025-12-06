@@ -76,7 +76,7 @@ body {
         --bg-2: #1e1e2e;
         --bg-3: #14141f;
         --bg-4: #0e0e16;
-        --hover: var(--bg-4);
+        --hover: #00000000;
         --active: hsla(235, 15%, 53%, 0.2);
         --active-2: hsla(235, 15%, 53%, 0.3);
         --message-hover: hsla(235, 0%, 0%, 0.1);
