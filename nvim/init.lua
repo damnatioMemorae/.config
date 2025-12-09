@@ -41,7 +41,10 @@ if not vim.env.NO_PLUGINS then
         if vim.g.setColorscheme then vim.g.setColorscheme("init") end
 end
 
--- safeRequire("core.diagnostics")
+-- require("core.lsp_hover").setup()
+require("core.diagnostics").setup()
+-- require("core.quickfix").setup()
+-- require("core.beacon").setup()
 safeRequire("core.commands")
 safeRequire("core.autocmds")
 safeRequire("core.lsp")

@@ -52,6 +52,7 @@ api.nvim_create_autocmd("FileType", {
                 "neotest-summary",
                 "neotest-output-panel",
                 "neo-tree",
+                "nofile",
         },
         callback = function(event)
                 vim.bo[event.buf].buflisted = false

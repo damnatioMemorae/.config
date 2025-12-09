@@ -3,9 +3,9 @@ return {
         version = false,
         event   = "VeryLazy",
         config  = function()
-                local hipatterns       = require("mini.hipatterns")
+                local hipatterns = require("mini.hipatterns")
 
-                local words            = {
+                local words = {
                         ["ivory"]       = "#dce0e8",
                         ["spark"]       = "#add8e6",
                         ["C.rosewater"] = "#f5e0dc",
@@ -34,6 +34,32 @@ return {
                         ["C.base"]      = "#1e1e2e",
                         ["C.mantle"]    = "#14141f",
                         ["C.crust"]     = "#0e0e16",
+                        ["rosewater"]   = "#f5e0dc",
+                        ["flamingo"]    = "#f2cdcd",
+                        ["pink"]        = "#f5c2e7",
+                        ["mauve"]       = "#cba6f7",
+                        ["red"]         = "#f38ba8",
+                        ["maroon"]      = "#eba0ac",
+                        ["peach"]       = "#fab387",
+                        ["yellow"]      = "#f9e2af",
+                        ["green"]       = "#a6e3a1",
+                        ["teal"]        = "#94e2d5",
+                        ["sky"]         = "#89dceb",
+                        ["sapphire"]    = "#74c7ec",
+                        ["blue"]        = "#89b4fa",
+                        ["lavender"]    = "#b4befe",
+                        ["text"]        = "#cdd6f4",
+                        ["subtext1"]    = "#bac2de",
+                        ["subtext0"]    = "#a6adc8",
+                        ["overlay2"]    = "#9399b2",
+                        ["overlay1"]    = "#7f849c",
+                        ["overlay0"]    = "#6c7086",
+                        ["surface2"]    = "#585b70",
+                        ["surface1"]    = "#45475a",
+                        ["surface0"]    = "#313244",
+                        ["base"]        = "#1e1e2e",
+                        ["mantle"]      = "#14141f",
+                        ["crust"]       = "#0e0e16",
                 }
 
                 local word_color_group = function(_, match)
@@ -42,12 +68,12 @@ return {
                         return hipatterns.compute_hex_color_group(hex, "bg")
                 end
 
-                local hsl_to_hex       = function(h, s, l)
+                local hsl_to_hex = function(h, s, l)
                         -- Actually convert h, s, l numbers into hex color in '#RRGGBB' format
                         return "#111111"
                 end
 
-                local hsl_color        = function(_, match)
+                local hsl_color = function(_, match)
                         local h, s, l   = match:match("hsl%((%d+) (%d+)%% (%d+)%%%)")
                         h, s, l         = tonumber(h), tonumber(s), tonumber(l)
                         local hex_color = hsl_to_hex(h, s, l)
@@ -56,11 +82,11 @@ return {
 
                 hipatterns.setup({
                         highlighters = {
-                                fix        = { pattern = "%f[%w]()FIX()%f[%W]", group = "MiniHipatternsFixme" },
-                                fixme      = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-                                hack       = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-                                todo       = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-                                note       = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+                                fix   = { pattern = "%f[%w]()FIX()%f[%W]", group = "MiniHipatternsFixme" },
+                                fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+                                hack  = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+                                todo  = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+                                note  = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
 
                                 hex_color  = hipatterns.gen_highlighter.hex_color(),
                                 word_color = { pattern = "%f[%w]()%S+()%f[%W]", group = word_color_group },

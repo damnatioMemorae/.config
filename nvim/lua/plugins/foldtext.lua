@@ -1,8 +1,8 @@
 return {
         "OXY2DEV/foldtext.nvim",
-        lazy   = false,
-        event  = "VeryLazy",
-        config = function()
+        -- enabled = false,
+        -- event   = "VeryLazy",
+        config  = function()
                 require("foldtext").setup({
                         ignore_buftypes  = {},
                         ignore_filetypes = {},
