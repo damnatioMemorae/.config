@@ -167,8 +167,9 @@ return {
                 -- fold_virt_text_handler = false
                 fold_virt_text_handler  = function()
                         -- return custom_foldtext()
-                        vim.wo.foldtext =
-                        [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) ]]
+                        vim.wo.foldtext = [[
+                                substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend))
+                        ]]
                 end,
         },
 }

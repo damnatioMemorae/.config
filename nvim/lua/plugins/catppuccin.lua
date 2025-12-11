@@ -1,39 +1,6 @@
 local ivory = "#dce0e8"
----@diagnostic disable-next-line: unused-local
 local spark = "#add8e6"
-
-local noita = {
-        mocha = {
-                --[[
-                rosewater = "#",
-                flamingo  = "#",
-                pink      = "#",
-                mauve     = "#",
-                red    = "#cb341b",
-                maroon = "#d17678",
-                peach     = "#",
-                yellow    = "#",
-                green     = "#",
-                teal      = "#",
-                sky       = "#",
-                sapphire  = "#",
-                blue      = "#",
-                lavender  = "#",
-                text      = "#",
-                subtext1  = "#",
-                subtext0  = "#",
-                overlay2  = "#",
-                overlay1  = "#",
-                overlay0  = "#",
-                surface2  = "#",
-                surface1  = "#",
-                surface0  = "#",
-                base      = "#",
-                mantle    = "#",
-                crust  = "#211a25",
-                --]]
-        },
-}
+-- local C = require("core.colors").C
 
 local customCol = function(C)
         return {
@@ -50,8 +17,8 @@ local customCol = function(C)
                 DiagnosticUnderlineWarn  = { bg = "#262325" },
                 DiagnosticUnderlineInfo  = { bg = "#1a232b" },
                 DiagnosticUnderlineHint  = { bg = "#1b2329" },
-                FancyDiagnostic          = { fg = C.red, bg = C.mantle },
-                FancyDiagnosticIcon      = { bg = C.red },
+                FancyDiagnosticDefault          = { fg = C.overlay2, bg = C.mantle },
+                FancyDiagnosticDefaultIcon      = { bg = C.overlay2 },
                 FancyDiagnosticError     = { fg = C.red, bg = C.mantle },
                 FancyDiagnosticErrorIcon = { bg = C.red },
                 FancyDiagnosticWarn      = { fg = C.yellow, bg = C.mantle },
@@ -147,6 +114,7 @@ local customCol = function(C)
                 WinSeparator             = { link = "LineNr" },
                 -- Exception                        = { fg = C.yellow },
                 Exception                = { fg = C.yellow },
+                markdownBlockquote       = { bg = C.crust },
 
                 --------------------------------------------------------------------------------------------------------
                 -- TREESITTER
@@ -312,7 +280,7 @@ local customCol = function(C)
                 BlinkCmpLabelDetail       = { link = "Comment" },
                 BlinkCmpLabelMatch        = { link = "Normal" },
                 BlinkCmpMenuBorder        = { fg = C.crust, bg = C.crust },
-                BlinkCmpDocBorder         = { link = "FloatBorder"},
+                BlinkCmpDocBorder         = { link = "FloatBorder" },
                 BlinkCmpMenu              = { bg = "#11111b" },
                 -- BlinkCmpMenu                     = { bg = "#13131E" },
                 -- BlinkCmpMenu                     = { bg = "#0e0e16" },

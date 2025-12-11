@@ -66,7 +66,6 @@ return {
                 "--header-insertion=iwyu",
                 "--import-insertions",
                 "--log=verbose",
-                "--malloc-trim",
                 "--debug-origin",
                 "--completion-parse=always",
                 -- "--completion-parse=never",

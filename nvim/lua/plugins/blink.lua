@@ -132,7 +132,8 @@ return {
                         },
                 },
                 fuzzy      = {
-                        implementation    = "prefer_rust",
+                        -- implementation    = "lua",
+                        implementation    = "prefer_rust_with_warning",
                         max_typos         = 0,
                         frecency          = {
                                 enabled = true,
@@ -147,7 +148,11 @@ return {
                                         end
                                 end, "exact", "score", "sort_text",
                         },
-                        prebuilt_binaries = { download = true, force_version = "1.*" },
+                        prebuilt_binaries = {
+                                download                = true,
+                                ignore_version_mismatch = false,
+                                force_version           = "1.*",
+                        },
                 },
                 cmdline    = {
                         enabled    = true,
@@ -187,7 +192,7 @@ return {
                         },
                 },
                 sources    = {
-                        default      = { "snippets", "lsp", "path", "buffer", "calc" },
+                        default      = { "lsp", "snippets", "path", "buffer", "calc" },
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
@@ -200,10 +205,21 @@ return {
                         },
                         providers    = {
                                 calc     = { name = "calc", module = "blink-calc" },
-                                snippets = { name = "Snip", score_offset = 140, min_keyword_length = 2 },
+                                snippets = {
+                                        name               = "Snip",
+                                        opts               = {
+                                                use_show_condition    = true,
+                                                use_label_description = true,
+                                        },
+                                        score_offset       = 140,
+                                        min_keyword_length = 2,
+                                },
                                 lsp      = {
                                         name         = "LSP",
                                         module       = "blink.cmp.sources.lsp",
+                                        opts         = { tailwind_color_icon = "██" },
+                                        async        = true,
+                                        timeout_ms   = 4000,
                                         score_offset = 160,
                                         fallbacks    = {},
                                         override     = {

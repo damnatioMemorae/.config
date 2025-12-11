@@ -26,6 +26,7 @@ local lspServers = {
         "superhtml",
         "ts_ls",
         "yamlls",
+        "ltex"
 }
 
 local get_default_capabilities = function()

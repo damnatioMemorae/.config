@@ -35,6 +35,7 @@ The used groups are,
 
 Use `setup()` for setting configuration. See [types/diagnostics.lua#diagnostics.config](https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/types/diagnostics.lua#L3-L19) for the type definition.
 ]]
+
 local diagnostics = {};
 local icons       = require("core.icons")
 local borders     = icons.misc.Borders
@@ -48,7 +49,7 @@ local function handle_diagnostic_level(level, icon)
         local default_icon_hl = string.format("FancyDiagnostic%sIcon", "Default");
 
         local bg      = string.format("FancyDiagnostic%s", level);
-        local icon_hl = string.format("FancyDiagnostic%sIcon", level);
+        local icon_hl = string.format("FancyDiagnostic%sIcon", level)
 
         return {
                 width         = 3,
@@ -95,14 +96,15 @@ diagnostics.config = {
                 default                         = {
                         from     = function()
                                 local fg = vim.api.nvim_get_hl(0, { name = "FancyDiagnosticIcon", link = false }).fg;
-                                return fg and string.format("#%06x", fg) or "#9399b2"
+                                return fg and string.format("#%06x", fg) or C.overlay2
                         end,
                         to       = function()
+                                -- local fg = vim.api.nvim_get_hl(0, { name = "FancyDiagnosticIcon", link = false }).fg;
+                                -- return fg and string.format("#%06x", fg) or C.overlay2
+
                                 local bg = vim.api.nvim_get_hl(0,
-                                                   -- { name = vim.o.statusline and "Cursorline" or "Normal", link = false })
-                                                               { name = "Error", link = false })
-                                           .bg;
-                                return bg and string.format("#%06x", bg) or "#14141f"
+                                        { name = vim.o.statusline and "Cursorline" or "Normal", link = false }).bg;
+                                return bg and string.format("#%06x", bg) or C.crust;
                         end,
                         steps    = 10,
                         interval = 100,
@@ -409,7 +411,7 @@ diagnostics.__integration = function(window, beacon_config)
         -- Markdown rendering.
         if package.loaded["markview"] then
                 package.loaded["markview"].render(diagnostics.buffer, { enable = true, hybrid_mode = false },
-                        { markdown_inline = { inline_codes = { virtual = true } } });
+                                                  { markdown_inline = { inline_codes = { virtual = true } } });
         end
 
         -- Beacon.
@@ -608,7 +610,7 @@ diagnostics.hover = function(window)
         vim.wo[diagnostics.window].conceallevel  = 3;
         vim.wo[diagnostics.window].concealcursor = "ncv";
 
-        vim.wo[diagnostics.window].winhl = "FloatBorder:@comment,Normal:Normal";
+        vim.wo[diagnostics.window].winhl = "FloatBorder:@comment,NormalFloat:NormalFloat";
 
         diagnostics.__integration(window, beacon_config);
 
@@ -634,6 +636,13 @@ diagnostics.hover = function(window)
         });
 
         vim.api.nvim_buf_set_keymap(diagnostics.buffer, "n", "q", "", {
+                desc     = "Exit diagnostics window",
+                callback = function()
+                        pcall(vim.api.nvim_set_current_win, window);
+                        diagnostics.close();
+                end,
+        });
+        vim.api.nvim_buf_set_keymap(diagnostics.buffer, "n", "<Esc>", "", {
                 desc     = "Exit diagnostics window",
                 callback = function()
                         pcall(vim.api.nvim_set_current_win, window);

@@ -1,7 +1,6 @@
 return { -- pattern-based textobjs
         "chrisgrieser/nvim-various-textobjs",
         keys = {
-                -- stylua: ignore start
                 { "<Space>", "<cmd>lua require('various-textobjs').subword('inner')<CR>", mode = "o", desc = "󰬞 inner subword" },
                 { "a<Space>", "<cmd>lua require('various-textobjs').subword('outer')<CR>", mode = { "o", "x" }, desc = "󰬞 outer subword" },
 
@@ -32,8 +31,8 @@ return { -- pattern-based textobjs
                 { "in", "<cmd>lua require('various-textobjs').number('inner')<CR>", mode = { "x", "o" }, desc = " inner number" },
                 { "an", "<cmd>lua require('various-textobjs').number('outer')<CR>", mode = { "x", "o" }, desc = " outer number" },
 
-                -- { "ii", "<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>", mode = { "x", "o" }, desc = "󰉶 inner indent" },
-                -- { "ai", "<cmd>lua require('various-textobjs').indentation('outer', 'outer')<CR>", mode = { "x", "o" }, desc = "󰉶 outer indent" },
+                { "ii", "<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>", mode = { "x", "o" }, desc = "󰉶 inner indent" },
+                { "ai", "<cmd>lua require('various-textobjs').indentation('outer', 'outer')<CR>", mode = { "x", "o" }, desc = "󰉶 outer indent" },
                 { "aj", "<cmd>lua require('various-textobjs').indentation('outer', 'inner')<CR>", mode = { "x", "o" }, desc = "󰉶 top-border indent" },
                 { "ig", "<cmd>lua require('various-textobjs').greedyOuterIndentation('inner')<CR>", mode = { "x", "o" }, desc = "󰉶 inner greedy indent" },
                 { "ag", "<cmd>lua require('various-textobjs').greedyOuterIndentation('outer')<CR>", mode = { "x", "o" }, desc = "󰉶 outer greedy indent" },
@@ -58,18 +57,7 @@ return { -- pattern-based textobjs
                 -- shell
                 { "i|", "<cmd>lua require('various-textobjs').shellPipe('inner')<CR>", mode = "o", ft = "sh", desc = "󰟥 inner pipe" },
                 { "a|", "<cmd>lua require('various-textobjs').shellPipe('outer')<CR>", mode = "o", ft = "sh", desc = "󰟥 outer pipe" },
-                -- stylua: ignore end
 
-                --[[ indent last paste
-                        "^",
-                        function()
-                                require("various-textobjs").lastChange()
-                                local changeFound = vim.fn.mode():find("v")
-                                if changeFound then vim.cmd.normal{ ">", bang = true } end
-                        end,
-                        desc = "󰉶 Indent Last Paste",
-                },
-                --]]
                 { -- delete surrounding indentation
                         "dsi",
                         function()
@@ -98,7 +86,7 @@ return { -- pattern-based textobjs
                         end,
                         desc = " Smart URL Opener",
                 },
-                {
+                { -- open URL (first in a file)
                         "<D-U>",
                         function()
                                 local urlPattern = require("various-textobjs.charwise-textobjs").urlPattern
