@@ -3,5 +3,7 @@
     "minimizeToTray": false,
     "arRPC": false,
     "splashColor": "rgb(186, 194, 222)",
-    "splashBackground": "rgb(14, 14, 22)"
+    "splashBackground": "rgb(14, 14, 22)",
+    "hardwareVideoAcceleration": true,
+    "splashPixelated": false
 }

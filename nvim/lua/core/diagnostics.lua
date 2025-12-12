@@ -45,11 +45,13 @@ local C           = require("core.colors").C
 ---@param icon string
 ---@return table
 local function handle_diagnostic_level(level, icon)
-        local default         = string.format("FancyDiagnostic%s", "Default");
-        local default_icon_hl = string.format("FancyDiagnostic%sIcon", "Default");
+        local default           = string.format("FancyDiagnostic%s", "Default");
+        local default_icon_hl   = string.format("FancyDiagnostic%sIcon", "Default");
+        local default_border_hl = string.format("FancyDiagnostic%sBorder", "Default");
 
-        local bg      = string.format("FancyDiagnostic%s", level);
-        local icon_hl = string.format("FancyDiagnostic%sIcon", level)
+        local bg         = string.format("FancyDiagnostic%s", level);
+        local icon_hl    = string.format("FancyDiagnostic%sIcon", level)
+        local bordder_hl = string.format("FancyDiagnostic%sBorder", level);
 
         return {
                 width         = 3,
@@ -58,14 +60,14 @@ local function handle_diagnostic_level(level, icon)
                 end,
                 icon          = function(_, current)
                         return {
-                                { "▌", current and icon_hl or default_icon_hl },
+                                { "▌", current and bordder_hl or default_border_hl },
                                 { icon, current and icon_hl or default_icon_hl },
                                 { " ", current and bg or default },
                         }
                 end,
                 padding       = function(_, current)
                         return {
-                                { "▌", current and icon_hl or default_icon_hl },
+                                { "▌", current and bordder_hl or default_border_hl },
                                 { "  ", current and icon_hl or default_icon_hl },
                                 { " ", current and bg or default },
                         }
@@ -99,9 +101,6 @@ diagnostics.config = {
                                 return fg and string.format("#%06x", fg) or C.overlay2
                         end,
                         to       = function()
-                                -- local fg = vim.api.nvim_get_hl(0, { name = "FancyDiagnosticIcon", link = false }).fg;
-                                -- return fg and string.format("#%06x", fg) or C.overlay2
-
                                 local bg = vim.api.nvim_get_hl(0,
                                         { name = vim.o.statusline and "Cursorline" or "Normal", link = false }).bg;
                                 return bg and string.format("#%06x", bg) or C.crust;

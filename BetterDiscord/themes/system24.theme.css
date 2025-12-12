@@ -30,7 +30,6 @@ body {
         --window-control-size: 14px;
         --interactive-background-selected: var(--red-5);
 
-        --control-critical-primary-background-default: var(--red-5);
         --custom-dms-icon: off;
         --dms-icon-svg-url: url("");
         --dms-icon-svg-size: 90%;
@@ -64,6 +63,7 @@ body {
         --label-color: var(--text-muted);
         --label-font-weight: 500;
 
+        --control-critical-primary-background-default: var(--red-5);
         --alert-bg: var(--red-5);
         --background-message-automod: var(--red-5);
         --background-message-automod-hover: var(--red-5);
@@ -82,6 +82,7 @@ body {
         --interactive-background-selected: var(--red-5);
         --colors: on;
 
+        --control-critical-primary-background-default: var(--red-5);
         --alert-bg: var(--red-5);
         --background-message-automod: var(--red-5);
         --background-message-automod-hover: var(--red-5);
@@ -180,6 +181,22 @@ body {
         --purple-3: #cba6f7;
         --purple-4: #cba6f7;
         --purple-5: #cba6f7;
+}
+
+* {
+        --control-critical-primary-background-default: var(--red-5);
+        --alert-bg: var(--red-5);
+        --background-message-automod: var(--red-5);
+        --background-message-automod-hover: var(--red-5);
+        --button-outline-primary-background: var(--red-5);
+        --button-outline-positive-background: var(--red-5);
+        --info-danger-background: var(--red-5);
+        --info-danger-text: var(--red-5);
+        --text-link-low-saturation: var(--red-5);
+        --text-message-preview-low-sat: var(--red-5);
+        --text-feedback-info: var(--red-5);
+        --status-warning-info: var(--red-5);
+        --status-warning-background: var(--red-5);
 }
 
 .bar__3b95d {
