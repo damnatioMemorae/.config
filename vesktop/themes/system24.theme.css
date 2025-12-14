@@ -237,6 +237,12 @@ body {
         border: 0px !important;
 }
 
+.newMessagesBar__0f481,
+.buttonChildrenWrapper_a22cb0 {
+        color: var(--text-3) !important;
+        background: var(--bg-2) !important;
+}
+
 .vc-text-base {
         color: inherit
 }
