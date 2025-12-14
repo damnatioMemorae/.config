@@ -63,6 +63,9 @@ body {
         --label-color: var(--text-muted);
         --label-font-weight: 500;
 
+        --control-secondary-background-default: var(--bg-2);
+        --control-secondary-background-hover: var(--red-opacity);
+        --interactive-text-hover: var(--red-5);
         --control-critical-primary-background-default: var(--red-5);
         --alert-bg: var(--red-5);
         --background-message-automod: var(--red-5);
@@ -76,12 +79,18 @@ body {
         --text-feedback-info: var(--red-5);
         --status-warning-info: var(--red-5);
         --status-warning-background: var(--red-5);
+        --text-strong: var(--text-2);
+
+        border: 0px;
 }
 
 :root {
         --interactive-background-selected: var(--red-5);
         --colors: on;
 
+        --control-secondary-background-default: var(--bg-2);
+        --control-secondary-background-hover: var(--red-opacity);
+        --interactive-text-hover: var(--red-5);
         --control-critical-primary-background-default: var(--red-5);
         --alert-bg: var(--red-5);
         --background-message-automod: var(--red-5);
@@ -95,6 +104,7 @@ body {
         --text-feedback-info: var(--red-5);
         --status-warning-info: var(--red-5);
         --status-warning-background: var(--red-5);
+        --text-strong: var(--text-2);
 
         --text-0: var(--bg-3);
         --text-1: hsl(226, 64%, 95%);
@@ -145,19 +155,20 @@ body {
         --streaming: var(--purple-2);
         --offline: var(--text-4);
 
-        --border: var(--bg-4);
-        --border-hover: #dce0e8;
-        --border-light: var(--hover);
-        --border-muted: var(--red-5);
-        --button-border: var(--bg-4);
+        /* --border: var(--bg-4); */
+        /* --border-hover: #dce0e8; */
+        /* --border-light: var(--hover); */
+        /* --border-muted: var(--bg-4); */
+        /* --button-border: var(--bg-4); */
 
-        --red-0: #f38ba820;
+        --red-opacity: #f38ba820;
         --red-1: #f38ba8;
         --red-2: #f38ba8;
         --red-3: #f38ba8;
         --red-4: #f38ba8;
         --red-5: #f38ba8;
 
+        --green-opacity: #a6e3a120;
         --green-1: #a6e3a1;
         --green-2: #a6e3a1;
         --green-3: #a6e3a1;
@@ -181,9 +192,23 @@ body {
         --purple-3: #cba6f7;
         --purple-4: #cba6f7;
         --purple-5: #cba6f7;
+        --opacity-green-12: var(--green-opacity);
+
+        border: 0px;
 }
 
 * {
+        --card-background-default: var(--bg-4);
+        --background-secondary: var(--bg-2);
+        --brand-500: var(--red-opacity);
+        --primary-800: var(--bg-4);
+        /* --text-default: var(--red-5); */
+        --interactive-text-active: var(--red-5);
+        --control-primary-text-default: var(--red-5);
+        --control-secondary-text-hover: var(--red-5);
+        --control-secondary-background-default: var(--bg-2);
+        --control-secondary-background-hover: var(--red-opacity);
+        --interactive-text-hover: var(--red-5);
         --control-critical-primary-background-default: var(--red-5);
         --alert-bg: var(--red-5);
         --background-message-automod: var(--red-5);
@@ -197,20 +222,40 @@ body {
         --text-feedback-info: var(--red-5);
         --status-warning-info: var(--red-5);
         --status-warning-background: var(--red-5);
+        --text-strong: var(--text-2);
+
+        border: 0px !important;
+}
+
+.root__49fc1,
+.vc-btn-primary,
+.wrapper__72c38,
+.cardPrimary__73069,
+.buttonSection__1405b,
+.vcd-screen-picker-option-radio {
+        color: var(--red-5);
+        border: 0px !important;
+}
+
+.vc-text-base {
+        color: inherit
+}
+
+.vc-btn-primary,
+.vcd-screen-picker-option-radio[data-checked=true] {
+        color: var(--bg-3) !important;
+        background: var(--red-5) !important;
+        border: 0px !important;
 }
 
 .bar__3b95d {
         color: var(--bg-4);
 }
 
-.buttonSection__1405b {
-        border: 0px;
-}
-
 .colorable_f1ceac.disconnect_f1ceac,
 .fullRegionButton_f1ceac
-.colorable_f1ceac.disconnect_f1ceac
-.centerIcon_f1ceac {
+        .colorable_f1ceac.disconnect_f1ceac
+        .centerIcon_f1ceac {
         color: #f38ba8;
         background: #f38ba8;
         border: 0px;

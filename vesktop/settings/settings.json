@@ -189,10 +189,15 @@
             "enableEmojiBypass": true,
             "transformEmojis": true,
             "transformStickers": true,
-            "transformCompoundSentence": false
+            "transformCompoundSentence": false,
+            "useHyperLinks": true,
+            "disableEmbedPermissionCheck": false,
+            "emojiSize": 48,
+            "stickerSize": 160
         },
         "FakeProfileThemes": {
-            "enabled": true
+            "enabled": true,
+            "nitroFirst": true
         },
         "FavoriteEmojiFirst": {
             "enabled": false
@@ -386,14 +391,17 @@
             "enabled": false
         },
         "PictureInPicture": {
-            "enabled": true
+            "enabled": true,
+            "loop": true
         },
         "PinDMs": {
             "enabled": true,
             "userBasedCategoryList": {
-                "680426841869385759": []
+                "680426841869385759": [],
+                "1258926113913176124": []
             },
-            "canCollapseDmSection": false
+            "canCollapseDmSection": false,
+            "pinOrder": 0
         },
         "PlainFolderIcon": {
             "enabled": false
@@ -436,7 +444,10 @@
         },
         "ReviewDB": {
             "enabled": true,
-            "notifyReviews": true
+            "notifyReviews": true,
+            "showWarning": true,
+            "hideTimestamps": false,
+            "hideBlockedUsers": true
         },
         "RoleColorEverywhere": {
             "enabled": false
@@ -459,18 +470,21 @@
         "ShikiCodeblocks": {
             "enabled": true,
             "useDevIcon": "GREYSCALE",
-            "theme": "https://cdn.jsdelivr.net/gh/shikijs/textmate-grammars-themes@bc5436518111d87ea58eb56d97b3f9bec30e6b83/packages/tm-themes/themes/dark-plus.json"
+            "theme": "https://cdn.jsdelivr.net/gh/shikijs/textmate-grammars-themes@bc5436518111d87ea58eb56d97b3f9bec30e6b83/packages/tm-themes/themes/dark-plus.json",
+            "tryHljs": "SECONDARY"
         },
         "ShowAllMessageButtons": {
             "enabled": false
         },
         "ShowConnections": {
-            "enabled": true
+            "enabled": true,
+            "iconSpacing": 1
         },
         "ShowHiddenChannels": {
             "enabled": true,
             "showMode": 0,
-            "hideUnreads": true
+            "hideUnreads": true,
+            "defaultAllowedUsersAndRolesDropdownState": true
         },
         "ShowHiddenThings": {
             "enabled": true,
@@ -492,14 +506,19 @@
             "enabled": false
         },
         "SilentTyping": {
-            "enabled": true
+            "enabled": true,
+            "isEnabled": true,
+            "showIcon": false,
+            "contextMenu": true
         },
         "SortFriendRequests": {
             "enabled": false
         },
         "SpotifyControls": {
             "enabled": true,
-            "hoverControls": false
+            "hoverControls": false,
+            "useSpotifyUris": false,
+            "previousButtonRestartsTrack": true
         },
         "SpotifyCrack": {
             "enabled": true,
@@ -570,7 +589,8 @@
             "enabled": false
         },
         "VencordToolbox": {
-            "enabled": true
+            "enabled": true,
+            "showPluginMenu": true
         },
         "ViewIcons": {
             "enabled": true,
@@ -584,7 +604,9 @@
             "enabled": true
         },
         "VoiceMessages": {
-            "enabled": true
+            "enabled": true,
+            "noiseSuppression": true,
+            "echoCancellation": true
         },
         "VolumeBooster": {
             "enabled": true,
@@ -636,7 +658,7 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1765502201938
+        "settingsSyncVersion": 1765591134817
     },
     "uiElements": {
         "chatBarButtons": {},

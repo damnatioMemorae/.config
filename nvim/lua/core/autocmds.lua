@@ -375,10 +375,10 @@ api.nvim_create_autocmd({ "BufWritePre" }, {
 -- SPLITS
 
 api.nvim_create_autocmd("FileType", {
-        pattern  = "help",
+        pattern  ={  "help", "qf" },
         desc     = "Automatically split help buffers to the right",
         callback = function()
-                if vim.o.filetype ~= "help" then return end
+                if vim.o.filetype ~= "help" or "qf" then return end
                 local function has_diffview_in_current_tab()
                         return vim.tbl_contains(
                                 vim.tbl_map(function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype end,

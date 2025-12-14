@@ -5,5 +5,9 @@
     "splashColor": "rgb(186, 194, 222)",
     "splashBackground": "rgb(14, 14, 22)",
     "hardwareVideoAcceleration": true,
-    "splashPixelated": false
+    "splashPixelated": false,
+    "spellCheckLanguages": [
+        "en-US",
+        "en"
+    ]
 }
