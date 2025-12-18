@@ -131,8 +131,8 @@ map(n, "<C-w>", function() nano.smartDuplicate() end, { desc = "󰲢 Duplicate l
 map(n, "~", "v~", { desc = "󰬴 Toggle char case (w/o moving)", silent = true })
 map(n, "<", function() nano.toggleWordCasing() end, { desc = "󰬴 Toggle lower/Title case", silent = true })
 
--- map(n, ">", function() nano.camelSnakeToggle() end,
---     { desc = "󰬴 Toggle camel and snake case", silent = true })
+map(n, ">", function() nano.camelSnakeToggle() end,
+    { desc = "󰬴 Toggle camel and snake case", silent = true })
 
 -- Append to EoL
 local trailChars = { ",", "\\", "[", "]", "{", "}", ")", ";", "." }
@@ -325,11 +325,11 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- REFACTORING
 
-map(n, prefix .. "n", vim.lsp.buf.rename, { desc = "󰑕 LSP rename", silent = true })
-
 map(n, "<leader>fd", ":global //d<Left><Left>", { desc = " delete matching lines", silent = true })
 
-map(n, "<leader>rc", function() nano.camelSnakeLspRename() end,
+map(n, prefix .. "n", vim.lsp.buf.rename, { desc = "󰑕 LSP rename", silent = true })
+
+map(n, prefix .. "m", function() nano.camelSnakeLspRename() end,
     { desc = "󰑕 LSP rename: camel/snake", silent = true })
 
 map(nx, "<leader>qq", function()

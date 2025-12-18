@@ -218,8 +218,8 @@ return {
                                         name         = "LSP",
                                         module       = "blink.cmp.sources.lsp",
                                         opts         = { tailwind_color_icon = "██" },
-                                        async        = true,
-                                        timeout_ms   = 4000,
+                                        -- async        = true,
+                                        -- timeout_ms   = 4000,
                                         score_offset = 160,
                                         fallbacks    = {},
                                         override     = {

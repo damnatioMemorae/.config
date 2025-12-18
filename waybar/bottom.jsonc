@@ -139,7 +139,7 @@
         "backlight": {
                 "device": "intel_backlight",
                 "format": "{percent}",
-                "on-click": "darkshader",
+                "on-click": "darkshader.lua",
                 "on-click-right": "shaders",
                 "tooltip-format": "{icon} {percent}%",
                 "on-scroll-up": "brightnessctl set 1%+",

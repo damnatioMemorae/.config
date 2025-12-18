@@ -52,6 +52,21 @@ local function symbol_info()
                               end, bufnr)
 end
 
+local function generate_compile_flags()
+        local needed = { "make", "bear", "llvm", "clang", "clangd" }
+        for _, pkg in ipairs(needed) do
+                if vim.fn.executable(pkg) == 1 then
+                        -- vim.cmd( "! make LLVM=1 CC=clangd -C /lib/modules/$(uname -r)/build M=$PWD modules")
+                        -- vim.cmd( "! bear -- make")
+                        -- vim.cmd("! notify-send aboba &>/dev/null")
+                        -- local on_exit = function ()
+                        --         os.execute( "notify-send aboba" )
+                        -- end
+                        vim.system({ "make", "LLVM=1", "CC=clangd", "-C", "/lib/modules/$(uname", "-r)/buildQ", "M=$PWD", "modules"}, { text = true }, on_exit)
+                end
+        end
+end
+
 return {
         cmd          = {
                 "clangd",
@@ -68,9 +83,9 @@ return {
                 "--log=verbose",
                 "--debug-origin",
                 "--completion-parse=always",
-                -- "--completion-parse=never",
                 "--use-dirty-headers",
                 "--ranking-model=decision_forest",
+                -- "--completion-parse=never",
         },
         filetypes    = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
         root_markers = {
@@ -101,7 +116,7 @@ return {
                         usePlaceholders    = true,
                         completeUnimported = true,
                         clangdFileStatus   = true,
-                        fallbackFlags      = { "-std=c++17" },
+                        fallbackFlags      = { "-std=c++20" },
                 },
         },
         capabilities = {
@@ -118,12 +133,11 @@ return {
                 vim.api.nvim_buf_create_user_command(bufnr, "LspClangdSwitchSourceHeader", function()
                                                              switch_source_header(bufnr)
                                                      end, { desc = "Switch between source/header" })
-
                 vim.api.nvim_buf_create_user_command(bufnr, "LspClangdShowSymbolInfo", function()
                                                              symbol_info()
                                                      end, { desc = "Show symbol info" })
-                vim.api.nvim_buf_create_user_command(bufnr, "LspClangdShowMemoryUsage", function()
-                                                             memory_usage()
-                                                     end, { desc = "Show memory usage" })
+                vim.api.nvim_buf_create_user_command(bufnr, "LspCLangdGenerateCompileFlags", function()
+                                                             generate_compile_flags()
+                                                     end, { desc = "Generate Compile Flags" })
         end,
 }

@@ -5,7 +5,7 @@
 local function install(pack, version)
         local notifyOpts = { title = "Mason", icon = " ", id = "mason.install", style = "minimal" }
 
-        local msg        = version and ("[%s] updating to `%s`…"):format(pack.name, version)
+        local msg = version and ("[%s] updating to `%s`…"):format(pack.name, version)
                    or ("[%s] installing…"):format(pack.name)
         vim.notify(msg, nil, notifyOpts)
 
@@ -62,10 +62,8 @@ local function syncPackages(ensurePacks)
 end
 
 return {
-        "williamboman/mason.nvim",
-        keys   = {
-                { "<leader>m", vim.cmd.Mason, desc = " Mason Home" },
-        },
+        "mason-org/mason.nvim",
+        keys   = { { "<leader>m", vim.cmd.Mason, desc = " Mason Home" } },
         init   = function() vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH end,
         config = function()
                 require("mason").setup({

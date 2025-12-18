@@ -254,8 +254,9 @@ body {
         border: 0px !important;
 }
 
+.attachedCaretButtonContainer_f1ceac,
 .bar__3b95d {
-        color: var(--bg-4);
+        color: var(--bg-4) !important;
 }
 
 .colorable_f1ceac.disconnect_f1ceac,

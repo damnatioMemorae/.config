@@ -45,7 +45,7 @@ return {
                 config       = function()
                         local tsn = require("ts-node-action.actions")
                         require("ts-node-action").setup({})
-                        vim.keymap.set("n", ">", function() tsn.toggle_operator() end)
+                        -- vim.keymap.set("n", ">", function() tsn.toggle_operator() end)
                 end,
         },
         { -- HYPR

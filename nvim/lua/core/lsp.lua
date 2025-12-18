@@ -15,7 +15,6 @@ local lspServers = {
         "emmet-language-server",
         "glsl_analyzer",
         "gopls",
-        "hsl",
         "jsonls",
         "kotlin_lsp",
         "lua_ls",
