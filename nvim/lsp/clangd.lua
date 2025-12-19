@@ -56,13 +56,12 @@ local function generate_compile_flags()
         local needed = { "make", "bear", "llvm", "clang", "clangd" }
         for _, pkg in ipairs(needed) do
                 if vim.fn.executable(pkg) == 1 then
-                        -- vim.cmd( "! make LLVM=1 CC=clangd -C /lib/modules/$(uname -r)/build M=$PWD modules")
-                        -- vim.cmd( "! bear -- make")
-                        -- vim.cmd("! notify-send aboba &>/dev/null")
-                        -- local on_exit = function ()
-                        --         os.execute( "notify-send aboba" )
-                        -- end
-                        vim.system({ "make", "LLVM=1", "CC=clangd", "-C", "/lib/modules/$(uname", "-r)/buildQ", "M=$PWD", "modules"}, { text = true }, on_exit)
+                        local on_exit = function ()
+                                vim.notify("Compile Flags")
+                        end
+                        vim.system(
+                        { "make", "LLVM=1", "CC=clangd", "-C", "/lib/modules/$(uname", "-r)/buildQ", "M=$PWD", "modules" },
+                                { text = true }, on_exit)
                 end
         end
 end

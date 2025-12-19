@@ -28,6 +28,7 @@ local lspServers = {
         "ltex"
 }
 
+--[[
 local get_default_capabilities = function()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
 
@@ -45,6 +46,7 @@ vim.lsp.config("*", {
         root_markers = { ".git" },
         flags        = { debounce_text_changes = 500 },
 })
+--]]
 
 vim.lsp.enable(lspServers)
 

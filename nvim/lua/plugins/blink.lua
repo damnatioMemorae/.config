@@ -1,6 +1,9 @@
 return {
         "saghen/blink.cmp",
         lazy         = false,
+        build        = "cargo build --release",
+        version      = "1.*",
+        ---[[
         dependencies = {
                 { "saghen/blink.compat" },
                 { "niuiic/blink-cmp-rg.nvim" },
@@ -15,6 +18,7 @@ return {
                         },
                 },
         },
+        --]]
         opts         = {
                 snippets   = { preset = "luasnip" },
                 completion = {
@@ -149,7 +153,7 @@ return {
                                 end, "exact", "score", "sort_text",
                         },
                         prebuilt_binaries = {
-                                download                = true,
+                                download                = false,
                                 ignore_version_mismatch = false,
                                 force_version           = "1.*",
                         },
@@ -312,7 +316,13 @@ return {
                 signature  = { enabled = true, window = { scrollbar = false } },
         },
         opts_extend  = { "sources.default" },
-        config       = function(_, opts)
+
+        config = function(_, opts)
                 require("blink-cmp").setup(opts)
+
+                -- local capabilities = require("blink.cmp").get_lsp_capabilities()
+                -- local lspconfig    = require("lspconfig")
+
+                -- lspconfig["*"].setup({ capabilities = capabilities })
         end,
 }

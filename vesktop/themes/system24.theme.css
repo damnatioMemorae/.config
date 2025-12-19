@@ -244,11 +244,11 @@ body {
 }
 
 .vc-text-base {
-        color: inherit
+        color: inherit;
 }
-
 .vc-btn-primary,
-.vcd-screen-picker-option-radio[data-checked=true] {
+._0f481cbbd7530492-barButtonAlt,
+.vcd-screen-picker-option-radio[data-checked="true"] {
         color: var(--bg-3) !important;
         background: var(--red-5) !important;
         border: 0px !important;
