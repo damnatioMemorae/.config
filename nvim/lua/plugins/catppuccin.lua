@@ -579,7 +579,7 @@ local customCol = function(C)
                 FlashLabel              = { link = "DiagnosticError" },
                 TreesitterContext       = { bg = C.mantle, bold = true },
                 -- LspReferenceText        = { link = "Visual" },
-                LspReferenceText        = { bg = C.base, bold = true },
+                LspReferenceText        = { bg = C.none, bold = true },
                 LspReferenceWrite       = { link = "LspReferenceText" },
                 LspReferenceRead        = { link = "LspReferenceWrite" },
                 DiffAdded               = { link = "DiffAdd" },

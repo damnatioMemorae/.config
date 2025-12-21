@@ -7,7 +7,6 @@ local lspServers = {
         "basedpyright",
         "bashls",
         "biome",
-        "hyprls",
         "clangd",
         "cmake",
         "css_variables",
@@ -15,38 +14,22 @@ local lspServers = {
         "emmet-language-server",
         "glsl_analyzer",
         "gopls",
+        "hyprls",
         "jsonls",
         "kotlin_lsp",
+        "ltex",
         "lua_ls",
         "pylsp",
+        "qmlls",
         "qmlls",
         "ruff",
         "rust_analyzer",
         "superhtml",
         "ts_ls",
         "yamlls",
-        "ltex"
 }
 
---[[
-local get_default_capabilities = function()
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-        capabilities.textDocument.foldingRange = {
-                dynamicRegistration = true,
-                lineFoldingOnly     = true,
-        }
-        return capabilities
-end
-
-local capabilities = get_default_capabilities()
-
-vim.lsp.config("*", {
-        capabilities = capabilities,
-        root_markers = { ".git" },
-        flags        = { debounce_text_changes = 500 },
-})
---]]
+vim.lsp.config("*", { root_markers = { ".git" } })
 
 vim.lsp.enable(lspServers)
 

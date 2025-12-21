@@ -9,22 +9,22 @@ local g       = vim.g
 -- AUTO-CD TO PROJECT ROOT
 
 --[[ AUTO CD TO PROJECT ROOT
-local autoCdConfig = {
-        childOfRoot = {
+local autoCdConfig  = {
+        childOfRoot  = {
                 ".git",
         },
-        parentOfRoot = {
+        parentOfRoot  = {
                 ".config",
                 vim.fs.basename(vim.env.HOME),
         },
 }
 api.nvim_create_autocmd("VimEnter", {
-        desc     = "User: Auto-cd to project root",
-        callback = function(ctx)
-                local root = vim.fs.root(ctx.buf, function(name, path)
-                        local parentName         = vim.fs.basename(vim.fs.dirname(path))
-                        local dirHasParentMarker = vim.tbl_contains(autoCdConfig.parentOfRoot, parentName)
-                        local dirHasChildMarker  = vim.tbl_contains(autoCdConfig.childOfRoot, name)
+        desc      = "User: Auto-cd to project root",
+        callback  = function(ctx)
+                local root  = vim.fs.root(ctx.buf, function(name, path)
+                        local parentName          = vim.fs.basename(vim.fs.dirname(path))
+                        local dirHasParentMarker  = vim.tbl_contains(autoCdConfig.parentOfRoot, parentName)
+                        local dirHasChildMarker   = vim.tbl_contains(autoCdConfig.childOfRoot, name)
                         return dirHasChildMarker or dirHasParentMarker
                 end)
                 if root and root ~= "" then vim.uv.chdir(root) end
@@ -170,7 +170,7 @@ local globToTemplateMap = {
         [fn.stdpath("config") .. "/lua/plugins/*.lua"]   = "plugin-spec.lua",
         [fn.stdpath("config") .. "/lsp/*.lua"]           = "lsp.lua",
 
-        -- ["**/*.py"]                                          = "template.py",
+        -- ["**/*.py"]                                           = "template.py",
         ["**/*.sh"]  = "template.zsh",
         ["**/*.*sh"] = "template.zsh",
 }
@@ -195,11 +195,11 @@ api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
 
                                 local content = {}
                                 local cursor
-                                local row = 1
+                                local row     = 1
                                 for line in io.lines(templatePath) do
                                         local placeholderPos = line:find("%$0")
                                         if placeholderPos then
-                                                line = line:gsub("%$0", "")
+                                                line   = line:gsub("%$0", "")
                                                 cursor = { row, placeholderPos - 1 }
                                         end
                                         table.insert(content, line)
@@ -219,15 +219,15 @@ api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
 -- ENFORCE SCROLLOFF AT EOF
 
 api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "WinScrolled" }, {
-        desc = "Fix scrolloff when you are at the EOF",
-        group = augroup("ScrollEOF", { clear = true }),
+        desc     = "Fix scrolloff when you are at the EOF",
+        group    = augroup("ScrollEOF", { clear = true }),
         callback = function()
                 if api.nvim_win_get_config(0).relative ~= "" then
                         return -- Ignore floating windows
                 end
 
-                local win_height = fn.winheight(0)
-                local scrolloff = math.min(o.scrolloff, math.floor(win_height / 2))
+                local win_height             = fn.winheight(0)
+                local scrolloff              = math.min(o.scrolloff, math.floor(win_height / 2))
                 local visual_distance_to_eof = win_height - fn.winline()
 
                 if visual_distance_to_eof < scrolloff then
@@ -272,28 +272,28 @@ api.nvim_create_autocmd("LspAttach", {
                 ---@diagnostic disable-next-line: unnecessary-if
                 --[[
                 if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight", 0) then
-                        local buf               = args.buf
-                        local highlight_augroup = augroup("lsp-highlight", { clear = false })
+                        local buf                = args.buf
+                        local highlight_augroup  = augroup("lsp-highlight", { clear  = false })
 
                         api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" }, {
-                                buffer   = buf,
-                                group    = highlight_augroup,
-                                callback = lsp.buf.document_highlight,
+                                buffer    = buf,
+                                group     = highlight_augroup,
+                                callback  = lsp.buf.document_highlight,
                         })
 
                         api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                                buffer   = buf,
-                                group    = highlight_augroup,
-                                callback = lsp.buf.clear_references,
+                                buffer    = buf,
+                                group     = highlight_augroup,
+                                callback  = lsp.buf.clear_references,
                         })
 
                         api.nvim_create_autocmd("LspDetach", {
-                                group    = augroup("lsp-detach", { clear = true }),
+                                group     = augroup("lsp-detach", { clear  = true }),
                                 ---@diagnostic disable-next-line: unknown-diag-code
                                 ---@diagnostic disable-next-line: unused, unused-local
-                                callback = function(event2)
+                                callback  = function(event2)
                                         lsp.buf.clear_references()
-                                        -- api.nvim_clear_autocmd({ "lsp-highlight", buffer = event2.buf })
+                                        -- api.nvim_clear_autocmd({ "lsp-highlight", buffer  = event2.buf })
                                 end,
                         })
                 end
@@ -308,6 +308,14 @@ api.nvim_create_autocmd("LspAttach", {
                 elseif mode == "i" then
                         lsp.inlay_hint.enable(false, nil)
                 end
+
+                --------------------------------------------------------------------------------------------------------
+                -- DOCUMENT COLOR
+
+                if fn.has("nvim-0.12") == 1 and client:supports_method("textDocument/documentColor") then
+                        vim.lsp.document_color.enable(true, args.buf)
+                end
+
         end,
 })
 
@@ -375,7 +383,7 @@ api.nvim_create_autocmd({ "BufWritePre" }, {
 -- SPLITS
 
 api.nvim_create_autocmd("FileType", {
-        pattern  ={  "help", "qf" },
+        pattern  = { "help" },
         desc     = "Automatically split help buffers to the right",
         callback = function()
                 if vim.o.filetype ~= "help" or "qf" then return end
@@ -392,4 +400,14 @@ api.nvim_create_autocmd("FileType", {
 api.nvim_create_autocmd("VimResized", {
         desc    = "Automatically resize splits, when terminal window is moved",
         command = "wincmd =",
+})
+
+api.nvim_create_autocmd("FileType", {
+        pattern  = "qf",
+        callback = function()
+                vim.cmd("wincmd L")
+                vim.cmd("vertical resize 70")
+                o.signcolumn = "yes:1"
+                o.number     = false
+        end,
 })

@@ -238,7 +238,9 @@ body {
 }
 
 .newMessagesBar__0f481,
-.buttonChildrenWrapper_a22cb0 {
+._91a9d7f7e5248a56-selected,
+.buttonChildrenWrapper_a22cb0,
+._91a9d7f7e5248a56-childContainer {
         color: var(--text-3) !important;
         background: var(--bg-2) !important;
 }
@@ -246,6 +248,7 @@ body {
 .vc-text-base {
         color: inherit;
 }
+
 .vc-btn-primary,
 ._0f481cbbd7530492-barButtonAlt,
 .vcd-screen-picker-option-radio[data-checked="true"] {

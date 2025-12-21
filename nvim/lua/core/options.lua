@@ -15,41 +15,31 @@ if vim.fn.exists("syntax_on") ~= 1 then
         vim.cmd("syntax enable")
 end
 
-opt.spelloptions:append("noplainbuffer")
-
+opt.whichwrap:append("<>[]hl")
 opt.iskeyword:append("@,48-57,_,-,192-255")
-
+opt.spelloptions:append("noplainbuffer")
 opt.undofile    = true
 opt.undolevels  = 10000
 opt.swapfile    = false
 opt.backup      = false
 opt.writebackup = false
-
 opt.spell       = false
 opt.spelllang   = "en_us"
-
 opt.splitright  = true
 opt.splitbelow  = true
-
 opt.cursorline  = true
 opt.signcolumn  = "yes"
-
-opt.whichwrap:append("<>[]hl")
 opt.wrap          = false
 opt.breakindent   = true
-
 opt.report        = 9901
-
 opt.autowrite     = false
 opt.autowriteall  = false
-
 opt.jumpoptions   = "view"
 opt.startofline   = true
-
 opt.scrolloff     = 14
 opt.sidescrolloff = 4
-
 opt.shortmess     = "ltToOCFIc"
+opt.messagesopt   = { "wait:0", "history:1000" }
 opt.nrformats     = "bin,hex,blank"
 
 -- opt.statuscolumn  = "%s%l%C"
@@ -57,17 +47,15 @@ opt.nrformats     = "bin,hex,blank"
 ------------------------------------------------------------------------------------------------------------------------
 -- EDITOR
 
-opt.textwidth     = 120
-
-opt.expandtab     = true
+opt.textwidth   = 120
+opt.expandtab   = true
 -- opt.tabstop = 3
-opt.shiftwidth    = 8
-
-opt.shiftround    = true
-opt.smartindent   = true
-opt.autoindent    = true
-opt.breakindent   = true
-opt.copyindent    = true
+opt.shiftwidth  = 8
+opt.shiftround  = true
+opt.smartindent = true
+opt.autoindent  = true
+opt.breakindent = true
+opt.copyindent  = true
 
 ------------------------------------------------------------------------------------------------------------------------
 -- FILETYPES
@@ -86,17 +74,16 @@ vim.filetype.add{
 ------------------------------------------------------------------------------------------------------------------------
 -- SEARCH & CMDLINE
 
-opt.ignorecase   = true
-opt.smartcase    = true
-opt.hlsearch     = false
-opt.inccommand   = "split"
-opt.cmdheight    = 0
+opt.ignorecase = true
+opt.smartcase  = true
+opt.hlsearch   = false
+opt.inccommand = "split"
+opt.cmdheight  = 0
 
 ------------------------------------------------------------------------------------------------------------------------
 -- INVISIBLE CHARS
 
 opt.foldtext     = "v:lua.custom_foldtext()"
-
 opt.list         = true
 opt.conceallevel = 3
 opt.fillchars:append{
@@ -108,8 +95,7 @@ opt.fillchars:append{
         foldsep   = "│",
         diff      = "╱",
 }
-
-opt.listchars      = {
+opt.listchars = {
         nbsp       = " ",
         precedes   = misc.ellipsis,
         extends    = misc.ellipsis,
@@ -144,8 +130,8 @@ opt.virtualedit    = "block"
 opt.wildmode       = "longest:full,full"
 opt.winminwidth    = 5
 opt.wrapmargin     = 120
-o.hidden           = true
 opt.smoothscroll   = true
+o.hidden           = true
 
 
 vim.cmd("autocmd BufEnter * set fo-=c fo-=r fo-=o")

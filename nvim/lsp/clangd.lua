@@ -55,13 +55,8 @@ end
 local function generate_compile_flags()
         local needed = { "make", "bear", "llvm", "clang", "clangd" }
         for _, pkg in ipairs(needed) do
+                ---@diagnostic disable-next-line: empty-block
                 if vim.fn.executable(pkg) == 1 then
-                        local on_exit = function ()
-                                vim.notify("Compile Flags")
-                        end
-                        vim.system(
-                        { "make", "LLVM=1", "CC=clangd", "-C", "/lib/modules/$(uname", "-r)/buildQ", "M=$PWD", "modules" },
-                                { text = true }, on_exit)
                 end
         end
 end
@@ -120,7 +115,7 @@ return {
         },
         capabilities = {
                 offsetEncoding = { "utf-8", "utf-16" },
-                semanticTokens = { multilineTokenSupport = true },
+                semanticTokens = { multilineTokenSupport = false },
                 textDocument   = { completion = { editsNearCursor = true } },
         },
         on_init      = function(client, init_result)
