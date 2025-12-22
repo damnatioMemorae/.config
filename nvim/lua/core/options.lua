@@ -39,7 +39,7 @@ opt.startofline   = true
 opt.scrolloff     = 14
 opt.sidescrolloff = 4
 opt.shortmess     = "ltToOCFIc"
-opt.messagesopt   = { "wait:0", "history:1000" }
+-- opt.messagesopt   = { "wait:0", "history:1000" }
 opt.nrformats     = "bin,hex,blank"
 
 -- opt.statuscolumn  = "%s%l%C"
@@ -122,7 +122,6 @@ opt.pumheight      = 20
 opt.relativenumber = true
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 opt.showmode       = false
-opt.syntax         = "on"
 opt.termguicolors  = true
 opt.termsync       = true
 opt.updatetime     = 200

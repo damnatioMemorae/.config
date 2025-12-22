@@ -312,10 +312,11 @@ api.nvim_create_autocmd("LspAttach", {
                 --------------------------------------------------------------------------------------------------------
                 -- DOCUMENT COLOR
 
+                --[[
                 if fn.has("nvim-0.12") == 1 and client:supports_method("textDocument/documentColor") then
                         vim.lsp.document_color.enable(true, args.buf)
                 end
-
+                --]]
         end,
 })
 

@@ -20,8 +20,6 @@ local lspServers = {
         "ltex",
         "lua_ls",
         "pylsp",
-        "qmlls",
-        "qmlls",
         "ruff",
         "rust_analyzer",
         "superhtml",

@@ -130,8 +130,10 @@ return {
                 vim.api.nvim_buf_create_user_command(bufnr, "LspClangdShowSymbolInfo", function()
                                                              symbol_info()
                                                      end, { desc = "Show symbol info" })
+                --[[
                 vim.api.nvim_buf_create_user_command(bufnr, "LspCLangdGenerateCompileFlags", function()
                                                              generate_compile_flags()
                                                      end, { desc = "Generate Compile Flags" })
+                --]]
         end,
 }
