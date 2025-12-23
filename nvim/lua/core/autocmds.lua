@@ -403,6 +403,9 @@ api.nvim_create_autocmd("VimResized", {
         command = "wincmd =",
 })
 
+------------------------------------------------------------------------------------------------------------------------
+-- QUICKFIX
+
 api.nvim_create_autocmd("FileType", {
         pattern  = "qf",
         callback = function()
@@ -410,5 +413,14 @@ api.nvim_create_autocmd("FileType", {
                 vim.cmd("vertical resize 70")
                 o.signcolumn = "yes:1"
                 o.number     = false
+        end,
+})
+
+api.nvim_create_autocmd("FileType", {
+        pattern  = "qf",
+        callback = function(event)
+                local opts = { buffer = event.buf, silent = true }
+                vim.keymap.set("n", "J", "<cmd>cn<CR>zz<cmd>wincmd p<CR>", opts)
+                vim.keymap.set("n", "K", "<cmd>cN<CR>zz<cmd>wincmd p<CR>", opts)
         end,
 })
