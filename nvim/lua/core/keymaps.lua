@@ -131,8 +131,8 @@ map(n, "<C-w>", function() nano.smartDuplicate() end, { desc = "󰲢 Duplicate l
 map(n, "~", "v~", { desc = "󰬴 Toggle char case (w/o moving)", silent = true })
 map(n, "<", function() nano.toggleWordCasing() end, { desc = "󰬴 Toggle lower/Title case", silent = true })
 
-map(n, ">", function() nano.camelSnakeToggle() end,
-    { desc = "󰬴 Toggle camel and snake case", silent = true })
+-- map(n, ">", function() nano.camelSnakeToggle() end,
+--     { desc = "󰬴 Toggle camel and snake case", silent = true })
 
 -- Append to EoL
 local trailChars = { ",", "\\", "[", "]", "{", "}", ")", ";", "." }

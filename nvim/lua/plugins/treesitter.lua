@@ -47,12 +47,15 @@ return {
         --]]
         { -- NODE ACTIONS
                 "ckolkey/ts-node-action",
-                dependencies = { "nvim-treesitter" },
+                dependencies = { "nvim-treesitter/nvim-treesitter" },
                 event        = "VeryLazy",
                 config       = function()
-                        local tsn = require("ts-node-action.actions")
                         require("ts-node-action").setup({})
-                        -- vim.keymap.set("n", ">", function() tsn.toggle_operator() end)
+                        local tsn     = require("ts-node-action.actions")
+                        local map     = vim.keymap.set
+                        local formats = { "snake_case", "pascal_case", "screaming_snake_case", "camel_case" }
+                        -- local formats = { "snake_case", "Pascal_case", "SCREAMING_SNAKE_CASE", "camelCase" }
+                        map("n", ">", function() tsn.cycle_case(formats) end)
                 end,
         },
         { -- HYPR

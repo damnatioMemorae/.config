@@ -26,60 +26,6 @@ return {
                                 auto_show          = true,
                                 auto_show_delay_ms = 50,
                                 window             = { border = "single" },
-                                --[[#region
-                                draw               = function(data)
-                                        ---@type integer
-                                        local buf     = data.window.buf;
-                                        ---@type integer
-                                        local src_buf = vim.api.nvim_get_current_buf();
-
-                                        ---@type string[]
-                                        local lines = {};
-
-                                        if data.item and data.item.documentation then
-                                                lines = vim.split(data.item.documentation.value or "", "\n",
-                                                                  { trimempty = true });
-                                        end
-
-                                        ---@type string[]
-                                        local details = vim.split(data.item.detail or "", "\n", { trimempty = true });
-
-                                        if #details > 0 then
-                                                table.insert(details, 1, string.format("```%s", vim.bo[src_buf].ft or ""));
-                                                table.insert(details, "```");
-                                                if #lines > 0 then
-                                                        details = vim.list_extend(details,
-                                                                                  { "", "Detail: ", "--------", "" });
-                                                end
-                                        end
-
-                                        local visible_lines = vim.list_extend(details, lines);
-                                        vim.api.nvim_buf_set_lines(buf, 0, -1, false, visible_lines);
-                                        if vim.g.__reg_doc ~= true then
-                                                vim.treesitter.language.register("markdown", "blink-cmp-documentation");
-                                                vim.g.__reg_doc = true;
-                                        end
-                                        if package.loaded["markview"] then
-                                                local win = data.window:get_win();
-                                                if win then
-                                                        vim.bo[buf].ft = "markdown";
-                                                        require("markview").render(buf,
-                                                                                   { enable = true, hybrid_mode = false });
-                                                        vim.bo[buf].ft = "blink-cmp-documentation";
-                                                end
-                                                vim.defer_fn(function()
-                                                                     win = data.window:get_win();
-                                                                     if win then
-                                                                             vim.wo[win].signcolumn = "no";
-                                                                     end
-                                                                     vim.bo[buf].ft = "markdown";
-                                                                     require("markview").render(buf,
-                                                                                                { enable = true, hybrid_mode = false });
-                                                                     vim.bo[buf].ft = "blink-cmp-documentation";
-                                                             end, 25);
-                                        end
-                                end,
-                                --#endregion]]
                         },
                         trigger       = {
                                 prefetch_on_insert                   = true,
@@ -208,8 +154,8 @@ return {
                                 jsons              = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
-                                calc     = { name = "calc", module = "blink-calc" },
-                                snippets = {
+                                calc           = { name = "calc", module = "blink-calc" },
+                                snippets       = {
                                         name               = "Snip",
                                         opts               = {
                                                 use_show_condition    = true,
@@ -218,7 +164,7 @@ return {
                                         score_offset       = 140,
                                         min_keyword_length = 2,
                                 },
-                                lsp      = {
+                                lsp            = {
                                         name         = "LSP",
                                         module       = "blink.cmp.sources.lsp",
                                         opts         = { tailwind_color_icon = "██" },
@@ -234,7 +180,7 @@ return {
                                                 end,
                                         },
                                 },
-                                path     = {
+                                path           = {
                                         name         = "Path",
                                         module       = "blink.cmp.sources.path",
                                         score_offset = 260,
@@ -247,19 +193,19 @@ return {
                                                 show_hidden_files_by_default = true,
                                         },
                                 },
-                                buffer   = {
+                                buffer         = {
                                         name         = "Buf",
                                         score_offset = 60,
                                         max_items    = 8,
                                         opts         = { get_bufnrs = vim.api.nvim_list_bufs },
                                 },
-                                omni     = {
+                                omni           = {
                                         name         = "Omni",
                                         module       = "blink.cmp.sources.complete_func",
                                         score_offset = 60,
                                         opts         = { disable_omnifunc = { "v:lua.vim.lsp.omnifunc" } },
                                 },
-                                ripgrep  = {
+                                ripgrep        = {
                                         module       = "blink-cmp-rg",
                                         name         = "RG",
                                         score_offset = 10,
