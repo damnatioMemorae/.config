@@ -352,8 +352,7 @@ return {
                                 dropdown = {
                                         layout = {
                                                 backdrop  = true,
-                                                row       = 1,
-                                                width     = 0.5,
+                                                width     = 0.9,
                                                 height    = 0.9,
                                                 min_width = 80,
                                                 border    = "none",

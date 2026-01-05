@@ -8,6 +8,7 @@
                 // "$XDG_DATA_HOME/nvim/lazy/nvim-ufo",
                 // "$XDG_DATA_HOME/nvim/lazy/nvim-treesitter",
                 // "$HOME/.local/share/nvim/lazy/",
+                "$HOME/.local/share/nvim/lazy/snacks.nvim",
                 "${3rd}/luv/library"
         ],
         "runtime.version": "LuaJIT",
@@ -18,7 +19,8 @@
         "unused-function",
         "lowercase-global",
         "redundant-value"
-    ]
+    ],
+    "completion.autoRequire": false
         // "hover.enable": false,
         // "signatureHelp.enable": true
 }

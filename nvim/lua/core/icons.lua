@@ -8,13 +8,18 @@ local emptySquare  = "󰝣"
 M.diagnostics = {
         ERROR = filledSquare,
         WARN  = filledSquare,
-        HINT  = filledSquare,
         INFO  = filledSquare,
+        HINT  = filledSquare,
 
         Error = filledSquare,
         Warn  = filledSquare,
-        Hint  = filledSquare,
         Info  = filledSquare,
+        Hint  = filledSquare,
+
+        errorMd = "󰅙 ",
+        warnMd  = " ",
+        infoMd  = "󰀨 ",
+        hintMd  = "󰁨 ",
 
         lightbulb = "󱠀",
 }
@@ -151,21 +156,21 @@ M.symbol_kinds_alt = {
 
 -- MISC
 M.misc = {
-        Bug          = "",
-        Ellipsis     = "…",
-        Variable     = "",
-        Git          = "",
-        Search       = "",
-        Vertical_bar = "▏",
-        Prompt       = ">",
-        Dashed_bar   = filledSquare,
-        LspDef       = filledSquare,
-        LspRef       = "󰘷",
-        LspImpl      = "󰃐",
-        FolderOpen   = "",
-        FolderEmpty  = "",
-        Borders      = { " ", " ", " ", " ", " ", " ", " ", " " },
-        Spinner      = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+        Bug            = "",
+        Ellipsis       = "…",
+        Variable       = "",
+        Git            = "",
+        Search         = "",
+        Vertical_bar   = "▏",
+        Prompt         = ">",
+        FolderOpen     = "",
+        FolderEmpty    = "",
+        Borders        = { " ", " ", " ", " ", " ", " ", " ", " " },
+        Spinner        = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+        Dashed_bar     = filledSquare,
+        definiton      = filledSquare,
+        reference      = "󰘷",
+        implementation = "󰃐",
 }
 
 -- GIT

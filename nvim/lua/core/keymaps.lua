@@ -1,18 +1,12 @@
 ---@diagnostic disable: unused-local
 
-local function cmd()
-        vim.cmd.normal("^zz")
-end
+local utils       = require("core.utils")
+local comments    = require("functions.comment")
+local nano        = require("functions.nano-plugins")
+local eval        = require("functions.inspect-and-eval")
+local map, prefix = utils.uniqueKeymap, utils.prefix
 
-local utils               = require("core.utils")
-local prefix              = require("core.utils").prefix
-local map                 = require("core.utils").uniqueKeymap
-local comments            = require("functions.comment")
-local eval                = require("functions.inspect-and-eval")
-local nano                = require("functions.nano-plugins")
 local n, i, c, v, o, x, t = "n", "i", "c", "v", "o", "x", "t"
-
-local opts = { silent = true }
 
 local ni    = { n, i }
 local nx    = { n, x }
@@ -24,6 +18,11 @@ local nic   = { n, i, c }
 local niv   = { n, i, v }
 local nio   = { n, i, o }
 local nxcvo = { n, x, c, v, o }
+local opts  = { silent = true }
+
+local function cmd()
+        vim.cmd.normal("^zz")
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- META
@@ -224,8 +223,9 @@ map(n, "qO", function()
             vim.cmd.normal("zz")
     end, { desc = "󰆈 Comment Above", silent = true })
 map(n, "dQ", function()
-            vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~"),
-                                      cmd()))
+            -- vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~"),
+            --                           cmd()))
+            vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~")))
     end, { desc = "󰆈  Delete Comments", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -240,7 +240,6 @@ map(n, "<A-D>", function()
             vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Prev" })
 
--- map(n, prefix .. "e", vim.diagnostic.open_float, { desc = "󰨓 Diagnostic Float" })
 map(n, prefix .. "f", "gf", { desc = "Goto File", silent = true })
 map(n, "K", vim.lsp.buf.hover, { desc = "󰏪 Hover Documentation" })
 map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
@@ -256,7 +255,7 @@ map(n, prefixLsp .. "F", vim.lsp.buf.format, { desc = "LSP Format" })
 --]]
 
 map(n, prefix .. "q", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
-map(n, prefix .. "a", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
+map(n, prefix .. "c", function() require("tiny-code-action").code_action() end, { desc = "󱠀 Code Action Picker" })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- INSERT MODE
@@ -355,16 +354,16 @@ map(n, "<leader>f<Space>", function() retabber("spaces") end, { desc = "󱁐 Use
 local loaded, _ = pcall(require, "snacks")
 
 if loaded then
-        Snacks.toggle.option("relativenumber", { name = " Relative Line Number" }):map("<leader>or")
-        Snacks.toggle.option("number", { name = " Line Number" }):map("<leader>on")
-        Snacks.toggle.option("wrap", { name = "󰖶 Wrap" }):map("<leader>ow")
+        Snacks.toggle.option("relativenumber", { name = " Relative Line Number", global = true }):map("<leader>or")
+        Snacks.toggle.option("number", { name = " Line Number", global = true }):map("<leader>on")
+        Snacks.toggle.option("wrap", { name = "󰖶 Wrap", global = true }):map("<leader>ow")
         Snacks.toggle.option("conceallevel",
-                             { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "󰈉 Conceal",
+                             { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "󰈉 Conceal", global = true,
                              }):map("<leader>oc")
         Snacks.toggle.treesitter({ name = " Treesitter Highlight" }):map("<leader>ot")
         Snacks.toggle.diagnostics({ name = "󰨓 LSP Diagnostics" }):map("<leader>od")
         Snacks.toggle.inlay_hints({ name = "󰨓 LSP Inlay Hints" }):map("<leader>oh")
-        Snacks.toggle.words({ name = "󰨓 LSP Document Highlight" }):map("<leader>ol")
+        Snacks.toggle.words():map("<leader>ol")
 end
 
 ------------------------------------------------------------------------------------------------------------------------

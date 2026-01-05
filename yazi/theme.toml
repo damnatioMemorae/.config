@@ -1,10 +1,6 @@
 [mgr]
         cwd             = { fg = "#f38ba8",         bg = "black" }
 
-        # Hovered
-        hovered         = { bold = true, reversed = true }
-        preview_hovered = { underline = false }
-
         # Find
         find_keyword    = { fg = "black",           bg = "green", italic = true, bold = true }
         find_position   = { fg = "green",           bg = "black", italic = true }
@@ -26,6 +22,11 @@
 
         # Highlighting
         syntect_theme   = "~/.config/yazi/Catppuccin-mocha.tmTheme"
+
+[indicator]
+        current = { reversed = true, bold = false }
+        preview = { underline = true }
+        padding = { open = "█", close = "█" }
 
 [tabs]
         active          = { fg = "#add8e6",         bg = "black", bold = true }

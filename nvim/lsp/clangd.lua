@@ -79,9 +79,10 @@ return {
                 "--completion-parse=always",
                 "--use-dirty-headers",
                 "--ranking-model=decision_forest",
+                -- "--experimental-modules-support",
                 -- "--completion-parse=never",
         },
-        filetypes    = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+        filetypes    = { "c", "cpp" },
         root_markers = {
                 "build.ninja",
                 ".clangd",

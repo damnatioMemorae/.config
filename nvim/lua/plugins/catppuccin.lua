@@ -54,7 +54,7 @@ local customCol = function(C)
                 Error                        = { fg = C.red },
                 ErrorMsg                     = { fg = C.red },
                 FloatBorder                  = { fg = C.mantle, bg = C.mantle },
-                FloatTitle                   = { fg = C.red, bg = C.mantle },
+                FloatTitle                   = { fg = C.sky, },
                 -- FoldColumn                    = {},
                 FoldColumn                   = { link = "NonText" },
                 -- Folded                                       = { link = "Visual" },
@@ -220,7 +220,7 @@ local customCol = function(C)
                 --------------------------------------------------------------------------------------------------------
                 -- C++
 
-                cType              = { fg = C.mauve, bg = C.crust, bold = false },
+                cType              = { fg = C.mauve },
                 cppType            = { link = "cType" },
                 cParen             = { link = "@lsp.type.bracket.cpp" },
                 cBracket           = { link = "@lsp.type.bracket.cpp" },
@@ -234,10 +234,11 @@ local customCol = function(C)
                 cppModifier        = { link = "@keyword" },
 
                 -- ["@lsp.type.bracket.cpp"]                    = { link = "Comment" },
-                ["@lsp.type.namespace.cpp"]                  = { fg = C.yellow, bg = C.crust },
+                ["@lsp.type.namespace.cpp"]                  = { fg = C.yellow },
                 ["@lsp.type.type.cpp"]                       = { link = "cppType" },
                 ["@lsp.type.modifier.cpp"]                   = { link = "@conditional" },
                 ["@type.builtin.cpp"]                        = { link = "cppType" },
+                ["@keyword.import.cpp"]                      = { link = "Preproc" },
                 ["@keyword.conditional.cpp"]                 = { link = "@conditional" },
                 ["@keyword.repeat.cpp"]                      = { link = "@conditional" },
                 ["@keyword.return.cpp"]                      = { link = "@keyword.return" },
@@ -564,9 +565,8 @@ local customCol = function(C)
                 --------------------------------------------------------------------------------------------------------
                 -- MISC
 
-                -- FoldMark                                     = { link = "LspInlayHint" },
-                LspInlayHint            = { fg = C.overlay0, bg = C.mantle },
-                FoldMark                = { fg = C.none, bg = C.base },
+                LspInlayHint            = { bg = C.mantle },
+                FoldMark                = { link = "LspInlayHint" },
                 LightBulbSign           = { link = "DiagnosticSignHint" },
                 IBLScope                = { fg = ivory },
                 SnacksIndentScope       = { fg = ivory },

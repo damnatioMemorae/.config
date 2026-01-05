@@ -160,7 +160,7 @@ alias           2='hyprctl dispatch exit'
 alias           1='reboot'
 alias           0='shutdown now'
 # alias           .='niri-session'
-alias           .='exec hyprland'
+alias           .='start-hyprland'
 # alias .=' /usr/lib/plasma-dbus-run-session-if-needed \
 #         /usr/bin/startplasma-wayland'
 

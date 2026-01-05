@@ -30,6 +30,19 @@ th.git.modified       = ui.Style():fg("#f9e2af")
 th.git.added          = ui.Style():fg("#7c7157")
 th.git.deleted        = ui.Style():fg("#f38ba8")
 
+function Entity:click(event, up)
+        if up then
+                return
+        end
+
+        ya.emit("reveal", { self._file.url })
+        if event.is_middle then
+                ya.emit("open", { interactive = true })
+        elseif event.is_right then
+                ya.emit("plugin", { "smart-enter" })
+        end
+end
+
 require("git"):setup()
 
 require("telegram-send"):setup({

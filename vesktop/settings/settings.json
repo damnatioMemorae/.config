@@ -209,7 +209,8 @@
             "enabled": true
         },
         "FixImagesQuality": {
-            "enabled": true
+            "enabled": true,
+            "originalImagesInChat": false
         },
         "FixSpotifyEmbeds": {
             "enabled": false
@@ -658,7 +659,7 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1765815943698
+        "settingsSyncVersion": 1767145227561
     },
     "uiElements": {
         "chatBarButtons": {},

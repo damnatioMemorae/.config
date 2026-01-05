@@ -36,6 +36,7 @@ The used groups are,
 Use `setup()` for setting configuration. See [types/diagnostics.lua#diagnostics.config](https://github.com/OXY2DEV/nvim/blob/main/lua/scripts/types/diagnostics.lua#L3-L19) for the type definition.
 ]]
 
+local prefix      = require("core.utils").prefix
 local diagnostics = {};
 local icons       = require("core.icons")
 local borders     = icons.misc.Borders
@@ -77,7 +78,7 @@ end
 
 ---@class diagnostics.config
 diagnostics.config = {
-        keymap           = ",e",
+        keymap           = prefix .. "e",
         decoration_width = 4,
         width            = function(items)
                 local max = math.floor(vim.o.columns * 0.4);
@@ -102,7 +103,8 @@ diagnostics.config = {
                         end,
                         to       = function()
                                 local bg = vim.api.nvim_get_hl(0,
-                                        { name = vim.o.statusline and "Cursorline" or "Normal", link = false }).bg;
+                                                               { name = vim.o.statusline and "Cursorline" or "Normal", link = false })
+                                           .bg;
                                 return bg and string.format("#%06x", bg) or C.crust;
                         end,
                         steps    = 10,
@@ -135,10 +137,10 @@ diagnostics.config = {
                 },
         },
         decorations      = {
-                [vim.diagnostic.severity.INFO]  = handle_diagnostic_level("Info", "󰀨 "),
-                [vim.diagnostic.severity.HINT]  = handle_diagnostic_level("Hint", "󰁨 "),
-                [vim.diagnostic.severity.WARN]  = handle_diagnostic_level("Warn", " "),
-                [vim.diagnostic.severity.ERROR] = handle_diagnostic_level("Error", "󰅙 "),
+                [vim.diagnostic.severity.ERROR] = handle_diagnostic_level("Error", icons.diagnostics.errorMd),
+                [vim.diagnostic.severity.WARN]  = handle_diagnostic_level("Warn", icons.diagnostics.warnMd),
+                [vim.diagnostic.severity.INFO]  = handle_diagnostic_level("Info", icons.diagnostics.infoMd),
+                [vim.diagnostic.severity.HINT]  = handle_diagnostic_level("Hint", icons.diagnostics.hintMd),
         },
 }
 
@@ -634,20 +636,16 @@ diagnostics.hover = function(window)
                 end,
         });
 
-        vim.api.nvim_buf_set_keymap(diagnostics.buffer, "n", "q", "", {
-                desc     = "Exit diagnostics window",
-                callback = function()
-                        pcall(vim.api.nvim_set_current_win, window);
-                        diagnostics.close();
-                end,
-        });
-        vim.api.nvim_buf_set_keymap(diagnostics.buffer, "n", "<Esc>", "", {
-                desc     = "Exit diagnostics window",
-                callback = function()
-                        pcall(vim.api.nvim_set_current_win, window);
-                        diagnostics.close();
-                end,
-        });
+        local keys = { "q", "<Esc>" }
+        for _, lhs in ipairs(keys) do
+                vim.api.nvim_buf_set_keymap(diagnostics.buffer, "n", lhs, "", {
+                        desc     = "Exit diagnostics window",
+                        callback = function()
+                                pcall(vim.api.nvim_set_current_win, window);
+                                diagnostics.close();
+                        end,
+                });
+        end
 end
 
 --- Configuration for the diagnostics module.

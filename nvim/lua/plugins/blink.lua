@@ -154,8 +154,8 @@ return {
                                 jsons              = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
-                                calc           = { name = "calc", module = "blink-calc" },
-                                snippets       = {
+                                calc     = { name = "calc", module = "blink-calc" },
+                                snippets = {
                                         name               = "Snip",
                                         opts               = {
                                                 use_show_condition    = true,
@@ -164,7 +164,7 @@ return {
                                         score_offset       = 140,
                                         min_keyword_length = 2,
                                 },
-                                lsp            = {
+                                lsp      = {
                                         name         = "LSP",
                                         module       = "blink.cmp.sources.lsp",
                                         opts         = { tailwind_color_icon = "██" },
@@ -180,7 +180,7 @@ return {
                                                 end,
                                         },
                                 },
-                                path           = {
+                                path     = {
                                         name         = "Path",
                                         module       = "blink.cmp.sources.path",
                                         score_offset = 260,
@@ -193,19 +193,19 @@ return {
                                                 show_hidden_files_by_default = true,
                                         },
                                 },
-                                buffer         = {
+                                buffer   = {
                                         name         = "Buf",
                                         score_offset = 60,
                                         max_items    = 8,
                                         opts         = { get_bufnrs = vim.api.nvim_list_bufs },
                                 },
-                                omni           = {
+                                omni     = {
                                         name         = "Omni",
                                         module       = "blink.cmp.sources.complete_func",
                                         score_offset = 60,
                                         opts         = { disable_omnifunc = { "v:lua.vim.lsp.omnifunc" } },
                                 },
-                                ripgrep        = {
+                                ripgrep  = {
                                         module       = "blink-cmp-rg",
                                         name         = "RG",
                                         score_offset = 10,

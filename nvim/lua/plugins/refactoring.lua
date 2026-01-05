@@ -33,13 +33,13 @@ return {
 
                 local map      = vim.keymap.set
                 local refactor = require("refactoring")
-                local expr     = { expr = true }
+                local opts     = { expr = true }
                 local modes    = { "n", "x" }
 
-                map(modes, "<leader>fi", function() return refactor.refactor("Inline Variable") end, expr)
-                map(modes, "<leader>fe", function() return refactor.refactor("Extract Variable") end, expr)
-                map(modes, "<leader>fu", function() return refactor.refactor("Extract Function") end, expr)
-                map(modes, "<leader>fU", function() return refactor.refactor("Extract Function To File") end, expr)
+                map(modes, "<leader>fi", function() return refactor.refactor("Inline Variable") end, opts)
+                map(modes, "<leader>fe", function() return refactor.refactor("Extract Variable") end, opts)
+                map(modes, "<leader>fu", function() return refactor.refactor("Extract Function") end, opts)
+                map(modes, "<leader>fU", function() return refactor.refactor("Extract Function To File") end, opts)
                 map(modes, ",z", function() return refactor.select_refactor({ prefer_ex_cmd = true }) end)
                 map("n", "<leader>rp", function() return refactor.debug.printf({ below = false }) end)
                 map(modes, "<leader>rv", function() return refactor.debug.print_var() end)

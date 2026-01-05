@@ -60,7 +60,14 @@ vim.diagnostic.config({
 ------------------------------------------------------------------------------------------------------------------------
 -- HANDLERS
 
-local borders                           = icons.misc.Borders
+local borders     = icons.misc.Borders
+local title_pos   = "left"
+local anchor_bias = "below"
+local relative    = "cursor"
+local wrap        = false
+local max_height  = math.floor(vim.o.lines * 0.5)
+local max_width   = math.floor(vim.o.columns * 0.6)
+
 local originalRenameHandler             = vim.lsp.handlers["textDocument/rename"]
 vim.lsp.handlers["textDocument/rename"] = function(err, result, ctx, config)
         originalRenameHandler(err, result, ctx, config)
@@ -90,11 +97,14 @@ local hover       = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.buf.hover = function()
         return hover{
-                border     = borders,
-                title      = "Hover",
-                wrap       = false,
-                max_height = math.floor(vim.o.lines * 0.5),
-                max_width  = math.floor(vim.o.columns * 0.6),
+                border      = borders,
+                title       = require("core.icons").diagnostics.hintMd .. "Hover",
+                title_pos   = title_pos,
+                anchor_bias = anchor_bias,
+                relative    = relative,
+                wrap        = wrap,
+                max_height  = max_height,
+                max_width   = max_width,
         }
 end
 
@@ -102,11 +112,14 @@ local signature_help       = vim.lsp.buf.signature_help
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.buf.signature_help = function()
         return signature_help{
-                border     = borders,
-                title      = "Signature Help",
-                wrap       = false,
-                max_height = math.floor(vim.o.lines * 0.5),
-                max_width  = math.floor(vim.o.columns * 0.6),
+                border      = borders,
+                title       = "󰷻 Signature Help",
+                title_pos   = title_pos,
+                anchor_bias = anchor_bias,
+                relative    = relative,
+                wrap        = wrap,
+                max_height  = max_height,
+                max_width   = max_width,
         }
 end
 
@@ -142,6 +155,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
                 progress[client.id] = vim.tbl_filter(function(v) return table.insert(msg, v.msg) or not v.done end, p)
 
                 local spinner = icons.misc.Spinner
+                ---@diagnostic disable-next-line: param-type-mismatch
                 vim.notify(table.concat(msg, "\n"), "info", {
                         id    = "lsp_progress",
                         title = client.name,

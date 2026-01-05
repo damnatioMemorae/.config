@@ -59,7 +59,7 @@ fallback = [
 
 [open]
 rules = [
-        { name = "*/",                          use = ["text",  "open", "reveal"] },
+        { url = "*/",                          use = ["text",  "open", "reveal"] },
         { mime = "text/*",                      use = ["text",  "open", "reveal"] },
         { mime = "application/pdf",             use = ["pdff",  "reveal"] },
         { mime = "image/*",                     use = ["image", "reveal"] },
@@ -99,20 +99,20 @@ rules = [
 
 [[plugin.prepend_fetchers]]
         id   = "git"
-        name = "*"
+        url = "*"
         run  = "git"
 
 
 [[plugin.prepend_fetchers]]
         id   = "git"
-        name = "*/"
+        url = "*/"
         run  = "git"
 
 
 [plugin]
 prepend_previewers = [
-        { name = "*/",                          run = "folder", sync = true },
-        { name = "*.md",                        run = "glow" },
+        { url = "*/",                          run = "folder", sync = true },
+        { url = "*.md",                        run = "glow" },
         # { mime = "audio/*",                     run = "audio-previewer"},
         { mime = "text/csv",                    run = "miller"},
         { mime = "application/zip",             run = "lsar" },
@@ -133,15 +133,15 @@ prepend_preloaders = [
 ]
 
 append_previewers = [
-        { name = "*", run = "file-extra-metadata" },
+        { url = "*", run = "file-extra-metadata" },
 ]
 
 append_spotters = [
-        { name = "*", run = "file-extra-metadata" },
+        { url = "*", run = "file-extra-metadata" },
 ]
 
 previewers = [
-        { name = "*/",                          run = "folder", sync = true },
+        { url = "*/",                          run = "folder", sync = true },
         # Code
         { mime = "text/*",                      run = "code" },
         { mime = "*/xml",                       run = "code" },
@@ -166,5 +166,5 @@ previewers = [
         { mime = "application/xz",              run = "lsar" },
         { mime = "application/x-7z-compressed", run = "lsar" },
         # Fallback
-        # { name = "*", run = "file" },
+        # { url = "*", run = "file" },
 ]

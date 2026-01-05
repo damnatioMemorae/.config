@@ -1,6 +1,7 @@
 local parsers       = "all"
 -- local parsers       = { "all" }
 local ignoreParsers = {
+        "toml",
         "comment",
         "ipkg",
 }
@@ -86,7 +87,7 @@ return {
                         vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = false })
                         vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = false })
 
-                        vim.keymap.set("n", ",c", function()
+                        vim.keymap.set("n", ",t", function()
                                                require("treesitter-context").go_to_context(vim.v.count1)
                                        end, { silent = true })
                 end,

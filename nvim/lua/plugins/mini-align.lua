@@ -1,20 +1,22 @@
+prefix = require("core.utils").prefix
+
 return {
         "echasnovski/mini.align",
         version = false,
         event   = "VeryLazy",
         opts    = {
                 mappings = {
-                        start              = "ma",
-                        start_with_preview = "ma",
+                        start              = prefix .. "a",
+                        start_with_preview = prefix .. "a",
                 },
 
-                options  = {
+                options = {
                         split_pattern   = "",
                         justify_side    = "left",
                         merge_delimiter = "",
                 },
 
-                steps    = {
+                steps = {
                         pre_split   = {},
                         split       = nil,
                         pre_justify = {},
@@ -23,6 +25,6 @@ return {
                         merge       = nil,
                 },
 
-                silent   = false,
-        }
+                silent = false,
+        },
 }
