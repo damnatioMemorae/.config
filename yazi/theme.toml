@@ -24,7 +24,7 @@
         syntect_theme   = "~/.config/yazi/Catppuccin-mocha.tmTheme"
 
 [indicator]
-        current = { reversed = true, bold = false }
+        current = { reversed = true, bold = true }
         preview = { underline = true }
         padding = { open = "█", close = "█" }
 

@@ -4,9 +4,7 @@
     "useQuickCss": true,
     "themeLinks": [],
     "eagerPatches": false,
-    "enabledThemes": [
-        "system24.theme.css"
-    ],
+    "enabledThemes": [],
     "enableReactDevtools": true,
     "frameless": true,
     "transparent": true,
@@ -647,6 +645,9 @@
         },
         "WebContextMenus": {
             "enabled": true
+        },
+        "MoreQuickReactions": {
+            "enabled": false
         }
     },
     "notifications": {
@@ -659,7 +660,7 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1767145227561
+        "settingsSyncVersion": 1767802147149
     },
     "uiElements": {
         "chatBarButtons": {},

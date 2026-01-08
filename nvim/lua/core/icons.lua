@@ -1,20 +1,20 @@
 local M = {}
 ------------------------------------------------------------------------------------------------------------------------
 
-local filledSquare = "■"
-local emptySquare  = "󰝣"
+local squareFilled = "■"
+local squareEmpty  = "󰝣"
 
 -- DIAGNOSTICS
 M.diagnostics = {
-        ERROR = filledSquare,
-        WARN  = filledSquare,
-        INFO  = filledSquare,
-        HINT  = filledSquare,
+        ERROR = squareFilled,
+        WARN  = squareFilled,
+        INFO  = squareFilled,
+        HINT  = squareFilled,
 
-        Error = filledSquare,
-        Warn  = filledSquare,
-        Info  = filledSquare,
-        Hint  = filledSquare,
+        Error = squareFilled,
+        Warn  = squareFilled,
+        Info  = squareFilled,
+        Hint  = squareFilled,
 
         errorMd = "󰅙 ",
         warnMd  = " ",
@@ -26,11 +26,11 @@ M.diagnostics = {
 
 -- NOTIFIER
 M.notifier = {
-        error = filledSquare,
-        warn  = filledSquare,
-        info  = filledSquare,
-        debug = filledSquare,
-        trace = filledSquare,
+        error = M.diagnostics.ERROR,
+        warn  = M.diagnostics.WARN,
+        info  = M.diagnostics.INFO,
+        debug = M.diagnostics.HINT,
+        trace = M.diagnostics.HINT,
 }
 
 -- FOLDING
@@ -167,8 +167,8 @@ M.misc = {
         FolderEmpty    = "",
         Borders        = { " ", " ", " ", " ", " ", " ", " ", " " },
         Spinner        = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-        Dashed_bar     = filledSquare,
-        definiton      = filledSquare,
+        Dashed_bar     = squareFilled,
+        definiton      = squareFilled,
         reference      = "󰘷",
         implementation = "󰃐",
 }
@@ -176,9 +176,9 @@ M.misc = {
 -- GIT
 M.git = {
         Git      = "",
-        Added    = filledSquare,
-        Modified = emptySquare,
-        Deleted  = emptySquare,
+        Added    = squareFilled,
+        Modified = squareEmpty,
+        Deleted  = squareEmpty,
 }
 
 ------------------------------------------------------------------------------------------------------------------------
