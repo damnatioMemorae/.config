@@ -32,7 +32,7 @@
                 "syntax": "md"
         },
         "documentColor": {
-                "enable": true
+                "enable": false
         },
         "hover": {
                 "enable": true

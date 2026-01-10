@@ -9,11 +9,10 @@ configuration {
 
 // Main //
 window {
-    location:                    north east;
-    y-offset:                    -16;
-    x-offset:                    0;
+    location:                    east;
+    anchor:                      east;
     width:                       40em;
-    height:                      72em;
+    height:                      68em;
     transparency:                "real";
     fullscreen:                  false;
     enabled:                     true;

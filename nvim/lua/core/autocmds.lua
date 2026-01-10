@@ -272,30 +272,27 @@ autocmd("LspAttach", {
                 --------------------------------------------------------------------------------------------------------
                 -- DOCUMENT HIGHLIGHTING
 
-                ---@diagnostic disable-next-line: unknown-diag-code
-                ---@diagnostic disable-next-line: unnecessary-if
                 --[[
                 if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight", 0) then
-                        local buf                = args.buf
-                        local highlight_augroup  = augroup("lsp-highlight", { clear  = false })
+                        local buf               = args.buf
+                        local highlight_augroup = augroup("lsp-highlight", { clear = false })
 
                         autocmd({ "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" }, {
-                                buffer    = buf,
-                                group     = highlight_augroup,
-                                callback  = lsp.buf.document_highlight,
+                                buffer   = buf,
+                                group    = highlight_augroup,
+                                callback = lsp.buf.document_highlight,
                         })
 
                         autocmd({ "CursorMoved", "CursorMovedI" }, {
-                                buffer    = buf,
-                                group     = highlight_augroup,
-                                callback  = lsp.buf.clear_references,
+                                buffer   = buf,
+                                group    = highlight_augroup,
+                                callback = lsp.buf.clear_references,
                         })
 
                         autocmd("LspDetach", {
-                                group     = augroup("lsp-detach", { clear  = true }),
-                                ---@diagnostic disable-next-line: unknown-diag-code
-                                ---@diagnostic disable-next-line: unused, unused-local
-                                callback  = function(event2)
+                                group    = augroup("lsp-detach", { clear = true }),
+                                ---@diagnostic disable-next-line: unused-local
+                                callback = function(event2)
                                         lsp.buf.clear_references()
                                         -- api.nvim_clear_autocmd({ "lsp-highlight", buffer  = event2.buf })
                                 end,
@@ -316,13 +313,12 @@ autocmd("LspAttach", {
                 --------------------------------------------------------------------------------------------------------
                 -- DOCUMENT COLOR
 
-                --[[
                 if fn.has("nvim-0.12") == 1 and client:supports_method("textDocument/documentColor") then
-                        vim.lsp.document_color.enable(true, args.buf)
+                        lsp.document_color.enable(false)
                 end
-                --]]
         end,
 })
+
 
 ------------------------------------------------------------------------------------------------------------------------
 -- SMART VIRTUAL EDITING

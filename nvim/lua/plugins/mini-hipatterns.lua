@@ -1,6 +1,5 @@
 return {
         "echasnovski/mini.hipatterns",
-        enabled = true,
         version = false,
         event   = "VeryLazy",
         config  = function()
