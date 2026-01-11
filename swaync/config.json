@@ -1,0 +1,118 @@
+{
+        "$schema": "/etc/xdg/swaync/configschema.json",
+        "positionX": "right",
+        "positionY": "top",
+        "cssPriority": "user",
+        "control-center-width": 450,
+        "fit-to-screen": true,
+        "layer-shell": true,
+        "layer-shell-cover-screen": false,
+
+        "notification-window-width": 400,
+        "notification-icon-size": 40,
+        "notification-body-image-height": 500,
+        "notification-body-image-width": 500,
+        "notification-inline-replies": true,
+        "notification-2fa-action": false,
+
+        "timeout": 8,
+        "timeout-low": 8,
+        "timeout-critical": 8,
+
+        "keyboard-shortcuts": true,
+        "image-visibility": "when-available",
+        "transition-time": 200,
+        "hide-on-clear": false,
+        "hide-on-action": false,
+        "script-fail-notify": true,
+
+        "widgets": ["dnd", "mpris", "buttons-grid", "title", "notifications"],
+
+        "widget-config": {
+                "dnd": {
+                        "text": ""
+                },
+                "title": {
+                        "text": "",
+                        "clear-all-button": true,
+                        "button-text": "󰆴"
+                },
+                "mpris": {
+                        "image-size": 110,
+                        "image-radius": 0,
+                        "autohide": true,
+                        "blacklist": ["org.mpris.MediaPlayer2.playerctld"]
+                },
+                "backlight": {
+                        "device": "intel_backlight",
+                        "label": "󰃠",
+                        "slider": true,
+                        "min": 5
+                },
+                "volume": {
+                        "device": "default",
+                        "expand-button-label": " +",
+                        "collapse-button-label": " -",
+                        "label": "󰕾",
+                        "slider": true,
+                        "show-per-app": true,
+                        "show-per-app-icon": false,
+                        "show-per-app-label": true
+                },
+                "buttons-grid": {
+                        "buttons-per-row": 8,
+                        "actions": [
+                                {
+                                        "label": "",
+                                        "type": "toggle",
+                                        "active": true,
+                                        "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && nmcli radio wifi on || nmcli radio wifi off'",
+                                        "update-command": "sh -c '[[ $(nmcli r wifi) == \"enabled\" ]] && echo true || echo false'"
+                                },
+                                {
+                                        "label": "",
+                                        "type": "toggle",
+                                        "active": false,
+                                        "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && pactl set-source-mute @DEFAULT_SOURCE@ 1 || pactl set-source-mute @DEFAULT_SOURCE@ 0'",
+                                        "update-command": "sh -c '[[ $(pactl get-source-mute @DEFAULT_SOURCE@) == *yes* ]] && echo true || echo false'"
+                                },
+                                {
+                                        "label": "󱎴",
+                                        "type": "normal",
+                                        "active": false,
+                                        "command": "darkshader.lua"
+                                },
+                                {
+                                        "label": "",
+                                        "type": "normal",
+                                        "active": false,
+                                        "command": "hyprlock"
+                                },
+                                {
+                                        "label": "",
+                                        "type": "normal",
+                                        "active": false,
+                                        "command": "sh -c 'swaync-client -t && screenshot m'"
+                                },
+                                {
+                                        "label": "󰙠",
+                                        "type": "normal",
+                                        "active": false,
+                                        "command": "sh -c 'swaync-client -t && screenshot sf'"
+                                },
+                                {
+                                        "label": "",
+                                        "type": "normal",
+                                        "active": false,
+                                        "command": "sh -c 'swaync-client -t && recorder m'"
+                                },
+                                {
+                                        "label": "",
+                                        "type": "normal",
+                                        "active": false,
+                                        "command": "sh -c 'swaync-client -t && recorder ma'"
+                                }
+                        ]
+                }
+        }
+}

@@ -1,0 +1,385 @@
+@define-color bg       #0e0e16;
+@define-color pink     #f5c2e7;
+@define-color red      #f38ba8;
+@define-color teal     #94e2d5;
+/* @define-color low      #89dceb; */
+@define-color normal   #f2cdcd;
+@define-color text     #cdd6f4;
+@define-color text-alt #a6adc8;
+@define-color bg-alt   #1e1e2e;
+@define-color low      #313244;
+@define-color selected alpha(@text-alt, .4);
+@define-color hover    alpha(@selected, .4);
+@define-color urgent   @text-alt;
+
+* {
+        outline: none;
+        font-family: "Monocraft";
+        font-size: 12px;
+        text-shadow: none;
+        background-color: transparent;
+        border-radius: 0px;
+        border: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* CONTROL CENTER */
+
+.control-center {
+        background-color: @bg;
+        box-shadow: none;
+        padding: 0px;
+        border: none;
+        border-bottom: 8px solid @low;
+        margin: 10px;
+}
+
+.notification-row .notification-background {
+        box-shadow: none;
+        border-radius: 0px;
+}
+
+scrollbar slider {
+        margin: -3px;
+        opacity: 0.8;
+}
+
+scrollbar trough {
+        margin: 2px 0;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* NOTIFICATIONS */
+
+.notification {
+        background-color: @bg-alt;
+        border-radius: 0px;
+        padding: 10px 10px;
+        margin: 4px -2px 0px 0px;
+        min-height: 20px;
+        box-shadow: none;
+}
+
+.notification .summary {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 2px;
+}
+
+.notification .time {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: alpha(@text, 0.6);
+}
+
+.notification .body {
+        font-size: 0.95rem;
+        color: @text;
+}
+
+.notification.low {
+        color: @low;
+        border-right: 6px solid @low;
+}
+
+.notification.normal {
+        color: @normal;
+        border-right: 6px solid @normal;
+}
+
+.notification.critical {
+        color: @red;
+        border-left: 6px solid @red;
+}
+
+.notification.critical > * > .notification-content .summary {
+        color: @red;
+}
+
+.notification.normal > * > .notification-content .summary {
+        color: @normal;
+}
+
+.notification.low > * > .notification-content .summary {
+        color: @low;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* IMAGE/ICON */
+
+.image {
+        margin-right: 10px;
+        min-width: 36px;
+        min-height: 36px;
+        border: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* CLOSE BUTTON */
+
+.close-button {
+        color: @red;
+        background-color: @bg-alt;
+        border-radius: 0px;
+}
+
+.close-button label {
+        color: @red;
+}
+
+.close-button:hover {
+        color: @bg-alt;
+        background-color: @red;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* GROUP HEADER BUTTONS */
+
+.notification-group-collapse-button,
+.notification-group-close-all-button {
+        color: @text;
+        background-color: @bg-alt;
+        border-radius: 0px;
+        margin-right: 2px;
+        padding: 0px 2px 0px 2px;
+}
+
+.notification-group-close-all-button {
+        margin-right: -4px;
+}
+
+.notification-group-collapse-button:hover {
+        color: @bg;
+        background-color: @red;
+}
+
+.notification-group-close-all-button:hover {
+        color: @bg;
+        background-color: @red;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* SLIDERS */
+
+scale trough {
+        background-color: @bg-alt;
+        min-height: 10px;
+        min-width: 110px;
+        border-radius: 0px;
+}
+
+trough highlight {
+        background: @text-alt;
+        border-radius: 0px;
+}
+
+slider {
+        border-radius: 0px;
+        background-color: @text;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* TOOLTIP */
+
+tooltip {
+        color: @text;
+        background-color: @bg-alt;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* BUTTONS GRID */
+
+.widget-buttons-grid {
+        padding: 0px 0px 0px;
+}
+
+.widget-buttons-grid button {
+        font-size: 30px;
+}
+
+.widget-buttons-grid button {
+        color: @text;
+        background: @bg-alt;
+        border-radius: 0px;
+        min-width: 0px;
+        min-height: 0px;
+        margin: 1px;
+        padding: 10px;
+}
+
+.widget-buttons-grid button:hover {
+        color: @bg;
+        background-color: @red;
+}
+
+.widget-buttons-grid button.toggle:checked {
+        background-color: @bg-alt;
+}
+
+.widget-buttons-grid button.toggle:checked:hover {
+        background-color: @teal;
+}
+
+.widget-buttons-grid button.toggle:checked label {
+        color: @teal;
+}
+
+.widget-buttons-grid button.toggle:checked:hover label {
+        color: @bg;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* MPRIS */
+
+.widget-mpris .widget-mpris-player {
+        padding: 0px;
+        margin: 4px;
+        background-color: @bg-alt;
+        box-shadow: none;
+        border-radius: 0px;
+}
+
+.widget-mpris label,
+.widget-mpris-title,
+.widget-mpris-subtitle {
+        color: @text;
+}
+
+.widget-mpris button {
+        color: @pink;
+}
+
+.widget-mpris button:hover {
+        color: @red;
+}
+
+.widget-mpris-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0 8px 8px;
+        text-align: center;
+}
+
+.widget-mpris-subtitle {
+        font-size: 1rem;
+        text-align: center;
+}
+
+picture.mpris-background {
+        opacity: 0;
+        background: none;
+        box-shadow: none;
+        border: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* VOLUME/BACKLIGHT WIDGET */
+
+.widget-volume,
+.widget-backlight {
+        padding: 0px 0px 0px 10px;
+        margin: 12px 12px;
+        border-radius: 0px;
+        font-weight: 400;
+        color: @text;
+        background: @bg-alt;
+}
+
+.widget-volume label,
+.widget-backlight label {
+        font-size: 1.1rem;
+        margin: 4px 4px;
+}
+
+.widget-volume slider,
+.widget-backlight slider {
+        border-radius: 0px;
+        margin: -8px;
+        background: @text;
+}
+
+.widget-volume trough,
+.widget-backlight trough {
+        background: @bg-alt;
+        margin-left: 0px;
+        border-radius: 0px;
+}
+
+.widget-volume highlight,
+.widget-backlight highlight {
+        padding: 0px;
+        border-radius: 0px;
+        background: @text;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* PER-APP VOLUME */
+
+.per-app-volume {
+        padding: 4px 8px 8px;
+        margin: 0 8px 8px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* DND */
+
+.widget-dnd {
+        /* font-weight: bold; */
+        /* padding: 15px 15px 15px; */
+}
+
+.widget-dnd > switch {
+        background: @bg-alt;
+        border: none;
+        border-radius: 0px;
+        padding: 0px;
+}
+
+.widget-dnd > switch:checked {
+        background: @bg-alt;
+}
+
+.widget-dnd > switch:checked slider {
+        background: @teal;
+}
+
+.widget-dnd > switch:hover slider {
+        background: @teal;
+}
+
+.widget-dnd > switch slider {
+        background: @text-alt;
+        border-radius: 0px;
+        min-width: 0px;
+        min-height: 0px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* TITLE */
+
+.widget-title {
+        padding: 20px;
+        font-weight: bold;
+}
+
+.widget-title > label {
+        font-size: 0.5rem;
+}
+
+.widget-title > button {
+        background: @bg;
+        border: none;
+        padding: 0 6px;
+}
+
+.widget-title > button label {
+        font-size: 1.3rem;
+        color: @text;
+        background-color: @bg-alt;
+        padding: 4px 10px 4px 10px;
+}
+
+.widget-title > button:hover label {
+        color: @bg;
+        background-color: @red;
+}

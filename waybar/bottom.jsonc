@@ -212,6 +212,7 @@
                         "warning": 50,
                         "critical": 15
                 },
+                "on-click": "swaync-client -t",
                 "format": " {capacity} ",
                 "format-full": " {capacity} ",
                 "format-warning": " {capacity} ",
