@@ -77,7 +77,7 @@
                                         "update-command": "sh -c '[[ $(pactl get-source-mute @DEFAULT_SOURCE@) == *yes* ]] && echo true || echo false'"
                                 },
                                 {
-                                        "label": "󱎴",
+                                        "label": "󰖯",
                                         "type": "normal",
                                         "active": false,
                                         "command": "darkshader.lua"
