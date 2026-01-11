@@ -5,38 +5,27 @@ return {
         lazy         = false,
         dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
         config       = function()
-                local colors = {
-                        text     = "#cdd6f4",
-                        surface1 = "#45475a",
-                        base     = "#1e1e2e",
-                        mantle   = "#14141f",
-                        crust    = "#0e0e16",
-                        -- crust    = "#000000",
-                        red      = "#f38ba8",
-                        green    = "#a6e3a1",
-                        yellow   = "#f9e2af",
-                }
                 local theme  = {
                         normal   = {
-                                a = { fg = colors.crust, bg = colors.text, bold = true },
-                                b = { fg = colors.text, bg = colors.crust },
-                                c = { fg = colors.surface1, bg = colors.crust },
-                                x = { fg = colors.text, bg = colors.crust },
-                                y = { fg = colors.text, bg = colors.crust },
-                                z = { fg = colors.text, bg = colors.crust },
+                                a = { fg = C.crust, bg = C.text, bold = true },
+                                b = { fg = C.text, bg = C.crust },
+                                c = { fg = C.surface1, bg = C.crust },
+                                x = { fg = C.text, bg = C.crust },
+                                y = { fg = C.text, bg = C.crust },
+                                z = { fg = C.text, bg = C.crust },
                         },
 
-                        insert   = { a = { fg = colors.crust, bg = colors.text, bold = true } },
-                        visual   = { a = { fg = colors.crust, bg = colors.text, bold = true } },
-                        replace  = { a = { fg = colors.crust, bg = colors.text, bold = true } },
+                        insert   = { a = { fg = C.crust, bg = C.text, bold = true } },
+                        visual   = { a = { fg = C.crust, bg = C.text, bold = true } },
+                        replace  = { a = { fg = C.crust, bg = C.text, bold = true } },
 
                         inactive = {
-                                a = { fg = colors.surface1, bg = colors.crust },
-                                b = { fg = colors.text, bg = colors.crust },
-                                c = { fg = colors.text, bg = colors.crust },
-                                x = { fg = colors.text, bg = colors.crust },
-                                y = { fg = colors.text, bg = colors.crust },
-                                z = { fg = colors.text, bg = colors.crust },
+                                a = { fg = C.surface1, bg = C.crust },
+                                b = { fg = C.text, bg = C.crust },
+                                c = { fg = C.text, bg = C.crust },
+                                x = { fg = C.text, bg = C.crust },
+                                y = { fg = C.text, bg = C.crust },
+                                z = { fg = C.text, bg = C.crust },
                         },
                 }
 

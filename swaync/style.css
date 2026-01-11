@@ -1,12 +1,12 @@
 @define-color bg       #0e0e16;
+@define-color bg-alt   #14141f;
 @define-color pink     #f5c2e7;
 @define-color red      #f38ba8;
 @define-color teal     #94e2d5;
-/* @define-color low      #89dceb; */
 @define-color normal   #f2cdcd;
 @define-color text     #cdd6f4;
 @define-color text-alt #a6adc8;
-@define-color bg-alt   #1e1e2e;
+@define-color bg2      #1e1e2e;
 @define-color low      #313244;
 @define-color selected alpha(@text-alt, .4);
 @define-color hover    alpha(@selected, .4);
@@ -15,7 +15,7 @@
 * {
         outline: none;
         font-family: "Monocraft";
-        font-size: 12px;
+        font-size: 14px;
         text-shadow: none;
         background-color: transparent;
         border-radius: 0px;
@@ -79,12 +79,12 @@ scrollbar trough {
 
 .notification.low {
         color: @low;
-        border-right: 6px solid @low;
+        border-left: 6px solid @low;
 }
 
 .notification.normal {
         color: @normal;
-        border-right: 6px solid @normal;
+        border-left: 6px solid @normal;
 }
 
 .notification.critical {
@@ -200,6 +200,7 @@ tooltip {
 .widget-buttons-grid button {
         color: @text;
         background: @bg-alt;
+        text-align: center;
         border-radius: 0px;
         min-width: 0px;
         min-height: 0px;
@@ -282,11 +283,12 @@ picture.mpris-background {
         border-radius: 0px;
         font-weight: 400;
         color: @text;
-        background: @bg-alt;
+        background: @bg;
 }
 
 .widget-volume label,
 .widget-backlight label {
+        color: @teal;
         font-size: 1.1rem;
         margin: 4px 4px;
 }
@@ -294,13 +296,13 @@ picture.mpris-background {
 .widget-volume slider,
 .widget-backlight slider {
         border-radius: 0px;
-        margin: -8px;
-        background: @text;
+        background: @teal;
+        padding: -80px -80px -80px -80px;
 }
 
 .widget-volume trough,
 .widget-backlight trough {
-        background: @bg-alt;
+        background: @bg;
         margin-left: 0px;
         border-radius: 0px;
 }
@@ -309,7 +311,7 @@ picture.mpris-background {
 .widget-backlight highlight {
         padding: 0px;
         border-radius: 0px;
-        background: @text;
+        background: @bg-alt;
 }
 
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */

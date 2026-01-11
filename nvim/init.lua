@@ -11,29 +11,20 @@ safeRequire("core.globals")
 safeRequire("core.options")
 
 if not vim.env.NO_PLUGINS then
-        -- INFO only load plugins when `NO_PLUGINS` is not set.
-        -- This is for security reasons, e.g., when editing a password with `pass`.
         safeRequire("core.lazy")
         if vim.g.setColorscheme then vim.g.setColorscheme("init") end
 end
 
--- require("core.lsp_hover").setup()
 require("core.diagnostics").setup()
--- require("core.quickfix").setup()
--- require("core.beacon").setup()
 safeRequire("core.commands")
 safeRequire("core.autocmds")
 safeRequire("core.lsp")
 safeRequire("core.keymaps")
 safeRequire("core.yank-paste")
-safeRequire("functions.quickfix")
 safeRequire("core.backdrop-underline-fix")
-safeRequire("functions.beacon")
 -- safeRequire("functions.treesitter-diagnostics")
--- safeRequire("core.fold")
 
 if os.getenv("DISPLAY") ~= nil or os.getenv("WAYLAND_DISPLAY") ~= nil then
-        -- vim.cmd("colorscheme darkmatter")
         vim.cmd.colorscheme("catppuccin")
 else
         vim.cmd.colorscheme("industry")
