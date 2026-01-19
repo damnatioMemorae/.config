@@ -377,7 +377,11 @@ autocmd({ "BufReadPost", "BufReadPre", "BufWinEnter" }, {
 autocmd({ "BufWritePre" }, {
         desc     = "Remove trailing whitespace",
         pattern  = "*",
-        callback = function() vim.cmd([[%s/\s\+$//e]]) end,
+        callback = function()
+                if vim.bo.filetype ~= "markdown" then
+                        vim.cmd([[%s/\s\+$//e]])
+                end
+        end,
 })
 
 ------------------------------------------------------------------------------------------------------------------------

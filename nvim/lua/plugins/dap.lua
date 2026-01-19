@@ -1,7 +1,7 @@
 ---@diagnostic disable: unknown-diag-code
 return {
         "mfussenegger/nvim-dap",
-        enabled      = false,
+        enabled      = true,
         -- event        = "VeryLazy",
         lazy         = false,
         dependencies = {
@@ -85,19 +85,19 @@ return {
                         numhl  = "DapBreakpoint",
                 })
 
-                vim.keymap.set("n", "<F1>", function() widgets.sidebar(widgets.scopes) end, { desc = "Toggle Scopes" })
-                vim.keymap.set("n", "<F2>", function() widgets.sidebar(widgets.frame) end, { desc = "Toggle Frames" })
-                vim.keymap.set("n", "<F3>", widgets.hover, { desc = "DAP Hover" })
-                vim.keymap.set("n", "<F4>", dap.run_to_cursor, { desc = "DAP Run to Cursor" })
-                vim.keymap.set("n", "<F5>", function() dap.repl.toggle({ width = 50 }, "vsplit") end,
+                vim.keymap.set("n", "<A-F1>", function() widgets.sidebar(widgets.scopes) end, { desc = "Toggle Scopes" })
+                vim.keymap.set("n", "<A-F2>", function() widgets.sidebar(widgets.frame) end, { desc = "Toggle Frames" })
+                vim.keymap.set("n", "<A-F3>", widgets.hover, { desc = "DAP Hover" })
+                vim.keymap.set("n", "<A-F4>", dap.run_to_cursor, { desc = "DAP Run to Cursor" })
+                vim.keymap.set("n", "<A-F5>", function() dap.repl.toggle({ width = 50 }, "vsplit") end,
                                { desc = "Toggle REPL" })
-                vim.keymap.set("n", "<F6>", ui.eval, { desc = "DAP Eval" })
-                vim.keymap.set("n", "<F7>", widgets.hover, { desc = "DAP Hover" })
-                vim.keymap.set("n", "<F8>", dap.toggle_breakpoint, { desc = "DAP Toggle Breakpoint" })
-                vim.keymap.set("n", "<F9>", dap.step_over, { desc = "DAP Step Over" })
-                vim.keymap.set("n", "<F10>", dap.step_into, { desc = "DAP Step Into" })
-                vim.keymap.set("n", "<F11>", dap.step_out, { desc = "DAP Step Out" })
-                vim.keymap.set("n", "<F12>", dap.step_back, { desc = "DAP Step Back" })
+                vim.keymap.set("n", "<A-F6>", ui.eval, { desc = "DAP Eval" })
+                vim.keymap.set("n", "<A-F7>", widgets.hover, { desc = "DAP Hover" })
+                vim.keymap.set("n", "<A-F8>", dap.toggle_breakpoint, { desc = "DAP Toggle Breakpoint" })
+                vim.keymap.set("n", "<A-F9>", dap.step_over, { desc = "DAP Step Over" })
+                vim.keymap.set("n", "<A-F10>", dap.step_into, { desc = "DAP Step Into" })
+                vim.keymap.set("n", "<A-F11>", dap.step_out, { desc = "DAP Step Out" })
+                vim.keymap.set("n", "<A-F12>", dap.step_back, { desc = "DAP Step Back" })
 
                 -- dap.defaults.fallback.switchbuf   = "usevisible,usetab,newtab"
 

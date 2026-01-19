@@ -11,6 +11,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 export PATH="$PATH:$HOME/.cargo/bin/"
+export PATH=~/XBPS/usr/bin:$PATH
 
 export EDITOR=nvim
 

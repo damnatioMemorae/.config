@@ -8,10 +8,13 @@ local customCol = function(C)
                 --------------------------------------------------------------------------------------------------------
                 -- BUILTINS
 
+                ---[[
+                DapBreakpoint                = { link = "DiagnosticUnderlineError" },
                 DiagnosticError              = { bg = C.crust },
                 DiagnosticWarn               = { bg = C.crust },
                 DiagnosticInfo               = { bg = C.crust },
                 DiagnosticHint               = { bg = C.crust },
+                --]]
                 ---[[ Diagnostic colors
                 DiagnosticUnderlineError     = { bg = "#251b25" },
                 DiagnosticUnderlineWarn      = { bg = "#262325" },
@@ -54,7 +57,7 @@ local customCol = function(C)
                 Error                        = { fg = C.red },
                 ErrorMsg                     = { fg = C.red },
                 FloatBorder                  = { fg = C.mantle, bg = C.mantle },
-                FloatTitle                   = { fg = C.sky, },
+                FloatTitle                   = { fg = C.sky },
                 -- FoldColumn                    = {},
                 FoldColumn                   = { link = "NonText" },
                 -- Folded                                       = { link = "Visual" },

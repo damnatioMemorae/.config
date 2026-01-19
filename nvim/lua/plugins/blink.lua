@@ -142,7 +142,7 @@ return {
                         },
                 },
                 sources    = {
-                        default      = { "lsp", "snippets", "path", "buffer", "calc" },
+                        default      = { "lazydev", "lsp", "snippets", "path", "buffer", "calc" },
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
@@ -155,6 +155,11 @@ return {
                         },
                         providers    = {
                                 calc     = { name = "calc", module = "blink-calc" },
+                                lazydev  = {
+                                        name         = "Lazy",
+                                        module       = "lazydev.integrations.blink",
+                                        score_offset = 200,
+                                },
                                 snippets = {
                                         name               = "Snip",
                                         opts               = {
