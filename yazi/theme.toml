@@ -99,14 +99,11 @@
 
 [filetype]
 rules = [
-        # Images
         { mime = "image/*",                     fg = "#f9e2af" },
 
-        # Videos
         { mime = "video/*",                     fg = "#94e2d5" },
         { mime = "audio/*",                     fg = "#94e2d5" },
 
-        # Archives
         { mime = "application/zip",             fg = "#f5c2e7" },
         { mime = "application/gzip",            fg = "#f5c2e7" },
         { mime = "application/tar",             fg = "#f5c2e7" },
@@ -115,105 +112,117 @@ rules = [
         { mime = "application/7z-compressed",   fg = "#f5c2e7" },
         { mime = "application/rar",             fg = "#f5c2e7" },
 
-        # Fallback
-        { name = "*",                           fg = "#6c7086" },
-        { name = "*/",                          fg = "red" },
+        { url = "*/" ,is = "link" ,fg = "#94e2d5" },
+        { url = "*"  ,is = "link" ,fg = "#94e2d5" },
+        { url = "*"  ,fg = "#6c7086" },
+        { url = "*/" ,fg = "#dce0e8" },
 ]
 
-[icons]
-"Desktop/"       = ""
-"Documents/"     = ""
-"Downloads/"     = ""
-"Pictures/"      = ""
-"Music/"         = ""
-"Movies/"        = ""
-"Videos/"        = ""
-"Public/"        = ""
-"Library/"       = ""
-"Development/"   = ""
-".config/"       = ""
-"/hypr/"         = ""
+[icon]
+conds = [
+        { if = "dir"           ,text = "", fg = "#dce0e8" },
+        { if = "!(dir | link)" ,text = "", fg = "#6c7086" },
+        { if = "link | dir"    ,text = "", fg = "#94e2d5" },
+        { if = "link"          ,text = "", fg = "#94e2d5" },
+        { if = "exec"          ,text = "", fg = "#a6e3a1" },
+]
 
-# Git
-".git/"          = ""
-".gitignore"     = ""
-".gitmodules"    = ""
-".gitattributes" = ""
+prepend_dirs = [
+        { name = "Desktop"   ,text = "", fg = "#add8e6" },
+        { name = "Documents" ,text = "", fg = "#f2cdcd" },
+        { name = "Downloads" ,text = "", fg = "#94e2d5" },
+        { name = "Pictures"  ,text = "", fg = "#f9e2af" },
+        { name = "Music"     ,text = "", fg = "#cba6f7" },
+        { name = "Videos"    ,text = "", fg = "#f38ba8" },
+        { name = "Public"    ,text = "", fg = "#fab387" },
+        { name = "hypr"      ,text = "", fg = "#89dceb" },
+        { name = "nvim"      ,text = "", fg = "#a6e3a1" },
+        { name = "tmux"      ,text = "", fg = "#cba6f7" },
+        # { name = "vesktop"   ,text = "", fg = "#89b4fa" },
+        # { name = "ghostty"   ,text = "󰊠", fg = "#89b4fa" },
+        # { name = ".config"   ,text = "", fg = "#dce0e8" },
+        { name = ".config"   ,text = "", fg = "#dce0e8" },
+        { name = ".local"    ,text = "", fg = "#dce0e8" },
+        { name = ".cache"    ,text = "", fg = "#dce0e8" },
+        { name = ".npm"      ,text = "", fg = "#dce0e8" },
+        { name = ".git"      ,text = "", fg = "#dce0e8" },
+]
 
-# Dotfiles
-".bashrc"        = ""
-".bashprofile"   = ""
-".zshrc"         = ""
-".zshenv"        = ""
-".zprofile"      = ""
-".vimrc"         = ""
+prepend_files = [
+        { name = ".gitignore"     ,text = "" ,fg = "#f38ba8"},
+        { name = ".gitmodules"    ,text = "" ,fg = "#f38ba8"},
+        { name = ".gitconfig"     ,text = "" ,fg = "#f38ba8"},
+        { name = ".gitattributes" ,text = "" ,fg = "#f38ba8"},
+        { name = ".bashrc"        ,text = "" ,fg = "#a6e3a1"},
+        { name = ".bash_profile"  ,text = "" ,fg = "#a6e3a1"},
+        { name = ".zshrc"         ,text = "" ,fg = "#a6e3a1"},
+        { name = "zshenv"         ,text = "" ,fg = "#a6e3a1"},
+        { name = "zprofile"       ,text = "" ,fg = "#a6e3a1"},
+        { name = "vimrc"          ,text = "" ,fg = "#a6e3a1"},
+]
 
-# Text
-"*.txt"          = ""
-"*.md"           = ""
+exts = [
+        { name = "md"  ,text = "󰍔" ,fg = "#dce0e8"},
+        { name = "txt" ,text = "" ,fg = "#a6e3a1"},
+        { name = "bak" ,text = "󰁯" ,fg = "#fab387"},
 
-# Archives
-"*.zip"          = ""
-"*.tar"          = ""
-"*.gz"           = ""
-"*.7z"           = ""
+        { name = "zip" ,text = "" ,fg = "#fab387"},
+        { name = "tar" ,text = "" ,fg = "#fab387"},
+        { name = "gz"  ,text = "" ,fg = "#fab387"},
+        { name = "7z"  ,text = "" ,fg = "#fab387"},
+        { name = "rar" ,text = "" ,fg = "#fab387"},
 
-# Audio
-"*.mp3"          = ""
-"*.flac"         = ""
-"*.wav"          = ""
+        { name = "mp3"  ,text = "" ,fg = "#cba6f7"},
+        { name = "flac" ,text = "" ,fg = "#cba6f7"},
+        { name = "wav"  ,text = "" ,fg = "#cba6f7"},
 
-# Movies
-"*.mp4"          = ""
-"*.mkv"          = ""
-"*.avi"          = ""
-"*.mov"          = ""
+        { name = "mp4" ,text = "" ,fg = "#f38ba8"},
+        { name = "mkv" ,text = "" ,fg = "#f38ba8"},
+        { name = "avi" ,text = "" ,fg = "#f38ba8"},
+        { name = "mov" ,text = "" ,fg = "#f38ba8"},
 
-# Images
-"*.jpg"          = ""
-"*.jpeg"         = ""
-"*.png"          = ""
-"*.gif"          = ""
-"*.webp"         = ""
-"*.avif"         = ""
-"*.bmp"          = ""
-"*.ico"          = ""
-"*.svg"          = ""
+        { name = "jpg"  ,text = "" ,fg = "#cba6f7"},
+        { name = "jpeg" ,text = "" ,fg = "#cba6f7"},
+        { name = "png"  ,text = "" ,fg = "#cba6f7"},
+        { name = "gif"  ,text = "" ,fg = "#cba6f7"},
+        { name = "webp" ,text = "" ,fg = "#cba6f7"},
+        { name = "avif" ,text = "" ,fg = "#cba6f7"},
+        { name = "bmp"  ,text = "" ,fg = "#cba6f7"},
+        { name = "ico"  ,text = "" ,fg = "#cba6f7"},
+        { name = "svg"  ,text = "" ,fg = "#cba6f7"},
 
-# Programming
-"*.c"            = ""
-"*.cpp"          = ""
-"*.h"            = ""
-"*.hpp"          = ""
-"*.rs"           = ""
-"*.go"           = ""
-"*.py"           = ""
-"*.js"           = ""
-"*.ts"           = ""
-"*.tsx"          = ""
-"*.jsx"          = ""
-"*.rb"           = ""
-"*.php"          = ""
-"*.java"         = ""
-"*.sh"           = ""
-"*.fish"         = ""
-"*.swift"        = ""
-"*.vim"          = ""
-"*.lua"          = ""
-"*.html"         = ""
-"*.css"          = ""
-"*.scss"         = ""
-"*.json"         = ""
-"*.toml"         = ""
-"*.yml"          = ""
-"*.yaml"         = ""
-"*.ini"          = ""
-"*.conf"         = ""
-"*.v"            = "󰍛"
-"*.sv"           = "󰍛"
-"*.svh"          = "󰍛"
-"*.tcl"          = "󰛓"
-
-# Default
-"*"              = ""
-"*/"             = ""
+        { name = "c"     ,text = "" ,fg = "#74c7ec"},
+        { name = "cpp"   ,text = "" ,fg = "#74c7ec"},
+        { name = "h"     ,text = "" ,fg = "#cba6f7"},
+        { name = "hpp"   ,text = "" ,fg = "#cba6f7"},
+        { name = "rs"    ,text = "" ,fg = "#eba0ac"},
+        { name = "go"    ,text = "󰟓" ,fg = "#74c7ec"},
+        { name = "py"    ,text = "" ,fg = "#f9e2af"},
+        { name = "js"    ,text = "" ,fg = "#f9e2af"},
+        { name = "ts"    ,text = "󰛦" ,fg = "#89b4fa"},
+        { name = "tsx"   ,text = "" ,fg = "#94e2d5"},
+        { name = "jsx"   ,text = "" ,fg = "#94e2d5"},
+        { name = "rb"    ,text = "" ,fg = "#f38ba8"},
+        { name = "php"   ,text = "" ,fg = "#b4befe"},
+        { name = "java"  ,text = "󰬷" ,fg = "#f38ba8"},
+        { name = "sh"    ,text = "" ,fg = "#a6e3a1"},
+        { name = "zsh"   ,text = "" ,fg = "#a6e3a1"},
+        { name = "fish"  ,text = "" ,fg = "#a6e3a1"},
+        { name = "swift" ,text = "" ,fg = "#fab387"},
+        { name = "vim"   ,text = "" ,fg = "#a6e3a1"},
+        { name = "lua"   ,text = "" ,fg = "#89b4fa"},
+        { name = "html"  ,text = "" ,fg = "#f38ba8"},
+        { name = "css"   ,text = "" ,fg = "#89b4fa"},
+        { name = "scss"  ,text = "" ,fg = "#89b4fa"},
+        { name = "json"  ,text = "" ,fg = "#f9e2af"},
+        { name = "jsonc" ,text = "" ,fg = "#f9e2af"},
+        { name = "toml"  ,text = "" ,fg = "#f38ba8"},
+        { name = "yml"   ,text = "" ,fg = "#a6e3a1"},
+        { name = "yaml"  ,text = "" ,fg = "#a6e3a1"},
+        { name = "ini"   ,text = "" ,fg = "#6c7086"},
+        { name = "conf"  ,text = "" ,fg = "#6c7086"},
+        { name = "v"     ,text = "󰍛" },
+        { name = "sv"    ,text = "󰍛" },
+        { name = "svh"   ,text = "󰍛" },
+        { name = "tcl"   ,text = "󰛓" },
+]

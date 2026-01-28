@@ -19,10 +19,8 @@ M.extraTextobjMaps = {
 ---@param opts? {desc?: string, unique?: boolean, buffer?: number|boolean, remap?: boolean, silent?:boolean, nowait?: boolean}
 function M.uniqueKeymap(mode, keys, rhs, opts)
         if not opts then opts = {} end
-        if opts.unique == nil then opts.unique = true end -- allows to disable with `unique=false`
+        if opts.unique == nil then opts.unique = true end
 
-        -- violating `unique=true` throws an error; using `pcall` so other mappings
-        -- are still loaded
         if type(keys) ~= "table" then
                 keys = { keys }
         end

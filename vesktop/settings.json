@@ -2,7 +2,7 @@
     "discordBranch": "stable",
     "minimizeToTray": false,
     "arRPC": false,
-    "splashColor": "rgb(186, 194, 222)",
+    "splashColor": "rgb(203, 203, 221)",
     "splashBackground": "rgb(14, 14, 22)",
     "hardwareVideoAcceleration": true,
     "splashPixelated": false,

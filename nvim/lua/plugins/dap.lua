@@ -10,15 +10,15 @@ return {
                 "theHamsta/nvim-dap-virtual-text",
         },
         config       = function()
-                local dap                                          = require("dap")
-                local ui                                           = require("dapui")
-                local virtual_text                                 = require("nvim-dap-virtual-text")
-                local widgets                                      = require("dap.ui.widgets")
+                local dap          = require("dap")
+                local ui           = require("dapui")
+                local widgets      = require("dap.ui.widgets")
+                local virtual_text = require("nvim-dap-virtual-text")
 
                 dap.listeners.before.attach.dapui_config           = function() ui.open() end
                 dap.listeners.before.launch.dapui_config           = function() ui.open() end
-                dap.listeners.before.event_terminated.dapui_config = function() ui.close() end
                 dap.listeners.before.event_exited.dapui_config     = function() ui.close() end
+                dap.listeners.before.event_terminated.dapui_config = function() ui.close() end
 
                 virtual_text.setup({
                         all_references = true,
@@ -104,12 +104,12 @@ return {
                 --------------------------------------------------------------------------------------------------------
                 -- C/C++
 
-                dap.adapters.codelldb     = {
+                dap.adapters.codelldb  = {
                         type    = "executable",
                         command = "codelldb",
                         name    = "codelldb",
                 }
-                dap.configurations.cpp    = {
+                dap.configurations.cpp = {
                         {
                                 name        = "[C++] Launch file",
                                 type        = "codelldb",
@@ -126,12 +126,12 @@ return {
                 --------------------------------------------------------------------------------------------------------
                 -- BASH
 
-                dap.adapters.bashdb       = {
+                dap.adapters.bashdb   = {
                         type    = "executable",
                         command = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/bash-debug-adapter",
                         name    = "bashdb",
                 }
-                dap.configurations.sh     = {
+                dap.configurations.sh = {
                         {
                                 name            = "[BASH] Launch file",
                                 type            = "bashdb",
