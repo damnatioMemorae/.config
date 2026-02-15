@@ -43,6 +43,15 @@ function Entity:click(event, up)
         end
 end
 
+Status:children_add(function(self)
+        local h = self._current.hovered
+        if h and h.link_to then
+                return " -> " .. tostring(h.link_to)
+        else
+                return ""
+        end
+end, 3300, Status.LEFT)
+
 require("git"):setup()
 
 require("telegram-send"):setup({
@@ -51,3 +60,31 @@ require("telegram-send"):setup({
 })
 
 require("toggle-pane"):entry("min-parent")
+
+require("simple-tag"):setup({
+        ui_mode        = "icon",
+        hints_disabled = false,
+        linemode_order = 500,
+        save_path      = os.getenv("HOME") .. "/.config/yazi/tags",
+        colors         = {
+                reversed = true,
+                ["*"] = "#cba6f7",
+                ["$"] = "#a6e3a1",
+                ["!"] = "#fab387",
+                ["1"] = "#74c7ec",
+                ["p"] = "#f38ba8",
+        },
+        icons          = {
+                -- default  = "󰚋",
+                -- ["*"] = "*",
+                -- ["$"] = "",
+                -- ["!"] = "",
+                -- ["p"] = "",
+                default  = "🬀",
+                ["*"] = "🬀",
+                ["$"] = "🬀",
+                ["!"] = "🬀",
+                ["p"] = "🬀",
+        },
+
+})

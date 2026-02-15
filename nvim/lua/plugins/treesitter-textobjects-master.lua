@@ -1,13 +1,12 @@
 local textObj = require("core.utils").extraTextobjMaps
+local icons   = require("core.icons").symbolKinds
 local modes   = { "n", "v", "x", "o" }
 
 return { -- treesitter-based textobjs
         "nvim-treesitter/nvim-treesitter-textobjects",
-        enabled      = true,
         branch       = "master",
         dependencies = "nvim-treesitter",
         event        = "VeryLazy",
-        -- lazy         = false,
         cmd          = { -- commands need to be defined, since used in various utility functions
                 "TSTextobjectSelect",
                 "TSTextobjectSwapNext",
@@ -24,7 +23,7 @@ return { -- treesitter-based textobjs
                 ---[[ COMMENT OPERATIONS
                 { -- COMMENT SINGLE
                         "q",
-                        function() vim.cmd.TSTextobjectSelect("@comment.outer") end,
+                        "<cmd>TSTextobjectSelect @comment.inner<CR>",
                         mode = "o", -- only operator-pending to not conflict with selection-commenting
                         desc = "󰆈 Single Comment",
                 },
@@ -54,225 +53,194 @@ return { -- treesitter-based textobjs
                 --]]
 
                 ---[[ MOVE & SWAP
-                { -- COMMENT PREV
+                { -- `Q` - COMMENT PREV
                         "<A-Q>",
                         "<cmd>TSTextobjectGotoPreviousStart @comment.outer<CR>",
                         mode = modes,
                         desc = " Goto prev comment",
                 },
-                { -- COMMENT NEXT
+                { -- `q` - COMMENT NEXT
                         "<A-q>",
                         "<cmd>TSTextobjectGotoNextStart @comment.outer<CR>",
                         mode = modes,
                         desc = " Goto next comment",
                 },
-                { -- FUNCTION PREV
+                { -- `F` - FUNCTION PREV
                         "<A-F>",
-                        "<cmd>TSTextobjectGotoPreviousStart @function.outer<CR>",
+                        "<cmd>TSTextobjectGotoPreviousStart @function.name<CR>",
                         mode = modes,
-                        desc = " Goto prev function",
+                        desc = icons.Function .. "Goto prev function",
                 },
-                { -- FUNCTION NEXT
+                { -- `f` - FUNCTION NEXT
                         "<A-f>",
-                        "<cmd>TSTextobjectGotoNextStart @function.outer<CR>",
+                        "<cmd>TSTextobjectGotoNextStart @function.name<CR>",
                         mode = modes,
-                        desc = " Goto next function",
+                        desc = icons.Function .. "Goto next function",
                 },
-                { -- CONDITION PREV
+                { -- `O` - CONDITION PREV
                         "<A-O>",
                         "<cmd>TSTextobjectGotoPreviousStart @conditional.inner<CR>",
                         mode = modes,
-                        desc = "󱕆 Goto prev condition",
+                        desc = icons.IfStatement .. "Goto prev condition",
                 },
-                { -- CONDITION NEXT
+                { -- `o` - CONDITION NEXT
                         "<A-o>",
                         "<cmd>TSTextobjectGotoNextStart @conditional.inner<CR>",
                         mode = modes,
-                        desc = "󱕆 Goto next condition",
+                        desc = icons.IfStatement .. "Goto next condition",
                 },
-                { -- CALL PREV
+                { -- `C` - CALL PREV
                         "<A-C>",
                         "<cmd>TSTextobjectGotoPreviousStart @call.outer<CR>",
                         mode = modes,
-                        desc = "󰡱 Goto prev call",
+                        desc = icons.Call .. "Goto prev call",
                 },
-                { -- CALL NEXT
+                { -- `c` - CALL NEXT
                         "<A-c>",
                         "<cmd>TSTextobjectGotoNextStart @call.outer<CR>",
                         mode = modes,
-                        desc = "󰡱 Goto next call",
+                        desc = icons.Call .. "Goto next call",
                 },
-                { -- LOOP PREV
+                { -- `U` - LOOP PREV
                         "<A-U>",
                         "<cmd>TSTextobjectGotoPreviousStart @loop.outer<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto prev loop",
+                        desc = icons.Repeat .. "Goto prev loop",
                 },
-                { -- LOOP NEXT
+                { -- `u` - LOOP NEXT
                         "<A-u>",
                         "<cmd>TSTextobjectGotoNextStart @loop.outer<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto next loop",
+                        desc = icons.Repeat .. "Goto next loop",
                 },
-                { -- ASSIGNMENT PREV
+                { -- `S` - ASSIGNMENT PREV
                         "<A-S>",
                         "<cmd>TSTextobjectGotoPreviousStart @assignment.lhs<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto prev assignment",
+                        desc = icons.Variable .. "Goto prev assignment",
                 },
-                { -- ASSIGNMENT NEXT
+                { -- `s` - ASSIGNMENT NEXT
                         "<A-s>",
                         "<cmd>TSTextobjectGotoNextStart @assignment.lhs<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto next assignment",
+                        desc = icons.Variable .. "Goto next assignment",
                 },
-                { -- VALUE PREV
+                { -- `V` - VALUE PREV
                         "<A-V>",
                         "<cmd>TSTextobjectGotoPreviousStart @assignment.rhs<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto prev value",
+                        desc = icons.Value .. "Goto prev value",
                 },
-                { -- VALUE NEXT
+                { -- `v` - VALUE NEXT
                         "<A-v>",
                         "<cmd>TSTextobjectGotoNextStart @assignment.rhs<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto next value",
+                        desc = icons.Value .. "Goto next value",
                 },
-                { -- TYPE PREV
+                { -- `T` - TYPE PREV
                         "<A-T>",
                         "<cmd>TSTextobjectGotoPreviousStart @assignment.outer<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto prev type",
+                        desc = icons.Type .. "Goto prev type",
                 },
-                { -- TYPE NEXT
+                { -- `t` - TYPE NEXT
                         "<A-t>",
                         "<cmd>TSTextobjectGotoNextStart @assignment.outer<CR>",
                         mode = modes,
-                        desc = "󰛤 Goto next type",
+                        desc = icons.Type .. "Goto next type",
                 },
-                { -- PARAMETER PREV
+                { -- `A` - PARAMETER PREV
                         "<A-A>",
                         "<cmd>TSTextobjectGotoPreviousStart @parameter.inner<CR>",
                         mode = modes,
-                        desc = "󰏪 Goto prev parameter",
+                        desc = icons.Parameter .. "Goto prev parameter",
                 },
-                { -- PARAMETER NEXT
+                { -- `a` - PARAMETER NEXT
                         "<A-a>",
                         "<cmd>TSTextobjectGotoNextStart @parameter.inner<CR>",
                         mode = modes,
-                        desc = "󰏪 Goto next parameter",
+                        desc = icons.Parameter .. "Goto next parameter",
                 },
-                { -- PARAMETER PREV SWAP
+                { -- `{` - PARAMETER PREV SWAP
                         "<A-{>",
                         "<cmd>TSTextobjectSwapPrevious @parameter.inner<CR>",
                         mode = { "n", "x", "o" },
-                        desc = "󰏪 Swap prev parameter",
+                        desc = icons.Parameter .. "Swap prev parameter",
                 },
-                { -- PARAMETER NEXT SWAP
+                { -- `}` - PARAMETER NEXT SWAP
                         "<A-}>",
                         "<cmd>TSTextobjectSwapNext @parameter.inner<CR>",
                         mode = { "n", "x", "o" },
-                        desc = "󰏪 Swap next parameter",
+                        desc = icons.Parameter .. "Swap next parameter",
                 },
                 --]]
 
                 ---[[ TEXT OBJECT SELECT
-                { -- RETURN INNER
-                        "a<CR>",
-                        function()
-                                vim.cmd.TSTextobjectSelect("@return.outer")
-                        end,
-                        mode = { "x", "o" },
-                        desc = "↩ outer return",
-                },
-                { -- RETURN INNER
-                        "<CR>",
-                        function()
-                                vim.cmd.TSTextobjectSelect("@return.inner")
-                        end,
-                        mode = "o",
-                        desc = "↩ inner return",
-                },
-                { -- REGEX OUTER
+                { -- `/` REGEX OUTER
                         "a/",
-                        function()
-                                vim.cmd.TSTextobjectSelect("@regex.outer")
-                        end,
+                        "<cmd>TSTextobjectSelect @regex.outer<CR>",
                         mode = { "x", "o" },
-                        desc = " outer regex",
+                        desc = icons.Regex .. "outer regex",
                 },
-                { -- REGEX INNER
+                { -- `/` REGEX INNER
                         "i/",
-                        function()
-                                vim.cmd.TSTextobjectSelect("@regex.inner")
-                        end,
+                        "<cmd>TSTextobjectSelect @regex.inner<CR>",
                         mode = { "x", "o" },
-                        desc = "󰛤 inner regex",
+                        desc = icons.Regex .. "inner regex",
                 },
-                { -- FUNCTION OUTER
+                { -- `f` FUNCTION OUTER
                         "a" .. textObj.func,
-                        function()
-                                vim.cmd.TSTextobjectSelect("@function.outer")
-                        end,
+                        "<cmd>TSTextobjectSelect @function.outer<CR>",
                         mode = { "x", "o" },
-                        desc = " outer function",
+                        desc = icons.Function .. "outer function",
                 },
-                { -- FUNCTION INNER
+                { -- `f` FUNCTION INNER
                         "i" .. textObj.func,
-                        function()
-                                vim.cmd.TSTextobjectSelect("@function.inner")
-                        end,
+                        "<cmd>TSTextobjectSelect @function.inner<CR>",
                         mode = { "x", "o" },
-                        desc = " inner function",
+                        desc = icons.Function .. "inner function",
                 },
-                { -- CONDITION OUTER
+                { -- `o` CONDITION OUTER
                         "a" .. textObj.condition,
-                        function()
-                                vim.cmd.TSTextobjectSelect("@condition.outer")
-                        end,
+                        "<cmd>TSTextobjectSelect @condition.outer<CR>",
                         mode = { "x", "o" },
-                        desc = "󱕆 outer condition",
+                        desc = icons.IfStatement .. "outer condition",
                 },
-                { -- CONDITION INNER
+                { -- `o` CONDITION INNER
                         "i" .. textObj.condition,
-                        function()
-                                vim.cmd.TSTextobjectSelect("@condition.inner")
-                        end,
+                        "<cmd>TSTextobjectSelect @condition.outer<CR>",
                         mode = { "x", "o" },
-                        desc = "󱕆 inner condition",
+                        desc = icons.IfStatement .. "inner condition",
                 },
-                { -- CALL OUTER
+                { -- `l` CALL OUTER
                         "a" .. textObj.call,
-                        function()
-                                vim.cmd.TSTextobjectSelect("@call.outer")
-                        end,
+                        "<cmd>TSTextobjectSelect @call.outer<CR>",
                         mode = { "x", "o" },
-                        desc = "󰡱 outer call",
+                        desc = icons.Call .. "outer call",
                 },
-                { -- CALL INNER
+                { -- `l` CALL INNER
                         "i" .. textObj.call,
-                        function()
-                                vim.cmd.TSTextobjectSelect("@call.inner")
-                        end,
+                        "<cmd>TSTextobjectSelect @call.inner<CR>",
                         mode = { "x", "o" },
-                        desc = "󰡱 inner call",
+                        desc = icons.Call .. "inner call",
                 },
                 --]]
 
                 ---[[ REPEATABLE ACTIONS
                 {
-                        "<C-Up>",
+                        '"',
                         "<cmd>TSTextobjectRepeatLastMovePrevious<CR>",
-                        mode = modes,
-                        desc = "󰑖 Repeat to Prev",
+                        mode = { "n", "v", "x" },
+                        desc = icons.Call .. "󰑖 Repeat to Prev",
                 },
                 {
-                        "<C-Down>",
+                        "'",
                         "<cmd>TSTextobjectRepeatLastMoveNext<CR>",
-                        mode = modes,
-                        desc = "󰑖 Repeat to Next",
+                        mode = { "n", "v", "x" },
+                        desc = icons.Repeat .. "󰑖 Repeat to Next",
                 },
                 --]]
+
                 ---[[ PEEK DEFINITION
                 {
                         ",,",

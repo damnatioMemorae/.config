@@ -15,19 +15,15 @@ return {
                         hl        = "LightBulbSign",
                 },
                 virtual_text    = {
-                        enabled   = true,
+                        enabled   = false,
                         text      = " " .. icons.diagnostics.lightbulb,
                         lens_text = icons.diagnostics.Info,
                         pos       = "eol",
                         hl_mode   = "combine",
                         hl        = "LightBulbSign",
                 },
-                status_text = {
-                        enabled = true
-                },
-                autocmd         = {
-                        enabled    = true,
-                        updatetime = 1,
-                },
+                status_text     = { enabled = true },
+                autocmd         = { enabled = true, updatetime = 1 },
+                ignore          = { clients = { "dev-tools" } },
         },
 }

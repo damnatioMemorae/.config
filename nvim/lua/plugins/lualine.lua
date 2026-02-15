@@ -1,4 +1,4 @@
-local C = require("core.colors").C
+local C = require("core.colors").catppuccin
 
 return {
         "nvim-lualine/lualine.nvim",

@@ -3,9 +3,9 @@ local modes = { "n", "v" }
 return {
         "MagicDuck/grug-far.nvim",
         enabled = false,
-        event = "VeryLazy",
-        cmd   = "GrugFar",
-        keys  = {
+        event   = "VeryLazy",
+        cmd     = "GrugFar",
+        keys    = {
                 {
                         "<leader>sr",
                         mode = modes,

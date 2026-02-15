@@ -1,7 +1,7 @@
 ---@diagnostic disable: unknown-diag-code
 return {
         "mfussenegger/nvim-dap",
-        enabled      = true,
+        enabled      = false,
         -- event        = "VeryLazy",
         lazy         = false,
         dependencies = {
@@ -14,6 +14,9 @@ return {
                 local ui           = require("dapui")
                 local widgets      = require("dap.ui.widgets")
                 local virtual_text = require("nvim-dap-virtual-text")
+                local map          = function(lhs, rhs, desc)
+                        vim.keymap.set("n", lhs, rhs, { desc = desc })
+                end
 
                 dap.listeners.before.attach.dapui_config           = function() ui.open() end
                 dap.listeners.before.launch.dapui_config           = function() ui.open() end
@@ -85,19 +88,18 @@ return {
                         numhl  = "DapBreakpoint",
                 })
 
-                vim.keymap.set("n", "<A-F1>", function() widgets.sidebar(widgets.scopes) end, { desc = "Toggle Scopes" })
-                vim.keymap.set("n", "<A-F2>", function() widgets.sidebar(widgets.frame) end, { desc = "Toggle Frames" })
-                vim.keymap.set("n", "<A-F3>", widgets.hover, { desc = "DAP Hover" })
-                vim.keymap.set("n", "<A-F4>", dap.run_to_cursor, { desc = "DAP Run to Cursor" })
-                vim.keymap.set("n", "<A-F5>", function() dap.repl.toggle({ width = 50 }, "vsplit") end,
-                               { desc = "Toggle REPL" })
-                vim.keymap.set("n", "<A-F6>", ui.eval, { desc = "DAP Eval" })
-                vim.keymap.set("n", "<A-F7>", widgets.hover, { desc = "DAP Hover" })
-                vim.keymap.set("n", "<A-F8>", dap.toggle_breakpoint, { desc = "DAP Toggle Breakpoint" })
-                vim.keymap.set("n", "<A-F9>", dap.step_over, { desc = "DAP Step Over" })
-                vim.keymap.set("n", "<A-F10>", dap.step_into, { desc = "DAP Step Into" })
-                vim.keymap.set("n", "<A-F11>", dap.step_out, { desc = "DAP Step Out" })
-                vim.keymap.set("n", "<A-F12>", dap.step_back, { desc = "DAP Step Back" })
+                map("F1",  function() widgets.sidebar(widgets.scopes) end,           "Toggle Scopes")
+                map("F2",  function() widgets.sidebar(widgets.frame) end,            "Toggle Frames")
+                map("F3",  widgets.hover,                                            "DAP Hover")
+                map("F4",  dap.run_to_cursor,                                        "DAP Run to Cursor")
+                map("F5",  function() dap.repl.toggle({ width = 50 }, "vsplit") end, "Toggle REPL")
+                map("F6",  ui.eval,                                                  "DAP Eval")
+                map("F7",  widgets.hover,                                            "DAP Hover")
+                map("F8",  dap.toggle_breakpoint,                                    "DAP Toggle Breakpoint")
+                map("F9",  dap.step_over,                                            "DAP Step Over")
+                map("F10", dap.step_into,                                            "DAP Step Into")
+                map("F11", dap.step_out,                                             "DAP Step Out")
+                map("F12", dap.step_back,                                            "DAP Step Back")
 
                 -- dap.defaults.fallback.switchbuf   = "usevisible,usetab,newtab"
 
@@ -126,9 +128,10 @@ return {
                 --------------------------------------------------------------------------------------------------------
                 -- BASH
 
+                local bashdb          = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter"
                 dap.adapters.bashdb   = {
                         type    = "executable",
-                        command = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter/bash-debug-adapter",
+                        command = bashdb .. "/bash-debug-adapter",
                         name    = "bashdb",
                 }
                 dap.configurations.sh = {
@@ -137,10 +140,8 @@ return {
                                 type            = "bashdb",
                                 request         = "launch",
                                 showDebugOutput = true,
-                                pathBashdb      = vim.fn.stdpath("data") ..
-                                           "/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb",
-                                pathBashdbLib   = vim.fn.stdpath("data") ..
-                                           "/mason/packages/bash-debug-adapter/extension/bashdb_dir",
+                                pathBashdb      = bashdb .. "/extension/bashdb_dir/bashdb",
+                                pathBashdbLib   = bashdb .. "/extension/bashdb_dir",
                                 trace           = true,
                                 file            = "${file}",
                                 program         = "${file}",

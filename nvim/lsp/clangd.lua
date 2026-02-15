@@ -44,7 +44,7 @@ local function symbol_info()
                                               width     = math.max(string.len(name), string.len(container)),
                                               focusable = false,
                                               focus     = false,
-                                              border    = "single",
+                                              border    = vim.g.borderStyle,
                                               title     = "Symbol Info",
                                       })
                                       ---@diagnostic disable-next-line: unknown-diag-code
@@ -61,29 +61,42 @@ local function generate_compile_flags()
         end
 end
 
+local cmd = {
+        "clangd",
+        "-j=8",
+        -- "--check",
+        -- "--experimental-modules-support",
+        "--pch-storage=memory",
+        "--limit-results=0",
+        "--limit-references=0",
+        "--rename-file-limit=0",
+        "--all-scopes-completion=true",
+        "--malloc-trim",
+        "--background-index",
+        "--background-index-priority=background",
+        "--clang-tidy",
+        "--completion-style=detailed",
+        -- "--completion-style=bundled",
+        "--fallback-style=llvm",
+        "--function-arg-placeholders=0",
+        "--header-insertion-decorators",
+        "--header-insertion=iwyu",
+        "--import-insertions",
+        "--log=verbose",
+        -- "--debug-origin",
+        "--completion-parse=always",
+        -- "--completion-parse=never",
+        "--ranking-model=heuristics",
+        -- "--ranking-model=decision_forest",
+        "--parse-forwarding-functions",
+        -- "--completion-parse=never",
+        -- "--use-dirty-headers",
+}
+
 return {
-        cmd          = {
-                "clangd",
-                "--all-scopes-completion=true",
-                "--background-index",
-                "--background-index-priority=normal",
-                "--clang-tidy",
-                "--completion-style=detailed",
-                "--fallback-style=llvm",
-                "--function-arg-placeholders=0",
-                "--header-insertion-decorators",
-                "--header-insertion=iwyu",
-                "--import-insertions",
-                "--log=verbose",
-                "--debug-origin",
-                "--completion-parse=always",
-                "--use-dirty-headers",
-                "--ranking-model=decision_forest",
-                -- "--experimental-modules-support",
-                -- "--completion-parse=never",
-        },
-        filetypes    = { "c", "cpp" },
-        root_markers = {
+        cmd                = cmd,
+        filetypes          = { "c", "cpp" },
+        root_markers       = {
                 "build.ninja",
                 ".clangd",
                 ".clang-format",
@@ -98,7 +111,7 @@ return {
                 "meson.build",
                 "meson_options.txt",
         },
-        settings     = {
+        settings           = {
                 clangd = {
                         InlayHints         = {
                                 Designators    = true,
@@ -111,20 +124,21 @@ return {
                         usePlaceholders    = true,
                         completeUnimported = true,
                         clangdFileStatus   = true,
-                        fallbackFlags      = { "-std=c++20" },
+                        fallbackFlags      = { "-std=c++23" },
                 },
         },
-        capabilities = {
+        capabilities       = {
                 offsetEncoding = { "utf-8", "utf-16" },
                 semanticTokens = { multilineTokenSupport = false },
                 textDocument   = { completion = { editsNearCursor = true } },
+                workspace      = { didChangeWatchedFiles = { dynamicRegistration = false } },
         },
-        on_init      = function(client, init_result)
+        on_init            = function(client, init_result)
                 if init_result.offsetEncoding then
                         client.offset_encoding = init_result.offsetEncoding
                 end
         end,
-        on_attach    = function(_, bufnr)
+        on_attach          = function(_, bufnr)
                 vim.api.nvim_buf_create_user_command(bufnr, "LspClangdSwitchSourceHeader", function()
                                                              switch_source_header(bufnr)
                                                      end, { desc = "Switch between source/header" })
@@ -137,4 +151,5 @@ return {
                                                      end, { desc = "Generate Compile Flags" })
                 --]]
         end,
+        workspace_required = false,
 }

@@ -8,7 +8,7 @@ return {
                         c          = { "clang_format" },
                         cpp        = { "clang_format" },
                         css        = { "prettierd", "prettier" },
-                        glsl       = { "clang_format" },
+                        -- glsl       = { "clang_format" },
                         go         = { "gofmt", "goimports" },
                         html       = { "prettierd", "prettier" },
                         javascript = { "prettierd", "prettier" },

@@ -1,6 +1,5 @@
 local button       = "Function"
 local label        = "Comment"
-local prefix       = require("core.utils").prefix
 local icons        = require("core.icons")
 local insertOnShow = function() vim.cmd.stopinsert() end
 
@@ -27,7 +26,13 @@ return {
                 },
                 { -- FILES
                         "<leader><leader>f",
-                        function() Snacks.picker.files({ layout = "vertical", hidden = true }) end,
+                        function()
+                                Snacks.picker.files({
+                                        layout = "vertical",
+                                        hidden = true,
+                                        win    = { input = { keys = { ["<Right>"] = { "confirm", mode = { "n", "i" } } } } },
+                                })
+                        end,
                         desc = "File Picker",
                         mode = { "n" },
                 },
@@ -46,6 +51,12 @@ return {
                 { -- GREP WORD
                         "<leader><leader>W",
                         function() Snacks.picker.grep_word({ layout = "vertical" }) end,
+                        desc = "Grep Word",
+                        mode = { "n" },
+                },
+                { -- GREP BUFFERS
+                        "<leader><leader>B",
+                        function() Snacks.picker.grep_buffers({ layout = "vertical" }) end,
                         desc = "Grep Word",
                         mode = { "n" },
                 },
@@ -75,10 +86,7 @@ return {
                                         layout  = "default",
                                         format  = "buffer",
                                         hidden  = false,
-                                        win     = {
-                                                input = { keys = { ["d"] = "bufdelete" } },
-                                                -- list   = { keys  = { ["Backspace"]  = "bufdelete" } },
-                                        },
+                                        win     = { input = { keys = { ["d"] = "bufdelete" } } },
                                 })
                         end,
                         desc = "Buffer Picker",
@@ -98,7 +106,24 @@ return {
                                         },
                                 })
                         end,
-                        desc = "Buffer Picker",
+                        desc = "Undo Picker",
+                        mode = { "n" },
+                },
+                { -- JUMPS
+                        "<leader><leader>j",
+                        function()
+                                Snacks.picker.jumps({
+                                        on_show = insertOnShow,
+                                        layout  = "default",
+                                        format  = "buffer",
+                                        hidden  = false,
+                                        win     = {
+                                                -- input  = { keys  = { ["Backspace"]  = "bufdelete" } },
+                                                -- list   = { keys  = { ["Backspace"]  = "bufdelete" } },
+                                        },
+                                })
+                        end,
+                        desc = "Jumps Picker",
                         mode = { "n" },
                 },
                 { -- EXPLORER
@@ -118,7 +143,7 @@ return {
 
                 -- LSP PICKERS
                 { -- REFERENCES
-                        prefix .. "r",
+                        vim.g.prefix .. "r",
                         function()
                                 Snacks.picker.lsp_references({
                                         layout  = "vertical",
@@ -129,7 +154,7 @@ return {
                         mode = { "n" },
                 },
                 { -- IMPLEMENTATIONS
-                        prefix .. "i",
+                        vim.g.prefix .. "i",
                         function()
                                 Snacks.picker.lsp_implementations({
                                         layout  = "vertical",
@@ -140,7 +165,7 @@ return {
                         mode = { "n" },
                 },
                 { -- DEFINITIONS
-                        prefix .. "d",
+                        vim.g.prefix .. "d",
                         function()
                                 Snacks.picker.lsp_definitions({
                                         layout  = "vertical",
@@ -151,7 +176,7 @@ return {
                         mode = { "n" },
                 },
                 { -- DECLARATIONS
-                        prefix .. "D",
+                        vim.g.prefix .. "D",
                         function()
                                 Snacks.picker.lsp_declarations({
                                         layout  = "vertical",
@@ -385,7 +410,7 @@ return {
                         },
                         icons     = {
                                 diagnostics = icons.diagnostics,
-                                kinds       = icons.symbol_kinds,
+                                kinds       = icons.symbolKinds,
                                 tree        = {
                                         vertical = " ",
                                         middle   = " ",
@@ -393,9 +418,9 @@ return {
                                 },
                                 files       = {
                                         enabled  = true,
-                                        dir      = icons.symbol_kinds.Folder,
-                                        dir_open = icons.misc.FolderOpen,
-                                        file     = icons.symbol_kinds.File,
+                                        dir      = icons.symbolKinds.Folder,
+                                        dir_open = icons.misc.folderOpen,
+                                        file     = icons.symbolKinds.File,
                                 },
                                 ui          = {
                                         selected   = icons.diagnostics.HINT,

@@ -7,14 +7,14 @@ local modes = { "n", "x" }
 return {
         "kevinhwang91/nvim-ufo",
         dependencies = "kevinhwang91/promise-async",
-        event        = "LspAttach",
+        event        = "BufEnter",
         keys         = {
                 { "<leader>if", function() require("ufo").inspect() end, cmd(), desc = " Fold Info" },
 
                 { -- 0
                         "<A-0>",
                         function()
-                                require("ufo").closeAllFolds()
+                                require("ufo").closeFoldsWith(0)
                                 -- require("ufo").openFoldsExceptKinds{ "region" }
                                 cmd()
                         end,
@@ -87,8 +87,10 @@ return {
                 { -- CLOSE ALL
                         "<A-C-left>",
                         function()
+                                require("ufo").closeAllFolds()
                                 -- local msg = require("ufo.main").inspectBuf()[6]
                                 -- vim.notify(msg[2], vim.log.levels.DEBUG)
+                                --[[
                                 require("ufo").openFoldsExceptKinds{
                                         "region",
                                         "table_constructor",
@@ -105,6 +107,7 @@ return {
                                         -- "pair",
                                         -- "rule_set",
                                 }
+                                --]]
                                 cmd()
                         end,
                         mode = modes,
@@ -152,7 +155,7 @@ return {
                 open_fold_hl_timeout    = 0,
                 preview                 = {
                         win_config = {
-                                border       = require("core.icons").misc.Borders,
+                                border       = vim.g.borderStyle,
                                 winblend     = 0,
                                 winhighlight = "NormalFloat:NormalFloat",
                         },

@@ -1,7 +1,9 @@
+local icons = require("core.icons")
+
+
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP SERVERS
 
-local icons      = require("core.icons")
 local lspServers = {
         "asm_lsp",
         "basedpyright",
@@ -14,7 +16,6 @@ local lspServers = {
         "emmet-language-server",
         "glsl_analyzer",
         "gopls",
-        "hyprls",
         "jsonls",
         "kotlin_lsp",
         "ltex",
@@ -27,13 +28,13 @@ local lspServers = {
         "yamlls",
 }
 
-vim.lsp.config("*", { root_markers = { ".git" } })
-
+vim.lsp.config("*",        { root_markers = { ".git" } })
 vim.lsp.enable(lspServers)
 
 ------------------------------------------------------------------------------------------------------------------------
 -- DIAGNOSTICS
 
+local hl      = "VirtualText"
 local numbers = {
         text  = {
                 [vim.diagnostic.severity.ERROR] = "",
@@ -42,17 +43,29 @@ local numbers = {
                 [vim.diagnostic.severity.HINT]  = "",
         },
         numhl = {
-                [vim.diagnostic.severity.ERROR] = "ErrorMsg",
-                [vim.diagnostic.severity.WARN]  = "WarningMsg",
-                [vim.diagnostic.severity.INFO]  = "DiagnosticInfo",
-                [vim.diagnostic.severity.HINT]  = "DiagnosticHint",
+                [vim.diagnostic.severity.ERROR] = "Diagnostic" .. hl .. "Error",
+                [vim.diagnostic.severity.WARN]  = "Diagnostic" .. hl .. "Warn",
+                [vim.diagnostic.severity.INFO]  = "Diagnostic" .. hl .. "Info",
+                [vim.diagnostic.severity.HINT]  = "Diagnostic" .. hl .. "Hint",
         },
 }
 
 vim.diagnostic.config({
         signs            = numbers,
         jump             = { float = false },
-        virtual_text     = false,
+        virtual_text     = function(virtual_text)
+                if virtual_text == false then
+                        return false
+                else
+                        return {
+                                source       = true,
+                                current_line = nil,
+                                format       = function(diagnostic)
+                                        return string.format("%s", diagnostic.message .. "[" .. diagnostic.source .. "]")
+                                end,
+                        }
+                end
+        end,
         update_in_insert = false,
         severity_sort    = true,
 })
@@ -60,16 +73,24 @@ vim.diagnostic.config({
 ------------------------------------------------------------------------------------------------------------------------
 -- HANDLERS
 
-local borders     = icons.misc.Borders
-local title_pos   = "left"
-local anchor_bias = "below"
-local relative    = "cursor"
-local wrap        = false
-local max_height  = math.floor(vim.o.lines * 0.5)
-local max_width   = math.floor(vim.o.columns * 0.6)
+local handlers = vim.lsp.handlers
+local methods  = vim.lsp.protocol.Methods
 
-local originalRenameHandler             = vim.lsp.handlers["textDocument/rename"]
-vim.lsp.handlers["textDocument/rename"] = function(err, result, ctx, config)
+local originalInlayHintHandler              = handlers[methods["textDocument_inlayHint"]]
+handlers[methods["textDocument_inlayHint"]] = function(err, result, ctx, config)
+        local client = vim.lsp.get_client_by_id(ctx.client_id)
+        if client then
+                local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+                result         = vim.iter(result):filter(function(hint)
+                        return hint.position.line + 1 == row
+                end):totable()
+        end
+        originalInlayHintHandler(err, result, ctx, config)
+end
+
+
+local originalRenameHandler              = handlers[methods["textDocument_rename"]]
+handlers[methods["textDocument_rename"]] = function(err, result, ctx, config)
         originalRenameHandler(err, result, ctx, config)
         if err or not result then return end
 
@@ -88,17 +109,27 @@ vim.lsp.handlers["textDocument/rename"] = function(err, result, ctx, config)
         if #changedFiles > 1 then
                 msg = ("**%s in [%d] files**\n%s"):format(msg, #changedFiles, table.concat(changedFiles, "\n"))
         end
-        vim.notify(msg, nil, { title = "Renamed with LSP", icon = "󰑕" })
+        vim.notify(msg, nil, { title = "Renamed with LSP", icon = icons.symbolKinds.Parameter })
 
         if #changedFiles > 1 then vim.cmd.wall() end
 end
+
+------------------------------------------------------------------------------------------------------------------------
+-- POPUP
+
+local title_pos   = "left"
+local anchor_bias = "below"
+local relative    = "cursor"
+local wrap        = true
+local max_height  = math.floor(vim.o.lines * 0.5)
+local max_width   = math.floor(vim.o.columns * 0.6)
 
 local hover       = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.buf.hover = function()
         return hover{
-                border      = borders,
-                title       = require("core.icons").diagnostics.hintMd .. "Hover",
+                border      = vim.g.borderStyle,
+                title       = require("core.icons").symbolKinds.Parameter .. " " .. "Hover",
                 title_pos   = title_pos,
                 anchor_bias = anchor_bias,
                 relative    = relative,
@@ -112,14 +143,27 @@ local signature_help       = vim.lsp.buf.signature_help
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.buf.signature_help = function()
         return signature_help{
-                border      = borders,
-                title       = "󰷻 Signature Help",
+                border      = vim.g.borderStyle,
+                title       = icons.symbolKinds.Function .. " " .. "Signature Help",
                 title_pos   = title_pos,
                 anchor_bias = anchor_bias,
                 relative    = relative,
                 wrap        = wrap,
                 max_height  = max_height,
                 max_width   = max_width,
+        }
+end
+
+local float               = vim.diagnostic.open_float
+---@diagnostic disable-next-line: duplicate-set-field
+vim.diagnostic.open_float = function()
+        return float{
+                title_pos     = "left",
+                title         = icons.diagnostics.ERROR .. " " .. "Diagnostics",
+                border        = vim.g.borderStyle,
+                scope         = "cursor",
+                severity_sort = true,
+                source        = true,
         }
 end
 
@@ -154,14 +198,13 @@ vim.api.nvim_create_autocmd("LspProgress", {
                 local msg           = {}
                 progress[client.id] = vim.tbl_filter(function(v) return table.insert(msg, v.msg) or not v.done end, p)
 
-                local spinner = icons.misc.Spinner
-                ---@diagnostic disable-next-line: param-type-mismatch
-                vim.notify(table.concat(msg, "\n"), "info", {
+                local spinner = icons.spinner.dots
+
+                vim.notify(table.concat(msg, "\n"), "info", { ---@diagnostic disable-line: param-type-mismatch
                         id    = "lsp_progress",
                         title = client.name,
                         opts  = function(notif)
                                 notif.icon = #progress[client.id] == 0 and icons.notifier.info
-                                           ---@diagnostic disable-next-line: undefined-field
                                            or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
                         end,
                 })

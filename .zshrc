@@ -182,7 +182,6 @@ alias          gc='git commit -m 1'
 alias          gp='git push'
 alias          lg='lazygit'
 
-# create git repo
 repo() {
         git init
         git add --all
@@ -192,12 +191,10 @@ repo() {
         git push -u origin main
 }
 
-# FFmpeg aliases
 mp3() {
         ffmpeg -i "$1" -q:a 0 -map a "$1.mp3"
 }
 
-# Compile and run C/C++ file
 crun() {
         if [[ -z "$1" ]]; then
                 return 1
@@ -216,7 +213,6 @@ crun() {
         fi
 }
 
-# Yazi wrapper
 y() {
         local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
         yazi "$@" --cwd-file="$tmp"
@@ -258,6 +254,7 @@ eval "$(zoxide init --cmd cd zsh)"
 
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.local/share/bin
+export PATH=$PATH:$HOME/.local/share/bin/lua
 
 bindkey -s "^p" 'yayfind \n'
 bindkey -s "^z" 'zi \n'

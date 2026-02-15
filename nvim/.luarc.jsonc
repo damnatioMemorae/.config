@@ -1,6 +1,7 @@
 {
         "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
         "workspace.library": [
+                "$VIMRUNTIME",
                 "$VIMRUNTIME/lua",
                 // "$XDG_DATA_HOME/nvim/lazy/dropbar.nvim",
                 // "$XDG_DATA_HOME/nvim/lazy/blink.nvim",
@@ -13,14 +14,14 @@
         ],
         "runtime.version": "LuaJIT",
         "diagnostics.globals": ["Snacks"],
-    "workspace.maxPreload": 1100,
+    "workspace.maxPreload": 2000,
     "diagnostics.disable": [
         "trailing-space",
         "unused-function",
         "lowercase-global",
         "redundant-value"
     ],
-    "completion.autoRequire": false
+    "completion.autoRequire": true
         // "hover.enable": false,
         // "signatureHelp.enable": true
 }

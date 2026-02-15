@@ -1,13 +1,11 @@
-prefix = require("core.utils").prefix
-
 return {
         "echasnovski/mini.align",
         version = false,
         event   = "VeryLazy",
         opts    = {
                 mappings = {
-                        start              = prefix .. "a",
-                        start_with_preview = prefix .. "a",
+                        start              = vim.g.prefix .. "a",
+                        start_with_preview = vim.g.prefix .. "a",
                 },
 
                 options = {

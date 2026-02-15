@@ -1,7 +1,7 @@
 return {
         "folke/flash.nvim",
-        event  = "VeryLazy",
-        keys   = {
+        event = "VeryLazy",
+        keys  = {
                 {
                         "f",
                         mode = { "n", "x", "o" },
@@ -14,12 +14,18 @@ return {
                         function() require("flash").remote() end,
                         desc = "Remote Flash",
                 },
+                {
+                        "r",
+                        mode = "o",
+                        function() require("flash").treesitter_search() end,
+                        desc = "Treesitter Search",
+                },
         },
-        opts   = {
+        opts  = {
                 jump   = { nohlsearch = true },
                 prompt = {
                         win_config = {
-                                border = "single",
+                                border = vim.g.borderStyle,
                                 row    = -3,
                         },
                 },

@@ -15,7 +15,6 @@ if not vim.env.NO_PLUGINS then
         if vim.g.setColorscheme then vim.g.setColorscheme("init") end
 end
 
-require("core.diagnostics").setup()
 safeRequire("core.commands")
 safeRequire("core.autocmds")
 safeRequire("core.lsp")
@@ -23,9 +22,10 @@ safeRequire("core.keymaps")
 safeRequire("core.yank-paste")
 safeRequire("core.backdrop-underline-fix")
 -- safeRequire("functions.treesitter-diagnostics")
+-- safeRequire("functions.commatose")
 
 if os.getenv("DISPLAY") ~= nil or os.getenv("WAYLAND_DISPLAY") ~= nil then
-        vim.cmd.colorscheme("catppuccin")
+        vim.cmd.colorscheme("catppuccin-mocha")
 else
         vim.cmd.colorscheme("industry")
 end

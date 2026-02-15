@@ -83,7 +83,7 @@ return {
                         markers        = { "", "" },
                 },
                 preview_window = {
-                        auto_preview          = false,
+                        auto_preview          = true,
                         open_hover_on_preview = false,
                         width                 = 40,
                         min_width             = 30,
@@ -91,9 +91,9 @@ return {
                         height                = 50,
                         min_height            = 10,
                         relative_height       = true,
-                        border                = "single",
-                        winhl                 = "NormalFloat:",
-                        winblend              = vim.g.winblend,
+                        border                =vim.g.borderStyle,
+                        winhl                 = "NormalFloat:NormalFloat",
+                        winblend              = vim.g.blend,
                         live                  = true,
                 },
                 keymaps        = {
@@ -102,7 +102,7 @@ return {
                         goto_location    = "<Cr>",
                         peek_location    = "o",
                         goto_and_close   = "<S-Cr>",
-                        restore_location = "<C-g>",
+                        restore_location = ",,",
                         hover_symbol     = "<C-space>",
                         toggle_preview   = "P",
                         rename_symbol    = "r",
@@ -114,24 +114,20 @@ return {
                         fold_all         = "H",
                         unfold_all       = "L",
                         fold_reset       = "R",
-                        down_and_jump    = "<C-j>",
-                        up_and_jump      = "<C-k>",
+                        down_and_jump    = "J",
+                        up_and_jump      = "K",
                 },
                 providers      = {
                         priority = { "lsp", "markdown", "norg" },
-                        lsp      = {
-                                blacklist_clients = {},
-                        },
-                        markdown = {
-                                filetypes = { "markdown" },
-                        },
+                        lsp      = { blacklist_clients = {} },
+                        markdown = { filetypes = { "markdown" } },
                 },
                 symbols        = {
                         filter       = nil,
                         icon_fetcher = nil,
                         icon_source  = nil,
-                        icons        = icons
-                        -- icons        = require("core.icons").symbol_kinds
+                        icons        = icons,
+                        -- icons        = require("core.icons").symbolKinds
                 },
         },
 }

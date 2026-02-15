@@ -1,13 +1,20 @@
+local default = {
+        -- "lazydev",
+        "lsp",
+        "snippets",
+        "path",
+        "buffer",
+}
+
 return {
         "saghen/blink.cmp",
+        enabled      = true,
         lazy         = false,
         build        = "cargo build --release",
         version      = "1.*",
         ---[[
         dependencies = {
-                { "saghen/blink.compat" },
                 { "niuiic/blink-cmp-rg.nvim" },
-                { "joelazar/blink-calc" },
                 {
                         "L3MON4D3/LuaSnip",
                         dependencies = {
@@ -25,7 +32,7 @@ return {
                         documentation = {
                                 auto_show          = true,
                                 auto_show_delay_ms = 50,
-                                window             = { border = "single" },
+                                window             = { border = vim.g.borderStyle },
                         },
                         trigger       = {
                                 prefetch_on_insert                   = true,
@@ -42,8 +49,7 @@ return {
                                 cycle     = { from_bottom = true, from_top = true },
                         },
                         menu          = {
-                                min_width          = 40,
-                                max_height         = 30,
+                                max_height         = 90,
                                 border             = nil,
                                 winblend           = 0,
                                 scrolloff          = 4,
@@ -52,7 +58,6 @@ return {
                                 auto_show          = true,
                                 draw               = {
                                         align_to   = "label",
-                                        padding    = 1,
                                         gap        = 1,
                                         treesitter = { "lsp" },
                                         columns    = {
@@ -142,7 +147,7 @@ return {
                         },
                 },
                 sources    = {
-                        default      = { "lazydev", "lsp", "snippets", "path", "buffer", "calc" },
+                        default      = default,
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
@@ -154,12 +159,13 @@ return {
                                 jsons              = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
-                                calc     = { name = "calc", module = "blink-calc" },
+                                --[[
                                 lazydev  = {
                                         name         = "Lazy",
                                         module       = "lazydev.integrations.blink",
                                         score_offset = 200,
                                 },
+                                --]]
                                 snippets = {
                                         name               = "Snip",
                                         opts               = {
@@ -262,7 +268,7 @@ return {
                 },
                 appearance = {
                         nerd_font_variant = "normal",
-                        kind_icons        = require("core.icons").symbol_kinds,
+                        kind_icons        = require("core.icons").symbolKinds,
                 },
                 signature  = { enabled = true, window = { scrollbar = false } },
         },

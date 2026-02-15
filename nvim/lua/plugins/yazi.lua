@@ -1,24 +1,26 @@
-return
-{
+return {
         "mikavilpas/yazi.nvim",
-        lazy  = true,
-        keys  = {
+        version = "*",
+        event   = "VeryLazy",
+        keys    = {
                 {
                         "<leader><leader>y",
                         mode = { "n", "v" },
-                        "<cmd>Yazi<cr>",
+                        "<cmd>Yazi<CR>",
                         desc = "Open yazi at the current file",
                 },
                 {
                         "<leader><leader>Y",
-                        "<cmd>Yazi cwd<cr>",
-                        desc = "Open the file manager in nvim's working directory",
+                        "<cmd>Yazi cwd<CR>",
+                        desc = "Open yazi in current working directory",
                 },
         },
-        opts  = {
-                open_for_directories = false,
-                keymaps              = {
-                        show_help = "<f1>",
-                },
+        opts    = {
+                open_for_directories                 = true,
+                open_multiple_tabs                   = true,
+                yazi_floating_window_winblend        = vim.g.winblend,
+                yazi_floating_window_border          = vim.g.borderStyle,
+                bufdelete_implementation             = "bundled-snacks",
+                picker_add_copy_relative_path_action = "snacks.picker",
         },
 }

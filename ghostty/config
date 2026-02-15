@@ -43,6 +43,11 @@ theme                      = theme
 gtk-single-instance        = true
 
 keybind = ctrl+,=unbind
+keybind = ctrl+alt+arrow_down=unbind
+keybind = ctrl+alt+arrow_left=unbind
+keybind = ctrl+alt+arrow_right=unbind
+keybind = ctrl+alt+arrow_up=unbind
+keybind = ctrl+shift+,=unbind
 keybind = ctrl+shift+a=unbind
 keybind = ctrl+shift+i=unbind
 keybind = ctrl+shift+n=unbind
@@ -52,6 +57,7 @@ keybind = ctrl+shift+t=unbind
 keybind = ctrl+shift+w=unbind
 keybind = ctrl+shift+c=unbind
 keybind = ctrl+shift+e=unbind
+keybind = ctrl+shift+<=unbind
 keybind = unconsumed:ctrl+shift+alt+c=copy_to_clipboard
 
 # background-opacity         = 0.8

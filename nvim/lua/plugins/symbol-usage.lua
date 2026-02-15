@@ -9,12 +9,17 @@ return {
                 end },
         },
         config  = function()
-                -- local bg = nil
-                local bg     = "LspInlayHint"
-                local groups = {
-                        { "Def",   "@lsp.type.parameter" },
-                        { "Ref",   "@keyword" },
-                        { "Impl",  "@class" },
+                local bg        = {}
+                -- local bg        = "LspInlayHint"
+                local groupsCol = {
+                        { "Def",  "@lsp.type.parameter", "DiagnosticUnderlineError" },
+                        { "Ref",  "@keyword",            "DiagnosticUnderlineWarn" },
+                        { "Impl", "@class",              "DiagnosticUnderlineHint" },
+                }
+                local groups    = {
+                        { "Def",   "@lsp.type.parameter", "LspInlayHint" },
+                        { "Ref",   "@keyword",            "LspInlayHint" },
+                        { "Impl",  "@class",              "LspInlayHint" },
                         { "Round", "LspInlayHint" },
                 }
 
@@ -22,29 +27,13 @@ return {
 
                 local function hl(list)
                         for _, hlGroups in ipairs(list) do
-                                local symbol, fg = unpack(hlGroups)
+                                local symbol, fg, bg = unpack(hlGroups)
                                 vim.api.nvim_set_hl(0, "SymbolUsage" .. symbol,
                                                     { fg = h(fg).fg, bg = h(bg).bg, bold = false })
                         end
                 end
 
                 hl(groups)
-
-                --[[
-                local function drawSymbol(symbol, icon, hl)
-                        local res    = {}
-                        local sep    = " "
-                        local border = " "
-
-                        if symbol.definition then
-                                if #res > 0 then table.insert(res, { " ", "NonText" }) end
-                                table.insert(res,
-                                        { border .. icon .. sep .. tostring(symbol) .. border, "SymbolUsage" .. hl })
-                        end
-
-                        return res
-                end
-                --]]
 
                 ---[[
                 local function text_format(symbol)

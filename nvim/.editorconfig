@@ -46,7 +46,7 @@ align_continuous_rect_table_field            = true
 align_continuous_line_space                  = 1
 align_if_branch                              = false
 align_array_table                            = true
-align_continuous_similar_call_args           = false
+align_continuous_similar_call_args           = true
 align_continuous_inline_comment              = true
 align_chain_expr                             = none
 

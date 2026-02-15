@@ -168,7 +168,9 @@ vim.on_key(function(key, _typed)
 
 -- CONFIG
 local templateDir       = fn.stdpath("config") .. "/templates"
+local homeDir           = os.getenv("HOME")
 local globToTemplateMap = {
+        [homeDir .. "/.local/share/bin/lua/*.lua"]       = "script.lua",
         [g.localRepos .. "/**/*.lua"]                    = "module.lua",
         [fn.stdpath("config") .. "/lua/functions/*.lua"] = "module.lua",
         [fn.stdpath("config") .. "/lua/plugins/*.lua"]   = "plugin-spec.lua",
@@ -267,7 +269,6 @@ autocmd("LspAttach", {
         callback = function(args)
                 local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
                 local lsp    = vim.lsp
-                local mode   = fn.mode()
 
                 --------------------------------------------------------------------------------------------------------
                 -- DOCUMENT HIGHLIGHTING
@@ -301,24 +302,14 @@ autocmd("LspAttach", {
                 --]]
 
                 --------------------------------------------------------------------------------------------------------
-                -- INLAY HINTS
-
-                if fn.has("nvim-0.10") == 1 and client.server_capabilities.inlayHintProvider and lsp.inlay_hint then
-                        -- lsp.inlay_hint.enable(true, nil)
-                        lsp.inlay_hint.enable(true, nil)
-                elseif mode == "i" then
-                        lsp.inlay_hint.enable(false, nil)
-                end
-
-                --------------------------------------------------------------------------------------------------------
                 -- DOCUMENT COLOR
 
                 if fn.has("nvim-0.12") == 1 and client:supports_method("textDocument/documentColor") then
+                        -- lsp.document_color.enable(true, 0, { style = "virtual" })
                         lsp.document_color.enable(false)
                 end
         end,
 })
-
 
 ------------------------------------------------------------------------------------------------------------------------
 -- SMART VIRTUAL EDITING

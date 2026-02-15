@@ -3,8 +3,6 @@ local api = vim.api
 local cmd = vim.cmd
 local fn  = vim.fn
 
-M.prefix = ","
-
 M.extraTextobjMaps = {
         func      = "f",
         call      = "l",
@@ -16,7 +14,7 @@ M.extraTextobjMaps = {
 ---@param mode string|string[]
 ---@param keys string|string[]
 ---@param rhs string|function
----@param opts? {desc?: string, unique?: boolean, buffer?: number|boolean, remap?: boolean, silent?:boolean, nowait?: boolean}
+---@param opts? {desc?: string, unique?: boolean, buffer?: number|boolean, remap?: boolean, silent?: boolean, nowait?: boolean}
 function M.uniqueKeymap(mode, keys, rhs, opts)
         if not opts then opts = {} end
         if opts.unique == nil then opts.unique = true end
@@ -43,8 +41,13 @@ end
 ---@param replace string
 function M.bufAbbrev(text, replace) vim.keymap.set("ia", text, replace, { buffer = true }) end
 
-function M.clientHas(args)
-        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+---@param client string|function
+function M.supportsMethod(client)
+        ---@param method string
+        return function(method, opts)
+                ---@diagnostic disable-next-line: undefined-field
+                return client.supports_method(client, method, opts)
+        end
 end
 
 -- craftzdog/utils.lua
@@ -53,14 +56,14 @@ end
 local hexChars = "0123456789abcdef"
 
 function M.hex_to_rgb(hex)
-        hex = string.lower(hex)
+        hex       = string.lower(hex)
         local ret = {}
         for i = 0, 2 do
-                local char1 = string.sub(hex, i * 2 + 2, i * 2 + 2)
-                local char2 = string.sub(hex, i * 2 + 3, i * 2 + 3)
+                local char1  = string.sub(hex, i * 2 + 2, i * 2 + 2)
+                local char2  = string.sub(hex, i * 2 + 3, i * 2 + 3)
                 local digit1 = string.find(hexChars, char1) - 1
                 local digit2 = string.find(hexChars, char2) - 1
-                ret[i + 1] = (digit1 * 16 + digit2) / 255.0
+                ret[i + 1]   = (digit1 * 16 + digit2) / 255.0
         end
         return ret
 end
@@ -75,12 +78,12 @@ end
  * @param   Number  g       The green color value
  * @param   Number  b       The blue color value
  * @return  Array           The HSL representation
-]]
+--]]
 function M.rgbToHsl(r, g, b)
         local max, min = math.max(r, g, b), math.min(r, g, b)
-        local h = 0
-        local s = 0
-        local l = 0
+        local h        = 0
+        local s        = 0
+        local l        = 0
 
         l = (max + min) / 2
 
@@ -119,7 +122,7 @@ end
  * @param   Number  s       The saturation
  * @param   Number  l       The lightness
  * @return  Array           The RGB representation
-]]
+--]]
 function M.hslToRgb(h, s, l)
         local r, g, b
 
@@ -162,8 +165,8 @@ function M.hslToRgb(h, s, l)
 end
 
 function M.hexToHSL(hex)
-        -- local hsluv = require("solarized-osaka.hsluv")
-        local rgb = M.hex_to_rgb(hex)
+        -- local hsluv  = require("solarized-osaka.hsluv")
+        local rgb     = M.hex_to_rgb(hex)
         local h, s, l = M.rgbToHsl(rgb[1], rgb[2], rgb[3])
 
         return string.format("hsl(%d, %d, %d)", math.floor(h + 0.5), math.floor(s + 0.5), math.floor(l + 0.5))

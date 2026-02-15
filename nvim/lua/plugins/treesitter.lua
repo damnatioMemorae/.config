@@ -1,10 +1,5 @@
 local parsers       = "all"
--- local parsers       = { "all" }
-local ignoreParsers = {
-        "toml",
-        "comment",
-        "ipkg",
-}
+local ignoreParsers = { "toml", "ipkg" }
 
 return {
         ---[[
@@ -23,7 +18,10 @@ return {
                                 additional_vim_regex_highlighting = false,
                         },
                         indent                = { enable = true, disable = { "markdown" } },
-                        textobjects           = { lsp_interop = {}, select = { lookahead = true, include_surrounding_whitespace = false } },
+                        textobjects           = {
+                                lsp_interop = { enable = true, border = vim.g.borderStyle },
+                                select      = { lookahead = true, include_surrounding_whitespace = false },
+                        },
                         incremental_selection = {
                                 enable  = true,
                                 keymaps = {
@@ -36,13 +34,6 @@ return {
                 },
                 config = function(_, opts)
                         require("nvim-treesitter.configs").setup(opts)
-                        require("nvim-treesitter.parsers").get_parser_configs().qf = {
-                                install_info = {
-                                        url    = "https://github.com/OXY2DEV/tree-sitter-qf",
-                                        files  = { "src/parser.c" },
-                                        branch = "main",
-                                },
-                        }
                 end,
         },
         --]]
@@ -58,12 +49,6 @@ return {
                         -- local formats = { "snake_case", "Pascal_case", "SCREAMING_SNAKE_CASE", "camelCase" }
                         map("n", ">", function() tsn.cycle_case(formats) end)
                 end,
-        },
-        { -- HYPR
-                "theRealCarneiro/hyprland-vim-syntax",
-                dependencies = { "nvim-treesitter/nvim-treesitter" },
-                event        = "VeryLazy",
-                ft           = "hypr",
         },
         { -- CONTEXT
                 "nvim-treesitter/nvim-treesitter-context",
@@ -85,7 +70,7 @@ return {
                         }
 
                         vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = false })
-                        vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = false })
+                        vim.api.nvim_set_hl(0, "TreesitterContextBottom",           { underline = false })
 
                         vim.keymap.set("n", ",t", function()
                                                require("treesitter-context").go_to_context(vim.v.count1)
@@ -111,5 +96,11 @@ return {
                         highlight_duration = 400,
                         highlight_group    = "Visual",
                 },
+        },
+        { -- HYPR
+                "theRealCarneiro/hyprland-vim-syntax",
+                dependencies = { "nvim-treesitter/nvim-treesitter" },
+                event        = "VeryLazy",
+                ft           = "hypr",
         },
 }

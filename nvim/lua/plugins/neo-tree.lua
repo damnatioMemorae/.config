@@ -68,9 +68,9 @@ return {
                                 expander_expanded  = " ",
                         },
                         icon        = {
-                                folder_closed = icons.symbol_kinds.Folder,
-                                folder_open   = icons.misc.FolderOpen,
-                                folder_empty  = icons.misc.FolderEmpty,
+                                folder_closed = icons.symbolKinds.Folder,
+                                folder_open   = icons.misc.folderOpen,
+                                folder_empty  = icons.misc.folderEmpty,
                         },
                         diagnostics = {
                                 symbols    = {

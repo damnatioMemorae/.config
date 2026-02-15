@@ -2,10 +2,10 @@ return {
         "sindrets/winshift.nvim",
         event  = "VeryLazy",
         keys   = {
-                { "<C-A-left>", "<cmd>WinShift left<CR>", mode = { "n" } },
-                { "<C-A-down>", "<cmd>WinShift down<CR>", mode = { "n" } },
-                { "<C-A-up>", "<cmd>WinShift up<CR>", mode = { "n" } },
-                { "<C-A-right>", "<cmd>WinShift right<CR>", mode = { "n" } },
+                -- { "<C-A-left>", "<cmd>WinShift left<CR>", mode = { "n" } },
+                -- { "<C-A-down>", "<cmd>WinShift down<CR>", mode = { "n" } },
+                -- { "<C-A-up>", "<cmd>WinShift up<CR>", mode = { "n" } },
+                -- { "<C-A-right>", "<cmd>WinShift right<CR>", mode = { "n" } },
         },
         config = function()
                 require("winshift").setup({

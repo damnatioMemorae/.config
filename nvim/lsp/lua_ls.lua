@@ -11,6 +11,7 @@ return {
                 "selene.yml",
                 ".git",
         },
+
         ---[[
         on_init      = function(client)
                 if client.workspace_folders then
@@ -24,26 +25,23 @@ return {
                 end
 
                 client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-                        runtime       = {
+                        runtime   = {
                                 version = "LuaJIT",
-                                path    = {
-                                        "lua/?.lua",
-                                        "lua/?/init.lua",
-                                },
+                                path    = { "lua/?.lua", "lua/?/init.lua" },
                         },
-                        hover         = { enable = true },
-                        signatureHelp = { enable = true },
-                        telemetry     = { enable = false },
-                        workspace     = {
+                        workspace = {
                                 checkThirdParty = "Disabled",
                                 maxPreload      = 500,
                                 library         = {
-                                        vim.env.VIMRUNTIME,
+                                        "$VIMRUNTIME",
+                                        "$VIMRUNTIME/lua",
+                                        "${3rd}/luv/library"
                                 },
                         },
                 })
         end,
         --]]
+
         settings     = {
                 Lua = {
                         completion    = {
@@ -59,14 +57,14 @@ return {
                                 -- workspaceEvent = "OnSave",
                                 -- workspaceDelay = 5000,
                                 -- workspaceRate  = 100,
-                                libraryFiles   = "Enable",
-                                disable        = { "trailing-space", "unused-function", "lowercase-global" },
+                                libraryFiles = "Enable",
+                                disable      = { "trailing-space", "unused-function", "lowercase-global" },
                         },
                         hover         = { enable = true, enumsLimit = 999, previewFields = 0 },
-                        hint          = { enable = true, setType = true, arrayIndex = "Disable", semicolon = "Sameline" },
+                        hint          = { enable = true, setType = true, arrayIndex = "Disable", semicolon = "Disable" },
                         semantic      = { enable = false, annotation = true, keyword = true, variable = true },
                         typeFormat    = { config = { auto_complete_end = true, auto_complete_table_sep = true, format_line = true } },
-                        codeLens      = { enable = true },
+                        codeLens      = { enable = false },
                         signatureHelp = { enable = true },
                         format        = { enable = true },
                         telemetry     = { enable = false },
