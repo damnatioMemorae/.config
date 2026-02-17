@@ -1,13 +1,13 @@
-local M   = {}
-local api = vim.api
-local cmd = vim.cmd
-local fn  = vim.fn
+local M    = {}
+local api  = vim.api
+local cmd  = vim.cmd
+local fn   = vim.fn
 
-M.extraTextobjMaps = {
-        func      = "f",
-        call      = "l",
-        condition = "o",
-        wikilink  = "R",
+M.extraTextobjMaps  = {
+        func       = "f",
+        call       = "l",
+        condition  = "o",
+        wikilink   = "R",
 }
 
 ---ensures unique keymaps https://www.reddit.com/r/neovim/comments/16h2lla/can_you_make_neovim_warn_you_if_your_config_maps/
@@ -16,11 +16,11 @@ M.extraTextobjMaps = {
 ---@param rhs string|function
 ---@param opts? {desc?: string, unique?: boolean, buffer?: number|boolean, remap?: boolean, silent?: boolean, nowait?: boolean}
 function M.uniqueKeymap(mode, keys, rhs, opts)
-        if not opts then opts = {} end
-        if opts.unique == nil then opts.unique = true end
+        if not opts then opts  = {} end
+        if opts.unique == nil then opts.unique  = true end
 
         if type(keys) ~= "table" then
-                keys = { keys }
+                keys  = { keys }
         end
         for _, lhs in ipairs(keys) do
                 pcall(vim.keymap.set, mode, lhs, rhs, opts)
@@ -33,13 +33,13 @@ end
 ---@param rhs string|function
 ---@param opts? {desc?: string, unique?: boolean, buffer?: number|boolean, remap?: boolean, silent?:boolean, nowait?: boolean}
 function M.bufKeymap(mode, lhs, rhs, opts)
-        opts = vim.tbl_extend("force", { buffer = true, silent = true, nowait = true }, opts or {})
+        opts  = vim.tbl_extend("force", { buffer  = true, silent  = true, nowait  = true }, opts or {})
         vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 ---@param text string
 ---@param replace string
-function M.bufAbbrev(text, replace) vim.keymap.set("ia", text, replace, { buffer = true }) end
+function M.bufAbbrev(text, replace) vim.keymap.set("ia", text, replace, { buffer  = true }) end
 
 ---@param client string|function
 function M.supportsMethod(client)
@@ -53,17 +53,17 @@ end
 -- craftzdog/utils.lua
 -- https://github.com/EmmanuelOga/columns/blob/master/utils/color.lua
 
-local hexChars = "0123456789abcdef"
+local hexChars  = "0123456789abcdef"
 
 function M.hex_to_rgb(hex)
-        hex       = string.lower(hex)
-        local ret = {}
-        for i = 0, 2 do
-                local char1  = string.sub(hex, i * 2 + 2, i * 2 + 2)
-                local char2  = string.sub(hex, i * 2 + 3, i * 2 + 3)
-                local digit1 = string.find(hexChars, char1) - 1
-                local digit2 = string.find(hexChars, char2) - 1
-                ret[i + 1]   = (digit1 * 16 + digit2) / 255.0
+        hex        = string.lower(hex)
+        local ret  = {}
+        for i  = 0, 2 do
+                local char1   = string.sub(hex, i * 2 + 2, i * 2 + 2)
+                local char2   = string.sub(hex, i * 2 + 3, i * 2 + 3)
+                local digit1  = string.find(hexChars, char1) - 1
+                local digit2  = string.find(hexChars, char2) - 1
+                ret[i + 1]    = (digit1 * 16 + digit2) / 255.0
         end
         return ret
 end
@@ -80,33 +80,33 @@ end
  * @return  Array           The HSL representation
 --]]
 function M.rgbToHsl(r, g, b)
-        local max, min = math.max(r, g, b), math.min(r, g, b)
-        local h        = 0
-        local s        = 0
-        local l        = 0
+        local max, min  = math.max(r, g, b), math.min(r, g, b)
+        local h         = 0
+        local s         = 0
+        local l         = 0
 
-        l = (max + min) / 2
+        l  = (max + min) / 2
 
         if max == min then
-                h, s = 0, 0 -- achromatic
+                h, s  = 0, 0 -- achromatic
         else
-                local d = max - min
+                local d  = max - min
                 if l > 0.5 then
-                        s = d / (2 - max - min)
+                        s  = d / (2 - max - min)
                 else
-                        s = d / (max + min)
+                        s  = d / (max + min)
                 end
                 if max == r then
-                        h = (g - b) / d
+                        h  = (g - b) / d
                         if g < b then
-                                h = h + 6
+                                h  = h + 6
                         end
                 elseif max == g then
-                        h = (b - r) / d + 2
+                        h  = (b - r) / d + 2
                 elseif max == b then
-                        h = (r - g) / d + 4
+                        h  = (r - g) / d + 4
                 end
-                h = h / 6
+                h  = h / 6
         end
 
         return h * 360, s * 100, l * 100
@@ -127,14 +127,14 @@ function M.hslToRgb(h, s, l)
         local r, g, b
 
         if s == 0 then
-                r, g, b = l, l, l -- achromatic
+                r, g, b  = l, l, l -- achromatic
         else
                 function hue2rgb(p, q, t)
                         if t < 0 then
-                                t = t + 1
+                                t  = t + 1
                         end
                         if t > 1 then
-                                t = t - 1
+                                t  = t - 1
                         end
                         if t < 1 / 6 then
                                 return p + (q - p) * 6 * t
@@ -150,24 +150,24 @@ function M.hslToRgb(h, s, l)
 
                 local q
                 if l < 0.5 then
-                        q = l * (1 + s)
+                        q  = l * (1 + s)
                 else
-                        q = l + s - l * s
+                        q  = l + s - l * s
                 end
-                local p = 2 * l - q
+                local p  = 2 * l - q
 
-                r = hue2rgb(p, q, h + 1 / 3)
-                g = hue2rgb(p, q, h)
-                b = hue2rgb(p, q, h - 1 / 3)
+                r  = hue2rgb(p, q, h + 1 / 3)
+                g  = hue2rgb(p, q, h)
+                b  = hue2rgb(p, q, h - 1 / 3)
         end
 
         return r * 255, g * 255, b * 255
 end
 
 function M.hexToHSL(hex)
-        -- local hsluv  = require("solarized-osaka.hsluv")
-        local rgb     = M.hex_to_rgb(hex)
-        local h, s, l = M.rgbToHsl(rgb[1], rgb[2], rgb[3])
+        -- local hsluv   = require("solarized-osaka.hsluv")
+        local rgb      = M.hex_to_rgb(hex)
+        local h, s, l  = M.rgbToHsl(rgb[1], rgb[2], rgb[3])
 
         return string.format("hsl(%d, %d, %d)", math.floor(h + 0.5), math.floor(s + 0.5), math.floor(l + 0.5))
 end
@@ -179,6 +179,69 @@ end
  * @param   Number  l       The lightness
  * @return  String           The hex representation
 --]]
+
+------------------------------------------------------------------------------------------------------------------------
+-- TREESITTER
+-- borrowed forever from https://github.com/nfrid/treesitter-utils
+
+---@param node TSNode
+---@param bufnr number | nil
+---@return number, number, number, number
+local get_node_range  = function(node, bufnr)
+        local bufnr  = bufnr or 0
+        local sr, sc, er, ec  = node:range()
+        local last_row  = vim.api.nvim_buf_line_count(bufnr) - 1
+        -- If the node is the last node in the buffer, then its end row and column might need
+        -- to be adjusted to avoid out-of-bounds error when calling nvim_buf_[set|get]_text
+        if er > last_row then
+                er  = last_row
+                ec  = #vim.api.nvim_buf_get_lines(bufnr, last_row, last_row + 1, false)[1]
+        end
+        return sr, sc, er, ec
+end
+
+--- Find parent node of given type.
+---@param node TSNode
+---@param type string
+---@return TSNode | nil
+M.find_parent_node  = function(node, type)
+        if (node == node:root()) then return nil end
+        if (node:type() == type) then return node end
+        return M.find_parent_node(node:parent(), type)
+end
+
+--- Find child node of given type.
+---@param node TSNode
+---@param type string
+---@return TSNode | nil
+M.find_child_node  = function(node, type)
+        local child  = node:child(0)
+        while child do
+                if (child:type() == type) then return child end
+                child  = child:next_sibling()
+        end
+        return nil
+end
+
+--- Set text of given node.
+---@param node TSNode
+---@param text string | table
+---@param bufnr number | nil
+M.set_node_text  = function(node, text, bufnr)
+        local sr, sc, er, ec  = get_node_range(node, bufnr)
+        local content  = { text }
+        if (type(text) == "table") then content  = text end
+        vim.api.nvim_buf_set_text(bufnr or 0, sr, sc, er, ec, content)
+end
+
+--- Get text of given node.
+---@param node TSNode
+---@param bufnr number | nil
+---@return string[]
+M.get_node_text  = function(node, bufnr)
+        local sr, sc, er, ec  = get_node_range(node, bufnr)
+        return vim.api.nvim_buf_get_text(bufnr or 0, sr, sc, er, ec, {})
+end
 
 --------------------------------------------------------------------------------
 return M

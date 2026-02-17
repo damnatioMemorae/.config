@@ -1,6 +1,5 @@
 return {
         "echasnovski/mini.surround",
-        enabled = true,
         version = false,
         event   = "VeryLazy",
         opts    = {
@@ -8,7 +7,7 @@ return {
                 highlight_duration     = 1000,
                 n_lines                = 20,
                 silent                 = true,
-                search_method          = "cover_or_nearest",
+                search_method          = "cover_or_next",
                 respect_selection_type = true,
                 mappings               = {
                         add            = "ss",

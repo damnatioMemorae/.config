@@ -2,17 +2,8 @@ return {
         "YaroSpace/dev-tools.nvim",
         dependencies = {
                 "nvim-treesitter/nvim-treesitter",
-                {
-                        "folke/snacks.nvim",
-                        opts = {
-                                picker   = { enabled = true },
-                                terminal = { enabled = true },
-                        },
-                },
-                {
-                        "ThePrimeagen/refactoring.nvim",
-                        dependencies = { "nvim-lua/plenary.nvim" },
-                },
+                "folke/snacks.nvim",
+                "ThePrimeagen/refactoring.nvim",
         },
         opts = {
                 actions          = {},
@@ -28,29 +19,18 @@ return {
                         {
                                 group = "Debugging",
                                 name  = "Log vars under cursor",
-                                opts  = {
-                                        logger = nil,
-                                        keymap = nil,
-                                },
+                                opts  = { logger = nil, keymap = nil },
                         },
                         {
                                 group = "Specs",
                                 name  = "Watch specs",
-                                opts  = {
-                                        tree_cmd     = nil,
-                                        test_cmd     = nil,
-                                        tree_tag     = nil,
-                                        terminal_cmd = nil,
-                                },
+                                opts  = { tree_cmd = nil, test_cmd = nil, tree_tag = nil, terminal_cmd = nil },
                         },
                         {
                                 group = "Todo",
                                 name  = "Open todo",
-                                opts = {
-                                        filename = nil,
-                                        template = nil
-                                }
-                        }
+                                opts  = { filename = nil, template = nil },
+                        },
                 },
                 ui               = {
                         override      = true,

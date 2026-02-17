@@ -1,28 +1,37 @@
-return { -- CamelCase Motion plus
+local modes = { "n", "v", "x", "o" }
+
+return {
         "chrisgrieser/nvim-spider",
         keys = {
-                {
+                { -- e
                         "e",
-                        "<cmd>lua require('spider').motion('e')<CR>",
-                        mode = { "n", "x", "o" },
+                        function() require("spider").motion("e") end,
+                        mode = modes,
                         desc = "󱇫 end of subword",
                 },
-                {
+                { -- w
                         "w",
-                        "<cmd>lua require('spider').motion('w', {skipInsignificantPunctuation = false})<CR>",
-                        mode = { "n", "x", "o" },
+                        function() require("spider").motion("w") end,
+                        mode = modes,
                         desc = "󱇫 end of subword",
                 },
-                {
+                { -- b
                         "b",
-                        "<cmd>lua require('spider').motion('b')<CR>",
-                        mode = { "n", "x" }, -- not `o`, since mapped to inner bracket
+                        function() require("spider").motion("b") end,
+                        mode = { "n", "v", "x" },
+                        desc = "󱇫 beginning of subword",
+                },
+                { -- W
+                        "W",
+                        function() require("spider").motion("ge") end,
+                        mode = modes,
                         desc = "󱇫 beginning of subword",
                 },
         },
-        config = function()
-                require("spider").setup({
-                        skipInsignificantPunctuation = false,
-                })
-        end
+        opts = {
+                skipInsignificantPunctuation = false,
+                subwordMovement              = true,
+                consistentOperatorPending    = false,
+                customPattern                = { "%d+" },
+        },
 }

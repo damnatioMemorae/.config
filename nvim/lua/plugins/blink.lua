@@ -1,20 +1,12 @@
-local default = {
-        -- "lazydev",
-        "lsp",
-        "snippets",
-        "path",
-        "buffer",
-}
-
 return {
         "saghen/blink.cmp",
         enabled      = true,
         lazy         = false,
         build        = "cargo build --release",
         version      = "1.*",
-        ---[[
         dependencies = {
                 { "niuiic/blink-cmp-rg.nvim" },
+                { "saghen/blink.compat" },
                 {
                         "L3MON4D3/LuaSnip",
                         dependencies = {
@@ -25,10 +17,11 @@ return {
                         },
                 },
         },
-        --]]
         opts         = {
                 snippets   = { preset = "luasnip" },
                 completion = {
+                        keyword       = { range = "full" },
+                        accept        = { auto_brackets = { enabled = false } },
                         documentation = {
                                 auto_show          = true,
                                 auto_show_delay_ms = 50,
@@ -51,7 +44,7 @@ return {
                         menu          = {
                                 max_height         = 90,
                                 border             = nil,
-                                winblend           = 0,
+                                winblend           = vim.g.blend,
                                 scrolloff          = 4,
                                 scrollbar          = true,
                                 direction_priority = { "s", "n" },
@@ -87,7 +80,6 @@ return {
                         },
                 },
                 fuzzy      = {
-                        -- implementation    = "lua",
                         implementation    = "prefer_rust_with_warning",
                         max_typos         = 0,
                         frecency          = {
@@ -96,8 +88,7 @@ return {
                         },
                         use_proximity     = true,
                         sorts             = {
-                                ---@diagnostic disable-next-line: unused-local
-                                function(a, b)
+                                function(a, b) ---@diagnostic disable-line: unused-local
                                         if a.label:sub(1, 1) == "_" ~= a.label:sub(1, 1) == "_" then
                                                 return not a.label:sub(1, 1) == "_"
                                         end
@@ -147,7 +138,7 @@ return {
                         },
                 },
                 sources    = {
-                        default      = default,
+                        default      = { "lsp", "snippets", "path", "buffer", },
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
@@ -159,19 +150,9 @@ return {
                                 jsons              = { inherit_defaults = true, "ripgrep" },
                         },
                         providers    = {
-                                --[[
-                                lazydev  = {
-                                        name         = "Lazy",
-                                        module       = "lazydev.integrations.blink",
-                                        score_offset = 200,
-                                },
-                                --]]
                                 snippets = {
                                         name               = "Snip",
-                                        opts               = {
-                                                use_show_condition    = true,
-                                                use_label_description = true,
-                                        },
+                                        opts               = { use_show_condition = true, use_label_description = true },
                                         score_offset       = 140,
                                         min_keyword_length = 2,
                                 },
@@ -179,8 +160,6 @@ return {
                                         name         = "LSP",
                                         module       = "blink.cmp.sources.lsp",
                                         opts         = { tailwind_color_icon = "██" },
-                                        -- async        = true,
-                                        -- timeout_ms   = 4000,
                                         score_offset = 160,
                                         fallbacks    = {},
                                         override     = {
@@ -198,10 +177,8 @@ return {
                                         opts         = {
                                                 trailing_slash               = true,
                                                 label_trailing_slash         = true,
-                                                get_cwd                      = function(_)
-                                                        return vim.fn.getcwd()
-                                                end,
                                                 show_hidden_files_by_default = true,
+                                                get_cwd                      = function(_) return vim.fn.getcwd() end,
                                         },
                                 },
                                 buffer   = {
@@ -223,8 +200,7 @@ return {
                                         max_items    = 4,
                                         opts         = {
                                                 prefix_min_len = 3,
-                                                ---@diagnostic disable-next-line: unused-local
-                                                get_command    = function(context, prefix)
+                                                get_command    = function(context, prefix) ---@diagnostic disable-line: unused-local
                                                         return {
                                                                 "rg",
                                                                 "--no-config",

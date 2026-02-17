@@ -2,7 +2,6 @@ icons = require("core.icons").diagnostics.ERROR
 
 return {
         "rachartier/tiny-inline-diagnostic.nvim",
-        enabled = true,
         event   = "VeryLazy",
         opts    = {
                 signs   = {
@@ -14,9 +13,7 @@ return {
                         vertical     = " │",
                         vertical_end = " └",
                 },
-                -- blend   = { factor = 0.15 },
                 blend   = { factor = 0.25 },
-                -- blend   = { factor = 0.30 },
                 hi      = {
                         error = "DiagnosticError",
                         warn  = "DiagnosticWarn",

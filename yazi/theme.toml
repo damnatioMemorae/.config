@@ -150,6 +150,8 @@ prepend_dirs = [
 ]
 
 prepend_files = [
+        { name = "go.mod"         ,text = "󰟓" ,fg = "#74c7ec"},
+        { name = "go.sum"         ,text = "󰟓" ,fg = "#74c7ec"},
         { name = ".gitignore"     ,text = "" ,fg = "#f38ba8"},
         { name = ".gitmodules"    ,text = "" ,fg = "#f38ba8"},
         { name = ".gitconfig"     ,text = "" ,fg = "#f38ba8"},

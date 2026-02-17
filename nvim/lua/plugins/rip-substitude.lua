@@ -5,13 +5,13 @@ return {
                 {
                         "<leader>fs",
                         function() require("rip-substitute").sub() end,
-                        mode = { "n", "x" },
-                        desc = " substitute (rip-sub)",
+                        mode = { "n", "x", "v" },
+                        desc = " Substitute (rip-sub)",
                 },
                 {
                         "<leader>fS",
                         function() require("rip-substitute").rememberCursorWord() end,
-                        desc = " remember cword (rip-sub)",
+                        desc = " Remember cursor word (rip-sub)",
                 },
         },
         opts = {
@@ -30,12 +30,7 @@ return {
                         startInReplaceLineIfPrefill = true,
                         alsoPrefillReplaceLine      = true,
                 },
-                keymaps         = {
-                        insertModeConfirm = "<CR>",
-                        abort             = "<Esc>",
-                },
-                editingBehavior = {
-                        autoCaptureGroups = true,
-                },
+                keymaps         = { insertModeConfirm = "<CR>", abort = "<Esc>" },
+                editingBehavior = { autoCaptureGroups = true },
         },
 }

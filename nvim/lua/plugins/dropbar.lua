@@ -62,10 +62,6 @@ return {
                                 },
                                 buf = {
                                         "BufModifiedSet",
-                                        -- "CursorHold",
-                                        -- "CursorHoldI",
-                                        -- "CursorMoved",
-                                        -- "CursorMovedI",
                                         "FileChangedShellPost",
                                         "LspAttach",
                                         "ModeChanged",

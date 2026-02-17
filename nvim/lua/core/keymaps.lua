@@ -110,7 +110,7 @@ map(nx, "<A-Right>", function()
     end, { desc = "Open current fold", silent = true })
 
 -- Move to the end of previous word
-map(nv, "W", "ge", { desc = "Jump to the end of previous word", silent = true })
+-- map(nv, "W", "ge", { desc = "Jump to the end of previous word", silent = true })
 
 -- center Ctrl-o
 map(n, "<C-o>", "<C-o>zz", opts)
@@ -241,7 +241,6 @@ map(n, "<A-D>", function()
             vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Prev" })
 
--- map(n, prefix .. "e", vim.diagnostic.open_float,  { desc = "■ Diagnostic Float" })
 map(n, vim.g.prefix .. "e", function()
             vim.diagnostic.config({ virtual_lines = { current_line = true }, virtual_text = false })
 
@@ -267,9 +266,7 @@ map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
 map(n, prefixLsp .. "F", vim.lsp.buf.format, { desc = "LSP Format" })
 --]]
 
-map(n, vim.g.prefix .. "q", function() require("functions.quickfix").code_actions() end, { desc = "󱠀 Quickfix" })
--- map(n, prefix .. "c", function() require("tiny-code-action").code_action() end,    { desc = "󱠀 Code Action Picker" })
-map(n, vim.g.prefix .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action Picker" })
+map(n, vim.g.prefix .. "q", vim.lsp.buf.code_action, { desc = "󱠀 Code Action Picker" })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- INSERT MODE

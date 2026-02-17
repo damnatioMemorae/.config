@@ -55,10 +55,10 @@ vim.diagnostic.config({
         jump             = { float = false },
         virtual_text     = function(virtual_text)
                 if virtual_text == false then
-                        return false
+                        return false ---@diagnostic disable-line: return-type-mismatch
                 else
                         return {
-                                source       = true,
+                                source       = false,
                                 current_line = nil,
                                 format       = function(diagnostic)
                                         return string.format("%s", diagnostic.message .. "[" .. diagnostic.source .. "]")
@@ -80,7 +80,7 @@ local originalInlayHintHandler              = handlers[methods["textDocument_inl
 handlers[methods["textDocument_inlayHint"]] = function(err, result, ctx, config)
         local client = vim.lsp.get_client_by_id(ctx.client_id)
         if client then
-                local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+                local row, col = unpack(vim.api.nvim_win_get_cursor(0)) ---@diagnostic disable-line: unused-local
                 result         = vim.iter(result):filter(function(hint)
                         return hint.position.line + 1 == row
                 end):totable()
