@@ -61,7 +61,7 @@ vim.diagnostic.config({
                                 source       = false,
                                 current_line = nil,
                                 format       = function(diagnostic)
-                                        return string.format("%s", diagnostic.message .. "[" .. diagnostic.source .. "]")
+                                        -- return string.format("%s", diagnostic.message .. "[" .. diagnostic.source .. "]")
                                 end,
                         }
                 end
@@ -129,7 +129,7 @@ local hover       = vim.lsp.buf.hover
 vim.lsp.buf.hover = function()
         return hover{
                 border      = vim.g.borderStyle,
-                title       = require("core.icons").symbolKinds.Parameter .. " " .. "Hover",
+                title       = icons.symbolKinds.Parameter .. " " .. "Hover",
                 title_pos   = title_pos,
                 anchor_bias = anchor_bias,
                 relative    = relative,

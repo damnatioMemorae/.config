@@ -24,9 +24,15 @@
         syntect_theme   = "~/.config/yazi/Catppuccin-mocha.tmTheme"
 
 [indicator]
-        parent  = { reversed = true, bold = true }
-        current = { reversed = true, bold = true }
-        preview = { reversed = true, bold = true }
+        # parent  = { reversed = true, bold = true }
+        # current = { reversed = true, bold = true }
+        # preview = { reversed = true, bold = true }
+        # parent  = { bg = "#1e1e2e", bold = false }
+        # current = { bg = "#1e1e2e", bold = false }
+        # preview = { bg = "#1e1e2e", bold = false }
+        parent  = { bg = "#14141f", bold = false }
+        current = { bg = "#14141f", bold = false }
+        preview = { bg = "#14141f", bold = false }
         padding = { open = "█", close = "█" }
 
 [tabs]

@@ -3,7 +3,6 @@ return {
         enabled      = true,
         lazy         = false,
         build        = "cargo build --release",
-        version      = "1.*",
         dependencies = {
                 { "niuiic/blink-cmp-rg.nvim" },
                 { "saghen/blink.compat" },
@@ -138,7 +137,7 @@ return {
                         },
                 },
                 sources    = {
-                        default      = { "lsp", "snippets", "path", "buffer", },
+                        default      = { "lsp", "snippets", "path", "buffer" },
                         per_filetype = {
                                 ["rip-substitute"] = { "ripgrep", "buffer" },
                                 gitcommit          = {},
@@ -249,8 +248,7 @@ return {
                 signature  = { enabled = true, window = { scrollbar = false } },
         },
         opts_extend  = { "sources.default" },
-
-        config = function(_, opts)
+        config       = function(_, opts)
                 require("blink-cmp").setup(opts)
         end,
 }
