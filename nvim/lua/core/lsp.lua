@@ -18,7 +18,6 @@ local lspServers = {
         "gopls",
         "jsonls",
         "kotlin_lsp",
-        "ltex",
         "lua_ls",
         "pylsp",
         "ruff",
@@ -53,18 +52,14 @@ local numbers = {
 vim.diagnostic.config({
         signs            = numbers,
         jump             = { float = false },
-        virtual_text     = function(virtual_text)
-                if virtual_text == false then
-                        return false ---@diagnostic disable-line: return-type-mismatch
-                else
-                        return {
-                                source       = false,
-                                current_line = nil,
-                                format       = function(diagnostic)
-                                        -- return string.format("%s", diagnostic.message .. "[" .. diagnostic.source .. "]")
-                                end,
-                        }
-                end
+        virtual_text     = function()
+                return {
+                        source       = false,
+                        current_line = nil,
+                        format       = function(diagnostic)
+                                return string.format("%s", diagnostic.message .. "[" .. diagnostic.source .. "]")
+                        end,
+                }
         end,
         update_in_insert = false,
         severity_sort    = true,

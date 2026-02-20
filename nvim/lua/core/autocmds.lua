@@ -305,8 +305,12 @@ autocmd("LspAttach", {
                 -- DOCUMENT COLOR
 
                 if fn.has("nvim-0.12") == 1 and client:supports_method("textDocument/documentColor") then
-                        -- lsp.document_color.enable(true, 0, { style = "virtual" })
-                        lsp.document_color.enable(false)
+                        local color_augroup = augroup("lsp-color", { clear = false })
+                        autocmd({ "BufEnter" }, {
+                                buffer   = args.buf,
+                                group    = color_augroup,
+                                callback = function() lsp.document_color.enable(false) end,
+                        })
                 end
         end,
 })

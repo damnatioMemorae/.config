@@ -67,7 +67,6 @@ return {
                                                         end,
                                                 },
                                                 source_name = {
-                                                        -- text  = function(ctx) return "[" .. ctx.source_name .. "]" end,
                                                         text = function(ctx)
                                                                 if ctx.source_id == "cmdline" then return end
                                                                 return ctx.source_name:sub(1, 4)

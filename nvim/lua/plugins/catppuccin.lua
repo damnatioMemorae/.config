@@ -28,7 +28,7 @@ local customCol = function(C)
                 Character                  = { fg = C.green },
                 -- ColorColumn                   = { bg = colors.},
                 Comment                    = { fg = C.surface2 },
-                Conceal                    = { link = "NonText" },
+                Conceal                    = { link = "Folded" },
                 Conditional                = { fg = C.sapphire, italic = false },
                 Constant                   = { fg = C.peach },
                 CurSearch                  = { fg = C.crust, bg = C.red },
@@ -559,6 +559,7 @@ local customCol = function(C)
 
                 LspInlayHint            = { bg = C.base },
                 SymbolUsage             = { bg = C.base },
+                InlineFold              = { link = "Folded" },
                 FoldMark                = { link = "LspInlayHint" },
                 LightBulbSign           = { link = "DiagnosticSignHint" },
                 IBLScope                = { fg = colors.ivory },

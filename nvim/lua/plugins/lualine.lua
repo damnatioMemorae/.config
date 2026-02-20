@@ -5,20 +5,18 @@ return {
         lazy         = false,
         dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
         config       = function()
-                local theme  = {
+                local theme = {
                         normal   = {
-                                a = { fg = C.crust, bg = C.text, bold = true },
+                                a = { fg = C.text, bg = C.base, bold = true },
                                 b = { fg = C.text, bg = C.crust },
                                 c = { fg = C.surface1, bg = C.crust },
                                 x = { fg = C.text, bg = C.crust },
                                 y = { fg = C.text, bg = C.crust },
                                 z = { fg = C.text, bg = C.crust },
                         },
-
-                        insert   = { a = { fg = C.crust, bg = C.text, bold = true } },
-                        visual   = { a = { fg = C.crust, bg = C.text, bold = true } },
-                        replace  = { a = { fg = C.crust, bg = C.text, bold = true } },
-
+                        insert   = { a = { fg = C.teal, bg = C.base, bold = true } },
+                        visual   = { a = { fg = C.yellow, bg = C.base, bold = true } },
+                        replace  = { a = { fg = C.red, bg = C.base, bold = true } },
                         inactive = {
                                 a = { fg = C.surface1, bg = C.crust },
                                 b = { fg = C.text, bg = C.crust },
@@ -28,7 +26,6 @@ return {
                                 z = { fg = C.text, bg = C.crust },
                         },
                 }
-
                 require("lualine").setup({
                         disabled_filetypes = { "neo-tree" },
                         options            = {
@@ -39,7 +36,7 @@ return {
                         sections           = {
                                 lualine_a = { { "mode", fmt = function(str) return str:sub(1, 1) end } },
                                 lualine_b = {
-                                        "branch",
+                                        { "branch", icon = "", color = { fg = C.teal } },
                                         {
                                                 "diff",
                                                 colored    = true,
