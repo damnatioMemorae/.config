@@ -1,27 +1,27 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "88990a6"
-hash = "3996fc74044bc44144b323686f887e1"
+rev = "1962818"
+hash = "6fa6a05a81c98dd000fbca3cca6e9682"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-filter"
-rev = "88990a6"
-hash = "407d19bc4fb46eff5fa8ff8337644847"
+rev = "1962818"
+hash = "c887903a63a2ff520081b6d90a4b3392"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:lsar"
-rev = "88990a6"
+rev = "1962818"
 hash = "c1c66e28145e28e581e74e2d6da4fdf1"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "88990a6"
-hash = "8da0b15a97b5dfd13941d1ecc617ac7c"
+rev = "1962818"
+hash = "f0c8c378184d5f8abd1b095a443d336d"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "88990a6"
-hash = "9ad20d763df07ce40fd09de549d914b0"
+rev = "1962818"
+hash = "91937a4a9b779eabc6983e258befdfe9"
 
 [[plugin.deps]]
 use = "wylie102/duckdb"
@@ -35,33 +35,33 @@ hash = "f84d828d2b77607c6b066f8cd85598b7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
-rev = "88990a6"
-hash = "8a7c58225816a163a6e8730c0adafbc8"
+rev = "1962818"
+hash = "4c0260feb50ea2437380690ffc241da7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "88990a6"
-hash = "270915fa8282a19908449530ff66f7e2"
+rev = "1962818"
+hash = "26db011a778f261d730d4f5f8bf24b3f"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-paste"
-rev = "88990a6"
-hash = "75fd60b2df7115e0a6ca31a6a804d320"
+rev = "1962818"
+hash = "3f8d49413bc8691b4c652eb417a20178"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:piper"
-rev = "88990a6"
-hash = "25aee698dd1081001008ce0cb1cc4da3"
+rev = "1962818"
+hash = "384464b6df8cb807425c521f8cd790f3"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:types"
-rev = "88990a6"
-hash = "83b5b82b595c39a660bf2b170987e5e7"
+rev = "1962818"
+hash = "4161cfa043b5ba3341d82c6869007b41"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:zoom"
-rev = "88990a6"
-hash = "6ce49cf5b4c7c0d9cce8a1062ed478d3"
+rev = "1962818"
+hash = "fa268cb59989a87780605fdcfb8d99a9"
 
 [[plugin.deps]]
 use = "AnirudhG07/plugins-yazi:copy-file-contents"
