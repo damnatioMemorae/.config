@@ -35,7 +35,7 @@
 )
 
 (defvar
-        tap-timeout  100
+        tap-timeout  150
         hold-timeout 200
 
         tt $tap-timeout
