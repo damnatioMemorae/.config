@@ -141,7 +141,7 @@ keymap = [
         { on = ["g", "t"],       run = "cd /tmp",                             desc = "Go to the Temporary directory" },
         { on = ["g", "M"],       run = "cd ~/.local/share/multimc/instances", desc = "Go to the multimc directory" },
         { on = ["g", "m"],       run = "cd ~/Music",                          desc = "Go to the Multimc directory" },
-        { on = ["g", ";"],       run = "cd /run/media",                       desc = "Go to drives" },
+        { on = ["g", ","],       run = "cd /run/media/${USER}",               desc = "Go to drives" },
         { on = ["g", "<Space>"], run = "cd --interactive",                    desc = "Go to a directory interactively" },
 
         { on = ["<Tab>"],        run = "spot", desc = "Spot hovered file" },

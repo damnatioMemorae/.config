@@ -9,9 +9,9 @@ return {
                 end },
         },
         config  = function()
-                local bg        = {}
+                local bg = {}
                 -- local bg        = "LspInlayHint"
-                local groupsCol = {
+                local groupsCol = { ---@diagnostic disable-line: unused-local
                         { "Def",  "@lsp.type.parameter", "DiagnosticUnderlineError" },
                         { "Ref",  "@keyword",            "DiagnosticUnderlineWarn" },
                         { "Impl", "@class",              "DiagnosticUnderlineHint" },
@@ -27,9 +27,9 @@ return {
 
                 local function hl(list)
                         for _, hlGroups in ipairs(list) do
-                                local symbol, fg, bg = unpack(hlGroups)
+                                local symbol, fgCol, bgCol = unpack(hlGroups)
                                 vim.api.nvim_set_hl(0, "SymbolUsage" .. symbol,
-                                                    { fg = h(fg).fg, bg = h(bg).bg, bold = false })
+                                                    { fg = h(fgCol).fg, bg = h(bgCol).bg, bold = false })
                         end
                 end
 

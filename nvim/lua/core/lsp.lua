@@ -1,6 +1,5 @@
 local icons = require("core.icons")
 
-
 ------------------------------------------------------------------------------------------------------------------------
 -- LSP SERVERS
 
@@ -14,9 +13,12 @@ local lspServers = {
         "css_variables",
         "emmet",
         "emmet-language-server",
-        "glsl_analyzer",
+        "glslls",
+        -- "glsl_analyzer",
         "gopls",
         "jsonls",
+        "just-lsp",
+        -- "kakehashi",
         "kotlin_lsp",
         "lua_ls",
         "pylsp",
@@ -52,15 +54,7 @@ local numbers = {
 vim.diagnostic.config({
         signs            = numbers,
         jump             = { float = false },
-        virtual_text     = function()
-                return {
-                        source       = false,
-                        current_line = nil,
-                        format       = function(diagnostic)
-                                return string.format("%s", diagnostic.message .. "[" .. diagnostic.source .. "]")
-                        end,
-                }
-        end,
+        virtual_text     = { source = false, current_line = nil },
         update_in_insert = false,
         severity_sort    = true,
 })
@@ -163,7 +157,7 @@ vim.diagnostic.open_float = function()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- LSP PROGRESS
+--[[ LSP PROGRESS
 
 local progress = vim.defaulttable()
 vim.api.nvim_create_autocmd("LspProgress", {
@@ -205,3 +199,24 @@ vim.api.nvim_create_autocmd("LspProgress", {
                 })
         end,
 })
+--]]
+
+---[[
+vim.api.nvim_create_autocmd("LspProgress", {
+        callback = function(ev)
+                local value = ev.data.params.value or {}
+                local msg   = value.message or "done"
+
+                if #msg > 40 then
+                        msg = msg:sub(1, 37) .. "..."
+                end
+
+                vim.api.nvim_echo({ { msg } }, false, {
+                        id      = "lsp",
+                        kind    = "progress",
+                        title   = value.title,
+                        status  = value.kind ~= "end" and "running" or "success",
+                })
+        end,
+})
+--]]

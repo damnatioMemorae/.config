@@ -56,10 +56,12 @@ function M.camelSnakeToggle()
         local line = vim.api.nvim_get_current_line()
         local col  = vim.api.nvim_win_get_cursor(0)[2] + 1
         local start, ending
+
         while true do
                 start, ending = line:find(cword, ending or 1, true)
                 if start <= col and ending >= col then break end
         end
+
         local newLine = line:sub(1, start - 1) .. newWord .. line:sub(ending + 1)
         vim.api.nvim_set_current_line(newLine)
 end
@@ -67,9 +69,9 @@ end
 -- UPPER -> lower -> Title -> UPPER -> …
 function M.toggleWordCasing()
         local prevCursor = vim.api.nvim_win_get_cursor(0)
-
         local cword      = vim.fn.expand("<cword>")
         local cmd
+
         if cword == cword:upper() then
                 cmd = "guiw"
         elseif cword == cword:lower() then
@@ -149,9 +151,9 @@ end
 -- `fF` work with `nN` instead of `;,` (inspired by tT.nvim)
 ---@param char "f"|"F"
 function M.fF(char)
-        local target  = vim.fn.getcharstr()  -- awaits user input for a char
+        local target  = vim.fn.getcharstr() -- awaits user input for a char
         local pattern = [[\V\C]] .. target
-        vim.fn.setreg("/", pattern)
+        vim.fn.setreg("/",     pattern)
         vim.fn.search(pattern, char == "f" and "" or "b") -- move cursor
         vim.v.searchforward = 1                           -- `n` always forward, `N` always backward
 end
@@ -191,8 +193,8 @@ function M.alignSelectionByChar()
         end
 
         -- Get positions of the selection
-        local s_pos        = vim.fn.getpos("v")
-        local e_pos        = vim.fn.getpos(".")
+        local s_pos = vim.fn.getpos("v")
+        local e_pos = vim.fn.getpos(".")
 
         local s_row, e_row = s_pos[2], e_pos[2]
         if s_row > e_row then
@@ -215,7 +217,7 @@ function M.alignSelectionByChar()
 
                 -- Remove indentation before splitting
                 local stripped = line:sub(#indent + 1)
-                local cols     = vim.split(stripped, sep, true)
+                local cols     = vim.split(stripped, sep, true) ---@diagnostic disable-line: param-type-mismatch
                 table.insert(split_lines, cols)
 
                 -- Compute max width for each column

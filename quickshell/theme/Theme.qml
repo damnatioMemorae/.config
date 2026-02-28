@@ -5,7 +5,7 @@ import Quickshell
 import Quickshell.Io
 
 Singleton {
-        id: catppuccin
+        id: theme
 
         // --- theme state ---
         property string current: "Catppuccin"
@@ -21,6 +21,9 @@ Singleton {
         readonly property color text:     palette.text
         readonly property color subText0: palette.subText0
         readonly property color subText1: palette.subText1
+        readonly property color surface0: palette.surface0
+        readonly property color surface1: palette.surface1
+        readonly property color surface2: palette.surface2
 
         // GRID BUTTONS
         readonly property color gridBttn_on_bg:     palette.gridBttn_on_bg
@@ -63,6 +66,10 @@ Singleton {
                 readonly property color text:     "#cdd6f4"
                 readonly property color subText1: "#bac2de"
                 readonly property color subText0: "#a6adc8"
+                readonly property color surface0: "#585b70"
+                readonly property color surface1: "#45475a"
+                readonly property color surface2: "#313244"
+                readonly property color spark:    "#add8e6"
 
                 // GRID BUTTONS
                 readonly property color gridBttn_on_ttl:    "#1E1E2E"
@@ -79,10 +86,10 @@ Singleton {
                 readonly property color coverArt: "#11111b"
 
                 // BATTERY
-                readonly property color battNormal:   "#b4befe"
-                readonly property color battCharging: "#a6e3a1"
+                readonly property color battNormal:   "#a6e3a1"
+                readonly property color battCharging: "#add8e6"
                 readonly property color battLow:      "#f38ba8"
-                readonly property color battText:     "#FFFFFF"
+                readonly property color battText:     "#0e0e16"
 
                 // BACKGROUND GRADIENT
                 readonly property color gradientTop:    "#181825"  // Catppuccin Mocha Crust

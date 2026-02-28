@@ -36,3 +36,7 @@
 @define-color red       #f38ba8;
 @define-color green     #a6e3a1;
 @define-color charging  #add8e6;
+/* @define-color workspace #66ff66; */
+/* @define-color workspace #66d966; */
+@define-color workspace #add8e6;
+/* @define-color workspace #cba6f7; */

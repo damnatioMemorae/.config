@@ -6,16 +6,15 @@ local modes = { "n", "x" }
 
 return {
         "kevinhwang91/nvim-ufo",
+        enabled      = true,
         dependencies = "kevinhwang91/promise-async",
         event        = "BufEnter",
         keys         = {
                 { "<leader>if", function() require("ufo").inspect() end, cmd(), desc = " Fold Info" },
-
                 { -- 0
                         "<A-0>",
                         function()
                                 require("ufo").closeFoldsWith(0)
-                                -- require("ufo").openFoldsExceptKinds{ "region" }
                                 cmd()
                         end,
                         mode = modes,
@@ -131,6 +130,24 @@ return {
                         mode = modes,
                         desc = " Goto Previous Fold",
                 },
+                { -- GOTO NEXT FOLD
+                        "<A-Down>",
+                        "zj^zz",
+                        mode = modes,
+                        desc = "Goto Next Fold",
+                },
+                { -- CLOSE FOLD
+                        "<A-Left>",
+                        "zc^zz",
+                        mode = modes,
+                        desc = "Close Fold",
+                },
+                { -- OPEN FOLD
+                        "<A-Right>",
+                        "zo^zz",
+                        mode = modes,
+                        desc = "Open Fold",
+                },
         },
         init         = function()
                 vim.opt.foldcolumn     = "0"
@@ -139,6 +156,7 @@ return {
                 vim.opt.foldenable     = true
         end,
         opts         = {
+                open_fold_hl_timeout    = 0,
                 close_fold_kinds_for_ft = {
                         cpp      = { "comment" },
                         c        = { "comment" },
@@ -152,7 +170,6 @@ return {
                         toml     = { "imports", "comment" },
                         zsh      = { "if_statement", "for_statement", "function_definition" },
                 },
-                open_fold_hl_timeout    = 0,
                 preview                 = {
                         win_config = {
                                 border       = vim.g.borderStyle,
@@ -167,9 +184,7 @@ return {
                         end
                         return { "treesitter", "indent" }
                 end,
-                -- fold_virt_text_handler = false
                 fold_virt_text_handler  = function()
-                        -- return custom_foldtext()
                         vim.wo.foldtext = [[
                                 substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend))
                         ]]

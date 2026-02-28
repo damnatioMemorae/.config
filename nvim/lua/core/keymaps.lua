@@ -40,6 +40,8 @@ map(n, "_", "0")
 
 map(nx, "{", "{zz", opts)
 map(nx, "}", "}zz", opts)
+map(nx, "(", "{zz", opts)
+map(nx, ")", "}zz", opts)
 
 -- j/k should on wrapped lines
 map(nx, "j", "gj")
@@ -58,6 +60,7 @@ map(n, "<C-f>", "<C-f>zz", opts)
 map(n, "<C-b>", "<C-b>zz", opts)
 
 -- Search
+-- map(x,  "/",     fuzzySearch,                { desc = " Search in sel" })
 map(x,  "-",     "<Esc>/\\%V",               { desc = " Search in sel" })
 map(n,  "n",     "nzz",                      { desc = "Search next", silent = true })
 map(n,  "N",     "Nzz",                      { desc = "Search previous", silent = true })
@@ -82,24 +85,13 @@ map(n, "<A-x>", function()
 map(n, "f", function() nano.fF("f") end, { desc = "f", silent = true })
 map(n, "F", function() nano.fF("F") end, { desc = "F", silent = true })
 
---[[ Folds
-map(nx, "<A-Up>", utils.prevFoldStart, { desc = "Goto prev fold",silent = true })
-map(nx, "<A-Down>", "zjzz^", { desc = "Goto next fold",silent = true })
-map(nx, "<A-Z>", utils.prevFoldStart, { desc = "Goto prev fold",silent = true })
-map(nx, "<A-z>", "zjzz^", { desc = "Goto next fold",silent = true })
-map(n, "<A-Left>", "zczz^", { desc = "Close current fold",silent = true })
-map(n, "<A-Right>", "zozz^", { desc = "Open current fold",silent = true })
-map(n, "<C-Left>", "zMzz^", { desc = "Close All Folds",silent = true })
-map(n, "<C-Right>", "zRzz^", { desc = "Open All Folds",silent = true })
-map(n, "zh", "zczz", { desc = "Close current fold",silent = true })
-map(n, "zl", "zozz", { desc = "Open current fold",silent = true })
-map(n, "zj", "zjzz", { desc = "Goto next fold",silent = true })
---]]
+------------------------------------------------------------------------------------------------------------------------
+--[[ FOLDS
 
 map(nx, "<A-Down>", function()
-            vim.cmd.norm("zj")
-            cmd()
-    end, { desc = "Goto next fold", silent = true })
+        vim.cmd.norm("zj")
+        cmd()
+end, { desc = "Goto next fold", silent = true })
 map(nx, "<A-Left>", function()
             vim.cmd.norm("zc")
             cmd()
@@ -109,8 +101,7 @@ map(nx, "<A-Right>", function()
             cmd()
     end, { desc = "Open current fold", silent = true })
 
--- Move to the end of previous word
--- map(nv, "W", "ge", { desc = "Jump to the end of previous word", silent = true })
+--]]
 
 -- center Ctrl-o
 map(n, "<C-o>", "<C-o>zz", opts)
@@ -130,9 +121,7 @@ map(n, "<C-w>", function() nano.smartDuplicate() end, { desc = "󰲢 Duplicate l
 -- Toggles
 map(n, "~", "v~",                                   { desc = "󰬴 Toggle char case (w/o moving)", silent = true })
 map(n, "<", function() nano.toggleWordCasing() end, { desc = "󰬴 Toggle lower/Title case", silent = true })
-
--- map(n, ">", function() nano.camelSnakeToggle() end,
---     { desc = "󰬴 Toggle camel and snake case", silent = true })
+map(n, ">", function() nano.camelSnakeToggle() end, { desc = "󰬴 Toggle camelCase and snake_case", silent = true })
 
 -- Append to EoL
 local trailChars = { ",", "\\", "[", "]", "{", "}", ")", ";", "." }
@@ -160,7 +149,8 @@ map({ "i", "c" }, "<C-d>", "<Backspace>", { desc = "Delete", silent = true })
 
 -- Save file
 vim.keymap.del(i, "<C-s>")
-map(ni, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save File", silent = true })
+-- map(ni, "<C-s>", vim.cmd("write"), { desc = "Save File", silent = true })
+map(ni, "<C-s>", "<cmd>w<CR><Esc>", { desc = "Save File", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- SURROUND
@@ -241,6 +231,11 @@ map(n, "<A-D>", function()
             vim.cmd.normal("zz")
     end, { desc = "■ Diagnostic Prev" })
 
+map(n, "K", vim.lsp.buf.hover,          { desc = "󰏪 Hover Documentation" })
+map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
+
+map(n, vim.g.prefix .. "f", "gF",                    { desc = "Goto File", silent = true })
+map(n, vim.g.prefix .. "q", vim.lsp.buf.code_action, { desc = "󱠀 Code Action Picker" })
 map(n, vim.g.prefix .. "e", function()
             vim.diagnostic.config({ virtual_lines = { current_line = true }, virtual_text = false })
 
@@ -252,9 +247,6 @@ map(n, vim.g.prefix .. "e", function()
                     end,
             })
     end, { desc = "■ Diagnostic Lines" })
-map(n, vim.g.prefix .. "f", "gf",                       { desc = "Goto File", silent = true })
-map(n, "K",                 vim.lsp.buf.hover,          { desc = "󰏪 Hover Documentation" })
-map(n, "J",                 vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
 
 --[[ GOTO
 map(n, prefixLsp .. "D", vim.lsp.buf.declaration, { desc = " Goto Declaration" })
@@ -265,8 +257,6 @@ map(n, prefixLsp .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" }
 map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
 map(n, prefixLsp .. "F", vim.lsp.buf.format, { desc = "LSP Format" })
 --]]
-
-map(n, vim.g.prefix .. "q", vim.lsp.buf.code_action, { desc = "󱠀 Code Action Picker" })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- INSERT MODE

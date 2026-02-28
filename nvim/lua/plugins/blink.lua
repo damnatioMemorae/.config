@@ -41,8 +41,9 @@ return {
                                 cycle     = { from_bottom = true, from_top = true },
                         },
                         menu          = {
+                                -- max_height         = 40,
                                 max_height         = 90,
-                                border             = nil,
+                                border             = vim.g.borderStyle,
                                 winblend           = vim.g.blend,
                                 scrolloff          = 4,
                                 scrollbar          = true,
@@ -79,7 +80,7 @@ return {
                 },
                 fuzzy      = {
                         implementation    = "prefer_rust_with_warning",
-                        max_typos         = 0,
+                        max_typos         = 3,
                         frecency          = {
                                 enabled = true,
                                 path    = vim.fn.stdpath("state") .. "/blink/cmp/frecency.dat",
@@ -158,6 +159,7 @@ return {
                                         name         = "LSP",
                                         module       = "blink.cmp.sources.lsp",
                                         opts         = { tailwind_color_icon = "██" },
+                                        -- max_items    = 40,
                                         score_offset = 160,
                                         fallbacks    = {},
                                         override     = {

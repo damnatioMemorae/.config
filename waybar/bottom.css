@@ -12,20 +12,38 @@
 .main {
         background: @main-bg;
 }
+
+.waybar {
+        box-shadow: 5px 5px 5px 5px @red;
+}
+
 #custom-recording {
         color: #f38ba8;
 }
-#custom-updates,
-#language,
-#submap {
+
+#custom-updates {
         color: @spark;
         padding-right: 8px;
         margin-top: -4px;
         margin-bottom: -4px;
 }
+
+#language,
+#submap {
+        color: @spark;
+        min-width: 9px;
+        padding: 0 6px;
+        margin-top: 10px;
+        margin-right: 10px;
+        background: alpha(@workspace, 0.2);
+        border: 0px solid alpha(@workspace, 1);
+        border-bottom-width: 4px;
+}
+
 menuitem {
         background: @tooltip-bg;
 }
+
 menu,
 tooltip {
         color: @main-fg;
@@ -38,30 +56,44 @@ tooltip {
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
 /* MODULES */
 
-#workspaces:hover,
 #workspaces button:hover {
-        color: @main-fg;
-        background: @main-bg;
-        border-radius: 0;
+        color: @workspace;
+        background: alpha(@workspace, 0.2);
+        margin-top: 10px;
+        border: 0px solid alpha(@workspace, 1);
 }
+
 #workspaces button {
-        color: @text;
+        color: alpha(@workspace, 0.3);
+        background: alpha(@workspace, 0);
+        transition: all 90ms ease-in-out;
+        padding: 0 6px;
+        margin: 0 1.5px;
+        min-width: 9px;
+        border-radius: 0px;
+        border: 0px solid alpha(@workspace, 0.2);
+        border-bottom-width: 2px;
 }
+
 #workspaces button.empty {
-        color: @empty-fg;
+        color: alpha(@workspace, 0);
+        background: alpha(@workspace, 0);
+        border: 0px solid alpha(@workspace, 0.2);
+        border-bottom-width: 4px;
 }
+
 #workspaces button.active {
-        color: @red;
+        color: @workspace;
+        background: alpha(@workspace, 0.2);
+        margin-top: 10px;
+        border: 0px solid alpha(@workspace, 1);
 }
+
 #workspaces button,
 #workspaces button:hover,
 #workspaces button.active {
-        border: 0;
-        border-radius: 0;
-        padding-left: 0;
-        padding-right: 0;
-        margin-left: 6;
-        margin-right: 6;
+        margin-top: 10px;
+        border-bottom-width: 4px;
 }
 
 #network {

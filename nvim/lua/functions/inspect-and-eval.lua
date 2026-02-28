@@ -131,8 +131,8 @@ function M.runFile()
         local filepath   = api.nvim_buf_get_name(0)
         if bo.filetype == "lua" and filepath:find("nvim") then
                 cmd.source()
-        elseif bo.filetype == "lua" and fn.finddir("love2d", nil, nil) then
-                cmd("! love Game")
+        -- elseif bo.filetype == "lua" and fn.finddir("love2d", nil, nil) then
+        --         cmd("! love Game")
         elseif hasShebang then
                 cmd("! chmod +x %")
                 cmd("! %")

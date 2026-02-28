@@ -1,6 +1,7 @@
 local button       = "Function"
 local label        = "Comment"
 local icons        = require("core.icons")
+local snacks       = require("snacks")
 local insertOnShow = function() vim.cmd.stopinsert() end
 
 return {
@@ -8,29 +9,29 @@ return {
         lazy     = false,
         priority = 1000,
         keys     = {
-                { "<C-n>",      function() Snacks.notifier.show_history() end, desc = "Notification History" },
-                { "<leader>fr", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
-                { "<leader>lg", function() Snacks.lazygit() end,               desc = "Lazygit" },
+                { "<C-n>",      function() require("snacks").notifier.show_history() end, desc = "Notification History" },
+                { "<leader>fr", function() snacks.rename.rename_file() end,               desc = "Rename File" },
+                { "<leader>lg", function() snacks.lazygit() end,                          desc = "Lazygit" },
                 { -- DELETE BUFFER
                         "<A-b>",
                         function()
-                                Snacks.bufdelete()
+                                snacks.bufdelete()
                         end,
                         desc = "Delete Buffer",
                 },
                 { -- MAIN
                         "<leader><leader><leader>",
-                        function() Snacks.picker({ layout = "vscode" }) end,
+                        function() snacks.picker({ layout = "vscode" }) end,
                         desc = "Main Picker",
                         mode = { "n" },
                 },
                 { -- FILES
                         "<leader><leader>f",
                         function()
-                                Snacks.picker.files({
+                                snacks.picker.files({
                                         layout = "vertical",
                                         hidden = true,
-                                        win    = { input = { keys = { ["<Right>"] = { "confirm", mode = { "n", "i" } } } } },
+                                        -- win    = { input = { keys = { ["<Right>"] = { "confirm", mode = { "n", "i" } } } } },
                                 })
                         end,
                         desc = "File Picker",
@@ -38,55 +39,55 @@ return {
                 },
                 { -- KEYMAPS
                         "<leader><leader>k",
-                        function() Snacks.picker.keymaps({ layout = "dropdown" }) end,
+                        function() snacks.picker.keymaps({ layout = "dropdown" }) end,
                         desc = "Keymap Picker",
                         mode = { "n" },
                 },
                 { -- GREP
                         "<leader><leader>w",
-                        function() Snacks.picker.grep({ layout = "vertical" }) end,
+                        function() snacks.picker.grep({ layout = "vertical" }) end,
                         desc = "Grep Picker",
                         mode = { "n" },
                 },
                 { -- GREP WORD
                         "<leader><leader>W",
-                        function() Snacks.picker.grep_word({ layout = "vertical" }) end,
+                        function() snacks.picker.grep_word({ layout = "vertical" }) end,
                         desc = "Grep Word",
                         mode = { "n" },
                 },
                 { -- GREP BUFFERS
                         "<leader><leader>B",
-                        function() Snacks.picker.grep_buffers({ layout = "vertical" }) end,
+                        function() snacks.picker.grep_buffers({ layout = "vertical" }) end,
                         desc = "Grep Word",
                         mode = { "n" },
                 },
                 { -- REGISTERS
                         "<leader><leader>R",
-                        function() Snacks.picker.registers({ layout = "vertical" }) end,
+                        function() snacks.picker.registers({ layout = "vertical" }) end,
                         desc = "Register Picker",
                         mode = { "n" },
                 },
                 { -- HIGHLIGHTS
                         "<leader><leader>h",
-                        function() Snacks.picker.highlights({ layout = "default" }) end,
+                        function() snacks.picker.highlights({ layout = "default" }) end,
                         desc = "Highlight Picker",
                         mode = { "n" },
                 },
                 { -- LAZY
                         "<leader><leader>l",
-                        function() Snacks.picker.lazy({ layout = "dropdown" }) end,
+                        function() snacks.picker.lazy({ layout = "dropdown" }) end,
                         desc = "Lazy Picker",
                         mode = { "n" },
                 },
                 { -- BUFFERS
                         "<leader><leader>b",
                         function()
-                                Snacks.picker.buffers({
+                                snacks.picker.buffers({
                                         on_show = insertOnShow,
                                         layout  = "default",
                                         format  = "buffer",
                                         hidden  = false,
-                                        win     = { input = { keys = { ["d"] = "bufdelete" } } },
+                                        win     = { input = { keys = { ["d"] = "bufdelete", ["<Left>"] = "bufdelete" } } },
                                 })
                         end,
                         desc = "Buffer Picker",
@@ -95,7 +96,7 @@ return {
                 { -- UNDO
                         "<leader><leader>u",
                         function()
-                                Snacks.picker.undo({
+                                snacks.picker.undo({
                                         on_show = insertOnShow,
                                         layout  = "default",
                                         format  = "buffer",
@@ -112,7 +113,7 @@ return {
                 { -- JUMPS
                         "<leader><leader>j",
                         function()
-                                Snacks.picker.jumps({
+                                snacks.picker.jumps({
                                         on_show = insertOnShow,
                                         layout  = "default",
                                         format  = "buffer",
@@ -129,7 +130,7 @@ return {
                 { -- EXPLORER
                         "<leader><leader>e",
                         function()
-                                Snacks.explorer({
+                                snacks.explorer({
                                         layout = {
                                                 preset  = "sidebar",
                                                 preview = false,
@@ -145,7 +146,7 @@ return {
                 { -- REFERENCES
                         vim.g.prefix .. "r",
                         function()
-                                Snacks.picker.lsp_references({
+                                snacks.picker.lsp_references({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -156,7 +157,7 @@ return {
                 { -- IMPLEMENTATIONS
                         vim.g.prefix .. "i",
                         function()
-                                Snacks.picker.lsp_implementations({
+                                snacks.picker.lsp_implementations({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -167,7 +168,7 @@ return {
                 { -- DEFINITIONS
                         vim.g.prefix .. "d",
                         function()
-                                Snacks.picker.lsp_definitions({
+                                snacks.picker.lsp_definitions({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -178,7 +179,7 @@ return {
                 { -- DECLARATIONS
                         vim.g.prefix .. "D",
                         function()
-                                Snacks.picker.lsp_declarations({
+                                snacks.picker.lsp_declarations({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -189,7 +190,7 @@ return {
                 { -- SYMBOLS
                         "<leader><leader>s",
                         function()
-                                Snacks.picker.lsp_symbols({
+                                snacks.picker.lsp_symbols({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -200,7 +201,7 @@ return {
                 { -- WORKSPACE SYMBOLS
                         "<leader><leader>S",
                         function()
-                                Snacks.picker.lsp_workspace_symbols({
+                                snacks.picker.lsp_workspace_symbols({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -211,7 +212,7 @@ return {
                 { -- DIAGNOSTICS BUFFER
                         "<leader><leader>d",
                         function()
-                                Snacks.picker.diagnostics_buffer({
+                                snacks.picker.diagnostics_buffer({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -222,7 +223,7 @@ return {
                 { -- DIAGNOSTICS WORKSPACE
                         "<leader><leader>D",
                         function()
-                                Snacks.picker.diagnostics({
+                                snacks.picker.diagnostics({
                                         layout  = "vertical",
                                         on_show = insertOnShow,
                                 })
@@ -232,7 +233,6 @@ return {
                 },
         },
         opts     = {
-                words        = { enabled = true, debounce = 0 },
                 quickfile    = { enabled = true },
                 lazygit      = { enabled = true },
                 input        = { enabled = true },
@@ -299,13 +299,14 @@ return {
                         win       = {
                                 input = {
                                         keys = {
-                                                ["<Esc>"] = { "close", mode = { "i", "n" } },
-                                                ["h"]     = { "toggle_hidden", mode = { "n" } },
-                                                ["l"]     = { "confirm", mode = { "n" } },
-                                                ["J"]     = { "preview_scroll_down", mode = { "i", "n" } },
-                                                ["K"]     = { "preview_scroll_up", mode = { "i", "n" } },
-                                                ["H"]     = { "preview_scroll_left", mode = { "i", "n" } },
-                                                ["L"]     = { "preview_scroll_right", mode = { "i", "n" } },
+                                                ["<Right>"] = { "confirm", mode = { "n", "i" } },
+                                                ["<Esc>"]   = { "close", mode = { "i", "n" } },
+                                                ["h"]       = { "toggle_hidden", mode = { "n" } },
+                                                ["l"]       = { "confirm", mode = { "n" } },
+                                                ["J"]       = { "preview_scroll_down", mode = { "i", "n" } },
+                                                ["K"]       = { "preview_scroll_up", mode = { "i", "n" } },
+                                                ["H"]       = { "preview_scroll_left", mode = { "i", "n" } },
+                                                ["L"]       = { "preview_scroll_right", mode = { "i", "n" } },
                                         },
                                 },
                         },
@@ -570,7 +571,7 @@ return {
                                                 { "]", hl = button },
                                         },
                                         key     = "r",
-                                        action  = function() Snacks.picker.recent({ layout = "vertical" }) end,
+                                        action  = function() snacks.picker.recent({ layout = "vertical" }) end,
                                         padding = 1,
                                         align   = "center",
                                 },
@@ -582,7 +583,7 @@ return {
                                                 { "f", hl = label },
                                                 { "]", hl = button },
                                         },
-                                        action  = function() Snacks.picker.files({ layout = "vertical" }) end,
+                                        action  = function() snacks.picker.files({ layout = "vertical" }) end,
                                         key     = "f",
                                         padding = 1,
                                         align   = "center",
@@ -595,7 +596,7 @@ return {
                                                 { "w", hl = label },
                                                 { "]", hl = button },
                                         },
-                                        action  = function() Snacks.picker.grep({ layout = "vertical" }) end,
+                                        action  = function() snacks.picker.grep({ layout = "vertical" }) end,
                                         key     = "w",
                                         padding = 1,
                                         align   = "center",
@@ -635,7 +636,7 @@ return {
                                                 { "]", hl = button },
                                         },
                                         key     = "c",
-                                        action  = function() Snacks.picker.files() end,
+                                        action  = function() snacks.picker.files() end,
                                         padding = 1,
                                         align   = "center",
                                 },

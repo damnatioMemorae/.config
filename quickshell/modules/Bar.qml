@@ -1,10 +1,9 @@
-//@pragma UseQApplication
-
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Wayland
 import Quickshell.Io
+import QtQuick.Layouts
 import qs.theme as Theme
 
 PanelWindow {
@@ -12,14 +11,17 @@ PanelWindow {
         objectName: "bar"
 
         property string position: "left" // "top" | "bottom" | "left" | "right"
+        property int margin: 10
+        property int antiMargin: -0
+        property int rotation: 180
         property int width:  40
         property int height: 40
 
-        property string bg: "#0e0e16"
-        // property string bg: "#f38ba8"
+        property string bg: Theme.Theme.bg
+        property bool horizontal: false
 
         implicitWidth:  horizontal ? parent.width : bar.width
-        implicitHeight: horizontal ? height : parent.height
+        implicitHeight: horizontal ? height : bar.height
 
         function setPosition(pos) {
                 if (["top", "bottom", "left", "right"].indexOf(pos) === -1) {
@@ -47,11 +49,12 @@ PanelWindow {
                         anchors.left   = true
                         anchors.right  = true
 
-                        margins.top    = 10
-                        margins.bottom = -10
-                        margins.left   = 10
-                        margins.right  = 10
+                        margins.top    = margin
+                        margins.bottom = antiMargin
+                        margins.left   = margin
+                        margins.right  = margin
 
+                        rotation       = 90
                         implicitHeight = bar.height
                 }
                 if ( pos === "bottom" ) {
@@ -60,11 +63,12 @@ PanelWindow {
                         anchors.left   = true
                         anchors.right  = true
 
-                        margins.top    = -10
-                        margins.bottom = 10
-                        margins.left   = 10
-                        margins.right  = 10
+                        margins.top    = antiMargin
+                        margins.bottom = margin
+                        margins.left   = margin
+                        margins.right  = margin
 
+                        rotation       = 90
                         implicitHeight = bar.height
                 }
                 if ( pos === "left" ) {
@@ -73,11 +77,12 @@ PanelWindow {
                         anchors.left   = true
                         anchors.right  = false
 
-                        margins.top    = 10
-                        margins.bottom = 10
-                        margins.left   = 10
-                        margins.right  = -10
+                        margins.top    = margin
+                        margins.bottom = margin
+                        margins.left   = margin
+                        margins.right  = antiMargin
 
+                        rotation       = 180
                         implicitWidth  = bar.width
                 }
                 if ( pos === "right" ) {
@@ -86,11 +91,12 @@ PanelWindow {
                         anchors.left   = false
                         anchors.right  = true
 
-                        margins.top    = 10
-                        margins.bottom = 10
-                        margins.left   = -10
-                        margins.right  = 10
+                        margins.top    = margin
+                        margins.bottom = margin
+                        margins.left   = antiMargin
+                        margins.right  = margin
 
+                        rotation       = 180
                         implicitWidth  = bar.width
                 }
         }
@@ -98,11 +104,49 @@ PanelWindow {
         onPositionChanged: applyPosition(position)
         Component.onCompleted: applyPosition(position)
 
-        Rectangle {
-                anchors.fill: parent
-                color: bar.bg
-                radius: 0
+        color: bar.bg
+
+        RowLayout {}
+        ColumnLayout {
+                id: leftPart
+                // anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                // anchors.verticalCenter: parent.verticalCenter
+                // height: parent.height
+                anchors.top: parent.top
+                anchors.topMargin: 30
+                spacing: 10
+
+                // Battery {
+                //         rotation: rotation - 90
+                //         Layout.alignment: Qt.AlignVCenter
+                // }
         }
+        ColumnLayout {
+                id: centerPart
+                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                height: parent.height
+                spacing: 10
+
+                Workspaces {
+                        rotation: bar.rotation
+                        Layout.alignment: Qt.AlignVCenter
+                }
+        }
+        ColumnLayout {
+                id: rightPart
+                anchors.right: parent.right
+                // anchors.rightMargin: 6
+                // anchors.verticalCenter: parent.verticalCenter
+                // anchors.horizontalCenter: parent.horizontalCenter
+                height: parent.height
+                // spacing: 10
+
+                // Memory { Layout.alignment: Qt.AlignVCenter }
+        }
+
         IpcHandler {
                 target: "bar"
                 function setPosition(position: string): string { bar.position = position }

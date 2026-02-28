@@ -73,6 +73,18 @@ return {
                 menu    = {
                         keymaps   = {
                                 ["h"] = "<C-w>q",
+                                ["i"] = function()
+                                        local utils = require("dropbar.utils")
+                                        local menu  = utils.menu.get_current()
+                                        if not menu then
+                                                return
+                                        end
+                                        menu:fuzzy_find_open()
+                                end,
+                                -- ["l"] = function()
+                                --         local api = require("dropbar.api")
+                                --         api.select_context_start()
+                                -- end,
                                 ["l"] = function()
                                         local utils = require("dropbar.utils")
                                         local menu  = utils.menu.get_current()
@@ -87,7 +99,7 @@ return {
                                 end,
                         },
                         scrollbar = {
-                                enable     = false,
+                                enable     = true,
                                 background = true,
                         },
                 },

@@ -35,7 +35,7 @@ return {
                 ui               = {
                         override      = true,
                         group_actions = true,
-                        keymaps       = { filter = "<C-b>", open_group = "<Right>", close_group = "<Left>" },
+                        keymaps       = { filter = "<C-b>", close_group = "<Left>" },
                 },
                 debug            = false,
                 cache            = true,
