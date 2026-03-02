@@ -1,5 +1,3 @@
-
-
 /* Global Styling */
 * {
         font-family: "Monocraft";
@@ -14,24 +12,42 @@
 .main {
         background: @main-bg;
 }
+
+.waybar {
+        box-shadow: 5px 5px 5px 5px @red;
+}
+
 #custom-recording {
         color: #f38ba8;
 }
-#custom-updates,
-#language,
-#submap {
-        color: #add8e6;
+
+#custom-updates {
+        color: @spark;
         padding-right: 8px;
-        margin-top: -4px;
+        margin-bottom: -4px;
         margin-bottom: -4px;
 }
-menuitem {
-        background: @tooltip-bg
+
+#language,
+#submap {
+        color: @spark;
+        min-width: 9px;
+        padding: 0 6px;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        background: alpha(@workspace, 0.2);
+        border: 0px solid alpha(@workspace, 1);
+        border-top-width: 4px;
 }
+
+menuitem {
+        background: @tooltip-bg;
+}
+
 menu,
 tooltip {
         color: @main-fg;
-        background: @tooltip-bg;
+        background: @main-bg;
         /* background: @media; */
         border-radius: 0;
         border: 0;
@@ -40,170 +56,108 @@ tooltip {
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
 /* MODULES */
 
+#workspaces button:hover {
+        color: @workspace;
+        background: alpha(@workspace, 0.2);
+        margin-bottom: 10px;
+        border: 0px solid alpha(@workspace, 1);
+}
+
+#workspaces button {
+        color: alpha(@workspace, 0.3);
+        background: alpha(@workspace, 0);
+        transition: all 90ms ease-in-out;
+        padding: 0 6px;
+        margin: 0 1.5px;
+        min-width: 9px;
+        border-radius: 0px;
+        border: 0px solid alpha(@workspace, 0.2);
+        border-top-width: 2px;
+}
+
+#workspaces button.empty {
+        color: alpha(@workspace, 0);
+        background: alpha(@workspace, 0);
+        border: 0px solid alpha(@workspace, 0.2);
+        border-top-width: 4px;
+}
+
+#workspaces button.active {
+        color: @workspace;
+        background: alpha(@workspace, 0.2);
+        margin-bottom: 10px;
+        border: 0px solid alpha(@workspace, 1);
+}
+
+#workspaces button,
+#workspaces button:hover,
+#workspaces button.active {
+        margin-bottom: 10px;
+        border-top-width: 4px;
+}
+
+#network {
+        color: @pink;
+}
+
+#custom-waypick {
+        color: @pink;
+}
+
+#pulseaudio.muted {
+        color: @red;
+}
+
 #cpu,
 #memory,
 #battery,
-#network,
 #backlight,
 #pulseaudio,
 #temperature,
 #custom-gpuinfo {
-        color: @main-fg;
-        background: @normTr;
+        color: @text;
+        background: @crust;
         margin-top: 6px;
         margin-bottom: 6px;
-}
-#cpu.icon,
-#memory.icon,
-#custom-wifi,
-#backlight.icon,
-#pulseaudio.icon,
-#temperature.icon,
-#custom-gpuinfo.icon {
-        color: @main-bg;
-        background: @norm;
-        margin-top: 6px;
-        margin-bottom: 6px;
-        padding-left: 7px;
-        padding-right: 9px;
-}
-#battery.icon {
-        color: @blank-fg;
-        background: @main-fg;
-        margin-top: 6px;
-        margin-bottom: 6px;
-        padding-left: 9px;
-        padding-right: 7px;
-}
-
-/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-/* GROUPS AND SLIDERS */
-
-#group.backlight {
-        /* margin-top: 6px; */
-        /* margin-bottom: 6px; */
-}
-#pulseaudio-slider {
-        padding: 0;
-        margin: 0;
-}
-#backlight-slider slider {
-        min-height: 0px;
-        min-width: 0px;
-        opacity: 0;
-        background-image: none;
-        border: none;
-        box-shadow: none;
-}
-#backlight-slider trough {
-        min-height: 6px;
-        min-width: 80px;
-        border-radius: 5px;
-        background-color: black;
-}
-#backlight-slider highlight {
-        min-width: 10px;
-        border-radius: 0px;
-        background-color: red;
-}
-
-/* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-/* BACKLIGHT AND AUDIO */
-
-#backlight.icon.min,
-#pulseaudio.icon.min {
-        color: @max;
-        background: @min;
-}
-#backlight.icon.midl,
-#pulseaudio.icon.midl {
-        color: @midh;
-        background: @midl;
-}
-#backlight.icon.mid,
-#pulseaudio.icon.mid {
-        color: @min;
-        background: @mid;
-}
-#backlight.icon.midh,
-#pulseaudio.icon.midh {
-        color: @min;
-        background: @midh;
-}
-#backlight.icon.max,
-#pulseaudio.icon.max {
-        color: @main-bg;
-        background: @max;
 }
 
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
 /* LEVEL COLORS */
 
-#cpu.norm,
-#memory.norm,
+#cpu.good,
+#memory.green,
 #temperature {
-        color: @norm;
-        background-color: @normTr;
+        color: @text;
+        background-color: @main-bg;
 }
 #cpu.warning,
 #memory.warning,
 #battery.warning {
-        color: @warning;
-        background: @warningTr;
+        color: @yellow;
+        background: @main-bg;
 }
 #cpu.critical,
 #memory.critical,
 #battery.critical,
 #temperature.critical {
-        color: @critical;
-        background: @criticalTr;
-}
-#cpu.icon.norm,
-#memory.icon.norm,
-#temperature.icon {
-        color: @main-bg;
-        background: @norm;
-}
-#cpu.icon.warning,
-#memory.icon.warning,
-#battery.icon.warning {
-        color: @warningTr;
-        background: @warning;
-}
-#cpu.icon.critical,
-#memory.icon.critical,
-#battery.icon.critical,
-#temperature.icon.critical {
-        color: @criticalTr;
-        background: @critical;
+        color: @red;
+        background: @main-bg;
 }
 
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
 /* BATTERY LEVEL COLORS */
 
-#battery.icon.full {
-        color: @fullTr;
-        background: @full;
-}
-#battery.icon.good {
-        color: @goodTr;
-        background: @good;
-}
-#battery.icon.charging {
-        color: @chargingTr;
-        background: @charging;
-}
 #battery.full {
-        color: @full;
-        background: @fullTr;
+        color: @green;
+        background: @main-bg;
 }
 #battery.good {
-        color: @good;
-        background: @goodTr;
+        color: @green;
+        background: @main-bg;
 }
 #battery.charging {
         color: @charging;
-        background: @chargingTr;
+        background: @main-bg;
 }
 
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -211,17 +165,4 @@ tooltip {
 
 #custom-wifi {
         padding-right: 10px;
-}
-#cpu.icon {
-        padding-right: 11px;
-}
-#memory.icon {
-        padding-left: 9px;
-        padding-right: 9px;
-}
-#temperature.icon {
-        padding-left: 9px;
-}
-#custom-gpuinfo.icon {
-        padding-left: 8px;
 }

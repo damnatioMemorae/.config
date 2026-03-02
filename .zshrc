@@ -17,8 +17,6 @@ export EDITOR=nvim
 
 export ZSH="$HOME/.oh-my-zsh"
 
-LLS_Addons=$HOME/.config/nvim/LLS-Addons/
-
 export FZF_DEFAULT_OPTS='
 --color=fg:#6c7086,fg+:,bg:,bg+:#0e0e16
 --color=hl:#cdd6f4,hl+:#F38BA8,info:#f9e2af,marker:#F38BA8
