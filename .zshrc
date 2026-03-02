@@ -137,7 +137,7 @@ function in {
 alias           l='ls --format=single-column'
 alias          ls='ls -lhc --color'
 alias          un='$aurhelper -Rns'
-alias          up='$aurhelper -Syu'
+alias          up='$aurhelper -Syu --sudoloop'
 # alias          up='sudo pacman -Syu'
 alias          pl='$aurhelper -Qs'
 alias          pa='$aurhelper -Ss'

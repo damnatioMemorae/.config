@@ -1,0 +1,14 @@
+[
+        {
+                "class": "*",
+                "title": "*",
+                "layer": "*"
+        },
+        {
+                "class": "*",
+                "title": "*",
+                "layer": "*"
+        },
+
+        { "layer": "default" }
+]

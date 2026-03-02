@@ -11,24 +11,19 @@ return {
                 "selene.yml",
                 ".git",
         },
-        ---[[
         on_init      = function(client)
-                if client.workspace_folders then
-                        local path = client.workspace_folders[1].name
-                        local file = "/.luarc.jsonc" or "/.luarc.json" or "nvim/.luarc.jsonc" or "nvim/.luarc.json"
+                local path = vim.uv.cwd()
 
-                        if path ~= vim.fn.stdpath("config") or (vim.uv.fs_stat(path .. file)) then
-                                client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-                                        runtime   = {
-                                                version = "LuaJIT",
-                                                path    = { "lua/?.lua", "lua/?/init.lua" },
-                                        },
-                                        workspace = { library = { "$VIMRUNTIME", "${3rd}/luv/library" } },
-                                })
-                        end
+                if path == vim.fn.stdpath("config") then
+                        client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+                                runtime   = {
+                                        version = "LuaJIT",
+                                        path    = { "lua/?.lua", "lua/?/?.lua", "lua/?/init.lua" },
+                                },
+                                workspace = { library = { "$VIMRUNTIME", "${3rd}/luv/library" } },
+                        })
                 end
         end,
-        --]]
         settings     = {
                 Lua = {
                         completion    = {

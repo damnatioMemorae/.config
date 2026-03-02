@@ -115,6 +115,7 @@ local customCol = function(C)
                 ["@comment.hint"]               = { fg = C.crust, bg = C.sky, italic = true, bold = true },       -- HINT
                 ["@comment.warning"]            = { fg = C.crust, bg = C.yellow, italic = true, bold = true },    -- WARNING
                 ["@comment.error"]              = { fg = C.crust, bg = C.red, italic = true, bold = true },       -- ERROR
+                ["@comment.code"]               = { fg = C.teal, bg = C.base, italic = false, bold = false },     -- code
                 ["@annotation"]                 = { fg = C.yellow },
                 ["@attribute"]                  = { fg = C.teal },
                 ["@boolean"]                    = { fg = C.peach },

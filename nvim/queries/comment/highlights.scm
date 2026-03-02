@@ -1,4 +1,22 @@
 ((tag
+        (name) @comment.code @nospell
+        ("(" @punctuation.bracket
+                (user) @constant
+                ")" @punctuation.bracket)?
+        ":" @punctuation.delimiter)
+        ; (#any-of? @comment.code "HINT" "WIP"))
+        (#match? @comment.code "'[^']*'"))
+
+("text" @comment.code @nospell
+        ; (#any-of? @comment.code "HINT" "WIP"))
+        (#match? @comment.code "'[^']*'"))
+
+; ("text" @comment.code
+        ; (#eq? @comment.code "!")
+        ; (#match? @issue "^[0-9]+$"))
+        ; (#match? @issue "'[^']*'"))
+
+((tag
         (name) @comment.hint @nospell
         ("(" @punctuation.bracket
                 (user) @constant

@@ -54,7 +54,8 @@ autocmd("FileType", {
                 "query",
         },
         callback = function(event)
-                local keys = { "q", "<Esc>" }
+                -- local keys = { "q", "<Esc>" }
+                local keys = { "<Esc>" }
                 for _, value in pairs(keys) do
                         vim.keymap.set("n", value, "<cmd>close<CR>", { buffer = event.buf, silent = true })
                 end
@@ -406,7 +407,7 @@ autocmd("CmdlineChanged", {
 ------------------------------------------------------------------------------------------------------------------------
 -- BACKDROP
 
-vim.api.nvim_create_autocmd({"FileType", "FocusGained", "BufWinEnter"}, {
+vim.api.nvim_create_autocmd({ "FileType", "FocusGained", "BufWinEnter" }, {
         pattern  = { "dropbar_menu" },
         callback = function(ctx)
                 local backdropName = "MasonBackdrop"

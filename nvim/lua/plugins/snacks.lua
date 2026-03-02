@@ -12,79 +12,71 @@ return {
                 { "<C-n>",      function() require("snacks").notifier.show_history() end, desc = "Notification History" },
                 { "<leader>fr", function() snacks.rename.rename_file() end,               desc = "Rename File" },
                 { "<leader>lg", function() snacks.lazygit() end,                          desc = "Lazygit" },
-                { -- DELETE BUFFER
+                { -- `Alt b` DELETE BUFFER
                         "<A-b>",
-                        function()
-                                snacks.bufdelete()
-                        end,
+                        function() snacks.bufdelete() end,
                         desc = "Delete Buffer",
                 },
-                { -- MAIN
+                { -- `spc spc spc` MAIN
                         "<leader><leader><leader>",
                         function() snacks.picker({ layout = "vscode" }) end,
                         desc = "Main Picker",
                         mode = { "n" },
                 },
-                { -- FILES
+                { -- `spc spc f` FILES
                         "<leader><leader>f",
-                        function()
-                                snacks.picker.files({
-                                        layout = "vertical",
-                                        hidden = true,
-                                        -- win    = { input = { keys = { ["<Right>"] = { "confirm", mode = { "n", "i" } } } } },
-                                })
-                        end,
+                        function() snacks.picker.files({ layout = "vertical", hidden = true }) end,
                         desc = "File Picker",
                         mode = { "n" },
                 },
-                { -- KEYMAPS
+                { -- `spc spc k` KEYMAPS
                         "<leader><leader>k",
                         function() snacks.picker.keymaps({ layout = "dropdown" }) end,
                         desc = "Keymap Picker",
                         mode = { "n" },
                 },
-                { -- GREP
+                { -- `spc spc w` GREP
                         "<leader><leader>w",
                         function() snacks.picker.grep({ layout = "vertical" }) end,
                         desc = "Grep Picker",
                         mode = { "n" },
                 },
-                { -- GREP WORD
+                { -- `spc spc W` GREP WORD
                         "<leader><leader>W",
                         function() snacks.picker.grep_word({ layout = "vertical" }) end,
                         desc = "Grep Word",
                         mode = { "n" },
                 },
-                { -- GREP BUFFERS
+                { -- `spc spc B` GREP BUFFERS
                         "<leader><leader>B",
                         function() snacks.picker.grep_buffers({ layout = "vertical" }) end,
                         desc = "Grep Word",
                         mode = { "n" },
                 },
-                { -- REGISTERS
+                { -- `spc spc R` REGISTERS
                         "<leader><leader>R",
                         function() snacks.picker.registers({ layout = "vertical" }) end,
                         desc = "Register Picker",
                         mode = { "n" },
                 },
-                { -- HIGHLIGHTS
+                { -- `spc spc h` HIGHLIGHTS
                         "<leader><leader>h",
                         function() snacks.picker.highlights({ layout = "default" }) end,
                         desc = "Highlight Picker",
                         mode = { "n" },
                 },
-                { -- LAZY
+                { -- `spc spc l` LAZY
                         "<leader><leader>l",
                         function() snacks.picker.lazy({ layout = "dropdown" }) end,
                         desc = "Lazy Picker",
                         mode = { "n" },
                 },
-                { -- BUFFERS
+                { -- `spc spc b` BUFFERS `!10`
                         "<leader><leader>b",
                         function()
                                 snacks.picker.buffers({
                                         on_show = insertOnShow,
-                                        layout  = "default",
+                                        layout  = "vscode",
                                         format  = "buffer",
                                         hidden  = false,
                                         win     = { input = { keys = { ["d"] = "bufdelete", ["<Left>"] = "bufdelete" } } },
@@ -93,7 +85,7 @@ return {
                         desc = "Buffer Picker",
                         mode = { "n" },
                 },
-                { -- UNDO
+                { -- `spc spc u` UNDO
                         "<leader><leader>u",
                         function()
                                 snacks.picker.undo({
@@ -101,16 +93,13 @@ return {
                                         layout  = "default",
                                         format  = "buffer",
                                         hidden  = false,
-                                        win     = {
-                                                -- input  = { keys  = { ["Backspace"]  = "bufdelete" } },
-                                                -- list   = { keys  = { ["Backspace"]  = "bufdelete" } },
-                                        },
+                                        win     = {},
                                 })
                         end,
                         desc = "Undo Picker",
                         mode = { "n" },
                 },
-                { -- JUMPS
+                { -- `spc spc j` JUMPS
                         "<leader><leader>j",
                         function()
                                 snacks.picker.jumps({
@@ -118,116 +107,65 @@ return {
                                         layout  = "default",
                                         format  = "buffer",
                                         hidden  = false,
-                                        win     = {
-                                                -- input  = { keys  = { ["Backspace"]  = "bufdelete" } },
-                                                -- list   = { keys  = { ["Backspace"]  = "bufdelete" } },
-                                        },
+                                        win     = {},
                                 })
                         end,
                         desc = "Jumps Picker",
                         mode = { "n" },
                 },
-                { -- EXPLORER
+                { -- `spc spc e` EXPLORER
                         "<leader><leader>e",
-                        function()
-                                snacks.explorer({
-                                        layout = {
-                                                preset  = "sidebar",
-                                                preview = false,
-                                                input   = false,
-                                        },
-                                })
-                        end,
+                        function() snacks.explorer({ layout = { preset = "sidebar", preview = false, input = false } }) end,
                         desc = "Buffer Picker",
                         mode = { "n" },
                 },
 
                 -- LSP PICKERS
-                { -- REFERENCES
+                { -- `spc spc r` REFERENCES
                         vim.g.prefix .. "r",
-                        function()
-                                snacks.picker.lsp_references({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.lsp_references({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show References",
                         mode = { "n" },
                 },
-                { -- IMPLEMENTATIONS
+                { -- `spc spc i` IMPLEMENTATIONS
                         vim.g.prefix .. "i",
-                        function()
-                                snacks.picker.lsp_implementations({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.lsp_implementations({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Implementations",
                         mode = { "n" },
                 },
-                { -- DEFINITIONS
+                { -- `spc spc d` DEFINITIONS
                         vim.g.prefix .. "d",
-                        function()
-                                snacks.picker.lsp_definitions({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.lsp_definitions({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Definitions",
                         mode = { "n" },
                 },
-                { -- DECLARATIONS
+                { -- `spc spc D` DECLARATIONS
                         vim.g.prefix .. "D",
-                        function()
-                                snacks.picker.lsp_declarations({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.lsp_declarations({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Declarations",
                         mode = { "n" },
                 },
-                { -- SYMBOLS
+                { -- `spc spc s` SYMBOLS
                         "<leader><leader>s",
-                        function()
-                                snacks.picker.lsp_symbols({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.lsp_symbols({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show LSP Symbols",
                         mode = { "n" },
                 },
-                { -- WORKSPACE SYMBOLS
+                { -- `spc spc S` WORKSPACE SYMBOLS
                         "<leader><leader>S",
-                        function()
-                                snacks.picker.lsp_workspace_symbols({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.lsp_workspace_symbols({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Workspace Symbols",
                         mode = { "n" },
                 },
-                { -- DIAGNOSTICS BUFFER
+                { -- `spc spc d` DIAGNOSTICS BUFFER
                         "<leader><leader>d",
-                        function()
-                                snacks.picker.diagnostics_buffer({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.diagnostics_buffer({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Buffer Diagnostics",
                         mode = { "n" },
                 },
-                { -- DIAGNOSTICS WORKSPACE
+                { -- `spc spc D` DIAGNOSTICS WORKSPACE
                         "<leader><leader>D",
-                        function()
-                                snacks.picker.diagnostics({
-                                        layout  = "vertical",
-                                        on_show = insertOnShow,
-                                })
-                        end,
+                        function() snacks.picker.diagnostics({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Workspace Symbols",
                         mode = { "n" },
                 },

@@ -363,7 +363,6 @@ if loaded then
                              }):map("<leader>oc")
         Snacks.toggle.treesitter({ name = " Treesitter Highlight" }):map("<leader>ot")
         Snacks.toggle.diagnostics({ name = "󰨓 LSP Diagnostics" }):map("<leader>od")
-        -- Snacks.toggle.inlay_hints({ name = "󰨓 LSP Inlay Hints" }):map("<leader>oh")
         Snacks.toggle.words():map("<leader>ol")
 end
 
