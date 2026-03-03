@@ -39,6 +39,7 @@ return {
         --]]
         { -- NODE ACTIONS
                 "ckolkey/ts-node-action",
+                enabled = false,
                 dependencies = { "nvim-treesitter/nvim-treesitter" },
                 event        = "VeryLazy",
                 config       = function()

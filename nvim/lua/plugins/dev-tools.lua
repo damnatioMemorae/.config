@@ -1,11 +1,12 @@
 return {
         "YaroSpace/dev-tools.nvim",
+        lazy = true,
         dependencies = {
                 "nvim-treesitter/nvim-treesitter",
                 "folke/snacks.nvim",
                 "ThePrimeagen/refactoring.nvim",
         },
-        opts = {
+        opts         = {
                 actions          = {},
                 filetypes        = {
                         include = {},

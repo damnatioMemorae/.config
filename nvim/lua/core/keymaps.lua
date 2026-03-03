@@ -150,7 +150,7 @@ map({ "i", "c" }, "<C-d>", "<Backspace>", { desc = "Delete", silent = true })
 -- Save file
 vim.keymap.del(i, "<C-s>")
 -- map(ni, "<C-s>", vim.cmd("write"), { desc = "Save File", silent = true })
-map(ni, "<C-s>", "<cmd>w<CR><Esc>", { desc = "Save File", silent = true })
+map(n, "<C-s>", "<cmd>w<CR><Esc>", { desc = "Save File", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- SURROUND

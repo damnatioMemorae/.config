@@ -13,12 +13,8 @@
         background: @main-bg;
 }
 
-.waybar {
-        box-shadow: 5px 5px 5px 5px @red;
-}
-
 #custom-recording {
-        color: #f38ba8;
+        color: @red;
 }
 
 #custom-updates {
@@ -100,19 +96,25 @@ tooltip {
         color: @pink;
 }
 
-#custom-waypick {
-        color: @pink;
-}
-
 #pulseaudio.muted {
         color: @red;
+}
+
+#backlight,
+#pulseaudio {
+        color: @text;
+        background: alpha(@base, 1);
+        margin-top: 10px;
+        border: 0px solid alpha(@text, 1);
+        transition: all 90ms ease-in-out;
+        padding: 0 6px;
+        min-width: 27px;
+        border-bottom-width: 4px;
 }
 
 #cpu,
 #memory,
 #battery,
-#backlight,
-#pulseaudio,
 #temperature,
 #custom-gpuinfo {
         color: @text;
@@ -130,12 +132,14 @@ tooltip {
         color: @text;
         background-color: @main-bg;
 }
+
 #cpu.warning,
 #memory.warning,
 #battery.warning {
         color: @yellow;
         background: @main-bg;
 }
+
 #cpu.critical,
 #memory.critical,
 #battery.critical,
@@ -151,10 +155,12 @@ tooltip {
         color: @green;
         background: @main-bg;
 }
+
 #battery.good {
         color: @green;
         background: @main-bg;
 }
+
 #battery.charging {
         color: @charging;
         background: @main-bg;

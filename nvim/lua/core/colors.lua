@@ -30,6 +30,7 @@ M.catppuccin = {
         base      = "#1e1e2e",
         mantle    = "#14141f",
         crust     = "#0e0e16",
+
         redBg     = "#251b25",
         YellowBg  = "#262325",
         skyBg     = "#1a232b",

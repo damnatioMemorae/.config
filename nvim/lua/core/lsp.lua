@@ -5,7 +5,7 @@ local icons = require("core.icons")
 
 local lspServers = {
         "asm_lsp",
-        "basedpyright",
+        -- "basedpyright",
         "bashls",
         "biome",
         "clangd",
@@ -21,8 +21,8 @@ local lspServers = {
         -- "kakehashi",
         "kotlin_lsp",
         "lua_ls",
-        "pylsp",
-        "ruff",
+        -- "pylsp",
+        -- "ruff",
         "rust_analyzer",
         "superhtml",
         "ts_ls",

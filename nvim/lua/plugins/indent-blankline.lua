@@ -6,16 +6,18 @@ return {
         config = function()
                 require("ibl").setup({
                         indent     = {
+                                char     = " ",
                                 tab_char = " ",
-                                char     = " "
+                                priority = 4,
                         },
                         whitespace = {
                                 remove_blankline_trail = true,
                         },
                         scope      = {
                                 show_start = true,
-                                show_end   = true,
+                                show_end   = false,
                                 char       = require("core.icons").misc.Vertical_bar,
+                                highlight  = { "Function" },
                         },
                 })
         end,

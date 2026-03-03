@@ -61,6 +61,7 @@ local words = {
 
 return {
         "echasnovski/mini.hipatterns",
+        enabled = false,
         version = false,
         event   = "VeryLazy",
         config  = function()

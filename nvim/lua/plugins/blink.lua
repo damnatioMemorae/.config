@@ -1,11 +1,9 @@
 return {
         "saghen/blink.cmp",
-        enabled      = true,
         lazy         = false,
         build        = "cargo build --release",
         dependencies = {
                 { "niuiic/blink-cmp-rg.nvim" },
-                { "saghen/blink.compat" },
                 {
                         "L3MON4D3/LuaSnip",
                         dependencies = {
@@ -24,7 +22,10 @@ return {
                         documentation = {
                                 auto_show          = true,
                                 auto_show_delay_ms = 50,
-                                window             = { border = vim.g.borderStyle },
+                                window             = {
+                                        border    = vim.g.borderStyle,
+                                        scrollbar = false,
+                                },
                         },
                         trigger       = {
                                 prefetch_on_insert                   = true,
@@ -43,10 +44,12 @@ return {
                         menu          = {
                                 -- max_height         = 40,
                                 max_height         = 90,
+                                -- border             = vim.g.borderEmpty,
                                 border             = vim.g.borderStyle,
+                                -- border             = vim.g.borderRight,
                                 winblend           = vim.g.blend,
                                 scrolloff          = 4,
-                                scrollbar          = true,
+                                scrollbar          = false,
                                 direction_priority = { "s", "n" },
                                 auto_show          = true,
                                 draw               = {
@@ -86,13 +89,7 @@ return {
                                 path    = vim.fn.stdpath("state") .. "/blink/cmp/frecency.dat",
                         },
                         use_proximity     = true,
-                        sorts             = {
-                                function(a, b) ---@diagnostic disable-line: unused-local
-                                        if a.label:sub(1, 1) == "_" ~= a.label:sub(1, 1) == "_" then
-                                                return not a.label:sub(1, 1) == "_"
-                                        end
-                                end, "exact", "score", "sort_text",
-                        },
+                        sorts             = { "exact", "score", "sort_text" },
                         prebuilt_binaries = {
                                 download                = false,
                                 ignore_version_mismatch = false,
@@ -100,30 +97,10 @@ return {
                         },
                 },
                 cmdline    = {
-                        enabled    = true,
-                        keymap     = {
-                                preset        = "none",
-                                ["<C-h>"]     = { "snippet_backward", "fallback" },
-                                ["<C-l>"]     = { "snippet_forward", "fallback" },
-                                ["<C-j>"]     = { "select_next", "fallback" },
-                                ["<C-k>"]     = { "select_prev", "fallback" },
-                                ["<C-c>"]     = { function(cmp) if cmp.is_menu_visible() then cmp.hide() else cmp.show() end end },
-                                ["<C-Space>"] = {
-                                        function(cmp)
-                                                if cmp.is_menu_visible() then
-                                                        cmp.accept()
-                                                        cmp.hide()
-                                                else
-                                                        cmp.show()
-                                                end
-                                        end,
-                                },
-                        },
+                        keymap     = { preset = "inherit" },
                         sources    = function()
                                 local type = vim.fn.getcmdtype()
-                                -- Search forward and backward
                                 if type == "/" or type == "?" then return { "buffer" } end
-                                -- Commands
                                 if type == ":" or type == "@" then return { "cmdline" } end
                                 return {}
                         end,
@@ -133,27 +110,23 @@ return {
                                         show_on_x_blocked_trigger_characters = {},
                                 },
                                 list    = { selection = { preselect = false, auto_insert = false } },
-                                menu    = { auto_show = false },
+                                menu    = { auto_show = true },
                         },
                 },
                 sources    = {
-                        default      = { "lsp", "snippets", "path", "buffer" },
-                        per_filetype = {
-                                ["rip-substitute"] = { "ripgrep", "buffer" },
-                                gitcommit          = {},
-                                lua                = { inherit_defaults = true, "ripgrep" },
-                                c                  = { inherit_defaults = true, "ripgrep" },
-                                cpp                = { inherit_defaults = true, "ripgrep" },
-                                css                = { inherit_defaults = true, "ripgrep" },
-                                json               = { inherit_defaults = true, "ripgrep" },
-                                jsons              = { inherit_defaults = true, "ripgrep" },
-                        },
-                        providers    = {
+                        default            = { "lsp", "snippets", "path", "buffer" },
+                        per_filetype       = { ["rip-substitute"] = { "ripgrep", "buffer" } },
+                        min_keyword_length = 0,
+                        providers          = {
                                 snippets = {
-                                        name               = "Snip",
-                                        opts               = { use_show_condition = true, use_label_description = true },
-                                        score_offset       = 140,
-                                        min_keyword_length = 2,
+                                        name         = "Snip",
+                                        opts         = {
+                                                show_autosnippets     = true,
+                                                use_show_condition    = true,
+                                                use_label_description = true,
+                                        },
+                                        -- score_offset = 140,
+                                        score_offset = -1,
                                 },
                                 lsp      = {
                                         name         = "LSP",
@@ -162,6 +135,8 @@ return {
                                         -- max_items    = 40,
                                         score_offset = 160,
                                         fallbacks    = {},
+                                        async        = false,
+                                        timeout_ms   = 500,
                                         override     = {
                                                 get_trigger_characters = function(self)
                                                         local trigger_characters = self:get_trigger_characters()
@@ -187,6 +162,7 @@ return {
                                         max_items    = 8,
                                         opts         = { get_bufnrs = vim.api.nvim_list_bufs },
                                 },
+                                cmdline  = { module = "blink.cmp.sources.cmdline" },
                                 omni     = {
                                         name         = "Omni",
                                         module       = "blink.cmp.sources.complete_func",
@@ -229,6 +205,7 @@ return {
                         ["<C-c>"]     = { function(cmp) if cmp.is_menu_visible() then cmp.hide() else cmp.show() end end },
                         ["<C-l>"]     = { "snippet_forward", "fallback" },
                         ["<C-h>"]     = { "snippet_backward", "fallback" },
+                        ["<C-s>"]     = { "show_signature", "hide_signature", "fallback" },
                         ["<Tab>"]     = { "select_next", "snippet_forward", "fallback" },
                         ["<S-Tab>"]   = { "select_prev", "snippet_backward", "fallback" },
                         ["<C-Space>"] = {
@@ -246,7 +223,11 @@ return {
                         nerd_font_variant = "normal",
                         kind_icons        = require("core.icons").symbolKinds,
                 },
-                signature  = { enabled = true, window = { scrollbar = false } },
+                signature  = {
+                        enabled = true,
+                        trigger = { enabled = false, show_on_keyword = true, show_on_insert = true },
+                        window  = { scrollbar = false, show_documentation = false },
+                },
         },
         opts_extend  = { "sources.default" },
         config       = function(_, opts)

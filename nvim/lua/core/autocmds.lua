@@ -36,7 +36,7 @@ autocmd("FileType", {
         group    = augroup("Close with <q>", { clear = true }),
         pattern  = {
                 "checkhealth",
-                "help",
+                -- "help",
                 "lazy",
                 "lspinfo",
                 "man",
@@ -280,8 +280,8 @@ autocmd("LspAttach", {
                         autocmd({ "CursorHold", "CursorMoved" }, {
                                 buffer   = args.buf,
                                 group    = color_augroup,
-                                -- callback = function() lsp.document_color.enable(true, 0, { style = "virtual" }) end,
-                                callback = function() lsp.document_color.enable(false) end,
+                                callback = function() lsp.document_color.enable(true, 0, { style = "virtual" }) end,
+                                -- callback = function() lsp.document_color.enable(false) end,
                         })
                 end
         end,
@@ -428,7 +428,7 @@ vim.api.nvim_create_autocmd({ "FileType", "FocusGained", "BufWinEnter" }, {
 
                 vim.api.nvim_set_hl(0, backdropName, { link = "SnacksBackdrop" })
                 vim.wo[winnr].winhighlight    = "Normal:" .. backdropName
-                vim.wo[winnr].winblend        = 60
+                vim.wo[winnr].winblend        = 40
                 vim.bo[backdropBufnr].buftype = "nofile"
 
                 vim.api.nvim_create_autocmd({ "WinClosed" }, {

@@ -6,6 +6,7 @@ return {
                 -- { "<C-A-down>", "<cmd>WinShift down<CR>", mode = { "n" } },
                 -- { "<C-A-up>", "<cmd>WinShift up<CR>", mode = { "n" } },
                 -- { "<C-A-right>", "<cmd>WinShift right<CR>", mode = { "n" } },
+                { "<leader>w", "<cmd>WinShift<CR>", mode = { "n" } },
         },
         config = function()
                 require("winshift").setup({

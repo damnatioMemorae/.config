@@ -4,8 +4,8 @@
         "layer": "top",
         "position": "bottom",
         // "margin": "0 10 10 10",
-        // "margin": "0 400 10 400",
-        "margin": "0 10 0 10",
+        "margin": "0 400 10 400",
+        // "margin": "0 10 0 10",
         "height": 36,
         "fixed-center": true,
         "exclusive": true,
@@ -16,7 +16,7 @@
                 "custom/separators",
                 "hyprland/language",
                 "hyprland/workspaces",
-                "custom/waypick",
+                // "custom/waypick",
                 ""
         ],
         "modules-center": [
@@ -244,17 +244,17 @@
                         "Low": "gpu l"
                 }
         },
-        "custom/waypick": {
-                "exec": "waypick",
-                "return-type": "json",
-                "format": " {} ",
-                "tooltip": true,
-                "interval": "once",
-                "signal": 9,
-                "on-click": "waypick pick && pkill -RTMIN+9 waybar",
-                "on-click-right": "waypick copy",
-                "escape": false
-        },
+        // "custom/waypick": {
+        //         "exec": "waypick",
+        //         "return-type": "json",
+        //         "format": " {} ",
+        //         "tooltip": true,
+        //         "interval": "once",
+        //         "signal": 9,
+        //         "on-click": "waypick pick && pkill -RTMIN+9 waybar",
+        //         "on-click-right": "waypick copy",
+        //         "escape": false
+        // },
         "custom/separator": {
                 "format": ""
         },

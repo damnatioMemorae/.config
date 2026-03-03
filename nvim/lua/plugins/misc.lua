@@ -10,7 +10,7 @@ return {
         },
         {
                 "OXY2DEV/helpview.nvim",
-                event = "VeryLazy",
+                lazy = false,
         },
         {
                 "anuvyklack/keymap-amend.nvim",
