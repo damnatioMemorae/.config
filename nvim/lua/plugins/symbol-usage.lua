@@ -1,15 +1,26 @@
 return {
         "Wansmer/symbol-usage.nvim",
-        enabled = true,
-        event   = "VeryLazy",
-        keys    = {
+        event  = "VeryLazy",
+        keys   = {
                 { "<leader>os", function()
-                        require("symbol-usage").toggle_globally()
-                        require("symbol-usage").refresh()
+                        local symbol = require("symbol-usage")
+
+                        Config.codeLens = not Config.codeLens
+                        local str       = Icons.diagnostics.INFO .. " " .. "codeLens - "
+
+                        if Config.codeLens then
+                                symbol.toggle_globally()
+                                symbol.refresh()
+                                vim.notify(str .. "Enabled", vim.log.levels.INFO)
+                        else
+                                symbol.toggle_globally()
+                                symbol.refresh()
+                                vim.notify(str .. "Disabled", vim.log.levels.INFO)
+                        end
                 end },
         },
-        config  = function()
-                local bg = {}
+        config = function()
+                local bg        = {}
                 -- local bg        = "LspInlayHint"
                 local groupsCol = { ---@diagnostic disable-line: unused-local
                         { "Def",  "@lsp.type.parameter", "DiagnosticUnderlineError" },
@@ -41,7 +52,6 @@ return {
                         local empty  = ""
                         local sep    = " "
                         local border = " "
-                        local icons  = require("core.icons").misc
 
                         local stacked_functions_content = symbol.stacked_count > 0
                                    and ("+%s"):format(symbol.stacked_count) or ""
@@ -54,17 +64,17 @@ return {
 
                         if symbol.definition then
                                 if #res > 0 then table.insert(res, { " ", "NonText" }) end
-                                insert(icons.definiton, symbol.definition, "Def")
+                                insert(Icons.misc.definiton, symbol.definition, "Def")
                         end
 
                         if symbol.references then
                                 if #res > 0 then table.insert(res, { " ", "NonText" }) end
-                                insert(icons.reference, symbol.definition, "Ref")
+                                insert(Icons.misc.reference, symbol.definition, "Ref")
                         end
 
                         if symbol.implementation then
                                 if #res > 0 then table.insert(res, { " ", "NonText" }) end
-                                insert(icons.implementation, symbol.implementation, "Impl")
+                                insert(Icons.misc.implementation, symbol.implementation, "Impl")
                         end
 
                         if stacked_functions_content ~= "" then

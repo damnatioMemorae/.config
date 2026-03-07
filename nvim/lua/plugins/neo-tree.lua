@@ -1,8 +1,5 @@
-local icons = require("core.icons")
-
 return {
         "nvim-neo-tree/neo-tree.nvim",
-        enabled      = true,
         lazy         = true,
         branch       = "v3.x",
         keys         = { { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Tree", mode = { "n" } } },
@@ -33,7 +30,7 @@ return {
                 },
                 window                           = {
                         position          = "right",
-                        width             = 35,
+                        width             = 40,
                         auto_expand_width = false,
                         mapping_options   = { noremap = true, nowait = true },
                         mappings          = {
@@ -68,16 +65,16 @@ return {
                                 expander_expanded  = " ",
                         },
                         icon        = {
-                                folder_closed = icons.symbolKinds.Folder,
-                                folder_open   = icons.misc.folderOpen,
-                                folder_empty  = icons.misc.folderEmpty,
+                                folder_closed = Icons.symbolKinds.Folder,
+                                folder_open   = Icons.misc.folderOpen,
+                                folder_empty  = Icons.misc.folderEmpty,
                         },
                         diagnostics = {
                                 symbols    = {
-                                        hint  = icons.diagnostics.HINT,
-                                        info  = icons.diagnostics.INFO,
-                                        warn  = icons.diagnostics.WARN,
-                                        error = icons.diagnostics.ERROR,
+                                        hint  = Icons.diagnostics.HINT,
+                                        info  = Icons.diagnostics.INFO,
+                                        warn  = Icons.diagnostics.WARN,
+                                        error = Icons.diagnostics.ERROR,
                                 },
                                 highlights = {
                                         hint  = "DiagnosticSignHint",
@@ -87,7 +84,7 @@ return {
                                 },
                         },
                         modified    = {
-                                symbol    = icons.git.Modified,
+                                symbol    = Icons.git.Modified,
                                 highlight = "NeoTreeModified",
                         },
                 },

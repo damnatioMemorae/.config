@@ -1,10 +1,17 @@
 ; extends
 
-; add hlgroup `@namespace.builtin.lua`:
-; - nvim: `vim`
-; - hammerspon: `hs`
 ((identifier) @namespace.builtin
         (#any-of? @namespace.builtin "vim" "hs"))
 
-; `break` statements should get same styling as return statements
 (break_statement) @keyword.return
+
+; ((function_definition "function" @function) (#set! conceal " "))
+; ((function_declaration "function" @function) (#set! conceal " "))
+((function_definition "function" @function) (#set! conceal "λ"))
+((function_declaration "function" @function) (#set! conceal "λ"))
+; ((binary_expression "~=" @operator) (#set! conceal "≠"))
+((binary_expression ">=" @operator) (#set! conceal "≥"))
+((binary_expression "<=" @operator) (#set! conceal "≤"))
+; ((binary_expression "==" @operator) (#set! conceal ""))
+; ((binary_expression "or" @operator) (#set! conceal "∨"))
+; ((binary_expression "and" @operator) (#set! conceal "∧"))

@@ -4,8 +4,8 @@ return {
         event   = "VeryLazy",
         opts    = {
                 mappings = {
-                        start              = vim.g.prefix .. "a",
-                        start_with_preview = vim.g.prefix .. "A",
+                        start              = Config.prefix .. "a",
+                        start_with_preview = Config.prefix .. "A",
                 },
                 options = {
                         split_pattern   = "",

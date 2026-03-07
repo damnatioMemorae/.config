@@ -1,7 +1,6 @@
 local api     = vim.api
 local augroup = api.nvim_create_augroup
 local autocmd = api.nvim_create_autocmd
-local g       = vim.g
 local o       = vim.o
 local wo      = vim.wo
 local fn      = vim.fn
@@ -163,7 +162,7 @@ local templateDir       = fn.stdpath("config") .. "/templates"
 local homeDir           = os.getenv("HOME")
 local globToTemplateMap = {
         [homeDir .. "/.local/share/bin/lua/*.lua"]       = "script.lua",
-        [g.localRepos .. "/**/*.lua"]                    = "module.lua",
+        [Config.localRepos .. "/**/*.lua"]               = "module.lua",
         [fn.stdpath("config") .. "/lua/functions/*.lua"] = "module.lua",
         [fn.stdpath("config") .. "/lua/plugins/*.lua"]   = "plugin-spec.lua",
         [fn.stdpath("config") .. "/lsp/*.lua"]           = "lsp.lua",
@@ -275,13 +274,25 @@ autocmd("LspAttach", {
                                 callback = lsp.buf.clear_references,
                         })
                 end
+
+                --[[
+                if fn.has("nvim-0.10") == 1 and client:supports_method("textDocument/inlayHint") then
+                        local hint_augroup = augroup("lsp-inlay-hint", { clear = false })
+                        autocmd({ "CursorHold", "CursorMoved" }, {
+                                buffer   = args.buf,
+                                group    = hint_augroup,
+                                callback = function() lsp.inlay_hint.enable(false) end,
+                        })
+                end
+                --]]
+
                 if fn.has("nvim-0.12") == 1 and client:supports_method("textDocument/documentColor") then
                         local color_augroup = augroup("lsp-color", { clear = false })
                         autocmd({ "CursorHold", "CursorMoved" }, {
                                 buffer   = args.buf,
                                 group    = color_augroup,
-                                callback = function() lsp.document_color.enable(true, 0, { style = "virtual" }) end,
-                                -- callback = function() lsp.document_color.enable(false) end,
+                                -- callback = function() lsp.document_color.enable(true, 0, { style = "virtual" }) end,
+                                callback = function() lsp.document_color.enable(false) end,
                         })
                 end
         end,
@@ -297,6 +308,32 @@ autocmd("ModeChanged", {
                 if mode == "n" or mode == "\22" then vim.opt.virtualedit = "all" end
                 if mode == "i" then vim.opt.virtualedit = "block" end
                 if mode == "v" or mode == "V" then vim.opt.virtualedit = "onemore" end
+        end,
+})
+
+------------------------------------------------------------------------------------------------------------------------
+-- SHOW WHITESPACES
+
+autocmd({ "ModeChanged" }, {
+        pattern  = "*:*",
+        callback = function()
+                local mode = fn.mode()
+                if mode == "n" or mode == "\22" or mode == "i" then
+                        vim.opt.listchars = {
+                                multispace = " ",
+                                lead       = " ",
+                                trail      = " ",
+                                tab        = "  ",
+                        }
+                end
+                if mode == "v" or mode == "V" then
+                        vim.opt.listchars = {
+                                multispace = ".",
+                                lead       = ".",
+                                trail      = ".",
+                                tab        = "..",
+                        }
+                end
         end,
 })
 
@@ -338,7 +375,7 @@ autocmd({ "BufReadPost", "BufReadPre", "BufWinEnter" }, {
 })
 
 ------------------------------------------------------------------------------------------------------------------------
--- CLEAR TRAILING WHITESPACE
+-- TRIM TRAILING WHITESPACE
 
 autocmd({ "BufWritePre" }, {
         desc     = "Remove trailing whitespace",

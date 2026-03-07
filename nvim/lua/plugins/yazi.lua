@@ -18,8 +18,8 @@ return {
         opts    = {
                 open_for_directories                 = true,
                 open_multiple_tabs                   = true,
-                yazi_floating_window_winblend        = vim.g.winblend,
-                yazi_floating_window_border          = vim.g.borderStyle,
+                yazi_floating_window_winblend        = Config.winblend,
+                yazi_floating_window_border          = Config.borderStyle,
                 bufdelete_implementation             = "bundled-snacks",
                 picker_add_copy_relative_path_action = "snacks.picker",
         },

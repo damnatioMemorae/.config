@@ -1,13 +1,12 @@
 local textObj = require("core.utils").extraTextobjMaps
-local icons   = require("core.icons").symbolKinds
+
 local modes   = { "n", "v", "x", "o" }
 
-return { -- treesitter-based textobjs
+return {
         "nvim-treesitter/nvim-treesitter-textobjects",
         branch       = "master",
-        dependencies = "nvim-treesitter",
         event        = "VeryLazy",
-        cmd          = { -- commands need to be defined, since used in various utility functions
+        cmd          = {
                 "TSTextobjectSelect",
                 "TSTextobjectSwapNext",
                 "TSTextobjectSwapPrevious",
@@ -24,7 +23,7 @@ return { -- treesitter-based textobjs
                 { -- COMMENT SINGLE
                         "q",
                         "<cmd>TSTextobjectSelect @comment.inner<CR>",
-                        mode = "o", -- only operator-pending to not conflict with selection-commenting
+                        mode = "o",
                         desc = "󰆈 Single Comment",
                 },
                 { -- COMMENT STICKY DELETE
@@ -69,160 +68,172 @@ return { -- treesitter-based textobjs
                         "<A-F>",
                         "<cmd>TSTextobjectGotoPreviousStart @function.name<CR>",
                         mode = modes,
-                        desc = icons.Function .. "Goto prev function",
+                        desc = Icons.symbolKinds.Function .. "Goto prev function",
                 },
                 { -- `f` - FUNCTION NEXT
                         "<A-f>",
                         "<cmd>TSTextobjectGotoNextStart @function.name<CR>",
                         mode = modes,
-                        desc = icons.Function .. "Goto next function",
+                        desc = Icons.symbolKinds.Function .. "Goto next function",
                 },
                 { -- `O` - CONDITION PREV
                         "<A-O>",
                         "<cmd>TSTextobjectGotoPreviousStart @conditional.inner<CR>",
                         mode = modes,
-                        desc = icons.IfStatement .. "Goto prev condition",
+                        desc = Icons.symbolKinds.IfStatement .. "Goto prev condition",
                 },
                 { -- `o` - CONDITION NEXT
                         "<A-o>",
                         "<cmd>TSTextobjectGotoNextStart @conditional.inner<CR>",
                         mode = modes,
-                        desc = icons.IfStatement .. "Goto next condition",
+                        desc = Icons.symbolKinds.IfStatement .. "Goto next condition",
                 },
                 { -- `C` - CALL PREV
                         "<A-C>",
                         "<cmd>TSTextobjectGotoPreviousStart @call.outer<CR>",
                         mode = modes,
-                        desc = icons.Call .. "Goto prev call",
+                        desc = Icons.symbolKinds.Call .. "Goto prev call",
                 },
                 { -- `c` - CALL NEXT
                         "<A-c>",
                         "<cmd>TSTextobjectGotoNextStart @call.outer<CR>",
                         mode = modes,
-                        desc = icons.Call .. "Goto next call",
+                        desc = Icons.symbolKinds.Call .. "Goto next call",
                 },
                 { -- `U` - LOOP PREV
                         "<A-U>",
                         "<cmd>TSTextobjectGotoPreviousStart @loop.outer<CR>",
                         mode = modes,
-                        desc = icons.Repeat .. "Goto prev loop",
+                        desc = Icons.symbolKinds.Repeat .. "Goto prev loop",
                 },
                 { -- `u` - LOOP NEXT
                         "<A-u>",
                         "<cmd>TSTextobjectGotoNextStart @loop.outer<CR>",
                         mode = modes,
-                        desc = icons.Repeat .. "Goto next loop",
+                        desc = Icons.symbolKinds.Repeat .. "Goto next loop",
                 },
                 { -- `S` - ASSIGNMENT PREV
                         "<A-S>",
                         "<cmd>TSTextobjectGotoPreviousStart @assignment.lhs<CR>",
                         mode = modes,
-                        desc = icons.Variable .. "Goto prev assignment",
+                        desc = Icons.symbolKinds.Variable .. "Goto prev assignment",
                 },
                 { -- `s` - ASSIGNMENT NEXT
                         "<A-s>",
                         "<cmd>TSTextobjectGotoNextStart @assignment.lhs<CR>",
                         mode = modes,
-                        desc = icons.Variable .. "Goto next assignment",
+                        desc = Icons.symbolKinds.Variable .. "Goto next assignment",
                 },
                 { -- `V` - VALUE PREV
                         "<A-V>",
                         "<cmd>TSTextobjectGotoPreviousStart @assignment.rhs<CR>",
                         mode = modes,
-                        desc = icons.Value .. "Goto prev value",
+                        desc = Icons.symbolKinds.Value .. "Goto prev value",
                 },
                 { -- `v` - VALUE NEXT
                         "<A-v>",
                         "<cmd>TSTextobjectGotoNextStart @assignment.rhs<CR>",
                         mode = modes,
-                        desc = icons.Value .. "Goto next value",
+                        desc = Icons.symbolKinds.Value .. "Goto next value",
                 },
                 { -- `T` - TYPE PREV
                         "<A-T>",
                         "<cmd>TSTextobjectGotoPreviousStart @assignment.outer<CR>",
                         mode = modes,
-                        desc = icons.Type .. "Goto prev type",
+                        desc = Icons.symbolKinds.Type .. "Goto prev type",
                 },
                 { -- `t` - TYPE NEXT
                         "<A-t>",
                         "<cmd>TSTextobjectGotoNextStart @assignment.outer<CR>",
                         mode = modes,
-                        desc = icons.Type .. "Goto next type",
+                        desc = Icons.symbolKinds.Type .. "Goto next type",
                 },
                 { -- `A` - PARAMETER PREV
                         "<A-A>",
                         "<cmd>TSTextobjectGotoPreviousStart @parameter.inner<CR>",
                         mode = modes,
-                        desc = icons.Parameter .. "Goto prev parameter",
+                        desc = Icons.symbolKinds.Parameter .. "Goto prev parameter",
                 },
                 { -- `a` - PARAMETER NEXT
                         "<A-a>",
                         "<cmd>TSTextobjectGotoNextStart @parameter.inner<CR>",
                         mode = modes,
-                        desc = icons.Parameter .. "Goto next parameter",
+                        desc = Icons.symbolKinds.Parameter .. "Goto next parameter",
                 },
                 { -- `{` - PARAMETER PREV SWAP
                         "<A-{>",
                         "<cmd>TSTextobjectSwapPrevious @parameter.inner<CR>",
                         mode = { "n", "x", "o" },
-                        desc = icons.Parameter .. "Swap prev parameter",
+                        desc = Icons.symbolKinds.Parameter .. "Swap prev parameter",
                 },
                 { -- `}` - PARAMETER NEXT SWAP
                         "<A-}>",
                         "<cmd>TSTextobjectSwapNext @parameter.inner<CR>",
                         mode = { "n", "x", "o" },
-                        desc = icons.Parameter .. "Swap next parameter",
+                        desc = Icons.symbolKinds.Parameter .. "Swap next parameter",
                 },
                 --]]
 
                 ---[[ TEXT OBJECT SELECT
-                { -- `/` REGEX OUTER
+                { -- `a/` REGEX OUTER
                         "a/",
                         "<cmd>TSTextobjectSelect @regex.outer<CR>",
                         mode = { "x", "o" },
-                        desc = icons.Regex .. "outer regex",
+                        desc = Icons.symbolKinds.Regex .. "outer regex",
                 },
-                { -- `/` REGEX INNER
+                { -- `i/` REGEX INNER
                         "i/",
                         "<cmd>TSTextobjectSelect @regex.inner<CR>",
                         mode = { "x", "o" },
-                        desc = icons.Regex .. "inner regex",
+                        desc = Icons.symbolKinds.Regex .. "inner regex",
                 },
-                { -- `f` FUNCTION OUTER
+                { -- `af` FUNCTION OUTER
                         "a" .. textObj.func,
                         "<cmd>TSTextobjectSelect @function.outer<CR>",
                         mode = { "x", "o" },
-                        desc = icons.Function .. "outer function",
+                        desc = Icons.symbolKinds.Function .. "outer function",
                 },
-                { -- `f` FUNCTION INNER
+                { -- `if` FUNCTION INNER
                         "i" .. textObj.func,
                         "<cmd>TSTextobjectSelect @function.inner<CR>",
                         mode = { "x", "o" },
-                        desc = icons.Function .. "inner function",
+                        desc = Icons.symbolKinds.Function .. "inner function",
                 },
-                { -- `o` CONDITION OUTER
+                { -- `ao` CONDITION OUTER
                         "a" .. textObj.condition,
                         "<cmd>TSTextobjectSelect @condition.outer<CR>",
                         mode = { "x", "o" },
-                        desc = icons.IfStatement .. "outer condition",
+                        desc = Icons.symbolKinds.IfStatement .. "outer condition",
                 },
-                { -- `o` CONDITION INNER
+                { -- `io` CONDITION INNER
                         "i" .. textObj.condition,
                         "<cmd>TSTextobjectSelect @condition.outer<CR>",
                         mode = { "x", "o" },
-                        desc = icons.IfStatement .. "inner condition",
+                        desc = Icons.symbolKinds.IfStatement .. "inner condition",
                 },
-                { -- `l` CALL OUTER
+                { -- `al` CALL OUTER
                         "a" .. textObj.call,
                         "<cmd>TSTextobjectSelect @call.outer<CR>",
                         mode = { "x", "o" },
-                        desc = icons.Call .. "outer call",
+                        desc = Icons.symbolKinds.Call .. "outer call",
                 },
-                { -- `l` CALL INNER
+                { -- `il` CALL INNER
                         "i" .. textObj.call,
                         "<cmd>TSTextobjectSelect @call.inner<CR>",
                         mode = { "x", "o" },
-                        desc = icons.Call .. "inner call",
+                        desc = Icons.symbolKinds.Call .. "inner call",
+                },
+                { -- `aa` PARAMETER OUTER
+                        "aa",
+                        "<cmd>TSTextobjectSelect @parameter.outer<CR>",
+                        mode = { "x", "o" },
+                        desc = Icons.symbolKinds.Call .. "outer parameter",
+                },
+                { -- `ia` PARAMETER INNER
+                        "ia",
+                        "<cmd>TSTextobjectSelect @parameter.inner<CR>",
+                        mode = { "x", "o" },
+                        desc = Icons.symbolKinds.Call .. "inner parameter",
                 },
                 --]]
 
@@ -231,13 +242,13 @@ return { -- treesitter-based textobjs
                         '"',
                         "<cmd>TSTextobjectRepeatLastMovePrevious<CR>",
                         mode = { "n", "v", "x" },
-                        desc = icons.Call .. "󰑖 Repeat to Prev",
+                        desc = Icons.symbolKinds.Call .. "󰑖 Repeat to Prev",
                 },
                 {
                         "'",
                         "<cmd>TSTextobjectRepeatLastMoveNext<CR>",
                         mode = { "n", "v", "x" },
-                        desc = icons.Repeat .. "󰑖 Repeat to Next",
+                        desc = Icons.symbolKinds.Repeat .. "󰑖 Repeat to Next",
                 },
                 --]]
 

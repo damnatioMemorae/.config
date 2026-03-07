@@ -1,5 +1,3 @@
-local icons = require("core.icons")
-
 local function addSpace(t)
         local newT = {}
 
@@ -110,10 +108,10 @@ return {
                 icons   = {
                         enable = true,
                         ui     = {
-                                bar  = { separator = " " .. icons.arrows.rightArrow .. " ", extends = " " .. icons.misc.ellipsis .. " " },
-                                menu = { separator = " ", indicator = icons.misc.squareFilled .. " " },
+                                bar  = { separator = " " .. Icons.arrows.rightArrow .. " ", extends = " " .. Icons.misc.ellipsis .. " " },
+                                menu = { separator = " ", indicator = Icons.misc.squareFilled .. " " },
                         },
-                        kinds  = { symbols = addSpace(icons.symbolKinds) },
+                        kinds  = { symbols = addSpace(Icons.symbolKinds) },
                 },
         },
 }

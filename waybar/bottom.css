@@ -27,11 +27,11 @@
 #language,
 #submap {
         color: @spark;
+        background: alpha(@workspace, 0.0);
         min-width: 9px;
         padding: 0 6px;
         margin-top: 10px;
         margin-right: 10px;
-        background: alpha(@workspace, 0.2);
         border: 0px solid alpha(@workspace, 1);
         border-bottom-width: 4px;
 }
@@ -80,7 +80,7 @@ tooltip {
 
 #workspaces button.active {
         color: @workspace;
-        background: alpha(@workspace, 0.2);
+        background: alpha(@workspace, 0.0);
         margin-top: 10px;
         border: 0px solid alpha(@workspace, 1);
 }

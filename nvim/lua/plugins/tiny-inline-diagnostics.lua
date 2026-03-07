@@ -1,5 +1,3 @@
-icons = require("core.icons").diagnostics.ERROR
-
 return {
         "rachartier/tiny-inline-diagnostic.nvim",
         event   = "VeryLazy",
@@ -7,7 +5,7 @@ return {
                 signs   = {
                         left         = "",
                         right        = "",
-                        diag         = icons,
+                        diag         = Icons.diagnostics.ERROR,
                         arrow        = "",
                         up_arrow     = " ",
                         vertical     = " │",

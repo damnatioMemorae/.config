@@ -6,7 +6,6 @@ local modes = { "n", "x" }
 
 return {
         "kevinhwang91/nvim-ufo",
-        enabled      = true,
         dependencies = "kevinhwang91/promise-async",
         event        = "BufEnter",
         keys         = {
@@ -87,26 +86,6 @@ return {
                         "<A-C-left>",
                         function()
                                 require("ufo").closeAllFolds()
-                                -- local msg = require("ufo.main").inspectBuf()[6]
-                                -- vim.notify(msg[2], vim.log.levels.DEBUG)
-                                --[[
-                                require("ufo").openFoldsExceptKinds{
-                                        "region",
-                                        "table_constructor",
-                                        "function_definition",
-                                        "arguments",
-                                        "function_declaration",
-                                        "for_statement",
-                                        -- "if_statement",
-                                        -- "case_statement",
-                                        -- "comment",
-                                        -- "class_specifier",
-                                        -- "array",
-                                        -- "object",
-                                        -- "pair",
-                                        -- "rule_set",
-                                }
-                                --]]
                                 cmd()
                         end,
                         mode = modes,
@@ -172,7 +151,7 @@ return {
                 },
                 preview                 = {
                         win_config = {
-                                border       = vim.g.borderStyle,
+                                border       = Config.borderStyle,
                                 winblend     = 0,
                                 winhighlight = "NormalFloat:NormalFloat",
                         },

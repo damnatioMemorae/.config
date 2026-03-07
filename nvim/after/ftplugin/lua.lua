@@ -12,6 +12,7 @@ abbr("!=", "~=")
 abbr("!==", "~=")
 abbr("=~", "~=") -- shell uses `=~`
 abbr("fi", "end")
+abbr("fu", "function")
 
 ---@param sign "+"|"-"
 local function plusPlusMinusMinus(sign)

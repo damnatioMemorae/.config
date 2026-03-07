@@ -7,7 +7,10 @@ local function safeRequire(module)
         end
 end
 
-safeRequire("core.globals")
+vim.g.mapleader      = " "
+vim.g.maplocalleader = "<Nop>"
+
+safeRequire("core.Globals")
 safeRequire("core.options")
 
 if not vim.env.NO_PLUGINS then

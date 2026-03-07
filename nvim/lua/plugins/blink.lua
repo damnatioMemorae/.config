@@ -23,7 +23,7 @@ return {
                                 auto_show          = true,
                                 auto_show_delay_ms = 50,
                                 window             = {
-                                        border    = vim.g.borderStyle,
+                                        border    = Config.borderStyle,
                                         scrollbar = false,
                                 },
                         },
@@ -42,12 +42,12 @@ return {
                                 cycle     = { from_bottom = true, from_top = true },
                         },
                         menu          = {
-                                -- max_height         = 40,
-                                max_height         = 90,
-                                -- border             = vim.g.borderEmpty,
-                                border             = vim.g.borderStyle,
-                                -- border             = vim.g.borderRight,
-                                winblend           = vim.g.blend,
+                                max_height         = 40,
+                                -- max_height         = 90,
+                                -- border             = Config.borderEmpty,
+                                border             = Config.borderStyle,
+                                -- border             = Config.borderRight,
+                                winblend           = Config.blend,
                                 scrolloff          = 4,
                                 scrollbar          = false,
                                 direction_priority = { "s", "n" },
@@ -221,7 +221,8 @@ return {
                 },
                 appearance = {
                         nerd_font_variant = "normal",
-                        kind_icons        = require("core.icons").symbolKinds,
+                        -- kind_icons        = require("core.icons").symbolKinds,
+                        kind_icons        = Icons.symbolKinds
                 },
                 signature  = {
                         enabled = true,
@@ -229,7 +230,7 @@ return {
                         window  = { scrollbar = false, show_documentation = false },
                 },
         },
-        opts_extend  = { "sources.default" },
+        opts_extend  = { "sources.default", "sources.compat", "sources.completion.enabled_provider" },
         config       = function(_, opts)
                 require("blink-cmp").setup(opts)
         end,

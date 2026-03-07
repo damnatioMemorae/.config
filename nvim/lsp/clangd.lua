@@ -44,7 +44,7 @@ local function symbol_info()
                                               width     = math.max(string.len(name), string.len(container)),
                                               focusable = false,
                                               focus     = false,
-                                              border    = vim.g.borderStyle,
+                                              border    = Config.borderStyle,
                                               title     = "Symbol Info",
                                       })
                                       ---@diagnostic disable-next-line: unknown-diag-code
@@ -69,7 +69,7 @@ local cmd = {
         "--fallback-style=llvm",
         "--function-arg-placeholders=0",
         "--header-insertion-decorators",
-        "--header-insertion=iwyu",
+        -- "--header-insertion=iwyu",
         "--import-insertions",
         "-j=8",
         "--limit-references=0",

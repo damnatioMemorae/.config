@@ -25,7 +25,7 @@ return {
                 jump   = { nohlsearch = true },
                 prompt = {
                         win_config = {
-                                border = vim.g.borderStyle,
+                                border = Config.borderStyle,
                                 row    = -3,
                         },
                 },

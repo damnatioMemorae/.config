@@ -76,10 +76,10 @@ return {
                         --         "github:mason-org/mason-registry",
                         -- },
                         ui = {
-                                border   = vim.g.borderStyle,
+                                border   = Config.borderStyle,
                                 height   = 0.9,
-                                width    = 0.6,
-                                backdrop = vim.g.backdrop,
+                                width    = 0.8,
+                                backdrop = Config.backdrop,
                                 icons    = {
                                         package_installed   = "󱧕",
                                         package_pending     = "󱧘",

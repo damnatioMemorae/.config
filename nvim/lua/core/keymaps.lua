@@ -188,6 +188,7 @@ map(x, "<A-Space>", '"_d',   { desc = "󰬞 delete selection", silent = true })
 
 map(nx, "q",  "^zzgc",  { desc = "󰆈 Comment operator", remap = true, silent = true })
 map(n,  "qq", "gcc^zz", { desc = "󰆈 Comment line", remap = true, silent = true })
+
 do
         map(o, "u",   "gc",  { desc = "󰆈 Multiline comment", remap = true })
         map(n, "guu", "guu") -- prevent `omap u` above from overwriting `guu`
@@ -234,9 +235,11 @@ map(n, "<A-D>", function()
 map(n, "K", vim.lsp.buf.hover,          { desc = "󰏪 Hover Documentation" })
 map(n, "J", vim.lsp.buf.signature_help, { desc = "󰏪 Signature Help" })
 
-map(n, vim.g.prefix .. "f", "gF",                    { desc = "Goto File", silent = true })
-map(n, vim.g.prefix .. "q", vim.lsp.buf.code_action, { desc = "󱠀 Code Action Picker" })
-map(n, vim.g.prefix .. "e", function()
+map(n, Config.prefix .. "f", "gF", { desc = "Goto File", silent = true })
+-- map(n, Config.prefix .. "q", vim.lsp.buf.code_action, { desc = "󱠀 Code Action Picker" })
+map(n, Config.prefix .. "q", function() require("tiny-code-action").code_action() end,
+    { desc = "󱠀 Code Action Picker", remap = false, silent = true })
+map(n, "<leader>k", function()
             vim.diagnostic.config({ virtual_lines = { current_line = true }, virtual_text = false })
 
             vim.api.nvim_create_autocmd("CursorMoved", {
@@ -249,13 +252,13 @@ map(n, vim.g.prefix .. "e", function()
     end, { desc = "■ Diagnostic Lines" })
 
 --[[ GOTO
-map(n, prefixLsp .. "D", vim.lsp.buf.declaration, { desc = " Goto Declaration" })
-map(n, prefixLsp .. "d", vim.lsp.buf.definition, { desc = " Goto Definition" })
-map(n, prefixLsp .. "i", vim.lsp.buf.implementation, { desc = " Goto Implementation" })
-map(n, prefixLsp .. "r", vim.lsp.buf.references, { desc = " Goto Implementation" })
-map(n, prefixLsp .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
-map(n, prefixLsp .. "c", vim.lsp.buf.code_action, { desc = "󱠀 Code Action" })
-map(n, prefixLsp .. "F", vim.lsp.buf.format, { desc = "LSP Format" })
+map(n, Config.prefix .. "D", vim.lsp.buf.declaration,    { desc = " Goto Declaration" })
+map(n, Config.prefix .. "d", vim.lsp.buf.definition,     { desc = " Goto Definition" })
+map(n, Config.prefix .. "i", vim.lsp.buf.implementation, { desc = " Goto Implementation" })
+map(n, Config.prefix .. "r", vim.lsp.buf.references,     { desc = " Goto Implementation" })
+map(n, Config.prefix .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
+map(n, Config.prefix .. "c", vim.lsp.buf.code_action,    { desc = "󱠀 Code Action" })
+map(n, Config.prefix .. "F", vim.lsp.buf.format,         { desc = "LSP Format" })
 --]]
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -278,16 +281,11 @@ map(n, "<leader>ih", vim.show_pos,                { desc = " Position at curs
 map(n, "<leader>it", vim.treesitter.inspect_tree, { desc = " TS tree", silent = true })
 map(n, "<leader>iq", vim.treesitter.query.edit,   { desc = " TS query", silent = true })
 
-map(n, "<leader>il", function() eval.lspCapabilities() end,
-    { desc = "󱈄 LSP capabilities", silent = true })
-map(n, "<leader>in", function() eval.nodeAtCursor() end,
-    { desc = " Node at cursor", silent = true })
-map(n, "<leader>ib", function() eval.bufferInfo() end,
-    { desc = "󰽙 Buffer info", silent = true })
-map(nx, "<leader>ie", function() eval.evalNvimLua() end,
-    { desc = " Eval", silent = true })
-map(n, "<leader><leader>x", function() eval.runFile() end,
-    { desc = "󰜎 Run file", silent = true })
+map(n,  "<leader>il",        function() eval.lspCapabilities() end, { desc = "󱈄 LSP capabilities", silent = true })
+map(n,  "<leader>in",        function() eval.nodeAtCursor() end,    { desc = " Node at cursor", silent = true })
+map(n,  "<leader>ib",        function() eval.bufferInfo() end,      { desc = "󰽙 Buffer info", silent = true })
+map(nx, "<leader>ie",        function() eval.evalNvimLua() end,     { desc = " Eval", silent = true })
+map(n,  "<leader><leader>x", function() eval.runFile() end,         { desc = "󰜎 Run file", silent = true })
 
 ------------------------------------------------------------------------------------------------------------------------
 -- WINDOWS
@@ -327,9 +325,9 @@ end
 
 map(n, "<leader>fd", ":global //d<Left><Left>", { desc = " delete matching lines", silent = true })
 
-map(n, vim.g.prefix .. "n", vim.lsp.buf.rename, { desc = "󰑕 LSP rename", silent = true })
+map(n, Config.prefix .. "n", vim.lsp.buf.rename, { desc = "󰑕 LSP rename", silent = true })
 
-map(n, vim.g.prefix .. "m", function() nano.camelSnakeLspRename() end,
+map(n, Config.prefix .. "m", function() nano.camelSnakeLspRename() end,
     { desc = "󰑕 LSP rename: camel/snake", silent = true })
 
 map(nx, "<leader>qq", function()
@@ -358,11 +356,11 @@ if loaded then
         Snacks.toggle.option("relativenumber", { name = " Relative Line Number", global = true }):map("<leader>or")
         Snacks.toggle.option("number", { name = " Line Number", global = true }):map("<leader>on")
         Snacks.toggle.option("wrap", { name = "󰖶 Wrap", global = true }):map("<leader>ow")
-        Snacks.toggle.option("conceallevel",
-                             { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "󰈉 Conceal", global = true,
-                             }):map("<leader>oc")
         Snacks.toggle.treesitter({ name = " Treesitter Highlight" }):map("<leader>ot")
+        Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+                   :map("<leader>oc")
         Snacks.toggle.diagnostics({ name = "󰨓 LSP Diagnostics" }):map("<leader>od")
+        -- Snacks.toggle.inlay_hints():map("<leader>oh")
         Snacks.toggle.words():map("<leader>ol")
 end
 

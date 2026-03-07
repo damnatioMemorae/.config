@@ -17,14 +17,14 @@ vim.opt.runtimepath:prepend(lazypath)
 require("lazy").setup({
         spec             = { import = "plugins" },
         defaults         = { lazy = true },
-        dev              = { patterns = { "nvim" }, path = vim.g.localRepos, fallback = true },
+        dev              = { patterns = { "nvim" }, path = Config.localRepos, fallback = true },
         install          = { colorscheme = { "catppuccin-mocha" } },
         git              = { log = { "--since=4 days ago" } },
         ui               = {
                 title       = " lazy.nvim ",
                 wrap        = true,
-                backdrop    = vim.g.backdrop,
-                border      = vim.g.borderStyle,
+                backdrop    = Config.backdrop,
+                border      = Config.borderStyle,
                 pills       = false,
                 size        = { width = 0.80, height = 0.9 },
                 custom_keys = {

@@ -16,7 +16,7 @@ return {
                         scope      = {
                                 show_start = true,
                                 show_end   = false,
-                                char       = require("core.icons").misc.Vertical_bar,
+                                char       = Icons.misc.verticalBar,
                                 highlight  = { "Function" },
                         },
                 })

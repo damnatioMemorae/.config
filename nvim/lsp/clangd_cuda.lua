@@ -44,7 +44,7 @@ local function symbol_info()
                                               width     = math.max(string.len(name), string.len(container)),
                                               focusable = false,
                                               focus     = false,
-                                              border    = vim.g.borderStyle,
+                                              border    = Config.borderStyle,
                                               title     = "Symbol Info",
                                       })
                                       ---@diagnostic disable-next-line: unknown-diag-code

@@ -1,11 +1,88 @@
-local M = {}
-------------------------------------------------------------------------------------------------------------------------
-
 local squareFilled = "■"
 local squareEmpty  = "󰝣"
 
+_G.Config = {}
+
+------------------------------------------------------------------------------------------------------------------------
+-- VARIABLES
+
+Config.prefix       = ","
+Config.projects_dir = vim.env.HOME .. "/deeznuts/"
+Config.backdrop     = 80
+Config.blend        = 0
+Config.winblend     = 0
+Config.localRepos   = vim.fs.normalize("$HOME/deeznuts/")
+
+Config.inlayHints = true
+Config.codeLens   = true
+
+------------------------------------------------------------------------------------------------------------------------
+-- FUNCTION
+
+_G.Functions = {}
+
+---@param option? any
+---@param msg? string
+Functions.toggle = function(option, msg)
+        option = not option
+        msg    = Icons.diagnostics.INFO .. " " .. msg
+
+        if option then
+                vim.notify(msg .. " - " .. "Enabled")
+        else
+                vim.notify(msg .. " - " .. "Disabled")
+        end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- BORDERS
+
+Config.borderStyle       = { " ", " ", " ", " ", " ", " ", " ", " " }
+Config.borderTop         = { "▔", "▔", "▔", " ", " ", " ", " ", " " }
+Config.borderBottom      = { " ", " ", " ", " ", "▂", "▂", "▂", " " }
+Config.borderLeft        = { "▌", " ", " ", " ", " ", " ", "▌", "▌" }
+Config.borderRight       = { " ", " ", "🮉", "🮉", "🮉", " ", " ", " " }
+Config.borderTopEmpty    = { "", "", "", "", "", "", "", "" }
+Config.borderBottomEmpty = { "", "", "", "", "▂", "▂", "▂", "" }
+Config.borderLeftEmpty   = { "▌", "", "", "", "", "", "▌", "▌" }
+Config.borderRightEmpty  = { "", "", "🮉", "🮉", "🮉", "", "", "" }
+Config.borderStyleNone   = "none"
+
+------------------------------------------------------------------------------------------------------------------------
+--[[ TREESITTER
+
+local default_treesitter_branch = (vim.fn.executable("make") == 1 and
+        vim.fn.executable("tree-sitter") == 1) and "main" or "master"
+vim.g.treesitter_branch         = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
+--]]
+
+------------------------------------------------------------------------------------------------------------------------
+--[[ FUZZY SEARCH
+
+vim.o.wildmode = "noselect"
+vim.api.nvim_create_autocmd("CmdlineChanged", {
+        pattern  = ":",
+        callback = function()
+                vim.fn.wildtrigger()
+        end,
+})
+
+function _G.fuzzySearch(text, _)
+        local files = vim.fn.glob("**/*", true, true)
+
+        return vim.fn.matchfuzzy(files, text)
+end
+
+vim.o.findfunc = "v:lua.fuzzySearch"
+--]]
+
+------------------------------------------------------------------------------------------------------------------------
+-- ICONS
+
+_G.Icons = {}
+
 ---@enum DIAGNOSTICS
-M.diagnostics = {
+Icons.diagnostics = {
         ERROR = squareFilled,
         WARN  = squareFilled,
         INFO  = squareFilled,
@@ -21,24 +98,21 @@ M.diagnostics = {
         infoMd  = "󰀨 ",
         hintMd  = "󰁨 ",
 
-        lightbulb = "󱠀",
 }
 
 ---@enum NOTIFIER
-M.notifier = {
-        error = M.diagnostics.ERROR,
-        warn  = M.diagnostics.WARN,
-        info  = M.diagnostics.INFO,
-        debug = M.diagnostics.HINT,
-        trace = M.diagnostics.HINT,
+Icons.notifier = {
+        error = squareFilled,
+        warn  = squareFilled,
+        info  = squareFilled,
+        debug = squareFilled,
+        trace = squareFilled,
 }
 
 ---@enum FOLDING
-M.arrows = {
+Icons.arrows = {
         close      = "+",
         open       = "-",
-        -- close = "󰜄",
-        -- open  = "󰛲",
         right      = "",
         left       = "",
         up         = "",
@@ -48,7 +122,7 @@ M.arrows = {
 }
 
 ---@enum LSP KINDS
-M.symbolKinds = {
+Icons.symbolKinds = {
         Array             = "󰅪",
         Boolean           = "",
         BreakStatement    = "󰙧",
@@ -127,7 +201,8 @@ M.symbolKinds = {
         WhileStatement    = "󰑖",
 }
 
-M.symbolKindsAlt = {
+---@enum LSP2 KINDS
+Icons.symbolKindsAlt = {
         Text          = "󰉿",
         Method        = "󰊕",
         Function      = "󰊕",
@@ -158,7 +233,7 @@ M.symbolKindsAlt = {
 }
 
 ---@enum DEVICONS
-M.devicons = {
+Icons.devicons = {
         Array             = "󰅪 ",
         Boolean           = " ",
         BreakStatement    = "󰙧 ",
@@ -232,11 +307,24 @@ M.devicons = {
 }
 
 ---@enum MISC
-M.misc = {
+Icons.misc = {
+        newFile    = "󰻭",
+        recentFile = "󰕁",
+        findFile   = "󰱽",
+        findText   = "󰦪",
+        restore    = "󰦛",
+        config     = "󱤸",
+        package    = "󰏗",
+        newPackage = "󱧕",
+        quit       = "󰈆",
+
+        lightbulb = "󱠀",
+        quickfix  = "󰏪",
+
         Bug            = "",
         ellipsis       = "…",
         Search         = "",
-        Vertical_bar   = "▏",
+        verticalBar    = "▏",
         Prompt         = ">",
         folderOpen     = "",
         folderEmpty    = "",
@@ -249,28 +337,14 @@ M.misc = {
         squareEmpty    = squareEmpty,
 }
 
----@enum BORDERS
-M.borders = {
-        empty       = { " ", " ", " ", " ", " ", " ", " ", " " },
-        top         = { "▔", "▔", "▔", " ", " ", " ", " ", " " },
-        bottom      = { " ", " ", " ", " ", "▂", "▂", "▂", " " },
-        left        = { "▌", " ", " ", " ", " ", " ", "▌", "▌" },
-        right       = { " ", " ", "🮉", "🮉", "🮉", " ", " ", " " },
-        emptyTop    = { "", "", "", "", "", "", "", "" },
-        emptyBottom = { "", "", "", "", "▂", "▂", "▂", "" },
-        emptyLeft   = { "▌", "", "", "", "", "", "▌", "▌" },
-        emptyRight  = { "", "", "🮉", "🮉", "🮉", "", "", "" },
-}
-
-
 ---@enum SPINNER
-M.spinner = {
+Icons.spinner = {
         dots     = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
         vertical = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" },
 }
 
 ---@enum GIT
-M.git = {
+Icons.git = {
         Git      = "",
         Added    = squareFilled,
         Modified = squareEmpty,
@@ -278,4 +352,42 @@ M.git = {
 }
 
 ------------------------------------------------------------------------------------------------------------------------
-return M
+-- COLORS
+
+_G.Colors = {}
+
+Colors.Darkppuccin = {
+        ivory     = "#dce0e8",
+        spark     = "#add8e6",
+        rosewater = "#f5e0dc",
+        flamingo  = "#f2cdcd",
+        pink      = "#f5c2e7",
+        mauve     = "#cba6f7",
+        red       = "#f38ba8",
+        maroon    = "#eba0ac",
+        peach     = "#fab387",
+        yellow    = "#f9e2af",
+        green     = "#a6e3a1",
+        teal      = "#94e2d5",
+        sky       = "#89dceb",
+        sapphire  = "#74c7ec",
+        blue      = "#89b4fa",
+        lavender  = "#b4befe",
+        text      = "#cdd6f4",
+        subtext1  = "#bac2de",
+        subtext0  = "#a6adc8",
+        overlay2  = "#9399b2",
+        overlay1  = "#7f849c",
+        overlay0  = "#6c7086",
+        surface2  = "#585b70",
+        surface1  = "#45475a",
+        surface0  = "#313244",
+        base      = "#1e1e2e",
+        mantle    = "#14141f",
+        crust     = "#0e0e16",
+
+        redBg    = "#251b25",
+        YellowBg = "#262325",
+        skyBg    = "#1a232b",
+        tealBg   = "#1b2329",
+}

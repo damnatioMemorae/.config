@@ -17,7 +17,7 @@ return {
         opts = {
                 popupWin        = {
                         title                   = "",
-                        border                  = vim.g.borderStyle,
+                        border                  = Config.borderStyle,
                         position                = "top",
                         hideSearchReplaceLabels = true,
                         hideKeymapHints         = true,

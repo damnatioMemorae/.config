@@ -3,12 +3,12 @@ return { -- Better input/selection fields
         lazy = false,
         init = function(spec)
                 vim.ui.select = function(...)
-                        require("lazy").load { plugins = { spec.name } }
+                        require("lazy").load{ plugins = { spec.name } }
                         return vim.ui.select(...)
                 end
 
                 vim.ui.input = function(...)
-                        require("lazy").load { plugins = { spec.name } }
+                        require("lazy").load{ plugins = { spec.name } }
                         return vim.ui.input(...)
                 end
         end,
@@ -19,24 +19,24 @@ return { -- Better input/selection fields
         opts = {
                 input  = {
                         trim_prompt  = true,
-                        -- border       = vim.g.borderStyle,
+                        -- border       = Config.borderStyle,
                         relative     = "editor",
                         prefer_width = 45,
                         min_width    = 0.4,
                         max_width    = 0.8,
-                        mappings     = { n = { ["q"] = "Close" } },
+                        mappings     = { n = { ["q"] = "Close", ["<Esc>"] = "Close" } },
                 },
                 select = {
                         trim_prompt = true,
                         builtin     = {
                                 show_numbers = false,
-                                -- border       = vim.g.borderStyle,
+                                -- border       = Config.borderStyle,
                                 relative     = "editor",
                                 max_width    = 80,
                                 min_width    = 20,
                                 max_height   = 12,
                                 min_height   = 3,
-                                mappings     = { ["q"] = "Close" },
+                                mappings     = { n = { ["q"] = "Close", ["<Esc>"] = "Close" } },
                         },
                         telescope   = {
                                 layout_config = {

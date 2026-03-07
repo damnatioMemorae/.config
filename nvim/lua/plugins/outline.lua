@@ -52,9 +52,9 @@ return {
                         min_width    = 30,
                         height       = 50,
                         min_height   = 10,
-                        border       = vim.g.borderStyle,
+                        border       = Config.borderStyle,
                         winhl        = "NormalFloat:NormalFloat",
-                        winblend     = vim.g.blend,
+                        winblend     = Config.blend,
                         live         = true,
                 },
                 keymaps        = {
