@@ -467,7 +467,7 @@ local customCol = function(C)
                 --------------------------------------------------------------------------------------------------------
                 -- SNACKS
 
-                SnacksBackdrop              = { bg = colors.none },
+                SnacksBackdrop              = { bg = "none" },
                 SnacksTitle                 = { link = "DiagnosticError" },
                 SnacksPickerTitle           = { link = "DiagnosticError" },
                 SnacksPicker                = { link = "Normal" },
@@ -490,8 +490,8 @@ local customCol = function(C)
                 SnacksNotifierError         = { link = "TinyInlineDiagnosticVirtualTextError" },
                 -- SnacksPickerFile                             = { fg = colors.teal },
                 SnacksNotifierHistoryBorder = { fg = colors.spark },
-                -- SnacksIndent                = { fg = colors.none },
-                -- SnacksIndentBlank           = { fg = colors.none },
+                -- SnacksIndent                = { fg = "none" },
+                -- SnacksIndentBlank           = { fg = "none" },
 
                 --------------------------------------------------------------------------------------------------------
                 -- NEOTREE
