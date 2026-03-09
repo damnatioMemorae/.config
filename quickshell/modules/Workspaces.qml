@@ -10,8 +10,8 @@ Item {
         property int maxWorkspaces: 9
 
         // Sizes
-        property int sizeSmall:  10
-        property int sizeMedium: 10
+        property int sizeSmall:  8
+        property int sizeMedium: 8
         property int sizeLarge:  24
 
         readonly property var occupiedMap: Hyprland.workspaces.values.reduce(
@@ -55,7 +55,7 @@ Item {
                                         property bool isOccupied: occupiedMap[wid] === true
 
                                         // size logic
-                                        property int prefWidth: 10
+                                        property int prefWidth: 8
                                         property int prefHeight: isFocused ? root.sizeLarge : isOccupied ? root.sizeMedium : root.sizeSmall
 
                                         width: prefWidth

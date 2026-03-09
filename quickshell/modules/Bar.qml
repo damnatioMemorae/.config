@@ -14,8 +14,8 @@ PanelWindow {
         property int margin: 10
         property int antiMargin: -0
         property int rotation: 180
-        property int width:  40
-        property int height: 40
+        property int width:  36
+        property int height: 36
 
         property string bg: Theme.Theme.bg
         property bool horizontal: false
@@ -110,18 +110,10 @@ PanelWindow {
         RowLayout {}
         ColumnLayout {
                 id: leftPart
-                // anchors.centerIn: parent
                 anchors.horizontalCenter: parent.horizontalCenter
-                // anchors.verticalCenter: parent.verticalCenter
-                // height: parent.height
                 anchors.top: parent.top
                 anchors.topMargin: 30
                 spacing: 10
-
-                // Battery {
-                //         rotation: rotation - 90
-                //         Layout.alignment: Qt.AlignVCenter
-                // }
         }
 
         ColumnLayout {
@@ -131,7 +123,6 @@ PanelWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 height: parent.height
                 spacing: 10
-
                 Workspaces {
                         rotation: bar.rotation
                         Layout.alignment: Qt.AlignVCenter
@@ -141,13 +132,7 @@ PanelWindow {
         ColumnLayout {
                 id: rightPart
                 anchors.right: parent.right
-                // anchors.rightMargin: 6
-                // anchors.verticalCenter: parent.verticalCenter
-                // anchors.horizontalCenter: parent.horizontalCenter
                 height: parent.height
-                // spacing: 10
-
-                // Memory { Layout.alignment: Qt.AlignVCenter }
         }
 
         IpcHandler {
