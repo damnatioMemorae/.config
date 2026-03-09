@@ -13,8 +13,9 @@ Config.blend        = 0
 Config.winblend     = 0
 Config.localRepos   = vim.fs.normalize("$HOME/deeznuts/")
 
-Config.inlayHints = true
-Config.codeLens   = true
+Config.code_lens   = true
+Config.inlay_hints = true
+Config.indent_line = true
 
 ------------------------------------------------------------------------------------------------------------------------
 -- FUNCTION

@@ -31,7 +31,7 @@ vim.lsp.enable(lsp_servers)
 ------------------------------------------------------------------------------------------------------------------------
 -- DIAGNOSTICS
 
-local hl      = "VirtualText"
+local hl      = "DiagnosticVirtualText"
 local numbers = {
         text  = {
                 [vim.diagnostic.severity.ERROR] = "",
@@ -40,10 +40,10 @@ local numbers = {
                 [vim.diagnostic.severity.HINT]  = "",
         },
         numhl = {
-                [vim.diagnostic.severity.ERROR] = "Diagnostic" .. hl .. "Error",
-                [vim.diagnostic.severity.WARN]  = "Diagnostic" .. hl .. "Warn",
-                [vim.diagnostic.severity.INFO]  = "Diagnostic" .. hl .. "Info",
-                [vim.diagnostic.severity.HINT]  = "Diagnostic" .. hl .. "Hint",
+                [vim.diagnostic.severity.ERROR] = hl .. "Error",
+                [vim.diagnostic.severity.WARN]  = hl .. "Warn",
+                [vim.diagnostic.severity.INFO]  = hl .. "Info",
+                [vim.diagnostic.severity.HINT]  = hl .. "Hint",
         },
 }
 
@@ -79,7 +79,7 @@ handlers[methods["textDocument_rename"]] = function(err, result, ctx, config)
         originalRenameHandler(err, result, ctx, config)
         if err or not result then return end
 
-        local changes      = result.changes or result.documentChanges or {}
+        local changes       = result.changes or result.documentChanges or {}
         local changed_files = vim.iter(vim.tbl_keys(changes))
                    :filter(function(file) return #changes[file] > 0 end)
                    :map(function(file) return "- " .. vim.fs.basename(file) end)
@@ -90,7 +90,7 @@ handlers[methods["textDocument_rename"]] = function(err, result, ctx, config)
         end
 
         local plural = change_count > 1 and "s" or ""
-        local msg     = ("[%d] instance%s"):format(change_count, plural)
+        local msg    = ("[%d] instance%s"):format(change_count, plural)
         if #changed_files > 1 then
                 msg = ("**%s in [%d] files**\n%s"):format(msg, #changed_files, table.concat(changed_files, "\n"))
         end
@@ -106,8 +106,8 @@ local title_pos   = "left"
 local anchor_bias = "below"
 local relative    = "cursor"
 local wrap        = true
-local max_height  = math.floor(vim.o.lines * 0.5)
-local max_width   = math.floor(vim.o.columns * 0.6)
+local max_height  = math.floor(vim.o.lines * 0.7)
+local max_width   = math.floor(vim.o.columns * 0.8)
 
 local hover       = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field

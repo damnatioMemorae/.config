@@ -32,6 +32,7 @@ PanelWindow {
                 position = pos
                 console.log("Bar moved to", position)
         }
+
         function applyPosition(pos) {
                 anchors.top    = undefined
                 anchors.bottom = undefined
@@ -122,6 +123,7 @@ PanelWindow {
                 //         Layout.alignment: Qt.AlignVCenter
                 // }
         }
+
         ColumnLayout {
                 id: centerPart
                 anchors.centerIn: parent
@@ -135,6 +137,7 @@ PanelWindow {
                         Layout.alignment: Qt.AlignVCenter
                 }
         }
+
         ColumnLayout {
                 id: rightPart
                 anchors.right: parent.right

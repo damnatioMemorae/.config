@@ -8,7 +8,7 @@ local capabilities = {
 local function cursorIsUrl()
         local urls = vim.ui._get_urls()
 
-        if not vim.tbl_isempty(urls) and vim.startswith(urls[1], "https://") then
+        if not vim.tbl_isempty(urls) and vim.startswith(urls[1], "https://") or vim.startswith(urls[1], "http://") then
                 return true, urls[1]
         end
         return false, nil
@@ -49,5 +49,5 @@ return {
                 }
         end,
 
-        filetypes = { "markdown" },
+        filetypes = { "lua", "markdown" },
 }

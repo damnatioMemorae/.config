@@ -11,8 +11,8 @@ Item {
         // PROPERTIES & IPC RECEIVER
         // -------------------------------------------------------------------------
         property string widgetArg: ""
-        property int targetWallIndex: 0
-        property bool initialFocusSet: false
+        property int    targetWallIndex: 0
+        property bool   initialFocusSet: false
 
         onWidgetArgChanged: {
                 let idx = parseInt(widgetArg);
@@ -41,17 +41,17 @@ Item {
 
         readonly property string homeDir: "file://" + Quickshell.env("HOME")
         readonly property string thumbDir: homeDir + "/.cache/wallpaper_picker/thumbs"
-        readonly property string srcDir: Quickshell.env("HOME") + "/Images/Wallpapers"
+        readonly property string srcDir: Quickshell.env("HOME") + "/.config/hyde/themes/Darkpuccin/wallpapers/"
 
         readonly property string swwwCommand: "swww img '%1' --transition-type %2 --transition-pos 0.5,0.5 --transition-fps 144 --transition-duration 1"
         readonly property string mpvCommand: "pkill mpvpaper; mpvpaper -o 'loop --hwdec=auto --no-audio' '*' '%1' & sleep 0.5; " + Quickshell.env("HOME") + "/.config/eww/bar/launch_bar.sh --force-open"
 
         readonly property var transitions: ["grow", "outer", "any", "wipe", "wave", "pixel", "center"]
 
-        readonly property int itemWidth: 300
-        readonly property int itemHeight: 420
-        readonly property int borderWidth: 3
-        readonly property int spacing: 0
+        readonly property int  itemWidth: 300
+        readonly property int  itemHeight: 420
+        readonly property int  borderWidth: 3
+        readonly property int  spacing: 0
         readonly property real skewFactor: -0.35
 
         Shortcut { sequence: "Left"; onActivated: view.decrementCurrentIndex() }

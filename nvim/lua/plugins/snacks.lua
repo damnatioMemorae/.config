@@ -1,5 +1,6 @@
 local button       = "Function"
 local label        = "Comment"
+local prefix       = Config.prefix
 local insertOnShow = function() vim.cmd.stopinsert() end
 
 return {
@@ -120,25 +121,25 @@ return {
 
                 -- LSP PICKERS
                 { -- `spc spc r` REFERENCES
-                        Config.prefix .. "r",
+                        prefix .. "r",
                         function() Snacks.picker.lsp_references({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show References",
                         mode = { "n" },
                 },
                 { -- `spc spc i` IMPLEMENTATIONS
-                        Config.prefix .. "i",
+                        prefix .. "i",
                         function() Snacks.picker.lsp_implementations({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Implementations",
                         mode = { "n" },
                 },
                 { -- `spc spc d` DEFINITIONS
-                        Config.prefix .. "d",
+                        prefix .. "d",
                         function() Snacks.picker.lsp_definitions({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Definitions",
                         mode = { "n" },
                 },
                 { -- `spc spc D` DECLARATIONS
-                        Config.prefix .. "D",
+                        prefix .. "D",
                         function() Snacks.picker.lsp_declarations({ layout = "vertical", on_show = insertOnShow }) end,
                         desc = "Show Declarations",
                         mode = { "n" },

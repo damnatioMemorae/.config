@@ -5,10 +5,10 @@ return {
                 { "<leader>os", function()
                         local symbol = require("symbol-usage")
 
-                        Config.codeLens = not Config.codeLens
+                        Config.code_lens = not Config.code_lens
                         local str       = Icons.diagnostics.INFO .. " " .. "codeLens - "
 
-                        if Config.codeLens then
+                        if Config.code_lens then
                                 symbol.toggle_globally()
                                 symbol.refresh()
                                 vim.notify(str .. "Enabled", vim.log.levels.INFO)
