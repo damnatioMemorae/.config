@@ -7,12 +7,12 @@ return {
         config       = function()
                 local theme = {
                         normal   = {
-                                a = { fg = colors.text, bg = "none", bold = true },
-                                b = { fg = colors.text, bg = "none" },
-                                c = { fg = colors.surface1, bg = "none" },
-                                x = { fg = colors.text, bg = "none" },
-                                y = { fg = colors.text, bg = "none" },
-                                z = { fg = colors.text, bg = "none" },
+                                a = { fg = colors.text, bg = colors.crust, bold = true },
+                                b = { fg = colors.text, bg = colors.crust },
+                                c = { fg = colors.surface1, bg = colors.crust },
+                                x = { fg = colors.text, bg = colors.crust },
+                                y = { fg = colors.text, bg = colors.crust },
+                                z = { fg = colors.text, bg = colors.crust },
                         },
                         insert   = { a = { fg = colors.teal, bg = colors.crust, bold = true } },
                         visual   = { a = { fg = colors.yellow, bg = colors.crust, bold = true } },
