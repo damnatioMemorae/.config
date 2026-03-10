@@ -21,18 +21,20 @@
         color: #f38ba8;
 }
 
-#custom-updates,
 #language,
 #submap {
-        color: @xp;
-        font-size: 14;
-        /* padding-right: 8px; */
-        /* margin-top: -4px; */
-        /* margin-bottom: -4px; */
+        color: @spark;
+        background: alpha(@workspace, 0);
+        min-width: 9px;
+        padding: 4px 0px 4px 0px;
+        margin-right: 0px;
+        margin-bottom: 10px;
+        border: 0px solid alpha(@workspace, 1);
+        border-left-width: 4px;
 }
 
 menuitem {
-        background: @tooltip-bg
+        background: @tooltip-bg;
 }
 
 menu,
@@ -47,31 +49,45 @@ tooltip {
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
 /* MODULES */
 
-#workspaces:hover,
 #workspaces button:hover {
-        color: @main-fg;
-        background: @main-bg;
-        border-radius: 0;
+        color: @workspace;
+        background: alpha(@workspace, 0.2);
+        margin-right: 10px;
+        border: 0px solid alpha(@workspace, 1);
 }
+
 #workspaces button {
-        color: @active-fg;
+        color: alpha(@workspace, 0.3);
+        background: alpha(@workspace, 0);
+        transition: all 90ms ease-in-out;
+        padding: 4px 6px 4px 0px;
+        margin: 1px 0px 1px 0px;
+        min-width: 9px;
+        border-radius: 0px;
+        border: 0px solid alpha(@workspace, 0.2);
+        border-left-width: 4px;
 }
+
 #workspaces button.empty {
-        color: @hover-bg;
-        /* color: @main-bg; */
+        color: alpha(@workspace, 0);
+        background: alpha(@workspace, 0);
+        border: 0px solid alpha(@workspace, 0.2);
+        border-left-width: 4px;
 }
+
 #workspaces button.active {
-        color: @current-fg;
+        color: @workspace;
+        background: alpha(@workspace, 0.2);
+        padding: 4px 0px 4px 0px;
+        border: 0px solid alpha(@workspace, 1);
+        border-left-width: 4px;
 }
+
 #workspaces button,
-/* #workspaces button:hover, */
+#workspaces button:hover,
 #workspaces button.active {
-        border: 0;
-        border-radius: 0;
-        padding-left: 0;
-        padding-right: 0;
-        margin-left: 6;
-        margin-right: 6;
+        margin-right: 8px;
+        /* border-left-width: 4px; */
 }
 
 #custom-power {

@@ -63,12 +63,12 @@ tooltip {
         color: alpha(@workspace, 0.3);
         background: alpha(@workspace, 0);
         transition: all 90ms ease-in-out;
-        padding: 0 6px;
+        padding: 6px 6px 0px 6px;
         margin: 0 1.5px;
         min-width: 9px;
         border-radius: 0px;
         border: 0px solid alpha(@workspace, 0.2);
-        border-bottom-width: 2px;
+        border-bottom-width: 4px;
 }
 
 #workspaces button.empty {
@@ -81,15 +81,15 @@ tooltip {
 #workspaces button.active {
         color: @workspace;
         background: alpha(@workspace, 0.0);
-        margin-top: 10px;
+        padding: 0px 6px 0px 6px;
         border: 0px solid alpha(@workspace, 1);
+        border-bottom-width: 4px;
 }
 
 #workspaces button,
 #workspaces button:hover,
 #workspaces button.active {
         margin-top: 10px;
-        border-bottom-width: 4px;
 }
 
 #network {
