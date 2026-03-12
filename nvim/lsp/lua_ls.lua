@@ -1,3 +1,16 @@
+local style   = {
+        local_name_style             = "snake_case",
+        function_param_name_style    = { "snake_case" },
+        function_name_style          = "camel_case",
+        local_function_name_style    = "camel_case",
+        global_variable_name_style   = "camel_case",
+        module_name_style            = "upper_snake_case",
+        module_local_name_style      = { "camel_case", "snake_case" },
+        require_module_name_style    = { "upper_snake_case", "snake_case" },
+        class_name_style             = "upper_snake_case",
+        constant_variable_name_style = "camel_case",
+        table_field_name_style       = { "snake_case", "camel_case", "pascal_case" },
+}
 local format  = {
         indent_style = "space",
         indent_size  = "8",
@@ -68,28 +81,6 @@ local format  = {
         remove_call_expression_list_finish_comma = "false",
         end_statement_with_semicolon             = "keep",
 }
-local style   = {
-        local_name_style             = "camel_case",
-        function_param_name_style    = "snake_case",
-        function_name_style          = "camel_case",
-        local_function_name_style    = "camel_case",
-        global_variable_name_style   = "camel_case",
-        module_name_style            = "upper_snake_case",
-        module_local_name_style      = "snake_case",
-        require_module_name_style    = "upper_snake_case",
-        class_name_style             = "upper_snake_case",
-        constant_variable_name_style = "camel_case",
-        table_field_name_style       = { "camel_case", "pascal_case" },
-}
-local on_init = function(client)
-        local path = vim.uv.cwd()
-
-        if path == vim.fn.stdpath("config") then
-                client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-                        workspace = { library = { "$VIMRUNTIME", "${3rd}/luv/library" }, ignoreDir = "templates" },
-                })
-        end
-end
 local builtin = {
         ["basic"]       = "enable",
         ["bit"]         = "enable",
@@ -109,6 +100,15 @@ local builtin = {
         ["table.new"]   = "enable",
         ["utf8"]        = "enable",
 }
+local on_init = function(client)
+        local path = vim.uv.cwd()
+
+        if path == vim.fn.stdpath("config") then
+                client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+                        workspace = { library = { "$VIMRUNTIME", "${3rd}/luv/library" }, ignoreDir = "templates" },
+                })
+        end
+end
 
 return {
         cmd          = { "lua-language-server" },
@@ -140,15 +140,15 @@ return {
                                 path    = { "lua/?.lua", "lua/?/?.lua", "lua/?/init.lua" },
                                 builtin = builtin,
                         },
-                        nameStyle     = { config = style },
                         diagnostics   = {
-                                disable            = { "trailing-space", "unused-function", "lowercase-global" },
+                                disable            = { "trailing-space", "unused-function", "lowercase-global", "spell-check" },
                                 groupFileStatus    = { ["codestyle"] = "Any" },
                                 unusedLocalExclude = { "_*" },
                                 workspaceDelay     = 10000,
-                                workspaceEvent     = "OnSave",
+                                workspaceEvent     = "OnChange",
                                 workspaceRate      = 100,
                         },
+                        nameStyle     = { config = style },
                         hover         = { enable = true, enumsLimit = 1000, previewFields = 0 },
                         hint          = { enable = true, awaitPropagate = true, setType = true, arrayIndex = "Disable", semicolon = "Disable" },
                         semantic      = { enable = false, annotation = true, keyword = false, variable = true },

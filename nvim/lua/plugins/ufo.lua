@@ -3,7 +3,7 @@ local lvl  = vim.v.count
 
 return {
         "kevinhwang91/nvim-ufo",
-        event        = "VeryLazy",
+        event        = "BufEnter",
         dependencies = { "kevinhwang91/promise-async" },
         keys         = {
                 { "<leader>if", function() require("ufo").inspect() end, desc = "Fold Info" },
@@ -58,13 +58,16 @@ return {
                 },
                 { -- GOTO NEXT FOLD
                         "<A-Down>",
-                        function() vim.cmd.normal("zj^") end,
+                        function() vim.cmd.normal("zj^zz") end,
                         mode = mode,
                         desc = "Goto next fold",
                 },
                 { -- GOTO PREV START
                         "<A-Up>",
-                        function() require("ufo").goPreviousStartFold() end,
+                        function()
+                                require("ufo").goPreviousStartFold()
+                                vim.cmd.normal("^zz")
+                        end,
                         mode = mode,
                         desc = "Goto Previous Fold",
                 },
