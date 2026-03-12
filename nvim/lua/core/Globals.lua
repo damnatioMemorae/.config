@@ -1,5 +1,5 @@
-local squareFilled = "■"
-local squareEmpty  = "󰝣"
+local square_filled = "■"
+local square_empty  = "󰝣"
 
 _G.Config  = {}
 _G.Toggle  = {}
@@ -8,8 +8,7 @@ _G.Colors  = {}
 _G.Border  = {}
 _G.Spinner = {}
 
-------------------------------------------------------------------------------------------------------------------------
--- VARIABLES
+----VARIABLES-----------------------------------------------------------------------------------------------------------
 
 Config.prefix      = ","
 Config.projectsDir = vim.env.HOME .. "/deeznuts/"
@@ -23,8 +22,7 @@ Config.diagnostics = true
 Config.inlayHints  = true
 Config.indentLine  = true
 
-------------------------------------------------------------------------------------------------------------------------
--- BORDERS
+----BORDERS-------------------------------------------------------------------------------------------------------------
 
 Border.borderStyle       = { " ", " ", " ", " ", " ", " ", " ", " " }
 Border.borderTop         = { "▔", "▔", "▔", " ", " ", " ", " ", " " }
@@ -37,14 +35,12 @@ Border.borderLeftEmpty   = { "▌", "", "", "", "", "", "▌", "▌" }
 Border.borderRightEmpty  = { "", "", "🮉", "🮉", "🮉", "", "", "" }
 Border.borderStyleNone   = "none"
 
-------------------------------------------------------------------------------------------------------------------------
--- SPINNERS
+----SPINNERS------------------------------------------------------------------------------------------------------------
 
 Spinner.dots     = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
 Spinner.vertical = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
 
-------------------------------------------------------------------------------------------------------------------------
--- TOGGLES
+----TOGGLES-------------------------------------------------------------------------------------------------------------
 
 function Toggle.codeLens()
         local loaded, symbol = pcall(require, "symbol-usage")
@@ -112,16 +108,14 @@ function Toggle.diagnostics()
         end
 end
 
-------------------------------------------------------------------------------------------------------------------------
---[[ TREESITTER
+--[[TREESITTER----------------------------------------------------------------------------------------------------------
 
 local default_treesitter_branch = (vim.fn.executable("make") == 1 and
         vim.fn.executable("tree-sitter") == 1) and "main" or "master"
 vim.g.treesitter_branch         = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
 --]]
 
-------------------------------------------------------------------------------------------------------------------------
---[[ FUZZY SEARCH
+--[[FUZZY SEARCH--------------------------------------------------------------------------------------------------------
 
 vim.o.wildmode = "noselect"
 vim.api.nvim_create_autocmd("CmdlineChanged", {
@@ -140,19 +134,18 @@ end
 vim.o.findfunc = "v:lua.fuzzySearch"
 --]]
 
-------------------------------------------------------------------------------------------------------------------------
--- ICONS
+----ICONS---------------------------------------------------------------------------------------------------------------
 
 Icons.Diagnostics = {
-        ERROR = squareFilled,
-        WARN  = squareFilled,
-        INFO  = squareFilled,
-        HINT  = squareFilled,
+        ERROR = square_filled,
+        WARN  = square_filled,
+        INFO  = square_filled,
+        HINT  = square_filled,
 
-        Error = squareFilled,
-        Warn  = squareFilled,
-        Info  = squareFilled,
-        Hint  = squareFilled,
+        Error = square_filled,
+        Warn  = square_filled,
+        Info  = square_filled,
+        Hint  = square_filled,
 
         errorMd = "󰅙 ",
         warnMd  = " ",
@@ -162,11 +155,11 @@ Icons.Diagnostics = {
 }
 
 Icons.Notifier = {
-        error = squareFilled,
-        warn  = squareFilled,
-        info  = squareFilled,
-        debug = squareFilled,
-        trace = squareFilled,
+        error = square_filled,
+        warn  = square_filled,
+        info  = square_filled,
+        debug = square_filled,
+        trace = square_filled,
 }
 
 Icons.Arrows = {
@@ -386,21 +379,20 @@ Icons.Misc = {
         reference      = "󰘷",
         implementation = "󰃐",
         offSpec        = "",
-        dashedBar      = squareFilled,
-        definiton      = squareFilled,
-        squareFilled   = squareFilled,
-        squareEmpty    = squareEmpty,
+        dashedBar      = square_filled,
+        definiton      = square_filled,
+        squareFilled   = square_filled,
+        squareEmpty    = square_empty,
 }
 
 Icons.Git = {
         Git      = "",
-        Added    = squareFilled,
-        Modified = squareEmpty,
-        Deleted  = squareEmpty,
+        Added    = square_filled,
+        Modified = square_empty,
+        Deleted  = square_empty,
 }
 
-------------------------------------------------------------------------------------------------------------------------
--- COLORS
+----COLORS--------------------------------------------------------------------------------------------------------------
 
 Colors.Darkppuccin = {
         ivory     = "#dce0e8",

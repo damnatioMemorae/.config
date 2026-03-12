@@ -16,6 +16,7 @@ end
 opt.whichwrap:append("<>[]hl")
 opt.iskeyword:append("@,48-57,_,-,192-255")
 opt.spelloptions:append("noplainbuffer")
+opt.jumpoptions:append("stack")
 
 o.undofile      = true
 o.undolevels    = 10000
@@ -35,11 +36,13 @@ o.autowrite     = false
 o.autowriteall  = false
 o.jumpoptions   = "view"
 o.startofline   = true
-o.scrolloff     = 14
+o.scrolloff     = 20
 o.sidescrolloff = 4
-o.shortmess     = "ltToOCFIc"
+o.shortmess     = "ISsltToOCFIc"
+o.report        = 9001
+-- opt.shortmess:append("ISs")
 -- o.messagesopt   = { "wait:0", "history:1000" }
-o.nrformats     = "bin,hex,blank"
+o.nrformats     = "bin,hex,blank,unsigned"
 
 -- o.statuscolumn  = "%s%l%C"
 

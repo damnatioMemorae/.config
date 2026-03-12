@@ -1,11 +1,9 @@
-local colors     = Colors.Darkppuccin
-local dropbar_fg = colors.surface2
+local colors = Colors.Darkppuccin
 
 local customCol = function(C)
         return {
 
-                --------------------------------------------------------------------------------------------------------
-                -- BUILTINS
+                ----BUILTINS--------------------------------------------------------------------------------------------
 
                 ---[[
                 DiagnosticVirtualTextError = { bg = colors.base },
@@ -42,7 +40,7 @@ local customCol = function(C)
                 CurSearch                  = { fg = colors.teal, bg = colors.base },
                 -- CursorColumn                  = { bg = colors.},
                 -- Cursor                           = { fg = colors.crust, bg = colors.red },
-                CursorLine                 = { link = "Visual" },
+                CursorLine                 = { fg = "none", bg = "none" },
                 CursorLineNr               = { fg = colors.ivory },
                 Define                     = { fg = colors.pink },
                 Directory                  = { fg = colors.ivory },
@@ -114,15 +112,15 @@ local customCol = function(C)
                 Exception                  = { fg = colors.yellow },
                 markdownBlockquote         = { bg = colors.crust },
 
-                --------------------------------------------------------------------------------------------------------
-                -- TREESITTER
+                ----TREESITTER------------------------------------------------------------------------------------------
 
                 ["@comment.todo"]               = { fg = colors.crust, bg = colors.rosewater, italic = false, bold = true }, -- TODO
                 ["@comment.note"]               = { fg = colors.crust, bg = colors.blue, italic = false, bold = true },      -- NOTE
                 ["@comment.hint"]               = { fg = colors.crust, bg = colors.sky, italic = false, bold = true },       -- HINT
                 ["@comment.warning"]            = { fg = colors.crust, bg = colors.yellow, italic = false, bold = true },    -- WARNING
                 ["@comment.error"]              = { fg = colors.crust, bg = colors.red, italic = false, bold = true },       -- ERROR
-                ["@comment.code"]               = { fg = colors.teal, bg = colors.base, italic = false, bold = false },      -- code
+                ["@comment.code"]               = { fg = colors.teal, bg = colors.base, italic = false, bold = false },      -- `code`
+                ["@comment.bold"]               = { fg = colors.surface2, bold = true },                                     -- BOLD
                 ["@annotation"]                 = { fg = colors.yellow },
                 ["@attribute"]                  = { fg = colors.teal },
                 ["@boolean"]                    = { fg = colors.peach },
@@ -180,8 +178,7 @@ local customCol = function(C)
                 ["@variable.member"]            = { fg = colors.ivory },
                 ["@variable.parameter"]         = { fg = colors.red },
 
-                --------------------------------------------------------------------------------------------------------
-                -- SEMANTIC TOKENS
+                ----SEMANTIC TOKENS-------------------------------------------------------------------------------------
 
                 ["@module"]              = { fg = colors.yellow },
                 ["@operator"]            = { fg = colors.sapphire },
@@ -215,8 +212,7 @@ local customCol = function(C)
                 ["@struct"]              = { fg = colors.teal },
                 ["@typeParameter"]       = { fg = colors.yellow },
 
-                --------------------------------------------------------------------------------------------------------
-                -- C++
+                ----C ++ -----------------------------------------------------------------------------------------------
 
                 cType              = { fg = colors.mauve },
                 cppType            = { link = "cType" },
@@ -252,8 +248,7 @@ local customCol = function(C)
                 ["@lsp.typemod.variable.globalScope"]        = { link = "Function" },
                 ["@lsp.typemod.variable.functionScope.cpp"]  = { fg = colors.mauve },
 
-                --------------------------------------------------------------------------------------------------------
-                -- BLINK
+                ----BLINK-----------------------------------------------------------------------------------------------
 
                 BlinkCmpKindClass         = { link = "@lsp.type.class" },
                 BlinkCmpKindColor         = { link = "@define" },
@@ -304,15 +299,13 @@ local customCol = function(C)
                 BlinkCmpSignatureHelp       = { bg = colors.base },
                 BlinkCmpSignatureHelpBorder = { bg = colors.base },
 
-                --------------------------------------------------------------------------------------------------------
-                -- DROPBAR
+                ----DROPBAR---------------------------------------------------------------------------------------------
 
                 DropBarCurrentContext = { link = "Visual" },
                 DropBarFzfMatch       = { link = "DiagnosticErrorMsg" },
                 DropBarHover          = { link = "Visual" },
 
-                --------------------------------------------------------------------------------------------------------
-                -- DROPBAR ICON UI
+                ----DROPBAR ICON UI-------------------------------------------------------------------------------------
 
                 DropBarIconUiIndicator    = { link = "NonText" },
                 DropBarIconUiSeparator    = { link = "Comment" },
@@ -325,80 +318,78 @@ local customCol = function(C)
                 DropBarMenuSbar           = { link = "PmenuSbar" },
                 DropBarMenuThumb          = { link = "PmenuThumb" },
 
-                --------------------------------------------------------------------------------------------------------
-                -- DROPBAR KIND
+                ----DROPBAR KIND----------------------------------------------------------------------------------------
 
-                DropBarKindDefault           = { fg = dropbar_fg },
-                DropBarKindArray             = { fg = dropbar_fg },
-                DropBarKindBoolean           = { fg = dropbar_fg },
-                DropBarKindBreakstatement    = { fg = dropbar_fg },
-                DropBarKindCall              = { fg = dropbar_fg },
-                DropBarKindCasestatement     = { fg = dropbar_fg },
-                DropBarKindClass             = { fg = dropbar_fg },
-                DropBarKindConstant          = { fg = dropbar_fg },
-                DropBarKindConstructor       = { fg = dropbar_fg },
-                DropBarKindContinuestatement = { fg = dropbar_fg },
-                DropBarKindDeclaration       = { fg = dropbar_fg },
-                DropBarKindDelete            = { fg = dropbar_fg },
-                DropBarKindDir               = { fg = dropbar_fg },
-                DropBarKindDostatement       = { fg = dropbar_fg },
-                DropBarKindElsestatement     = { fg = dropbar_fg },
-                DropBarKindElement           = { fg = dropbar_fg },
-                DropBarKindEnum              = { fg = dropbar_fg },
-                DropBarKindEnumMember        = { fg = dropbar_fg },
-                DropBarKindEvent             = { fg = dropbar_fg },
-                DropBarKindField             = { fg = dropbar_fg },
-                DropBarKindFile              = { fg = dropbar_fg },
-                DropBarKindFolder            = { fg = dropbar_fg },
-                DropBarKindForStatement      = { fg = dropbar_fg },
-                DropBarKindFunction          = { fg = dropbar_fg },
-                DropBarKindH1Marker          = { fg = dropbar_fg },
-                DropBarKindH2Marker          = { fg = dropbar_fg },
-                DropBarKindH3Marker          = { fg = dropbar_fg },
-                DropBarKindH4Marker          = { fg = dropbar_fg },
-                DropBarKindH5Marker          = { fg = dropbar_fg },
-                DropBarKindH6Marker          = { fg = dropbar_fg },
-                DropBarKindIdentifier        = { fg = dropbar_fg },
-                DropBarKindIfStatement       = { fg = dropbar_fg },
-                DropBarKindInterface         = { fg = dropbar_fg },
-                DropBarKindKeyword           = { fg = dropbar_fg },
-                DropBarKindList              = { fg = dropbar_fg },
-                DropBarKindMacro             = { fg = dropbar_fg },
-                DropBarKindMarkdownH1        = { fg = dropbar_fg },
-                DropBarKindMarkdownH2        = { fg = dropbar_fg },
-                DropBarKindMarkdownH3        = { fg = dropbar_fg },
-                DropBarKindMarkdownH4        = { fg = dropbar_fg },
-                DropBarKindMarkdownH5        = { fg = dropbar_fg },
-                DropBarKindMarkdownH6        = { fg = dropbar_fg },
-                DropBarKindMethod            = { fg = dropbar_fg },
-                DropBarKindModule            = { fg = dropbar_fg },
-                DropBarKindNamespace         = { fg = dropbar_fg },
-                DropBarKindNull              = { fg = dropbar_fg },
-                DropBarKindNumber            = { fg = dropbar_fg },
-                DropBarKindObject            = { fg = dropbar_fg },
-                DropBarKindOperator          = { fg = dropbar_fg },
-                DropBarKindPackage           = { fg = dropbar_fg },
-                DropBarKindPair              = { fg = dropbar_fg },
-                DropBarKindProperty          = { fg = dropbar_fg },
-                DropBarKindReference         = { fg = dropbar_fg },
-                DropBarKindRepeat            = { fg = dropbar_fg },
-                DropBarKindRuleset           = { fg = dropbar_fg },
-                DropBarKindScope             = { fg = dropbar_fg },
-                DropBarKindSpecifier         = { fg = dropbar_fg },
-                DropBarKindStatement         = { fg = dropbar_fg },
-                DropBarKindString            = { fg = dropbar_fg },
-                DropBarKindStruct            = { fg = dropbar_fg },
-                DropBarKindSwitchstatement   = { fg = dropbar_fg },
-                DropBarKindTerminal          = { fg = dropbar_fg },
-                DropBarKindType              = { fg = dropbar_fg },
-                DropBarKindTypeParameter     = { fg = dropbar_fg },
-                DropBarKindUnit              = { fg = dropbar_fg },
-                DropBarKindValue             = { fg = dropbar_fg },
-                DropBarKindVariable          = { fg = dropbar_fg },
-                DropBarKindWhileStatement    = { fg = dropbar_fg },
+                DropBarKindDefault           = { link = "Comment" },
+                DropBarKindArray             = { link = "Comment" },
+                DropBarKindBoolean           = { link = "Comment" },
+                DropBarKindBreakstatement    = { link = "Comment" },
+                DropBarKindCall              = { link = "Comment" },
+                DropBarKindCasestatement     = { link = "Comment" },
+                DropBarKindClass             = { link = "Comment" },
+                DropBarKindConstant          = { link = "Comment" },
+                DropBarKindConstructor       = { link = "Comment" },
+                DropBarKindContinuestatement = { link = "Comment" },
+                DropBarKindDeclaration       = { link = "Comment" },
+                DropBarKindDelete            = { link = "Comment" },
+                DropBarKindDir               = { link = "Comment" },
+                DropBarKindDostatement       = { link = "Comment" },
+                DropBarKindElsestatement     = { link = "Comment" },
+                DropBarKindElement           = { link = "Comment" },
+                DropBarKindEnum              = { link = "Comment" },
+                DropBarKindEnumMember        = { link = "Comment" },
+                DropBarKindEvent             = { link = "Comment" },
+                DropBarKindField             = { link = "Comment" },
+                DropBarKindFile              = { link = "Comment" },
+                DropBarKindFolder            = { link = "Comment" },
+                DropBarKindForStatement      = { link = "Comment" },
+                DropBarKindFunction          = { link = "Comment" },
+                DropBarKindH1Marker          = { link = "Comment" },
+                DropBarKindH2Marker          = { link = "Comment" },
+                DropBarKindH3Marker          = { link = "Comment" },
+                DropBarKindH4Marker          = { link = "Comment" },
+                DropBarKindH5Marker          = { link = "Comment" },
+                DropBarKindH6Marker          = { link = "Comment" },
+                DropBarKindIdentifier        = { link = "Comment" },
+                DropBarKindIfStatement       = { link = "Comment" },
+                DropBarKindInterface         = { link = "Comment" },
+                DropBarKindKeyword           = { link = "Comment" },
+                DropBarKindList              = { link = "Comment" },
+                DropBarKindMacro             = { link = "Comment" },
+                DropBarKindMarkdownH1        = { link = "Comment" },
+                DropBarKindMarkdownH2        = { link = "Comment" },
+                DropBarKindMarkdownH3        = { link = "Comment" },
+                DropBarKindMarkdownH4        = { link = "Comment" },
+                DropBarKindMarkdownH5        = { link = "Comment" },
+                DropBarKindMarkdownH6        = { link = "Comment" },
+                DropBarKindMethod            = { link = "Comment" },
+                DropBarKindModule            = { link = "Comment" },
+                DropBarKindNamespace         = { link = "Comment" },
+                DropBarKindNull              = { link = "Comment" },
+                DropBarKindNumber            = { link = "Comment" },
+                DropBarKindObject            = { link = "Comment" },
+                DropBarKindOperator          = { link = "Comment" },
+                DropBarKindPackage           = { link = "Comment" },
+                DropBarKindPair              = { link = "Comment" },
+                DropBarKindProperty          = { link = "Comment" },
+                DropBarKindReference         = { link = "Comment" },
+                DropBarKindRepeat            = { link = "Comment" },
+                DropBarKindRuleset           = { link = "Comment" },
+                DropBarKindScope             = { link = "Comment" },
+                DropBarKindSpecifier         = { link = "Comment" },
+                DropBarKindStatement         = { link = "Comment" },
+                DropBarKindString            = { link = "Comment" },
+                DropBarKindStruct            = { link = "Comment" },
+                DropBarKindSwitchstatement   = { link = "Comment" },
+                DropBarKindTerminal          = { link = "Comment" },
+                DropBarKindType              = { link = "Comment" },
+                DropBarKindTypeParameter     = { link = "Comment" },
+                DropBarKindUnit              = { link = "Comment" },
+                DropBarKindValue             = { link = "Comment" },
+                DropBarKindVariable          = { link = "Comment" },
+                DropBarKindWhileStatement    = { link = "Comment" },
 
-                --------------------------------------------------------------------------------------------------------
-                -- DROPBAR ICON KIND
+                ----DROPBAR ICON KIND-----------------------------------------------------------------------------------
 
                 DropBarIconKindDefault           = { link = "@text" },
                 DropBarIconKindArray             = { link = "@string" },
@@ -469,37 +460,7 @@ local customCol = function(C)
                 DropBarIconKindVariable          = { link = "@lsp.type.variable" },
                 DropBarIconKindWhileStatement    = { link = "@keyword.repeat" },
 
-                --------------------------------------------------------------------------------------------------------
-                -- SNACKS
-
-                SnacksBackdrop              = { bg = "none" },
-                SnacksTitle                 = { link = "DiagnosticError" },
-                SnacksPickerTitle           = { link = "DiagnosticError" },
-                SnacksPicker                = { link = "Normal" },
-                SnacksPickerBorder          = { link = "borderStyle" },
-                SnacksPickerListCursorLine  = { link = "Visual" },
-                SnacksPickerCursorLine      = { link = "TinyInlineDiagnosticVirtualTextError" },
-                SnacksPickerSelected        = { fg = colors.red },
-                SnacksPickerIconFile        = { fg = colors.teal },
-                SnacksNotifierBorderInfo    = { link = "TinyInlineDiagnosticVirtualTextInfo" },
-                SnacksNotifierBorderWarn    = { link = "TinyInlineDiagnosticVirtualTextWarn" },
-                SnacksNotifierBorderError   = { link = "TinyInlineDiagnosticVirtualTextError" },
-                SnacksNotifierFooterInfo    = { link = "TinyInlineDiagnosticVirtualTextInfo" },
-                SnacksNotifierFooterWarn    = { link = "TinyInlineDiagnosticVirtualTextWarn" },
-                SnacksNotifierFooterError   = { link = "TinyInlineDiagnosticVirtualTextError" },
-                SnacksNotifierTitleInfo     = { link = "TinyInlineDiagnosticVirtualTextInfo" },
-                SnacksNotifierTitleWarn     = { link = "TinyInlineDiagnosticVirtualTextWarn" },
-                SnacksNotifierTitleError    = { link = "TinyInlineDiagnosticVirtualTextError" },
-                SnacksNotifierInfo          = { link = "TinyInlineDiagnosticVirtualTextInfo" },
-                SnacksNotifierWarn          = { link = "TinyInlineDiagnosticVirtualTextWarn" },
-                SnacksNotifierError         = { link = "TinyInlineDiagnosticVirtualTextError" },
-                -- SnacksPickerFile                             = { fg = colors.teal },
-                SnacksNotifierHistoryBorder = { fg = colors.spark },
-                -- SnacksIndent                = { fg = "none" },
-                -- SnacksIndentBlank           = { fg = "none" },
-
-                --------------------------------------------------------------------------------------------------------
-                -- NEOTREE
+                ----NEOTREE---------------------------------------------------------------------------------------------
 
                 NeoTreeCursorLine    = { link = "Visual" },
                 NeoTreeFileName      = { link = "NonText" },
@@ -511,33 +472,15 @@ local customCol = function(C)
                 NeoTreeWinSeparator  = { link = "WinSeparator" },
                 NeoTreeStatsHeader   = { link = "Title" },
                 NeoTreeFloatNormal   = { link = "NormalFloat" },
-                NeoTreeDirectoryIcon = { fg = colors.ivory },
-                NeoTreeDirectoryName = { fg = colors.ivory },
+                NeoTreeDirectoryIcon = { link = "BlinkCmpKindFolder" },
+                NeoTreeDirectoryName = { link = "BlinkCmpKindFolder" },
                 NeoTreeFloatTitle    = { link = "Title" },
                 NeoTreeTitleBar      = { link = "IncSearch" },
                 NeoTreeFloatBorder   = { link = "NormalFloat" },
                 NeoTreeModified      = { link = "Normal" },
                 NeoTreeRootName      = { link = "CursorLineNr" },
 
-                --------------------------------------------------------------------------------------------------------
-                -- TELESCOPE
-
-                TelescopePromptCount    = { link = "Normal" },
-                TelescopePromptTitle    = { link = "DiagnosticError" },
-                TelescopePromptPrefix   = { link = "DiagnosticError" },
-                TelescopePromptNormal   = { link = "Normal" },
-                TelescopePromptBorder   = { link = "FloatBorder" },
-                TelescopeResultsTitle   = { link = "DiagnosticError" },
-                TelescopeResultsNormal  = { link = "NonText" },
-                TelescopeResultsBorder  = { link = "FloatBorder" },
-                TelescopePreviewTitle   = { link = "DiagnosticError" },
-                TelescopePreviewNormal  = { link = "Normal" },
-                TelescopePreviewBorder  = { link = "FloatBorder" },
-                TelescopeSelection      = { link = "Visual" },
-                TelescopeSelectionCaret = { link = "Visual" },
-
-                --------------------------------------------------------------------------------------------------------
-                -- MINI-STATUSLINE
+                ----MINI-STATUSLINE-------------------------------------------------------------------------------------
 
                 MiniStatuslineModeNormal  = { bg = colors.text },
                 MiniStatuslineModeInsert  = { bg = colors.text },
@@ -550,24 +493,14 @@ local customCol = function(C)
                 MiniStatuslineFilename    = { fg = colors.surface0, bg = colors.crust },
                 MiniStatuslineInactive    = { fg = colors.text, bg = colors.crust },
 
-                --------------------------------------------------------------------------------------------------------
-                -- MINI-FILES
-
-                MiniFilesDirectory  = { fg = colors.ivory },
-                MiniFilesFile       = { link = "Comment" },
-                MiniFilesCursorLine = { link = "Visual" },
-                MiniFilesBorder     = { link = "FloatBorder" },
-
-                --------------------------------------------------------------------------------------------------------
-                -- MINI-HIPATTERNS
+                ----MINI-HIPATTERNS-------------------------------------------------------------------------------------
 
                 MiniHipatternsNote  = { fg = colors.crust, bg = colors.sky, italic = true, bold = true },
                 MiniHipatternsTodo  = { fg = colors.crust, bg = colors.teal, italic = true, bold = true },
                 MiniHipatternsHack  = { fg = colors.crust, bg = colors.yellow, italic = true, bold = true },
                 MiniHipatternsFixme = { fg = colors.crust, bg = colors.red, italic = true, bold = true },
 
-                --------------------------------------------------------------------------------------------------------
-                -- NOICE
+                ----NOTICE----------------------------------------------------------------------------------------------
 
                 NoiceCmdline            = { link = "NormalFloat" },
                 NoiceConfirm            = { link = "NormalFloat" },
@@ -576,8 +509,7 @@ local customCol = function(C)
                 NoiceCmdlinePopupBorder = { link = "FloatBorder" },
                 NoiceCmdlineIcon        = { link = "Title" },
 
-                --------------------------------------------------------------------------------------------------------
-                -- MISC
+                ----MISC------------------------------------------------------------------------------------------------
 
                 YaziFloatBorder         = { fg = colors.crust, bg = colors.crust },
                 MoreMsg                 = { link = "DiagnosticHint" },
@@ -592,7 +524,7 @@ local customCol = function(C)
                 FlashMatch              = { link = "LspInlayHint" },
                 FlashCurrent            = { link = "LspInlayHint" },
                 FlashLabel              = { link = "DiagnosticError" },
-                TreesitterContext       = { bg = colors.mantle, bold = true },
+                TreesitterContext       = { bg = colors.mantle, bold = false },
                 LspReferenceText        = { link = "Visual" },
                 LspReferenceWrite       = { link = "LspReferenceText" },
                 LspReferenceRead        = { link = "LspReferenceWrite" },

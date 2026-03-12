@@ -2,86 +2,75 @@
         cwd             = { fg = "#f38ba8",         bg = "black" }
 
         # Find
-        find_keyword    = { fg = "black",           bg = "green", italic = true, bold = true }
-        find_position   = { fg = "green",           bg = "black", italic = true }
+        find_keyword  = { fg = "black", bg = "green", italic = true, bold = true }
+        find_position = { fg = "green", bg = "black", italic = true  }
 
         # Marker
-        marker_copied   = { fg = "green",           bg = "black" }
-        marker_cut      = { fg = "green",           bg = "black" }
-        marker_selected = { fg = "red",             bg = "black" }
+        marker_copied   = { fg = "green", bg = "black" }
+        marker_cut      = { fg = "green", bg = "black" }
+        marker_selected = { fg = "red",   bg = "black" }
 
         # Count
-        count_copied    = { fg = "#add8e6",         bg = "black", bold = true }
-        count_cut       = { fg = "#f38ba8",         bg = "black", bold = true }
-        count_selected  = { fg = "#f38ba8",         bg = "black" }
+        count_copied   = { fg = "#add8e6", bg = "black", bold = true }
+        count_cut      = { fg = "#f38ba8", bg = "black", bold = true }
+        count_selected = { fg = "#f38ba8", bg = "black"  }
 
         # Border
-        border_symbol   = "┃"
-        # border_style    = { fg = "#1e1e2e" }
-        border_style    = { fg = "black" }
+        border_symbol  = "┃"
+        # border_style = { fg = "#1e1e2e" }
+        border_style   = { fg = "black" }
 
         # Highlighting
-        syntect_theme   = "~/.config/yazi/Catppuccin-mocha.tmTheme"
+        syntect_theme = "~/.config/yazi/Catppuccin-mocha.tmTheme"
 
 [indicator]
-        # parent  = { reversed = true, bold = true }
-        # current = { reversed = true, bold = true }
-        # preview = { reversed = true, bold = true }
-        # parent  = { bg = "#1e1e2e", bold = false }
-        # current = { bg = "#1e1e2e", bold = false }
-        # preview = { bg = "#1e1e2e", bold = false }
-        parent  = { bg = "#14141f", bold = false }
-        current = { bg = "#14141f", bold = false }
-        preview = { bg = "#14141f", bold = false }
-        padding = { open = "█", close = "█" }
+        parent  = { bg = "#14141f" ,bold = false }
+        current = { bg = "#14141f" ,bold = false }
+        preview = { bg = "#14141f" ,bold = false }
+        padding = { open = "█"     ,close = "█" }
 
 [tabs]
-        active          = { fg = "#add8e6",         bg = "black", bold = true }
-        inactive        = { fg = "#313244",         bg = "black" }
-        sep_inner       = { open = "",              close = "" }
-        sep_outer       = { open = "",              close = "" }
-        # tab_width       = 1
+        active    = { fg   = "#add8e6" ,bg    = "black", bold = true }
+        inactive  = { fg   = "#313244" ,bg    = "black" }
+        sep_inner = { open = ""        ,close = "" }
+        sep_outer = { open = ""        ,close = "" }
 
 [status]
-        sep_left        = {open = "", close = ""}
-        sep_right       = {open = "", close = ""}
-        separator_style = { fg = "#313244",         bg = "black" }
+        sep_left        = { open = ""        ,close = "" }
+        sep_right       = { open = ""        ,close = "" }
+        separator_style = { fg   = "#313244" ,bg = "black" }
 
 [mode]
-        normal_main     = { fg = "black",           bg = "red",     bold = false }
-        normal_alt      = { bg = "black",           fg = "red",     bold = false }
-        select_main     = { fg = "black",           bg = "green",   bold = false }
-        select_alt      = { bg = "black",           fg = "green",   bold = false }
-        unset_main      = { fg = "green",           bg = "#1e1e2e", bold = false }
-        unset_alt       = { bg = "green",           fg = "#1e1e2e", bold = false }
+        normal_main = { fg = "red"   ,bg = "black"   ,bold = false }
+        normal_alt  = { bg = "black" ,fg = "red"     ,bold = false }
+        select_main = { fg = "black" ,bg = "green"   ,bold = false }
+        select_alt  = { bg = "black" ,fg = "green"   ,bold = false }
+        unset_main  = { fg = "green" ,bg = "#1e1e2e" ,bold = false }
+        unset_alt   = { bg = "green" ,fg = "#1e1e2e" ,bold = false }
 
         # Progress
-        progress_label  = { fg = "black",           bold = true }
-        progress_normal = { fg = "blue",            bg = "#1e1e2e" }
-        progress_error  = { fg = "black",           bg = "#f38ba8" }
+        progress_label  = { fg = "black", bold = true      }
+        progress_normal = { fg = "blue",  bg   = "#1e1e2e" }
+        progress_error  = { fg = "black", bg   = "#f38ba8" }
 
         # Permissions
-        perm_type       = { fg = "#cdd6f4" }
-        perm_read       = { fg = "#a6e3a1" }
-        perm_write      = { fg = "#f9e2af" }
-        perm_exec       = { fg = "#f38ba8" }
-        perm_sep        = { fg = "#313244" }
+        perm_type  = { fg = "#cdd6f4" }
+        perm_read  = { fg = "#a6e3a1" }
+        perm_write = { fg = "#f9e2af" }
+        perm_exec  = { fg = "#f38ba8" }
+        perm_sep   = { fg = "#313244" }
 
 [input]
-        border          = { fg = "#a6e3a1" }
-        title           = {}
-        value           = {}
-        selected        = { reversed = true }
+        border   = { fg       = "#a6e3a1" }
+        selected = { reversed = true }
 
 [select]
-        border          = { fg = "cyan" }
-        active          = { fg = "cyan" }
-        inactive        = {}
+        border   = { fg = "cyan" }
+        active   = { fg = "cyan" }
 
 [tasks]
-        border          = { fg = "cyan" }
-        title           = {}
-        hovered         = { underline = false }
+        border  = { fg        = "cyan" }
+        hovered = { underline = false  }
 
 [which]
         mask            = { bg = "#1e1e2e" }
@@ -92,11 +81,11 @@
         separator_style = { fg = "#585b70" }
 
 [help]
-        on              = { fg = "#f5c2e7" }
-        exec            = { fg = "#94e2d5" }
-        desc            = { fg = "#9399b2" }
-        hovered         = { bg = "#585b70",         bold = true }
-        footer          = { fg = "#45475a",         bg = "white" }
+        on      = { fg = "#f5c2e7"  }
+        exec    = { fg = "#94e2d5"  }
+        desc    = { fg = "#9399b2"  }
+        hovered = { bg = "#585b70", bold = true    }
+        footer  = { fg = "#45475a", bg   = "white" }
 
 [spot]
         border   = { fg = "#181825" }
