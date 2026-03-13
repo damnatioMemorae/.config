@@ -22,7 +22,7 @@
         tab  @q    w   @e    r    t    y   @u    i    @o    @p     [     ]    \
         @caps @a    @s    @d    @f    g    @h    @j    @k    @l    ;     '     ret
         lsft z    x    c   @v   @b    @n    @m    ,    .    /     rsft
-        lctl lmet lalt           @spc            ralt rctl
+        lctl lmet @lalt           @spc            ralt rctl
 )
 
 (deflayer normal
@@ -40,6 +40,8 @@
 
         tt $tap-timeout
         ht $hold-timeout
+
+        $d lalt
 )
 
 (defalias
@@ -59,6 +61,7 @@
         l    (tap-hold $tt $ht l ralt)
 
         spc  (tap-hold $tt $ht spc (layer-while-held mouse))
+        lalt (tap-hold $tt $ht d lsft)
 
         n    (tap-hold $tt $ht n   (layer-while-held numbers))
         m    (tap-hold $tt $ht m   (layer-while-held fuckeys))
@@ -76,7 +79,7 @@
         e 8
         r 9
         s 4
-        d 5
+        $d 5
         f 6
         x 1
         c 2
@@ -97,7 +100,7 @@
 
         a f5
         s f6
-        d f7
+        $d f7
         f f8
 
         z f9
@@ -109,7 +112,7 @@
 (deflayermap (player)
         a prev
         s end
-        d home
+        $d home
         f next
 )
 
@@ -124,7 +127,7 @@
 
         a left
         s up
-        d down
+        $d down
         f right
 
         n h
@@ -144,7 +147,7 @@
 
         a S-9
         s S-[
-        d S-]
+        $d S-]
         f S-0
 
         z S-,
@@ -194,7 +197,7 @@
 
         a (movemouse-accel-left  5 300 1 7)
         s (movemouse-accel-up    5 300 1 7)
-        d (movemouse-accel-down  5 300 1 7)
+        $d (movemouse-accel-down  5 300 1 7)
         f (movemouse-accel-right 5 300 1 7)
 
         n left
