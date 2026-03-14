@@ -305,9 +305,6 @@
         "MessageLogger": {
             "enabled": false
         },
-        "MessageTags": {
-            "enabled": false
-        },
         "MutualGroupDMs": {
             "enabled": false
         },
@@ -648,6 +645,9 @@
         },
         "MoreQuickReactions": {
             "enabled": false
+        },
+        "CustomCommands": {
+            "enabled": false
         }
     },
     "notifications": {
@@ -660,7 +660,7 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1771848550331
+        "settingsSyncVersion": 1773432344747
     },
     "uiElements": {
         "chatBarButtons": {},

@@ -41,12 +41,12 @@
         separator_style = { fg   = "#313244" ,bg = "black" }
 
 [mode]
-        normal_main = { fg = "red"   ,bg = "black"   ,bold = false }
-        normal_alt  = { bg = "black" ,fg = "red"     ,bold = false }
-        select_main = { fg = "black" ,bg = "green"   ,bold = false }
-        select_alt  = { bg = "black" ,fg = "green"   ,bold = false }
-        unset_main  = { fg = "green" ,bg = "#1e1e2e" ,bold = false }
-        unset_alt   = { bg = "green" ,fg = "#1e1e2e" ,bold = false }
+        normal_main = { fg = "#94e2d5" ,bg = "black" ,bold = false }
+        normal_alt  = { fg = "#94e2d5" ,bg = "black" ,bold = false }
+        select_main = { fg = "#f9e3af" ,bg = "black" ,bold = false }
+        select_alt  = { fg = "#f9e3af" ,bg = "black" ,bold = false }
+        unset_main  = { fg = "#f38ba8" ,bg = "black" ,bold = false }
+        unset_alt   = { fg = "#f38ba8" ,bg = "black" ,bold = false }
 
         # Progress
         progress_label  = { fg = "black", bold = true      }

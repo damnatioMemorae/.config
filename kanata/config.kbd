@@ -52,7 +52,7 @@
         caps (tap-hold $tt $ht esc lctl)
         a    (tap-hold $tt $ht a lalt)
         s    (tap-hold $tt $ht s lmet)
-        d    (tap-hold $tt $ht d lsft)
+        $d   (tap-hold $tt $ht d lsft)
         f    (tap-hold $tt $ht f lctl)
 
         h    (tap-hold $tt $ht h rctl)
@@ -61,7 +61,6 @@
         l    (tap-hold $tt $ht l ralt)
 
         spc  (tap-hold $tt $ht spc (layer-while-held mouse))
-        lalt (tap-hold $tt $ht d lsft)
 
         n    (tap-hold $tt $ht n   (layer-while-held numbers))
         m    (tap-hold $tt $ht m   (layer-while-held fuckeys))
