@@ -52,7 +52,7 @@
         caps (tap-hold $tt $ht esc lctl)
         a    (tap-hold $tt $ht a lalt)
         s    (tap-hold $tt $ht s lmet)
-        $d   (tap-hold $tt $ht d lsft)
+        d    (tap-hold $tt $ht d lsft)
         f    (tap-hold $tt $ht f lctl)
 
         h    (tap-hold $tt $ht h rctl)
@@ -61,6 +61,7 @@
         l    (tap-hold $tt $ht l ralt)
 
         spc  (tap-hold $tt $ht spc (layer-while-held mouse))
+        lalt (tap-hold $tt $ht d lsft)
 
         n    (tap-hold $tt $ht n   (layer-while-held numbers))
         m    (tap-hold $tt $ht m   (layer-while-held fuckeys))
@@ -78,7 +79,8 @@
         e 8
         r 9
         s 4
-        $d 5
+        d 5
+        lalt 5
         f 6
         x 1
         c 2
@@ -99,7 +101,8 @@
 
         a f5
         s f6
-        $d f7
+        d f7
+        lalt f7
         f f8
 
         z f9
@@ -111,7 +114,8 @@
 (deflayermap (player)
         a prev
         s end
-        $d home
+        d home
+        lalt home
         f next
 )
 
@@ -126,7 +130,8 @@
 
         a left
         s up
-        $d down
+        d down
+        lalt down
         f right
 
         n h
@@ -146,7 +151,8 @@
 
         a S-9
         s S-[
-        $d S-]
+        d S-]
+        lalt S-]
         f S-0
 
         z S-,
@@ -196,7 +202,8 @@
 
         a (movemouse-accel-left  5 300 1 7)
         s (movemouse-accel-up    5 300 1 7)
-        $d (movemouse-accel-down  5 300 1 7)
+        d (movemouse-accel-down  5 300 1 7)
+        lalt (movemouse-accel-down  5 300 1 7)
         f (movemouse-accel-right 5 300 1 7)
 
         n left
