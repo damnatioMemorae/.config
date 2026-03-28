@@ -24,7 +24,7 @@
 @define-color surface1   #45475a;
 @define-color surface0   #313244;
 @define-color base       #1e1e2e;
-@define-color mantle     #14141f;
+@define-color mantle     #15141f;
 @define-color crust      #0e0e16;
 
 @define-color main-bg   #0e0e16;
@@ -36,8 +36,10 @@
 @define-color red       #f38ba8;
 @define-color green     #a6e3a1;
 @define-color charging  #add8e6;
-/* @define-color workspace #66ff66; */
-/* @define-color workspace #66d966; */
-@define-color workspace #add8e6;
-/* @define-color workspace #6c7086; */
-/* @define-color workspace #cba6f7; */
+
+@define-color workspace-fg-empty @base;
+@define-color workspace-fg @spark;
+@define-color workspace-fg-active #41feb3;
+@define-color workspace-border1 @surface1;
+@define-color workspace-border2 @surface0;
+@define-color workspace-bg @mantle;

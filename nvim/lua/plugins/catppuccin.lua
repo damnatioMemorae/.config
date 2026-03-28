@@ -1,6 +1,6 @@
 local colors = Colors.Darkppuccin
 
-local customCol = function(C)
+local customCol = function()
         return {
 
                 ----BUILTINS--------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ local customCol = function(C)
                 NormalNC                   = { link = "Normal" },
                 Number                     = { fg = colors.peach },
                 Pmenu                      = { bg = colors.mantle },
-                PmenuSel                   = { link = "Visual" },
+                PmenuSel                   = { bg = colors.base, bold = true },
                 PmenuSbar                  = { bg = colors.base },
                 PmenuThumb                 = { bg = colors.surface0 },
                 PreCondit                  = { link = "PreProc" },
@@ -111,6 +111,8 @@ local customCol = function(C)
                 -- Exception                        = { fg = colors.yellow },
                 Exception                  = { fg = colors.yellow },
                 markdownBlockquote         = { bg = colors.crust },
+                WinBar                     = { link = "Normal" },
+                WinBlend                   = { bg = "#000000" },
 
                 ----TREESITTER------------------------------------------------------------------------------------------
 
@@ -277,28 +279,6 @@ local customCol = function(C)
                 BlinkCmpKindVariable      = { link = "@lsp.type.type" },
                 BlinkCmpAbbrDeprecated    = { link = "DiagnosticDeprecated" },
 
-                BlinkCmpLabelDescription    = { link = "Comment" },
-                BlinkCmpLabelDetail         = { link = "Comment" },
-                BlinkCmpLabelMatch          = { link = "Normal" },
-                -- BlinkCmpMenu             = { bg = "#13131E" },
-                -- BlinkCmpMenu             = { bg = "#0e0e16" },
-                -- BlinkCmpMenuBorder       = { fg = colors.mantle, bg = colors.mantle },
-                BlinkCmpMenu                = { bg = colors.mantle },
-                -- BlinkCmpMenu             = { bg = "#11111b" },
-                -- BlinkCmpMenuBorder       = { fg = "#11111b", bg = "#11111b" },
-                BlinkCmpMenuBorder          = { fg = colors.surface0, bg = colors.mantle },
-                -- BlinkCmpMenuBorder       = { fg = colors.base, bg = colors.mantle },
-                BlinkCmpDoc                 = { bg = colors.base },
-                BlinkCmpDocBorder           = { bg = colors.base },
-                BlinkCmpDocSeparator        = { bg = colors.base },
-                -- BlinkCmpMenuSelection    = { link = "Visual" },
-                BlinkCmpMenuSelection       = { bg = colors.base, bold = false },
-                BlinkCmpSource              = { link = "Comment" },
-                BlinkCmpScrollBarThumb      = { link = "PmenuThumb" },
-                BlinkCmpScrollBarGutter     = { link = "PmenuSbar" },
-                BlinkCmpSignatureHelp       = { bg = colors.base },
-                BlinkCmpSignatureHelpBorder = { bg = colors.base },
-
                 ----DROPBAR---------------------------------------------------------------------------------------------
 
                 DropBarCurrentContext = { link = "Visual" },
@@ -308,15 +288,16 @@ local customCol = function(C)
                 ----DROPBAR ICON UI-------------------------------------------------------------------------------------
 
                 DropBarIconUiIndicator    = { link = "NonText" },
-                DropBarIconUiSeparator    = { link = "Comment" },
+                DropBarIconUiSeparator    = { link = "NonText" },
                 DropBarMenuCurrentContext = { link = "Visual" },
                 DropBarMenuHoverEntry     = { link = "Visual" },
                 DropBarMenuHoverIcon      = { link = "IncSearch" },
                 DropBarMenuHoverSymbol    = { link = "Visual" },
-                DropBarMenuFloatBorder    = { link = "FloatBorder" },
-                DropBarMenuNormalFloat    = { link = "Normal" },
+                DropBarMenuFloatBorder    = { link = "DropBarMenuNormalFloat" },
+                DropBarMenuNormalFloat    = { link = "WinBar" },
                 DropBarMenuSbar           = { link = "PmenuSbar" },
                 DropBarMenuThumb          = { link = "PmenuThumb" },
+                DropBarIconKindDefaultNC  = { link = "WinBarNC" },
 
                 ----DROPBAR KIND----------------------------------------------------------------------------------------
 
@@ -391,7 +372,7 @@ local customCol = function(C)
 
                 ----DROPBAR ICON KIND-----------------------------------------------------------------------------------
 
-                DropBarIconKindDefault           = { link = "@text" },
+                DropBarIconKindDefault           = { link = "WinBar" },
                 DropBarIconKindArray             = { link = "@string" },
                 DropBarIconKindBoolean           = { link = "@lsp.type.boolean" },
                 DropBarIconKindBreakstatement    = { link = "DiagnosticError" },
@@ -404,7 +385,7 @@ local customCol = function(C)
                 DropBarIconKindDeclaration       = { link = "@lsp.type.type" },
                 DropBarIconKindDelete            = { link = "DiagnosticError" },
                 DropBarIconKindDir               = { link = "Function" },
-                DropBarIconKindDostatement       = { link = "@keyword" },
+                DropBarIconKindDostatement       = { link = "Keyword" },
                 DropBarIconKindElsestatement     = { link = "Conditional" },
                 DropBarIconKindElement           = { link = "@variable.builtin" },
                 DropBarIconKindEnum              = { link = "@lsp.type.enum" },
@@ -515,15 +496,11 @@ local customCol = function(C)
                 MoreMsg                 = { link = "DiagnosticHint" },
                 LspInlayHint            = { bg = colors.base },
                 SymbolUsage             = { bg = colors.base },
-                FoldMark                = { link = "LspInlayHint" },
+                FoldMark                = { link = "Comment" },
                 LightBulbSign           = { link = "DiagnosticSignHint" },
                 OutlineCurrent          = { bg = colors.base },
                 OutlineDetails          = { link = "LspInlayHint" },
                 OutlineFoldMarker       = { link = "Comment" },
-                FlashBackdrop           = { link = "NonText" },
-                FlashMatch              = { link = "LspInlayHint" },
-                FlashCurrent            = { link = "LspInlayHint" },
-                FlashLabel              = { link = "DiagnosticError" },
                 TreesitterContext       = { bg = colors.mantle, bold = false },
                 LspReferenceText        = { link = "Visual" },
                 LspReferenceWrite       = { link = "LspReferenceText" },

@@ -43,7 +43,7 @@
         selected_border_color   = "magenta"
         widget_title            = { color = "yellow" }
         text                    = { color = "red" }
-        selected_text           = { color = "red", bg_color = "black", bold = true }
+        selected_text           = { color = "red", bg_color = "#14141f", bold = true }
         disabled_text           = { color = "dark gray" }
 
 [[row]]

@@ -15,7 +15,7 @@
 
 .main {
         /* background: @main-bg; */
-        background: alpha(@workspace, 0);
+        background: alpha(@workspace-fg, 0);
 }
 
 #custom-recording {
@@ -56,29 +56,30 @@ tooltip {
         margin-right: 10px;
         border: 0px solid alpha(@workspace-bg, 1);
 }
+#workspaces button.empty {
+        color: alpha(@workspace-fg-empty, 1);
+        background: alpha(@workspace-bg, 1);
+        padding: 4px 0px 4px 0px;
+        margin: 2px 0px 2px 8px;
+        border-bottom: 6px solid @workspace-border1;
+        border-left: 6px solid @workspace-border2;
+}
 #workspaces button {
-        color: alpha(@workspace-fg, 0.3);
+        color: alpha(@workspace-fg, 0.6);
         background: alpha(@workspace-bg, 1);
         transition: all 90ms ease-in-out;
         padding: 4px 0px 4px 0px;
         margin: 2px 8px 2px 0px;
-        border-bottom: 4px outset @base;
-        border-right: 4px outset @surface0;
-}
-#workspaces button.empty {
-        color: alpha(@workspace-fg-empty, 1);
-        background: alpha(@workspace-bg, 1);
-        margin: 2px 8px 2px 0px;
-        border-bottom: 4px outset @base;
-        border-right: 4px outset @surface0;
+        border-bottom: 6px solid @workspace-border1;
+        border-left: 6px solid @workspace-border2;
 }
 #workspaces button.active {
         color: alpha(@workspace-fg-active, 1);
         background: alpha(@workspace-bg, 1);
-        padding: 4px 0px 4px 4px;
-        margin: 4px 0px 4px 6px;
-        border-bottom: 4px outset @base;
-        border-right: 4px outset @surface0;
+        padding: 4px 0px 4px 0px;
+        margin: 2px 8px 2px 0px;
+        border-bottom: 6px solid @workspace-border1;
+        border-left: 6px solid @workspace-border2;
 }
 
 #custom-power {

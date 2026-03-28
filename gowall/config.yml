@@ -1,3 +1,6 @@
+EnableImagePreviewing: false
+InlineImagePreview: false
+
 themes:
   - name: "catppuccin"
     colors:
@@ -55,3 +58,7 @@ themes:
       - "#0e0e16"
       - "#0e0e16"
       - "#0e0e16"
+  - name: "aboba"
+    colors:
+      - "#000000"
+      - "#FFFFFF"

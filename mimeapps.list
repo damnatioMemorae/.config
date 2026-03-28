@@ -8,3 +8,9 @@ x-scheme-handler/unknown=librewolf.desktop
 x-scheme-handler/gitkraken=GitKraken.desktop
 x-scheme-handler/betterdiscord=discord.desktop
 inode/directory=yazi.desktop
+x-scheme-handler/tg=userapp-AyuGram Desktop-MQMAM3.desktop
+x-scheme-handler/tonsite=userapp-AyuGram Desktop-Z3JFM3.desktop
+
+[Added Associations]
+x-scheme-handler/tg=userapp-AyuGram Desktop-MQMAM3.desktop;
+x-scheme-handler/tonsite=userapp-AyuGram Desktop-Z3JFM3.desktop;
