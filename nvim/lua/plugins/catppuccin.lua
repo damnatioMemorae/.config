@@ -5,7 +5,6 @@ local customCol = function()
 
                 ----BUILTINS--------------------------------------------------------------------------------------------
 
-                ---[[
                 DiagnosticVirtualTextError = { bg = colors.base },
                 DiagnosticVirtualTextWarn  = { bg = colors.base },
                 DiagnosticVirtualTextInfo  = { bg = colors.base },
@@ -14,7 +13,6 @@ local customCol = function()
                 DiagnosticWarn             = { bg = colors.crust },
                 DiagnosticInfo             = { bg = colors.crust },
                 DiagnosticHint             = { bg = colors.crust },
-                --]]
                 debugBreakpoint            = { link = "DapBreakpoint" },
                 DapBreakpoint              = { link = "debugBreakpoint" },
                 DapBreakpointConition      = { link = "debugBreakpoint" },

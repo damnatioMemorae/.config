@@ -15,8 +15,8 @@ font-synthetic-style       = no-bold-italic
 
 bold-is-bright             = true
 
-adjust-cell-width          = 6%
-adjust-cell-height         = 18%
+adjust-cell-width          = 16%
+adjust-cell-height         = 32%
 adjust-underline-position  = 2
 adjust-underline-thickness = 10%
 adjust-icon-height         = 100%
@@ -28,7 +28,6 @@ confirm-close-surface      = false
 resize-overlay             = never
 
 cursor-style               = block
-# cursor-opacity             = 0.3
 cursor-invert-fg-bg        = true
 adjust-cursor-height       = 6
 
@@ -39,7 +38,6 @@ window-padding-balance     = true
 
 theme                      = theme
 
-# gtk-adwaita                = false
 gtk-single-instance        = true
 
 keybind = ctrl+,=unbind
@@ -62,8 +60,6 @@ keybind = super+ctrl+shift+j=unbind
 keybind = ctrl+alt+shift+j=unbind
 keybind = ctrl+shift+j=unbind
 keybind = unconsumed:ctrl+shift+alt+c=copy_to_clipboard
-
-# background-opacity         = 0.8
 
 custom-shader-animation    = true
 

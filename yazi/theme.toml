@@ -25,7 +25,7 @@
 
 [indicator]
         parent  = { bg = "#14141f" ,bold = false }
-        current = { bg = "#14141f" ,bold = false }
+        current = { bg = "#14141f" ,bold = true }
         preview = { bg = "#14141f" ,bold = false }
         padding = { open = "█"     ,close = "█" }
 
@@ -193,6 +193,7 @@ exts = [
         { name = "cpp"   ,text = "" ,fg = "#74c7ec"},
         { name = "h"     ,text = "" ,fg = "#cba6f7"},
         { name = "hpp"   ,text = "" ,fg = "#cba6f7"},
+        { name = "cs"    ,text = "" ,fg = "#74c7ec"},
         { name = "rs"    ,text = "" ,fg = "#eba0ac"},
         { name = "go"    ,text = "󰟓" ,fg = "#74c7ec"},
         { name = "py"    ,text = "" ,fg = "#f9e2af"},

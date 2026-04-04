@@ -1,0 +1,183 @@
+{
+        "mode": "overlay",
+        "modifier-reset": "press",
+        "name": "main",
+        "layer": "top",
+        "margin": "10 4 10 10",
+        "width": 50,
+        "position": "right",
+        "fixed-center": true,
+        "exclusive": false,
+        "passthrough": false,
+        "gtk-layer-shell": false,
+        "reload_style_on_change": true,
+        "modules-left": [
+                "custom/separators",
+                "hyprland/language",
+        ],
+        "modules-center": [
+                "hyprland/workspaces"
+        ],
+        "modules-right": [],
+        "custom/updates": {
+                "exec": "systemupdate w",
+                "return-type": "json",
+                "format": "{}",
+                "interval": 43200,
+                "tooltip": true,
+                "signal": 20
+        },
+        "hyprland/workspaces": {
+                "rotate": 0,
+                "all-outputs": true,
+                "active-only": false,
+                "on-click": "activate",
+                "disable-scroll": false,
+                "on-scroll-down": "hyprctl dispatch workspace -1",
+                "on-scroll-up": "hyprctl dispatch workspace +1",
+                "format": "{icon}",
+                "format-icons": {
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "5": "",
+                        "6": "",
+                        "7": "",
+                        "8": "",
+                        "9": "",
+                        "default": "o"
+                },
+                "persistent-workspaces": {
+                        "1": [],
+                        "2": [],
+                        "3": [],
+                        "4": [],
+                        "5": [],
+                        "6": [],
+                        "7": [],
+                        "8": [],
+                        "9": []
+                }
+        },
+        "hyprland/language": {
+                "rotate": 90,
+                "format": "{}",
+                "format-en": "🮋",
+                "format-ru": "🬋",
+                "on-click": "keyboardswitch"
+        },
+        "cava": {
+                "rotate": 270,
+                "framerate": 120,
+                "autosens": 1,
+                "bars": 130,
+                "method": "pulse",
+                "source": "auto",
+                "stereo": false,
+                "reverse": false,
+                "bar_delimiter": 0,
+                "monstercat": false,
+                "waves": true,
+                "noise_reduction": 0.77,
+                "input_delay": 0,
+                "format-icons": ["🬋", "🮋"],
+                "actions": {
+                        "on-click-right": "mode"
+                }
+        },
+
+        //──────────────────────────────────────────────────────────────────────────────────────────────────────
+        // CPU TEMPERATURE
+
+        "temperature#icon": {
+                "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input",
+                "critical-treshold": 40,
+                "interval": 1,
+                "format": ""
+        },
+        "temperature": {
+                "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input",
+                "critical-treshold": 10,
+                "interval": 1,
+                "format": " {temperatureC}°C "
+        },
+        "custom/gpuinfo#icon": {
+                "format": "󰢮",
+                "on-click": "gpu",
+                "tooltip": false,
+                "interval": 5,
+                "min-length": 1,
+                "max-length": 10,
+                "menu": "on-click",
+                "menu-file": "~/.config/waybar/menu/gpu.xml",
+                "menu-actions": {
+                        "Default": "gpu d",
+                        "Overclock": "gpu o",
+                        "Low": "gpu l"
+                }
+        },
+        "custom/gpuinfo": {
+                "exec": "gpuinfo",
+                "return-type": "json",
+                "format": " {} ",
+                "on-click": "gpu",
+                "tooltip": true,
+                "interval": 5,
+                "min-length": 4,
+                "max-length": 8,
+                "menu": "on-click",
+                "menu-file": "~/.config/waybar/menu/gpu.xml",
+                "menu-actions": {
+                        "Default": "gpu d",
+                        "Overclock": "gpu o",
+                        "Low": "gpu l"
+                }
+        },
+        "memory#icon": {
+                "states": {
+                        "norm": 30,
+                        "warning": 50,
+                        "critical": 80
+                },
+                "format": "󰘚",
+                // "format": "",
+                "format-critical": "󰀦",
+                "tooltip": false,
+                "tooltip-format": "Memory Used: {used:0.1f} GB / {total:0.1f} GB",
+                "interval": 5,
+                "min-length": 1,
+                "max-length": 8
+        },
+        "memory": {
+                "format-icons": ["⡀", "⣀", "⣄", "⣤", "⣦", "⣶", "⣷", "⣿"],
+                // "format-icons": ["", "", "", "", "", "", "", ""],
+                "format": "{icon}",
+                "interval": 1,
+                "tooltip": false,
+                "min-length": 1,
+                "max-length": 7
+        },
+        "battery": {
+                "states": {
+                        "full": 100,
+                        "good": 99,
+                        "warning": 50,
+                        "critical": 15
+                },
+                "format": "{icon}",
+                "format-icons": ["⡀", "⣀", "⣄", "⣤", "⣦", "⣶", "⣷", "⣿"],
+                // "format-full": "󱃌",
+                // "format-warning": "󰁻",
+                // "format-critical": "󱃍",
+                // "format-charging": "󰚥",
+                "tooltip-format": "Time to Empty: {time}",
+                "tooltip-format-charging": "Time to Full: {time}",
+                "interval": 1,
+                "min-length": 1,
+                "max-length": 8
+        },
+        "custom/separators": {
+                "format": " "
+        }
+}

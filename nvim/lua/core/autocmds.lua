@@ -252,12 +252,12 @@ autocmd({ "BufReadPost", "BufNew" }, {
 autocmd("LspAttach", {
         desc     = "LSP stuff",
         group    = augroup("lsp-attach", { clear = true }),
-        callback = function(args)
-                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+        callback = function(ev)
+                local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
                 ---[[ HIGHLIGHT
                 if fn.has("nvim-0.11") == 1 and client:supports_method("textDocument/documentHighlight", 0) then
-                        local buf               = args.buf
+                        local buf               = ev.buf
                         local highlight_augroup = augroup("lsp-highlight", { clear = false })
 
                         autocmd({ "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" }, {
@@ -291,7 +291,7 @@ autocmd("LspAttach", {
                         local color_augroup = augroup("lsp-color", { clear = false })
                         autocmd({ "CursorHold", "CursorMoved" }, {
                                 desc     = "LSP colors",
-                                buffer   = args.buf,
+                                buffer   = ev.buf,
                                 group    = color_augroup,
                                 -- callback = function() lsp.document_color.enable(true, 0, { style = "virtual" }) end,
                                 callback = function() lsp.document_color.enable(false) end,
@@ -460,6 +460,9 @@ autocmd("FileType", {
                 local opts = { buffer = event.buf, silent = true }
                 vim.keymap.set("n", "J", "<cmd>cn<CR>zz<cmd>wincmd p<CR>", opts)
                 vim.keymap.set("n", "K", "<cmd>cN<CR>zz<cmd>wincmd p<CR>", opts)
+                vim.keymap.set("n", "<leader>qr", function() vim.cmd.cexpr("[]") end,
+                               { desc = "󰚃 Remove quickfix items" })
+                vim.keymap.set("n", "<leader>q1", "<cmd>silent cfirst<CR>zv", { desc = "󰴩 Goto 1st quickfix" })
         end,
 })
 

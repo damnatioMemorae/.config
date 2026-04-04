@@ -27,14 +27,13 @@ return {
         { enabled = true,  "chrisgrieser/nvim-lsp-endhints" },
         { enabled = false, "rachartier/tiny-code-action.nvim" },
         { enabled = true,  "rachartier/tiny-inline-diagnostic.nvim" },
+        { enabled = false,  "neovim/nvim-lspconfig" },
 
         ----TREESITTER--------------------------------------------------------------------------------------------------
         { enabled = true,  "Wansmer/treesj" },
         { enabled = true,  "ThePrimeagen/refactoring.nvim" },
-        { enabled = true,  "nvim-treesitter/nvim-treesitter" },
         { enabled = true,  "theRealCarneiro/hyprland-vim-syntax" },
         { enabled = true,  "nvim-treesitter/nvim-treesitter-context" },
-        { enabled = true,  "nvim-treesitter/nvim-treesitter-textobjects" },
 
         ----MINI--------------------------------------------------------------------------------------------------------
         { enabled = true,  "nvim-mini/mini.move" },
@@ -63,7 +62,7 @@ return {
         { enabled = false, "MagicDuck/grug-far.nvim" },
         { enabled = true,  "altermo/ultimate-autopair.nvim" },
         { enabled = true,  "chrisgrieser/nvim-rip-substitute" },
-        { enabled = true,  "chrisgrieser/nvim-various-textobjs" },
+        { enabled = false,  "chrisgrieser/nvim-various-textobjs" },
 
         ----MOVEMENT----------------------------------------------------------------------------------------------------
         { enabled = true,  "chrisgrieser/nvim-spider" },

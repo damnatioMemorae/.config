@@ -149,7 +149,7 @@ alias          sz='clear && source ~/.zshrc && clear'
 alias          sb='clear && source ~/.bashrc && clear'
 alias           t='tmux'
 alias     yayfind='$aurhelper -Slq | fzf --border-label="yay" --multi --preview "$aurhelper -Si {1}" | xargs -ro $aurhelper -S'
-alias     pacfind='pacman -Slq | fzf --multi --border-label="pacman" --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
+alias     pacfind='pacman -Slq | fzf --border-label="pacman" --multi --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
 alias      rmfind='pacman -Qq | fzf --border-label="remove" --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
 
 alias         nvz='nvim ~/.config/.zshrc'
