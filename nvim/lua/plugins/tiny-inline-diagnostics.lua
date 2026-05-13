@@ -13,7 +13,7 @@ return {
                         vertical     = " │",
                         vertical_end = " └",
                 },
-                blend   = { factor = 0.25 },
+                blend   = { factor = 0.2 },
                 options = {
                         show_source                  = true,
                         throttle                     = 0,
@@ -29,12 +29,9 @@ return {
                         show_related                 = { enabled = true, max_count = 5 },
                         overflow                     = { mode = "wrap" },
                         break_line                   = { enabled = false, after = 25 },
-                        virt_texts                   = { priority = 8000 },
+                        virt_texts                   = { priority = 10000 },
                         experimental                 = { use_window_local_extmarks = true },
-                        format                       = function(diag)
-                                -- return diag.message:sub(1, -2) .. " " .. "[" .. diag.source:sub(1, -2) .. "]"
-                                return diag.message .. " " .. "[" .. diag.source .. "]"
-                        end,
+                        format                       = function(diag) return diag.message end,
                 },
         },
         config   = function(_, opts)

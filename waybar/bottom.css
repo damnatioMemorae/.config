@@ -53,36 +53,36 @@ tooltip {
 /* MODULES */
 
 #workspaces button:hover {
-        color: @workspace;
-        background: alpha(@workspace, 0.2);
+        color: @workspace-fg;
+        background: alpha(@workspace-fg, 0.2);
         margin-top: 10px;
-        border: 0px solid alpha(@workspace, 1);
+        border: 0px solid alpha(@workspace-fg, 1);
 }
 
 #workspaces button {
-        color: alpha(@workspace, 0.3);
-        background: alpha(@workspace, 0);
+        color: alpha(@workspace-fg, 0.3);
+        background: alpha(@workspace-fg, 0);
         transition: all 90ms ease-in-out;
         padding: 6px 6px 0px 6px;
         margin: 0 1.5px;
         min-width: 9px;
         border-radius: 0px;
-        border: 0px solid alpha(@workspace, 0.2);
+        border: 0px solid alpha(@workspace-fg, 0.2);
         border-bottom-width: 4px;
 }
 
 #workspaces button.empty {
-        color: alpha(@workspace, 0);
-        background: alpha(@workspace, 0);
-        border: 0px solid alpha(@workspace, 0.2);
+        color: alpha(@workspace-fg, 0);
+        background: alpha(@workspace-fg, 0);
+        border: 0px solid alpha(@workspace-fg, 0.2);
         border-bottom-width: 4px;
 }
 
 #workspaces button.active {
-        color: @workspace;
-        background: alpha(@workspace, 0.0);
+        color: @workspace-fg;
+        background: alpha(@workspace-fg, 0.0);
         padding: 0px 6px 0px 6px;
-        border: 0px solid alpha(@workspace, 1);
+        border: 0px solid alpha(@workspace-fg, 1);
         border-bottom-width: 4px;
 }
 

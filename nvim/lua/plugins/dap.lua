@@ -1,11 +1,8 @@
 return {
         "mfussenegger/nvim-dap",
+        enabled      = false,
         lazy         = false,
-        dependencies = {
-                "rcarriga/nvim-dap-ui",
-                "nvim-neotest/nvim-nio",
-                "theHamsta/nvim-dap-virtual-text",
-        },
+        dependencies = { "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio", "theHamsta/nvim-dap-virtual-text" },
         config       = function()
                 local dap          = require("dap")
                 local ui           = require("dapui")
@@ -20,9 +17,7 @@ return {
                 dap.listeners.before.event_exited.dapui_config     = function() ui.close() end
                 dap.listeners.before.event_terminated.dapui_config = function() ui.close() end
 
-                virtual_text.setup({
-                        all_references = true,
-                })
+                virtual_text.setup({ all_references = true })
                 ui.setup({
                         expand_lines = true,
                         -- controls       = { enabled   = false },
@@ -100,8 +95,7 @@ return {
 
                 -- dap.defaults.fallback.switchbuf   = "usevisible,usetab,newtab"
 
-                --------------------------------------------------------------------------------------------------------
-                -- C/C++
+                ---- C/C++ ---------------------------------------------------------------------------------------------
 
                 dap.adapters.codelldb  = {
                         type    = "executable",
@@ -122,8 +116,7 @@ return {
                         },
                 }
 
-                --------------------------------------------------------------------------------------------------------
-                -- BASH
+                ---- BASH ----------------------------------------------------------------------------------------------
 
                 local bashdb          = vim.fn.stdpath("data") .. "/mason/packages/bash-debug-adapter"
                 dap.adapters.bashdb   = {
@@ -154,8 +147,7 @@ return {
                         },
                 }
 
-                --------------------------------------------------------------------------------------------------------
-                -- PYTHON
+                ---- PYTHON --------------------------------------------------------------------------------------------
 
                 dap.adapters.python       = function(cb, config)
                         if config.request == "attach" then
@@ -196,7 +188,6 @@ return {
                         },
                 }
 
-                --------------------------------------------------------------------------------------------------------
-                -- GOLANG
+                ---- GO ------------------------------------------------------------------------------------------------
         end,
 }

@@ -1,14 +1,13 @@
-local function switchSourceHeader(bufnr)
+local function switchSourceHeader(bufnr, client)
         local method_name = "textDocument/switchSourceHeader"
-        local client      = vim.lsp.get_clients({ bufnr = bufnr, name = "clangd" })[1]
-        if not client then
+        ---@diagnostic disable-next-line:param-type-mismatch
+        if not client or not client:supports_method(method_name) then
                 return vim.notify(("method %s is not supported by any servers active on the current buffer"):format(
                         method_name))
         end
         local params = vim.lsp.util.make_text_document_params(bufnr)
-        ---@diagnostic disable-next-line: unknown-diag-code
-        ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
-        client.request(method_name, params, function(err, result)
+        ---@diagnostic disable-next-line:param-type-mismatch
+        client:request(method_name, params, function(err, result)
                                if err then
                                        error(tostring(err))
                                end
@@ -20,36 +19,98 @@ local function switchSourceHeader(bufnr)
                        end, bufnr)
 end
 
-local function symbolInfo()
-        local bufnr         = vim.api.nvim_get_current_buf()
-        local clangd_client = vim.lsp.get_clients({ bufnr = bufnr, name = "clangd" })[1]
-        ---@diagnostic disable-next-line: unknown-diag-code
-        ---@diagnostic disable-next-line: param-type-not-match, missing-parameter, param-type-mismatch
-        if not clangd_client or not clangd_client.supports_method"textDocument/symbolInfo" then
+local function symbolInfo(bufnr, client)
+        local method_name = "textDocument/symbolInfo"
+        ---@diagnostic disable-next-line:param-type-mismatch
+        if not client or not client:supports_method(method_name) then
                 return vim.notify("Clangd client not found", vim.log.levels.ERROR)
         end
         local win    = vim.api.nvim_get_current_win()
-        local params = vim.lsp.util.make_position_params(win, clangd_client.offset_encoding)
-        ---@diagnostic disable-next-line: unknown-diag-code
-        ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
-        clangd_client.request("textDocument/symbolInfo", params, function(err, res)
-                                      if err or #res == 0 then
-                                              -- Clangd always returns an error, there is not reason to parse it
-                                              return
-                                      end
-                                      local container = string.format("container: %s", res[1].containerName) ---@type string
-                                      local name      = string.format("name: %s", res[1].name) ---@type string
-                                      vim.lsp.util.open_floating_preview({ name, container }, "", {
-                                              height    = 2,
-                                              width     = math.max(string.len(name), string.len(container)),
-                                              focusable = false,
-                                              focus     = false,
-                                              border    = Border.borderStyle,
-                                              title     = "Symbol Info",
-                                      })
-                                      ---@diagnostic disable-next-line: unknown-diag-code
-                                      ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
-                              end, bufnr)
+        local params = vim.lsp.util.make_position_params(win, client.offset_encoding)
+        ---@diagnostic disable-next-line:param-type-mismatch
+        client:request(method_name, params, function(err, res)
+                               if err or #res == 0 then
+                                       return
+                               end
+                               local container = string.format("container: %s", res[1].containerName) ---@type string
+                               local name      = string.format("name: %s", res[1].name) ---@type string
+                               vim.lsp.util.open_floating_preview({ name, container }, "", {
+                                       anchor_bias = "below",
+                                       border      = Border.borderStyle,
+                                       height      = 2,
+                                       width       = math.max(string.len(name), string.len(container)),
+                                       focusable   = false,
+                                       focus       = false,
+                                       title       = "",
+                               })
+                       end, bufnr)
+end
+
+local function semanticTokens()
+        ---[[ GLOBAL SCOPE
+        vim.api.nvim_create_autocmd("LspTokenUpdate", {
+                callback = function(args)
+                        local token = args.data.token
+                        if
+                                   token.type == "variable"
+                                   and token.modifiers.globalScope
+                                   and not token.modifiers.readonly
+                                   and not token.modifiers.defaultLibrary
+                        then
+                                vim.lsp.semantic_tokens.highlight_token(
+                                        token, args.buf, args.data.client_id, "varGlobScope")
+                        end
+                end,
+        })
+        --]]
+
+        ---[[ FUNCTION SCOPE
+        vim.api.nvim_create_autocmd("LspTokenUpdate", {
+                callback = function(args)
+                        local token = args.data.token
+                        if
+                                   token.type == "variable"
+                                   and token.modifiers.functionScope
+                                   and not token.modifiers.readonly
+                        then
+                                vim.lsp.semantic_tokens.highlight_token(
+                                        token, args.buf, args.data.client_id, "varFuncScope")
+                        end
+                end,
+        })
+        --]]
+
+        ---[[ CLASS SCOPE
+        vim.api.nvim_create_autocmd("LspTokenUpdate", {
+                callback = function(args)
+                        local token = args.data.token
+                        if
+                                   token.type == "constructor"
+                                   and token.modifiers.identifier
+                                   and not token.modifiers.readonly
+                        then
+                                vim.lsp.semantic_tokens.highlight_token(
+                                        token, args.buf, args.data.client_id, "varClassScope")
+                        end
+                end,
+        })
+        --]]
+
+        ---[[
+        vim.api.nvim_create_autocmd("LspTokenUpdate", {
+                callback = function(args)
+                        local token = args.data.token
+                        if
+                                   token.type == "cppType"
+                                   and token.modifiers.identifier
+                                   and not token.modifiers.readonly
+                        then
+                                vim.lsp.semantic_tokens.highlight_token(
+                                        token, args.buf, args.data.client_id, "LspInlayHint")
+                        end
+                end,
+        })
+        --]]
 end
 
 local cmd = {
@@ -86,9 +147,9 @@ local cmd = {
 
 ---@type vim.lsp.Config
 return {
-        cmd                = cmd,
-        filetypes          = { "c", "cpp" },
-        root_markers       = {
+        cmd             = cmd,
+        filetypes       = { "c", "cpp" },
+        root_markers    = {
                 "build.ninja",
                 ".clangd",
                 ".clang-format",
@@ -103,34 +164,50 @@ return {
                 "meson.build",
                 "meson_options.txt",
         },
-        settings           = {
+        get_language_id = function(_, ftype)
+                local t = { objc = "objective-c", objcpp = "objective-cpp", cuda = "cuda-cpp" }
+                return t[ftype] or ftype
+        end,
+        settings        = {
                 clangd = {
-                        InlayHints           = {
+                        InlayHints         = {
                                 Designators    = true,
                                 Enabled        = true,
                                 ParameterNames = true,
                                 DeducedTypes   = true,
                         },
-                        Completion           = { AllScopes = true, ArgumentLists = "Delimiters" },
-                        CompileFlags         = { Add = "-Iinclude" },
-                        usePlaceholders      = true,
-                        completeUnimported   = true,
-                        clangdFileStatus     = true,
-                        fallbackFlags        = { "-std=c++23" },
+                        Completion         = { AllScopes = true, ArgumentLists = "Delimiters" },
+                        CompileFlags       = { Add = "-Iinclude" },
+                        usePlaceholders    = true,
+                        completeUnimported = true,
+                        clangdFileStatus   = true,
+                        fallbackFlags      = { "-std=c++23" },
                 },
         },
-        on_init            = function(client, init_result)
-                if init_result.offsetEncoding then
-                        client.offset_encoding = init_result.offsetEncoding
+        capabilities    = {
+                textDocument = {
+                        completion = {
+                                editsNearCursor = true,
+                        },
+                },
+                offsetEncoding = { "utf-8", "utf-16" },
+                semanticTokens = { multilineTokenSupport = true },
+        },
+        on_init         = function(client, initResult)
+                if initResult.offsetEncoding then ---@diagnostic disable-line: undefined-field
+                        client.offset_encoding = initResult.offsetEncoding ---@diagnostic disable-line: undefined-field
                 end
         end,
-        on_attach          = function(_, bufnr)
-                vim.api.nvim_buf_create_user_command(bufnr, "LspClangdSwitchSourceHeader", function()
-                                                             switchSourceHeader(bufnr)
-                                                     end, { desc = "Switch between source/header" })
-                vim.api.nvim_buf_create_user_command(bufnr, "LspClangdShowSymbolInfo", function()
-                                                             symbolInfo()
-                                                     end, { desc = "Show symbol info" })
+        on_attach       = function(client, bufnr)
+                local command = vim.api.nvim_buf_create_user_command
+
+                command(bufnr, "ClangdSwitchSourceHeader", function() switchSourceHeader(bufnr, client) end,
+                        { desc = "Switch between source/header" })
+                command(bufnr, "ClangdSymbolInfo", function() symbolInfo(bufnr, client) end, {
+                        desc = "Show symbol info" })
+
+                vim.keymap.set("n", "&", "<cmd>ClangdSwitchSourceHeader<CR>")
+
+                semanticTokens()
         end,
-        workspace_required = false,
 }

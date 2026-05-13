@@ -37,6 +37,6 @@ ShellRoot {
         //         }
         // }
 
-        Locks.Lockscreen { id: lockscreen }
-        AppLauncher {}
+        // Locks.Lockscreen { id: lockscreen }
+        // AppLauncher {}
 }

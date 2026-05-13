@@ -143,7 +143,7 @@ alias          pc='$aurhelper -Sc'
 alias          po='$aurhelper -Qtdq | $aurhelper -Rns -'
 alias           S='sudo pacman -S'
 
-alias        tarx='tar xzvf $(date +"%y-%m-%d_%H-%M-%S.tar.gz")'
+alias        tarx='tar xzvf'
 alias        tarc='tar czvf $(date +"%y-%m-%d_%H-%M-%S.tar.gz")'
 alias          sz='clear && source ~/.zshrc && clear'
 alias          sb='clear && source ~/.bashrc && clear'

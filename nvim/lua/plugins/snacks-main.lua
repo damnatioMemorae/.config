@@ -1,49 +1,62 @@
-vim.api.nvim_set_hl(0, "SnacksTitle",                { link = "DiagnosticError" })
-vim.api.nvim_set_hl(0, "SnacksPickerTitle",          { link = "DiagnosticError" })
-vim.api.nvim_set_hl(0, "SnacksPicker",               { link = "Normal" })
-vim.api.nvim_set_hl(0, "SnacksPickerBorder",         { link = "borderStyle" })
-vim.api.nvim_set_hl(0, "SnacksPickerListCursorLine", { link = "Visual" })
-vim.api.nvim_set_hl(0, "SnacksPickerCursorLine",     { link = "TinyInlineDiagnosticVirtualTextError" })
-vim.api.nvim_set_hl(0, "SnacksPickerSelected",       { link = "Error" })
-vim.api.nvim_set_hl(0, "SnacksPickerIconFile",       { link = "BlinkCmpKindFile" })
+local groups = {
+        { "Title",                "DiagnosticError" },
+
+        { "PickerTitle",          "DiagnosticError" },
+        { "Picker",               "Normal" },
+        { "PickerBorder",         "borderStyle" },
+        { "PickerListCursorLine", "Visual" },
+        { "PickerCursorLine",     "TinyInlineDiagnosticVirtualTextError" },
+        { "PickerSelected",       "Error" },
+        { "PickerIconFile",       "BlinkCmpKindFile" },
+
+        { "PickerUndoAdded",      "SnacksDiffAdd" },
+        { "PickerUndoSaved",      "SnacksDiffContext" },
+        { "PickerUndoRemoved",    "SnacksDiffDelete" },
+        { "PickerUndoCurrent",    "DiffText" },
+
+        { "DiffAdded",            "DiffAdd" },
+        { "DiffSaved",            "DiffChange" },
+        { "DiffRemoved",          "DiffDelete" },
+        { "DiffCurrent",          "DiffText" },
+}
+require("core.utils").linkHl(groups, "Snacks")
 
 local border = Border.borderStyle
 local none   = Border.borderStyleNone
 local top    = Border.borderTop
 local bot    = Border.borderBottom
 
+local loaded, _ = pcall(require, "snacks")
+local toggle    = Snacks.toggle
+
+if loaded then
+        toggle.option("relativenumber", { name = " Relative Line Number", global = true }):map("<leader>or")
+        toggle.option("number", { name = " Line Number", global = true }):map("<leader>on")
+        toggle.option("wrap", { name = "󰖶 Wrap", global = true }):map("<leader>ow")
+        toggle.treesitter({ name = " Treesitter Highlight" }):map("<leader>ot")
+end
+
 return {
         "folke/snacks.nvim",
         lazy     = false,
         priority = 1000,
         keys     = {
+                -- { "<A-b>",      function() Snacks.bufdelete() end,          desc = "Delete Buffer" },
+                { "<A-b>",      "<cmd>b #<CR>",                             desc = "Swap buffer" },
                 { "<leader>fr", function() Snacks.rename.rename_file() end, desc = "Rename File" },
                 { "<leader>lg", function() Snacks.lazygit() end,            desc = "Lazygit" },
         },
         opts     = {
-                quickfile    = { enabled = true },
-                lazygit      = { enabled = true },
-                input        = { enabled = true },
-                indent       = {
-                        indent  = {
-                                enabled    = false,
-                                char       = "",
-                                only_scope = true,
-                        },
+                quickfile = { enabled = true },
+                lazygit   = { enabled = true },
+                input     = { enabled = true, icon = "" },
+                indent    = {
+                        indent  = { enabled = false, char = "", only_scope = true },
                         animate = { enabled = false },
-                        scope   = {
-                                enabled      = false,
-                                char         = "▏",
-                                underline    = true,
-                                only_current = true,
-                                hl           = "Function",
-                        },
-                        chunk   = {
-                                enabled      = false,
-                                only_current = false,
-                        },
+                        chunk   = { enabled = false, only_current = false },
+                        scope   = { enabled = false, char = "▏", underline = true, only_current = true, hl = "Function" },
                 },
-                scope        = {
+                scope     = {
                         enabled    = true,
                         min_size   = 2,
                         cursor     = false,
@@ -51,6 +64,7 @@ return {
                         treesitter = {
                                 enabled      = true,
                                 injections   = true,
+                                field_blocks = { "local_declaration" },
                                 blocks       = {
                                         enabled = true,
                                         "function_declaration",
@@ -65,10 +79,9 @@ return {
                                         "if_statement",
                                         "for_statement",
                                 },
-                                field_blocks = { "local_declaration" },
                         },
                 },
-                win          = {
+                win       = {
                         border = border,
                         wo     = {
                                 signcolumn     = "no",
@@ -79,21 +92,13 @@ return {
                                 cursorcolumn   = false,
                         },
                 },
-                styles       = {
-                        notification_history = {
-                                border   = border,
-                                height   = 0.9,
-                                width    = 0.9,
-                                title    = "",
-                                titlepos = "left",
-                                fg       = "markdown",
-                                bo       = { filetype = "Snacks.notif_history", modifiable = false },
-                                wo       = { winhighlight = "Normal:SnacksNotifierHistory,FloatBorder:SnacksNotifierHistoryBorder" },
-                        },
+                styles    = {
                         input                = {
                                 backdrop = true,
                                 border   = border,
-                                row      = math.ceil(vim.o.lines / 2) - 8,
+                                row      = math.ceil(vim.o.lines / 10),
+                                b        = { completion = true },
+                                width    = 100,
                                 wo       = {
                                         cursorline   = false,
                                         winhighlight =
@@ -107,10 +112,20 @@ return {
                                 border   = border,
                                 title    = " 󰆽 Git blame ",
                         },
+                        notification_history = {
+                                border   = border,
+                                height   = 0.9,
+                                width    = 0.9,
+                                title    = "",
+                                titlepos = "left",
+                                fg       = "markdown",
+                                bo       = { filetype = "Snacks.notif_history", modifiable = false },
+                                wo       = { winhighlight = "Normal:SnacksNotifierHistory,FloatBorder:SnacksNotifierHistoryBorder" },
+                        },
                 },
-                picker       = {
+                picker    = {
                         prompt    = " > ",
-                        ui_select = true,
+                        ui_select = false,
                         hidden    = true,
                         ignored   = true,
                         formats   = { file = { filename_only = true } },
@@ -131,11 +146,7 @@ return {
                         icons     = {
                                 Diagnostics = Icons.Diagnostics,
                                 kinds       = Icons.Kinds,
-                                tree        = {
-                                        vertical = " ",
-                                        middle   = " ",
-                                        last     = " ",
-                                },
+                                tree        = { vertical = " ", middle = " ", last = " " },
                                 files       = {
                                         enabled  = true,
                                         dir      = Icons.Kinds.Folder,
@@ -259,7 +270,7 @@ return {
                                 },
                         },
                 },
-                image        = {
+                image     = {
                         enabled  = false,
                         formats  = { "png", "jpg", "jpeg", "gif", "bmp", "webp", "tiff", "heic", "avif", "mp4", "mov", "avi", "mkv", "webm", "pdf" },
                         force    = false,
@@ -288,17 +299,9 @@ return {
                                 statuscolumn   = "",
                         },
                         cache    = vim.fn.stdpath("cache") .. "/Snacks.image",
-                        debug    = {
-                                request   = false,
-                                convert   = false,
-                                placement = false,
-                        },
+                        debug    = { request = false, convert = false, placement = false },
+                        icons    = { math = "󰪚 ", chart = "󰄧 ", image = " " },
                         env      = {},
-                        icons    = {
-                                math  = "󰪚 ",
-                                chart = "󰄧 ",
-                                image = " ",
-                        },
                         convert  = {
                                 notify  = true,
                                 mermaid = function()

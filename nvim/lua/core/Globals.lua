@@ -8,39 +8,39 @@ _G.Colors  = {}
 _G.Border  = {}
 _G.Spinner = {}
 
-----VARIABLES-----------------------------------------------------------------------------------------------------------
+---- VARIABLES ---------------------------------------------------------------------------------------------------------
 
-Config.prefix      = ","
 Config.projectsDir = vim.env.HOME .. "/deeznuts/"
 Config.backdrop    = 80
 Config.blend       = 0
 Config.winblend    = 0
 Config.localRepos  = vim.fs.normalize("$HOME/deeznuts/")
 
-Config.codeLens    = true
-Config.diagnostics = true
-Config.inlayHints  = true
-Config.indentLine  = true
+Config.codeLens   = true
+Config.conceal    = true
+Config.inlayHints = true
+Config.indentLine = true
+Config.statusline = false
 
-----BORDERS-------------------------------------------------------------------------------------------------------------
+---- BORDERS -----------------------------------------------------------------------------------------------------------
 
 Border.borderStyle       = { " ", " ", " ", " ", " ", " ", " ", " " }
 Border.borderTop         = { "▔", "▔", "▔", " ", " ", " ", " ", " " }
 Border.borderBottom      = { " ", " ", " ", " ", "▂", "▂", "▂", " " }
 Border.borderLeft        = { "▌", " ", " ", " ", " ", " ", "▌", "▌" }
 Border.borderRight       = { " ", " ", "🮉", "🮉", "🮉", " ", " ", " " }
-Border.borderTopEmpty    = { "", "", "", "", "", "", "", "" }
+Border.borderTopEmpty    = { "▔", "▔", "▔", "", "", "", "", "" }
 Border.borderBottomEmpty = { "", "", "", "", "▂", "▂", "▂", "" }
 Border.borderLeftEmpty   = { "▌", "", "", "", "", "", "▌", "▌" }
 Border.borderRightEmpty  = { "", "", "🮉", "🮉", "🮉", "", "", "" }
 Border.borderStyleNone   = "none"
 
-----SPINNERS------------------------------------------------------------------------------------------------------------
+---- SPINNERS ----------------------------------------------------------------------------------------------------------
 
 Spinner.dots     = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
 Spinner.vertical = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
 
-----TOGGLES-------------------------------------------------------------------------------------------------------------
+---- TOGGLES -----------------------------------------------------------------------------------------------------------
 
 function Toggle.codeLens()
         local loaded, symbol = pcall(require, "symbol-usage")
@@ -51,12 +51,19 @@ function Toggle.codeLens()
         if loaded and Config.codeLens then
                 symbol.toggle_globally()
                 symbol.refresh()
-                vim.notify(msg .. "Enabled", vim.log.levels.INFO)
+                vim.notify(msg .. "Enabled", vim.log.levels.WARN)
         else
                 symbol.toggle_globally()
                 symbol.refresh()
-                vim.notify(msg .. "Disabled", vim.log.levels.INFO)
+                vim.notify(msg .. "Disabled", vim.log.levels.ERROR)
         end
+end
+
+function Toggle.concealLvl()
+        local msg = Icons.Diagnostics.ERROR .. " " .. "Conceal Level - "
+
+        vim.wo.conceallevel = vim.wo.conceallevel == 0 and 2 or 0
+        vim.notify(msg .. vim.wo.conceallevel, vim.log.levels.WARN)
 end
 
 function Toggle.inlayHints()
@@ -68,11 +75,11 @@ function Toggle.inlayHints()
         if loaded and Config.inlayHints then
                 endhints.enable()
                 vim.lsp.inlay_hint.enable(Config.inlayHints)
-                vim.notify(msg .. "Enabled", vim.log.levels.INFO)
+                vim.notify(msg .. "Enabled", vim.log.levels.WARN)
         else
                 endhints.disable()
                 vim.lsp.inlay_hint.enable(Config.inlayHints)
-                vim.notify(msg .. "Disabled", vim.log.levels.INFO)
+                vim.notify(msg .. "Disabled", vim.log.levels.ERROR)
         end
 end
 
@@ -84,40 +91,41 @@ function Toggle.indentLine()
 
         if loaded and Config.indentLine then
                 ibl.update({ enabled = Config.indentLine })
-                vim.notify(msg .. "Enabled",                vim.log.levels.INFO)
+                vim.notify(msg .. "Enabled",                vim.log.levels.WARN)
         else
                 ibl.update({ enabled = Config.indentLine })
-                vim.notify(msg .. "Disabled",               vim.log.levels.INFO)
+                vim.notify(msg .. "Disabled",               vim.log.levels.ERROR)
         end
 end
 
 function Toggle.diagnostics()
         local loaded, diagnostics = pcall(require, "tiny-inline-diagnostic")
 
-        Config.diagnostics = not Config.diagnostics
-        local msg          = Icons.Diagnostics.ERROR .. " " .. "Diagnostics - "
+        Config.conceal = not Config.conceal
+        local msg      = Icons.Diagnostics.ERROR .. " " .. "Diagnostics - "
 
-        if loaded and Config.diagnostics then
+        if loaded and Config.conceal then
                 diagnostics.enable()
-                vim.diagnostic.enable(Config.diagnostics)
-                vim.notify(msg .. "Enabled", vim.log.levels.INFO)
+                vim.diagnostic.enable(Config.conceal)
+                vim.notify(msg .. "Enabled", vim.log.levels.WARN)
         else
                 diagnostics.disable()
-                vim.diagnostic.enable(Config.diagnostics)
-                vim.notify(msg .. "Disabled", vim.log.levels.INFO)
+                vim.diagnostic.enable(Config.conceal)
+                vim.notify(msg .. "Disabled", vim.log.levels.ERROR)
         end
 end
 
---[[TREESITTER----------------------------------------------------------------------------------------------------------
+--[[ TREESITTER --------------------------------------------------------------------------------------------------------
 
 local default_treesitter_branch = (vim.fn.executable("make") == 1 and
         vim.fn.executable("tree-sitter") == 1) and "main" or "master"
 vim.g.treesitter_branch         = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
 --]]
 
---[[FUZZY SEARCH--------------------------------------------------------------------------------------------------------
+---- FUZZY SEARCH ------------------------------------------------------------------------------------------------------
 
 vim.o.wildmode = "noselect"
+
 vim.api.nvim_create_autocmd("CmdlineChanged", {
         pattern  = ":",
         callback = function()
@@ -134,7 +142,7 @@ end
 vim.o.findfunc = "v:lua.fuzzySearch"
 --]]
 
-----ICONS---------------------------------------------------------------------------------------------------------------
+---- ICONS -------------------------------------------------------------------------------------------------------------
 
 Icons.Diagnostics = {
         ERROR = square_filled,
@@ -163,14 +171,18 @@ Icons.Notifier = {
 }
 
 Icons.Arrows = {
-        close      = "+",
-        open       = "-",
-        right      = "",
-        left       = "",
-        up         = "",
-        down       = "",
-        leftArrow  = "<",
-        rightArrow = ">",
+        close     = "+",
+        open      = "-",
+        right     = "",
+        left      = "",
+        up        = "",
+        down      = "",
+        leftBig   = "<",
+        rightBig  = ">",
+        upSmol    = "",
+        downSmol  = "",
+        rightSmol = "",
+        leftSmol  = "",
 }
 
 Icons.Kinds = {
@@ -279,80 +291,79 @@ Icons.KindsAlt = {
         Operator      = "󰪚",
         Type          = "󰜁",
         TypeParameter = "󰬛",
-
 }
 
 Icons.Devicons = {
-        Array             = "󰅪 ",
-        Boolean           = " ",
-        BreakStatement    = "󰙧 ",
-        Call              = "󰃷 ",
-        CaseStatement     = "󱃙 ",
-        Class             = " ",
-        Color             = " ",
-        Constant          = " ",
-        Constructor       = " ",
-        ContinueStatement = "→ ",
-        Copilot           = " ",
-        Declaration       = "󰙠 ",
-        Delete            = "󰢤 ",
-        DoStatement       = "󰑖 ",
-        Enum              = " ",
-        EnumMember        = " ",
-        Event             = " ",
-        Field             = " ",
-        File              = " ",
-        Folder            = " ",
-        ForStatement      = "󰑖 ",
-        Function          = " ",
-        H1Marker          = "󰉫 ",
-        H2Marker          = "󰉬 ",
-        H3Marker          = "󰉭 ",
-        H4Marker          = "󰉮 ",
-        H5Marker          = "󰉯 ",
-        H6Marker          = "󰉰 ",
-        Identifier        = " ",
-        IfStatement       = " ",
-        Interface         = " ",
-        Keyword           = " ",
-        List              = "󰅪 ",
-        Log               = " ",
-        Lsp               = " ",
-        Macro             = " ",
-        MarkdownH1        = "󰉫 ",
-        MarkdownH2        = "󰉬 ",
-        MarkdownH3        = "󰉭 ",
-        MarkdownH4        = "󰉮 ",
-        MarkdownH5        = "󰉯 ",
-        MarkdownH6        = "󰉰 ",
-        Method            = " ",
-        Module            = " ",
-        Namespace         = " ",
-        Null              = "󰢤 ",
-        Number            = "󰎠 ",
-        Object            = " ",
-        Operator          = "󰆕 ",
-        Package           = " ",
-        Pair              = "󰅪 ",
-        Property          = " ",
-        Reference         = "󰈇 ",
-        Regex             = " ",
-        Repeat            = "󰑖 ",
-        Scope             = " ",
-        Snippet           = " ",
-        Specifier         = "󰦪 ",
-        Statement         = " ",
-        String            = "󰉾 ",
-        Struct            = " ",
-        SwitchStatement   = "󰺟 ",
-        Terminal          = " ",
-        Text              = " ",
-        Type              = " ",
-        TypeParameter     = " ",
-        Unit              = " ",
-        Value             = "󰎠 ",
-        Variable          = " ",
-        WhileStatement    = "󰑖 ",
+        Array             = "󰅪",
+        Boolean           = "",
+        BreakStatement    = "󰙧",
+        Call              = "󰃷",
+        CaseStatement     = "󱃙",
+        Class             = "",
+        Color             = "",
+        Constant          = "",
+        Constructor       = "",
+        ContinueStatement = "→",
+        Copilot           = "",
+        Declaration       = "󰙠",
+        Delete            = "󰢤",
+        DoStatement       = "󰑖",
+        Enum              = "",
+        EnumMember        = "",
+        Event             = "",
+        Field             = "",
+        File              = "",
+        Folder            = "",
+        ForStatement      = "󰑖",
+        Function          = "",
+        H1Marker          = "󰉫",
+        H2Marker          = "󰉬",
+        H3Marker          = "󰉭",
+        H4Marker          = "󰉮",
+        H5Marker          = "󰉯",
+        H6Marker          = "󰉰",
+        Identifier        = "",
+        IfStatement       = "",
+        Interface         = "",
+        Keyword           = "",
+        List              = "󰅪",
+        Log               = "",
+        Lsp               = "",
+        Macro             = "",
+        MarkdownH1        = "󰉫",
+        MarkdownH2        = "󰉬",
+        MarkdownH3        = "󰉭",
+        MarkdownH4        = "󰉮",
+        MarkdownH5        = "󰉯",
+        MarkdownH6        = "󰉰",
+        Method            = "",
+        Module            = "",
+        Namespace         = "",
+        Null              = "󰢤",
+        Number            = "󰎠",
+        Object            = "",
+        Operator          = "󰆕",
+        Package           = "",
+        Pair              = "󰅪",
+        Property          = "",
+        Reference         = "󰈇",
+        Regex             = "",
+        Repeat            = "󰑖",
+        Scope             = "",
+        Snippet           = "",
+        Specifier         = "󰦪",
+        Statement         = "",
+        String            = "󰉾",
+        Struct            = "",
+        SwitchStatement   = "󰺟",
+        Terminal          = "",
+        Text              = "",
+        Type              = "",
+        TypeParameter     = "",
+        Unit              = "",
+        Value             = "󰎠",
+        Variable          = "",
+        WhileStatement    = "󰑖",
 }
 
 Icons.Misc = {
@@ -368,6 +379,10 @@ Icons.Misc = {
 
         lightbulb = "󱠀",
         quickfix  = "󰏪",
+
+        package_installed   = "󱧕",
+        package_pending     = "󱧘",
+        package_uninstalled = "󱧙",
 
         Bug            = "",
         ellipsis       = "…",
@@ -392,7 +407,7 @@ Icons.Git = {
         Deleted  = square_empty,
 }
 
-----COLORS--------------------------------------------------------------------------------------------------------------
+---- COLORS ------------------------------------------------------------------------------------------------------------
 
 Colors.Darkppuccin = {
         ivory     = "#dce0e8",

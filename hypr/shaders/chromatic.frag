@@ -1,22 +1,33 @@
-precision highp float;
-varying highp vec2 v_texcoord;
-uniform highp sampler2D tex;
+#version 300 es
 
-#define STRENGTH 0.0027
+precision highp float;
+
+in vec2 v_texcoord;
+uniform sampler2D tex;
+out vec4 fragColor;
+
+const float STRENGTH = 0.010;
+const float ASPECT_RATIO = 16.0 / 9.0;
+const bool QUADRATIC_FALLOFF = true;
 
 void main() {
-    vec2 center = vec2(0.5, 0.5);
-    vec2 offset = (v_texcoord - center) * STRENGTH;
+        vec2 distFromCenter = v_texcoord - 0.5;
+        distFromCenter.x *= ASPECT_RATIO;
 
-    float rSquared = dot(offset, offset);
-    float distortion = 0.8 + 0.8 * rSquared;
-    vec2 distortedOffset = offset * distortion;
+        float dist = length(distFromCenter);
+        float falloff = QUADRATIC_FALLOFF ? dist * dist : dist;
 
-    vec2 redOffset = vec2(distortedOffset.x, distortedOffset.y);
-    vec2 blueOffset = vec2(distortedOffset.x, distortedOffset.y);
+        vec2 dir = normalize(distFromCenter + 0.0001);
+        vec2 offset = dir * falloff * STRENGTH;
+        offset.x /= ASPECT_RATIO;
 
-    vec4 redColor = texture2D(tex, v_texcoord + redOffset);
-    vec4 blueColor = texture2D(tex, v_texcoord + blueOffset);
+        vec2 redCoord = clamp(v_texcoord - offset, 0.0, 1.0);
+        vec2 blueCoord = clamp(v_texcoord + offset, 0.0, 1.0);
 
-    gl_FragColor = vec4(redColor.r, texture2D(tex, v_texcoord).g, blueColor.b, 1.0);
+        float r = texture(tex, redCoord).r;
+        vec4 centerPixel = texture(tex, v_texcoord);
+        float g = centerPixel.g;
+        float b = texture(tex, blueCoord).b;
+
+        fragColor = vec4(r, g, b, centerPixel.a);
 }

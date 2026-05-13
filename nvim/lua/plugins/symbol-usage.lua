@@ -1,6 +1,6 @@
 return {
         "Wansmer/symbol-usage.nvim",
-        event  = "VeryLazy",
+        event  = "LspAttach",
         keys   = { { "<leader>os", Toggle.codeLens, desc = "LSP Codelens - Toggle" } },
         config = function()
                 local bg          = {}
@@ -11,13 +11,13 @@ return {
                         { "Impl", "@class",              "DiagnosticUnderlineHint" },
                 }
                 local groups      = {
-                        { "Def",   "@lsp.type.parameter", "LspInlayHint" },
-                        { "Ref",   "@keyword",            "LspInlayHint" },
-                        { "Impl",  "@class",              "LspInlayHint" },
+                        { "Def",   "@variable",   "LspInlayHint" },
+                        { "Ref",   "Keyword",     "LspInlayHint" },
+                        { "Impl",  "Structure",   "LspInlayHint" },
                         { "Round", "LspInlayHint" },
                 }
 
-                local function h(name) return vim.api.nvim_get_hl(0, { name = name }) end
+                local h = require("core.utils").getHl
 
                 local function hl(list)
                         for _, hl_groups in ipairs(list) do

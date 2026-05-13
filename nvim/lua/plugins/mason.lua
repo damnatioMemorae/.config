@@ -19,10 +19,10 @@ local ensure_installed = {
         "lua-language-server",
         "ty",
         "ruff",
-        "ltex-ls-plus",
-        "markdown-oxide",
+        -- "ltex-ls-plus",
+        -- "markdown-oxide",
         "tsgo",
-        "typescript-language-server",
+        -- "typescript-language-server",
         "rust-analyzer",
         "systemd-lsp",
         "omnisharp",
@@ -33,11 +33,13 @@ local ensure_installed = {
         "prettier",
         "prettierd",
         -- "ts_query_ls",
+        "qmlls",
 
         -- DEBUGGERS
 
         -- OTHER
         "just-lsp",
+        -- "kakehashi",
         "tree-sitter-cli",
         "yaml-language-server",
         "gh-actions-language-server",
@@ -63,7 +65,7 @@ local function enableLsps()
 end
 
 ---@param pack { name: string, install: function }
----@param version? string if provided, updates to that version
+---@param version? string
 local function installOrUpdate(pack, version)
         local mode = version and ("updating to %s"):format(version) or "installing"
         local msg  = ("[%s] %s…"):format(pack.name, mode)
@@ -82,16 +84,12 @@ local function installOrUpdate(pack, version)
         end)
 end
 
--- 1. install missing packages
--- 2. update installed ones
--- 3. uninstall unused packages
 local function syncPackages()
         local mason_reg = require("mason-registry")
 
         mason_reg.refresh(function(ok, _)
                 assert(ok, "Could not refresh mason registry.")
 
-                -- auto-install missing packages & auto-update installed ones
                 vim.iter(ensure_installed):each(function(packName)
                         if not mason_reg.has_package(packName) then
                                 local msg = ("No package [%s] available."):format(packName)
@@ -108,7 +106,6 @@ local function syncPackages()
                         end
                 end)
 
-                -- auto-clean unused packages
                 assert(#ensure_installed > 10, "< 10 mason packages, aborting uninstalls.")
                 local installed_packages = mason_reg.get_installed_package_names()
                 vim.iter(installed_packages):each(function(packName)
@@ -128,22 +125,19 @@ return {
         event  = "BufReadPre",
         keys   = { { "<leader>m", vim.cmd.Mason, desc = " Mason Home" } },
         opts   = {
-                registries = {
-                        -- personal registry must come first to have priority
-                        -- "file:" .. vim.fn.stdpath("config") .. "/mason-registry",
-                        "github:mason-org/mason-registry",
-                },
+                registries = { "github:mason-org/mason-registry" },
                 ui         = {
-                        border   = Border.borderStyle,
+                        border   = Border.borderStyleNone,
                         height   = 0.9,
                         width    = 0.8,
                         backdrop = Config.backdrop,
                         icons    = {
-                                package_installed   = "󱧕",
-                                package_pending     = "󱧘",
-                                package_uninstalled = "󱧙",
+                                package_installed   = Icons.Misc.package_installed,
+                                package_pending     = Icons.Misc.package_pending,
+                                package_uninstalled = Icons.Misc.package_uninstalled,
                         },
                         keymaps  = {
+                                apply_language_filter = "f",
                                 uninstall_package     = "x",
                                 toggle_help           = "?",
                                 toggle_package_expand = "<Tab>",
@@ -151,9 +145,32 @@ return {
                 },
         },
         config = function(_, opts)
-                vim.env.npm_config_cache = vim.env.HOME .. "/.cache/npm"  -- don't crowd $HOME with `.npm` folder
+                vim.env.npm_config_cache = vim.env.HOME .. "/.cache/npm"
                 require("mason").setup(opts)
                 enableLsps()
                 vim.defer_fn(syncPackages, 2000)
+
+                local groups = {
+                        { "Error",                       "DiagnosticError" },
+                        { "Muted",                       "Comment" },
+                        { "Highlight",                   "Special" },
+                        { "HighlightSecondary",          "Structure" },
+                        { "Backdrop",                    "Backdrop" },
+                        { "MutedBlock",                  "LspInlayHint" },
+                        { "HighlightBlock",              "CurSearch" },
+                        { "HighlightBlockSecondary",     "Search" },
+                        { "Heading",                     "FloatTitle" },
+                        { "Doc",                         "Comment" },
+                        { "Pod",                         "Comment" },
+                        { "Header",                      "Title" },
+                        { "MutedBlockBold",              "LspInlayHint" },
+                        { "HeaderSecondary",             "Search" },
+                        { "HighlightBlockBold",          "CurSearch" },
+                        { "Warning",                     "DiagnosticWarn" },
+                        { "Link",                        "Special" },
+                        { "HighlightBlockBoldSecondary", "Search" },
+                        { "Normal",                      "Normal" },
+                }
+                require("core.utils").linkHl(groups, "Mason")
         end,
 }

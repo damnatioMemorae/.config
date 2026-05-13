@@ -1,10 +1,6 @@
 local M = {}
 ------------------------------------------------------------------------------------------------------------------------
 
-local api = vim.api
-local cmd = vim.cmd
-local fn  = vim.fn
-
 M.extraTextobjMaps = {
         func      = "f",
         call      = "l",
@@ -12,7 +8,6 @@ M.extraTextobjMaps = {
         wikilink  = "R",
 }
 
----ensures unique keymaps https://www.reddit.com/r/neovim/comments/16h2lla/can_you_make_neovim_warn_you_if_your_config_maps/
 ---@param mode string|string[]
 ---@param lhs string
 ---@param rhs string|function
@@ -25,20 +20,14 @@ function M.uniqueKeymap(mode, lhs, rhs, opts)
         local success, _ = pcall(vim.keymap.set, mode, lhs, rhs, opts)
         if not success then
                 local modes = type(mode) == "table" and table.concat(mode, ", ") or mode
-                local msg   = ("**Duplicate keymap**\n[[%s]] %s"):format(modes, lhs)
-                vim.defer_fn(
-                        function()
-                                vim.notify(msg, vim.log.levels.WARN, { title = "Custom keymaps", timeout = false })
-                        end, 1000)
+                local msg   = ("Duplicate keymap\n[%s] %s"):format(modes, lhs)
+                vim.defer_fn(function()
+                                     vim.notify(msg, vim.log.levels.WARN, { title = "Keymaps", timeout = 4000 })
+                             end, 1000)
         end
         pcall(vim.keymap.set, mode, lhs, rhs, opts)
 end
 
-function M.multiMap(mode, lhs, rhs, opts)
-        vim.keymap.set(mode, lhs, rhs, opts)
-end
-
----sets `buffer`, `silent` and `nowait` to true
 ---@param mode string|string[]
 ---@param lhs string
 ---@param rhs string|function
@@ -66,7 +55,44 @@ function M.getHl(name)
         return vim.api.nvim_get_hl(0, { name = name })
 end
 
--- craftzdog/utils.lua
+---- SMALL STUFF -------------------------------------------------------------------------------------------------------
+
+---@param groups table
+---@param shortName? string
+function M.linkHl(groups, shortName)
+        shortName = shortName or ""
+
+        for _, group in ipairs(groups) do
+                vim.api.nvim_set_hl(0, shortName .. group[1], { link = group[2] })
+        end
+end
+
+function M.getRowCol()
+        local cursor = unpack(vim.api.nvim_win_get_cursor(0))
+        return cursor[1], cursor[2]
+end
+
+function M.merge(...)
+        local args = { ... }
+        return vim.tbl_extend("force", {}, unpack(args))
+end
+
+function M.concat(...)
+        local result = {}
+        local args   = { ... }
+        for _, i in ipairs(args) do
+                for _, j in ipairs(i) do
+                        table.insert(result, j)
+                end
+        end
+        return result
+end
+
+function M.exec(cmd)
+        return vim.trim(vim.fn.system(cmd))
+end
+
+---- COLORS ------------------------------------------------------------------------------------------------------------
 -- https://github.com/EmmanuelOga/columns/blob/master/utils/color.lua
 
 local hex_chars = "0123456789abcdef"
@@ -94,7 +120,7 @@ end
  * @param   Number  g       The green color value
  * @param   Number  b       The blue color value
  * @return  Array           The HSL representation
---]]
+]]
 function M.rgbToHsl(r, g, b)
         local max, min = math.max(r, g, b), math.min(r, g, b)
         local h        = 0
@@ -138,12 +164,12 @@ end
  * @param   Number  s       The saturation
  * @param   Number  l       The lightness
  * @return  Array           The RGB representation
---]]
+]]
 function M.hslToRgb(h, s, l)
         local r, g, b
 
         if s == 0 then
-                r, g, b = l, l, l -- achromatic
+                r, g, b = l, l, l
         else
                 function hue2rgb(p, q, t)
                         if t < 0 then
@@ -194,70 +220,7 @@ end
  * @param   Number  s       The saturation
  * @param   Number  l       The lightness
  * @return  String           The hex representation
---]]
-
-------------------------------------------------------------------------------------------------------------------------
--- TREESITTER
--- borrowed forever from https://github.com/nfrid/treesitter-utils
-
----@param node TSNode
----@param bufnr number | nil
----@return number, number, number, number
-local function getNodeRange(node, bufnr)
-        local bufnr          = bufnr or 0
-        local sr, sc, er, ec = node:range()
-        local last_row       = vim.api.nvim_buf_line_count(bufnr) - 1
-        -- If the node is the last node in the buffer, then its end row and column might need
-        -- to be adjusted to avoid out-of-bounds error when calling nvim_buf_[set|get]_text
-        if er > last_row then
-                er = last_row
-                ec = #vim.api.nvim_buf_get_lines(bufnr, last_row, last_row + 1, false)[1]
-        end
-        return sr, sc, er, ec
-end
-
---- Find parent node of given type.
----@param node TSNode
----@param type string
----@return TSNode | nil
-function M.findParentNode(node, type)
-        if (node == node:root()) then return nil end
-        if (node:type() == type) then return node end
-        return M.findParentNode(node:parent(), type)
-end
-
---- Find child node of given type.
----@param node TSNode
----@param type string
----@return TSNode | nil
-function M.findChildNode(node, type)
-        local child = node:child(0)
-        while child do
-                if (child:type() == type) then return child end
-                child = child:next_sibling()
-        end
-        return nil
-end
-
---- Set text of given node.
----@param node TSNode
----@param text string | table
----@param bufnr number | nil
-function M.setNodeText(node, text, bufnr)
-        local sr, sc, er, ec = getNodeRange(node, bufnr)
-        local content        = { text }
-        if (type(text) == "table") then content = text end
-        vim.api.nvim_buf_set_text(bufnr or 0, sr, sc, er, ec, content)
-end
-
---- Get text of given node.
----@param node TSNode
----@param bufnr number | nil
----@return string[]
-function M.getNodeText(node, bufnr)
-        local sr, sc, er, ec = getNodeRange(node, bufnr)
-        return vim.api.nvim_buf_get_text(bufnr or 0, sr, sc, er, ec, {})
-end
+]]
 
 ---@param bufnr integer
 ---@param filepath string
@@ -292,5 +255,12 @@ function M.allowBufferForAi(bufnr, filepath)
         end
 end
 
---------------------------------------------------------------------------------
+---- MISC --------------------------------------------------------------------------------------------------------------
+
+function M.playSound(file)
+        local path = vim.fn.stdpath("config") .. "/sounds/"
+        vim.fn.system("paplay " .. path .. file .. ".mp3")
+end
+
+------------------------------------------------------------------------------------------------------------------------
 return M

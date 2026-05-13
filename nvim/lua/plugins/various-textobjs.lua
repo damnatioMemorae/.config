@@ -1,7 +1,7 @@
 return {
         "chrisgrieser/nvim-various-textobjs",
-        event = "VeryLazy",
-        keys = {
+        event = "BufReadPre",
+        keys  = {
                 { "<Space>", function() require("various-textobjs").subword("inner") end, mode = "o", desc = "󰬞 inner subword" },
                 { "a<Space>", function() require("various-textobjs").subword("outer") end, mode = { "o", "x" }, desc = "󰬞 outer subword" },
 
@@ -19,7 +19,6 @@ return {
                 { "'", function() require("various-textobjs").anyQuote("inner") end, mode = "o", desc = " inner anyQuote" },
                 { '"', function() require("various-textobjs").anyQuote("outer") end, mode = "o", desc = " outer anyQuote" },
 
-                -- INFO not setting in visual mode, to keep visual block mode replace
                 { "rp", function() require("various-textobjs").restOfParagraph() end, mode = "o", desc = "¶ rest of paragraph" },
                 { "ri", function() require("various-textobjs").restOfIndentation() end, mode = "o", desc = "󰉶 rest of indentation" },
                 { "rg", "G", mode = "o", desc = " rest of buffer" },
@@ -66,32 +65,38 @@ return {
                         "dsi",
                         function()
                                 require("various-textobjs").indentation("outer", "outer")
-                                local indentation_found = vim.fn.mode():find("V")
-                                if not indentation_found then return end
+
+                                if not vim.fn.mode():find("V") then
+                                        return
+                                end
 
                                 vim.cmd.normal{ "<", bang = true } -- dedent indentation
-                                local end_border_ln   = vim.api.nvim_buf_get_mark(0, ">")[1]
-                                local start_border_ln = vim.api.nvim_buf_get_mark(0, "<")[1]
-                                vim.cmd(tostring(end_border_ln) .. " delete") -- delete end first so line index is not shifted
-                                vim.cmd(tostring(start_border_ln) .. " delete")
+
+                                vim.cmd(tostring(vim.api.nvim_buf_get_mark(0, ">")[1]) .. " delete")
+                                vim.cmd(tostring(vim.api.nvim_buf_get_mark(0, "<")[1]) .. " delete")
                         end,
                         desc = " Delete surrounding indent",
                 },
                 { -- open URL (forward seeking)
-                        ",x",
+                        "<LocalLeader>x",
                         function()
+                                vim.keymap.del("n", "gx")
+
                                 require("various-textobjs").url()
-                                local found_url = vim.fn.mode():find("v")
-                                if found_url then
-                                        vim.cmd.normal{ '"zy', bang = true }
+
+                                if vim.fn.mode():find("v") then
+                                        vim.cmd.normal({ '"zy', bang = true })
                                         local url = vim.fn.getreg("z")
                                         vim.ui.open(url)
+                                else
+                                        vim.cmd.normal("gx")
                                 end
                         end,
                         desc = " Smart URL Opener",
                 },
-                { -- open URL (first in a file)
-                        "<D-U>",
+                --[[ open URL (first in a file)
+                {
+                        "<A-u>",
                         function()
                                 local url_pattern = require("various-textobjs.charwise-textobjs").urlPattern
                                 local url_line    = vim.iter(vim.api.nvim_buf_get_lines(0, 0, -1, false))
@@ -104,5 +109,6 @@ return {
                         end,
                         desc = " Open First URL in File",
                 },
+                --]]
         },
 }

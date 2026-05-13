@@ -1,7 +1,7 @@
-----DIAGNOSTISCS--------------------------------------------------------------------------------------------------------
+---- DIAGNOSTISCS ------------------------------------------------------------------------------------------------------
 
-local hl      = "DiagnosticVirtualText"
-local numbers = {
+local hl    = "DiagnosticVirtualText"
+local signs = {
         text  = {
                 [vim.diagnostic.severity.ERROR] = "",
                 [vim.diagnostic.severity.WARN]  = "",
@@ -17,13 +17,13 @@ local numbers = {
 }
 
 vim.diagnostic.config({
-        signs            = numbers,
+        signs            = signs,
         virtual_text     = { source = false, current_line = nil },
         update_in_insert = false,
         severity_sort    = true,
 })
 
-----HANDLERS------------------------------------------------------------------------------------------------------------
+---- HANDLERS ----------------------------------------------------------------------------------------------------------
 
 local handlers = vim.lsp.handlers
 local methods  = vim.lsp.protocol.Methods
@@ -56,16 +56,16 @@ handlers[methods["textDocument_rename"]] = function(err, result, ctx, config)
         end
 
         local plural = change_count > 1 and "s" or ""
-        local msg    = ("[%d] instance%s"):format(change_count, plural)
+        local msg    = ("%d instance%s"):format(change_count, plural)
         if #changed_files > 1 then
-                msg = ("**%s in [%d] files**\n%s"):format(msg, #changed_files, table.concat(changed_files, "\n"))
+                msg = ("%s in %d files\n%s"):format(msg, #changed_files, table.concat(changed_files, "\n"))
         end
-        vim.notify(msg, nil, { title = "Renamed with LSP", icon = Icons.Kinds.Parameter })
+        vim.notify(msg, vim.log.levels.WARN, { title = "Renamed with LSP", icon = Icons.Kinds.Parameter })
 
         if #changed_files > 1 then vim.cmd.wall() end
 end
 
-----POPUP---------------------------------------------------------------------------------------------------------------
+---- POPUP -------------------------------------------------------------------------------------------------------------
 
 local title_pos   = "left"
 local anchor_bias = "below"

@@ -35,8 +35,8 @@ local icons = {
 
 return {
         "hedyhli/outline.nvim",
-        keys         = { { ",s", "<cmd>Outline<cr>", desc = "Outline", mode = { "n" } } },
-        opts         = {
+        keys = { { "<LocalLeader>s", "<cmd>Outline<cr>", desc = "Outline", mode = { "n" } } },
+        opts = {
                 outline_window = { position = "right", width = 20, focus_on_open = false },
                 outline_items  = { show_symbol_details = true, auto_set_cursor = false },
                 guides         = { enabled = false },
@@ -44,10 +44,10 @@ return {
                 symbol_folding = {
                         autofold_depth = 1,
                         auto_unfold    = { hovered = true, only = true },
-                        markers        = { "", "" },
+                        markers        = { Icons.Arrows.rightSmol, Icons.Arrows.downSmol },
                 },
                 preview_window = {
-                        auto_preview = true,
+                        auto_preview = false,
                         width        = 40,
                         min_width    = 30,
                         height       = 50,
@@ -60,12 +60,12 @@ return {
                 keymaps        = {
                         show_help        = "?",
                         close            = { "<Esc>", "q" },
-                        goto_location    = "<Cr>",
+                        goto_location    = "<CR>",
                         peek_location    = "o",
                         goto_and_close   = "<S-Cr>",
                         restore_location = ",,",
                         hover_symbol     = "<C-space>",
-                        toggle_preview   = "K",
+                        toggle_preview   = "p",
                         rename_symbol    = "r",
                         code_actions     = "a",
                         fold             = "h",
@@ -79,4 +79,14 @@ return {
                         up_and_jump      = "K",
                 },
         },
+        config = function(_, opts)
+                require("outline").setup(opts)
+
+                local groups = {
+                        { "Current",    "LspInlayHint" },
+                        { "Details",    "Comment" },
+                        { "FoldMarker", "Comment" },
+                }
+                require("core.utils").linkHl(groups, "Outline")
+        end,
 }
