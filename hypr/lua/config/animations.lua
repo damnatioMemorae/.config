@@ -1,3 +1,5 @@
+hl.config({ animations = { enabled = true, workspace_wraparound = false } })
+
 local curves = {
         { "linear",        { type = "bezier", points = { { 0.00, 0.00 }, { 1.00, 1.00 } } } },
         { "md3_standard",  { type = "bezier", points = { { 0.20, 0.00 }, { 0.00, 1.00 } } } },
@@ -15,34 +17,27 @@ local curves = {
         { "md2",           { type = "bezier", points = { { 0.40, 0.00 }, { 0.20, 1.00 } } } },
 }
 for _, curve in ipairs(curves) do
-        return hl.curve(curve[1], curve[2])
+        hl.curve(curve[1], curve[2])
 end
 
 local animations = {
-        { "windows",          true,  3,   "md3_decel",   "popin 60%" },
-        { "windowsIn",        true,  3,   "md3_decel",   "popin 60%" },
-        { "windowsOut",       true,  3,   "md3_accel",   "popin 60%" },
-        { "border",           true,  10,  "default" },
-        { "fade",             true,  3,   "md3_decel" },
-        { "layers",           true,  2,   "linear",      "slide" },
-        { "layersIn",         true,  3,   "md3_decel",   "slide" },
-        { "layersOut",        true,  3,   "md3_decel",   "slide" },
+        { "windowsIn",           true, 5, "md3_decel", "slide" },
+        { "windowsOut",          true, 5, "md3_accel", "slide" },
 
-        { "layersOut",        false, 1.6, "menu_accel" },
-        { "fadeLayersIn",     false, 3,   "md3_decel",   "slidevert" },
-        { "fadeLayersOut",    false, 3,   "md3_decel",   "slidevert" },
-        { "fadeLayersOut",    false, 4.5, "menu_accel" },
+        { "layersIn",            true, 5, "md3_decel", "slide" },
+        { "layersOut",           true, 5, "md3_accel", "slide" },
 
-        { "workspaces",       false, 1,   "menu_decel",  "slide" },
-        { "workspaces",       true,  1,   "softAcDecel", "slide" },
-        { "workspaces",       false, 1,   "menu_decel",  "slidefade 15%" },
+        { "fadeLayersIn",        true, 5, "md3_decel" },
+        { "fadeLayersOut",       true, 5, "md3_accel" },
 
-        { "specialWorkspace", false, 2,   "md3_decel",   "slidefadevert 15%" },
-        { "specialWorkspace", false, 3,   "md3_decel",   "slidevert" },
-        { "specialWorkspace", true,  2,   "softAcDecel", "slidevert" },
+        { "workspacesIn",        true, 5, "md3_decel", "slide top" },
+        { "workspacesOut",       true, 5, "md3_accel", "slide bottom" },
+
+        { "specialWorkspaceIn",  true, 5, "md3_decel", "slide right" },
+        { "specialWorkspaceOut", true, 5, "md3_accel", "slide left" },
 }
 for _, animation in ipairs(animations) do
-        return hl.animation({
+        hl.animation({
                 leaf    = animation[1],
                 enabled = animation[2],
                 speed   = animation[3],

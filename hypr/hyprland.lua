@@ -1,7 +1,8 @@
-local loads = {
+local modules = {
+        "core",
         "config",
         "layouts",
 }
-for _, load in ipairs(loads) do
-        require("lua." .. load)
+for _, module in ipairs(modules) do
+        require("lua." .. module)
 end

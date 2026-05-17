@@ -6,7 +6,7 @@ config.general    = {
         gaps_in     = 5,
         gaps_out    = 10,
         snap        = { enabled = false },
-        layout      = "lua:columns",
+        layout      = "lua:grid",
 }
 config.input      = {
         follow_mouse       = 1,
@@ -46,8 +46,8 @@ config.group      = {
                 render_titles    = false,
                 scrolling        = true,
                 keep_upper_gap   = false,
-                gaps_out         = 5,
-                gaps_in          = 5,
+                gaps_out         = 0,
+                gaps_in          = 0,
                 indicator_height = 20,
                 text_color       = "rgb(cdd6f4)",
                 col              = {
@@ -65,7 +65,8 @@ config.decoration = {
         fullscreen_opacity = 1,
         dim_inactive       = true,
         dim_strength       = 0.25,
-        screen_shader      = "~/.config/hypr/shaders/dark.frag",
+        -- screen_shader      = "",
+        glow               = { enabled = false },
         shadow             = {
                 enabled        = false,
                 range          = -2,
@@ -120,14 +121,14 @@ config.binds      = {
 config.opengl     = {
         nvidia_anti_flicker = 1,
 }
+config.ecosystem  = {
+        no_update_news  = true,
+        no_donation_nag = true,
+}
 config.debug      = {
         disable_logs    = false,
         damage_tracking = 0,
         suppress_errors = false,
-}
-config.ecosystem  = {
-        no_update_news  = true,
-        no_donation_nag = true,
 }
 
 --[[

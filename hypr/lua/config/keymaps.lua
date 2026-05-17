@@ -1,110 +1,121 @@
-local main_mod    = "SUPER"
-local script_path = "~/.local/share/bin/"
-local lua_script  = "lua " .. script_path .. "lua/"
-local shader      = require("functions.shader")
-local volume      = require("functions.volume")
-
-local bind = hl.bind
-local exec = hl.dsp.exec_cmd
+local bind   = require("lua.core.utils").bind
+local shader = require("lua.functions.shader")
 
 local terminal = "ghostty"
 local browser  = "librewolf"
 
---------------------------------------------------------------------------------------------------------------------------------------------
-
-bind("ALT + F4", exec(script_path .. "dontkillsteam"), { locked = true, repeating = true })
-
-bind(main_mod .. " + left",  exec(script_path .. "awwwallpaper -p"))
-bind(main_mod .. " + right", exec(script_path .. "awwwallpaper -n"))
-
----- PLAYER --------------------------------------------------------------------------------------------------------------------------------
-
-local p = "playerctl "
-bind("Prior",         exec(p .. "position 10-"), { locked = true, repeating = true })
-bind("Next",          exec(p .. "position 10+"), { locked = true, repeating = true })
-bind("Home",          exec(p .. "play-pause"),   { locked = true })
-bind("End",           exec(p .. "play-pause"),   { locked = true })
-bind("SHIFT + Prior", exec(p .. "previous"),     { locked = true })
-bind("SHIFT + Next",  exec(p .. "next"),         { locked = true })
-
----- MEDIA ---------------------------------------------------------------------------------------------------------------------------------
-
-local vc = lua_script .. "volumecontrol.lua"
-local bc = lua_script .. "brightnesscontrol.lua"
-local ss = lua_script .. "screenshot.lua"
--- bind("F1",        exec(lua_script .. "shader.lua toggle"), { locked = true })
-bind("F1", function() shader.toggle("dark.frag") end, { locked = true })
-bind("F2", exec(vc .. " set Master - 5"),             { locked = true, repeating = true })
-bind("F3", exec(vc .. " set Master + 5"),             { locked = true, repeating = true })
--- bind("F2",        function() volume.set() end,              { locked = true, repeating = true })
--- bind("F3",        function() volume.set() end,              { locked = true, repeating = true })
-bind("F4",        exec(vc .. " set Capture toggle"),    { locked = true })
-bind("F6",        exec(bc .. " set 5 +"),               { locked = true, repeating = true })
-bind("F5",        exec(bc .. " set 5 -"),               { locked = true, repeating = true })
-bind("F7",        exec(ss .. " s"),                     { locked = true })
-bind("ALT + F7",  exec(ss .. " a"),                     { locked = true })
-bind("F8",        exec(script_path .. "screenshot tx"), { locked = true })
-bind("F11",       exec(script_path .. "recorder s"),    { locked = true })
-bind("ALT + F11", exec(script_path .. "recorder sa"),   { locked = true })
-
--- # bind   =     ,F12 ,exec ,$scrPath/recorder m
--- # bind   = ALT ,F12 ,exec ,$scrPath/recorder ma
-
-bind("Print", exec(script_path .. "screenshot m"))
-
--- bindm = $mainMod ,mouse:272 ,movewindow
--- bindm = $mainMod ,mouse:273 ,resizewindow
-
----- APPS ----------------------------------------------------------------------------------------------------------------------------------
-
-bind(main_mod .. " + B",      exec(browser))
-bind(main_mod .. " + Return", exec(terminal))
-
----- SCRIPTS -------------------------------------------------------------------------------------------------------------------------------
-
+local path = "~/.local/share/bin"
 local rofi = "pkill -x rofi || "
-bind(main_mod .. " + P",                    exec(lua_script .. "hyprpicker.lua"))
-bind(main_mod .. " + I",                    exec(rofi .. script_path .. "cpu m"))
-bind(main_mod .. " + O",                    exec(rofi .. script_path .. "gpu m"))
-bind(main_mod .. " + S",                    exec(rofi .. script_path .. "shaders list"))
-bind(main_mod .. " + Y",                    exec(rofi .. script_path .. "cliphist c"))
-bind("SHIFT + Space",                       exec(rofi .. script_path .. "rofilaunch"))
-bind(main_mod .. " + W",                    exec(rofi .. script_path .. "awwwallselect"))
-bind(main_mod .. " + SHIFT + W",            exec(rofi .. script_path .. "wifimenu -o i"))
-bind(main_mod .. " + SHIFT + T",            exec(rofi .. script_path .. "themeselect"))
-bind(main_mod .. " + T",                    exec("swaync-client -t"))
-bind(main_mod .. " + SHIFT + bracketright", exec(lua_script .. "waybar.lua set right"))
-bind(main_mod .. " + SHIFT + bracketleft",  exec(lua_script .. "waybar.lua set bottom"))
+local dsp  = hl.dsp
+local ws   = dsp.workspace
+local win  = dsp.window
 
--- bind = $mainMod SHIFT ,W     ,exec ,pkill -x qs || qs -p $confDir/quickshell/modules/Wallpicker.qml
+local function run(cmd, rules)
+        return hl.dsp.exec_cmd(cmd, rules)
+end
 
-local dsp = hl.dsp
-local ws  = dsp.workspace
-local win = dsp.window
-bind(main_mod .. " + Space", ws.toggle_special("special"))
-bind(main_mod .. " + 0",     win.move({ workspace = "special" }))
-bind(main_mod .. " + 9",     win.move({ workspace = "+0" }))
+local function script(scr, ex)
+        ex = ex or ""
+        return hl.dsp.exec_cmd(ex .. " " .. path .. "/" .. scr)
+end
 
-bind(main_mod .. " + Escape",         win.close(),                           { locked = true, repeating = true })
-bind(main_mod .. " + ALT + N",        exec(script_path .. "windowpin"))
-bind(main_mod .. " + N",              win.float({ action = "toggle" }))
-bind(main_mod .. " + M",              win.fullscreen({ action = "toggle" }))
-bind("CTRL + Return",                 exec("hyprlock"))
-bind(main_mod .. " + semicolon",      exec(script_path .. "kbswitch"))
-bind(main_mod .. " + SHIFT + Escape", hl.dsp.exit())
+local player     = {
+        { "Prior",     run("playerctl position 10-"), { locked = true, repeating = true } },
+        { "Next",      run("playerctl position 10+"), { locked = true, repeating = true } },
+        { "Home",      run("playerctl play-pause"),   { locked = true } },
+        { "End",       run("playerctl play-pause"),   { locked = true } },
+        { "<S-Prior>", run("playerctl previous"),     { locked = true } },
+        { "<S-Next>",  run("playerctl next"),         { locked = true } },
+}
+local multimedia = {
+        { "F1",      function() shader.toggle("dark.frag") end,                 { locked = true } },
+        { "F2",      script("lua/volumecontrol.lua set Master - 5", "lua"),     { locked = true, repeating = true } },
+        { "F3",      script("lua/volumecontrol.lua set Master + 5", "lua"),     { locked = true, repeating = true } },
+        { "F4",      script("lua/volumecontrol.lua set Capture toggle", "lua"), { locked = true } },
+        { "F6",      script("lua/brightnesscontrol.lua set 5 +", "lua"),        { locked = true, repeating = true } },
+        { "F5",      script("lua/brightnesscontrol.lua set 5 -", "lua"),        { locked = true, repeating = true } },
+        { "F7",      script("lua/screenshot.lua s", "lua"),                     { locked = true } },
+        { "<A-F7>",  script("lua/screenshot.lua a", "lua"),                     { locked = true } },
+        { "F8",      script("lua/screenshot tx"),                               { locked = true } },
+        { "F11",     script("recorder s"),                                      { locked = true } },
+        { "<A-F11>", script("recorder sa"),                                     { locked = true } },
 
-bind(main_mod .. " + semicolon", exec(lua_script .. "kbswitch.lua"))
+        -- # bind   =     ,F12 ,exec ,$scrPath/recorder m
+        -- # bind   = ALT ,F12 ,exec ,$scrPath/recorder ma
 
----- WINDOWS -------------------------------------------------------------------------------------------------------------------------------
+        { "Print",   script("screenshot m") },
 
-bind(main_mod .. " + H", dsp.focus({ workspace = "-1" }), { locked = true, repeating = true })
-bind(main_mod .. " + L", dsp.focus({ workspace = "+1" }), { locked = true, repeating = true })
-bind(main_mod .. " + A", dsp.focus({ workspace = "-1" }), { locked = true, repeating = true })
-bind(main_mod .. " + F", dsp.focus({ workspace = "+1" }), { locked = true, repeating = true })
+        -- bindm = $mainMod ,mouse:272 ,movewindow
+        -- bindm = $mainMod ,mouse:273 ,resizewindow
+}
+local apps       = {
+        { "<D-b>",      run(browser) },
+        { "<D-Return>", run(terminal) },
+}
+local scripts    = {
+        { "<D-left>",           script("awwwallpaper -p") },
+        { "<D-right>",          script("awwwallpaper -n") },
+        { "<D-S-bracketright>", script("lua/waybar.lua set right", "lua") },
+        { "<D-S-bracketleft>",  script("lua/waybar.lua set bottom", "lua") },
 
-bind(main_mod .. " + bracketleft",         win.move({ workspace = "-1", follow = false }))
-bind(main_mod .. " + bracketright",        win.move({ workspace = "+1", follow = false }))
-bind(main_mod .. " + CTRL + bracketleft",  win.move({ workspace = "-1", follow = true }))
-bind(main_mod .. " + CTRL + bracketright", win.move({ workspace = "+1", follow = true }))
+        { "<D-p>",              script("lua/hyprpicker.lua", "lua") },
+        { "<D-o>",              run(rofi .. path .. "/" .. "gpu m") },
+        { "<D-i>",              run(rofi .. path .. "/" .. "cpu m") },
+        { "<D-s>",              run(rofi .. path .. "/" .. "shaders list") },
+        { "<D-y>",              run(rofi .. path .. "/" .. "cliphist c") },
+        { "<S-Space>",          run(rofi .. path .. "/" .. "rofilaunch") },
+        { "<D-w>",              run(rofi .. path .. "/" .. "awwwallselect") },
+        { "<D-S-w>",            run(rofi .. path .. "/" .. "wifimenu -o i") },
+        { "<D-S-t>",            run(rofi .. path .. "/" .. "themeselect") },
+        { "<D-t>",              run("swaync-client -t") },
 
--- bind ( main_mod ..     "G" ,hy3:changegroup ,toggletab)
+        -- bind = $mainMod SHIFT ,W     ,exec ,pkill -x qs || qs -p $confDir/quickshell/modules/Wallpicker.qml
+}
+local windows    = {
+        { "<A-F4>",             script("dontkillsteam"),                       { locked = true, repeating = true }, "Close window" },
+
+        { "<D-Space>",          ws.toggle_special("special") },
+        { "<D-0>",              win.move({ workspace = "special" }) },
+        { "<D-9>",              win.move({ workspace = "+0" }) },
+
+        { "<D-Escape>",         win.close(),                                   { locked = true, repeating = true } },
+        { "<D-A-n>",            script("windowpin") },
+        { "<D-n>",              win.float({ action = "toggle" }) },
+        { "<D-m>",              win.fullscreen({ action = "toggle" }) },
+        { "<C-Return>",         run("hyprlock") },
+        { "<D-semicolon>",      run(path .. "/" .. "kbswitch") },
+        { "<D-S-Escape>",       hl.dsp.exit() },
+
+        { "<D-semicolon>",      script("kbswitch.lua") },
+
+        { "<D-h>",              dsp.focus({ workspace = "-1" }),               { locked = true, repeating = true } },
+        { "<D-l>",              dsp.focus({ workspace = "+1" }),               { locked = true, repeating = true } },
+        { "<D-a>",              dsp.focus({ workspace = "-1" }),               { locked = true, repeating = true } },
+        { "<D-f>",              dsp.focus({ workspace = "+1" }),               { locked = true, repeating = true } },
+
+        { "<D-bracketleft>",    win.move({ workspace = "-1", follow = true }) },
+        { "<D-bracketright>",   win.move({ workspace = "+1", follow = true }) },
+        { "<D-C-bracketleft>",  win.move({ workspace = "-1", follow = false }) },
+        { "<D-C-bracketright>", win.move({ workspace = "+1", follow = false }) },
+
+}
+local grouping   = {
+        { "<D-g>",   dsp.group.toggle() },
+        { "<D-C-h>", dsp.group.prev() },
+        { "<D-C-l>", dsp.group.next() },
+}
+
+local binds = {
+        player,
+        multimedia,
+        apps,
+        scripts,
+        windows,
+        grouping,
+}
+
+for _, group in ipairs(binds) do
+        for _, spec in ipairs(group) do
+                bind(spec)
+        end
+end

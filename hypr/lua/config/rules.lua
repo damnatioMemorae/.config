@@ -33,21 +33,24 @@ local window_rules = {
         { float = true,     match = { class = "io.gitlab.theevilskeleton.Upscaler" } },
         { float = true,     match = { class = "com.github.unrud.VideoDownloader" } },
         { float = true,     match = { class = "io.gitlab.adhami3310.Impression" } },
+
         { float = true,     match = { "class com.yazi.open" } },
         { size = "960 540", match = { "class com.yazi.open" } },
+
 }
 for _, rule in ipairs(window_rules) do
-        return hl.window_rule(rule)
+        hl.window_rule(rule)
 end
 
--- group deny, no_blur on, match:float 1
+hl.window_rule({ float = true, size = "650 270", pin = true, group = "deny", match = { class = "org.pulseaudio.pavucontrol" } })
+hl.window_rule({ float = true, size = "720 380", pin = true, group = "deny", match = { class = "hyprland-share-picker" } })
+hl.window_rule({ float = true, size = "460 270", pin = true, group = "deny", match = { title = "Discord Popout" } })
+hl.window_rule({ no_blur = true, group = "deny", match = { float = true } })
+hl.window_rule({ no_blur = true, match = { float = false } })
+
 -- no_dim on, opacity 0.5 override 0.5 override 0.5 override, match:class com.q.bg
--- no_blur on, match:float false
 -- group deny, float on, size 540 380, move (window_w) (window_h*0.9), pin on, match:title Картинка в картинке
 -- group deny, float on, size 960 540, move (window_w) (window_h*0.9), pin on, match:title Picture-in-Picture
--- group deny, float on, size 720 380, pin on, match:class hyprland-share-picker
--- group deny, float on, size 650 340, move ((monitor_w*0.35)) (44), pin on, match:class org.pulseaudio.pavucontrol
--- group deny, float on, size 460 270, pin on, match:title Discord Popout
 -- render_unfocused on, match:class kitty-bg
 
 local layer_rules = {
@@ -58,7 +61,8 @@ local layer_rules = {
         { match = { namespace = "swaync-control-center" },      dim_around = true },
         { match = { namespace = "selection" },                  no_anim = true },
         { match = { namespace = "hyprpicker" },                 animation = "fade in" },
+        { match = { namespace = "awww-daemon|selection" },      no_anim = true },
 }
 for _, rule in ipairs(layer_rules) do
-        return hl.layer_rule(rule)
+        hl.layer_rule(rule)
 end
