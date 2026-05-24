@@ -63,6 +63,7 @@
 
         spc  (tap-hold $tt $ht spc (layer-while-held mouse))
         lalt (tap-hold $tt $ht d lsft)
+        lsft (tap-hold $tt $ht s lmet)
 
         n    (tap-hold $tt $ht n   (layer-while-held numbers))
         m    (tap-hold $tt $ht m   (layer-while-held fuckeys))

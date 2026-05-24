@@ -1,5 +1,4 @@
-$HOME/.config/hypr/lua/themes/init.lua
-local rgb = require("lua.core.utils").rgb
+local rgb = require("core.utils").rgb
 
 local cmds = {
         "gsettings set org.gnome.desktop.interface gtk-theme           'catppuccin-mocha-red-standard+default'",
