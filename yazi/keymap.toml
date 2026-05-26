@@ -143,6 +143,7 @@ keymap = [
         { on = ["g", "m"],       run = "cd ~/Music",                          desc = "Go to the Music directory" },
         { on = ["g", "l"],       run = "cd ~/.local/share/bin/",              desc = "Go to the Script directory" },
         { on = ["g", "n"],       run = "cd ~/.config/nvim/",                  desc = "Go to the Nvim directory" },
+        { on = ["g", "T"],       run = "cd ~/.local/share/Trash/files/",      desc = "Go to the Trash directory" },
         { on = ["g", ","],       run = "cd /run/media/${USER}",               desc = "Go to drives" },
         { on = ["g", "<Space>"], run = "cd --interactive",                    desc = "Go to a directory interactively" },
 
@@ -202,7 +203,6 @@ prepend_keymap = [
 
         # { on = [ "t", "t", "k" ] ,run = "plugin simple-tag -- toggle-tag --input" ,desc = "Toggle a tag (press any key)" },
 ]
-
 
 [completion]
 keymap = [
