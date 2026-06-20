@@ -56,6 +56,8 @@ return {
                         { "Hack",  "@comment.hack" },
                         { "Fixme", "@comment.error" },
                 }
-                require("core.utils").linkHl(groups, "MiniHipatterns")
+                vim.iter(groups):each(function(group)
+                        vim.api.nvim_set_hl(0, "MiniHipatterns" .. group[1], { link = group[2] })
+                end)
         end,
 }

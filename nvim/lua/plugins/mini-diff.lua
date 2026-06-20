@@ -26,6 +26,8 @@ return {
                         { "OverChangeBuf",  "DiffText" },
                         { "OverContextBuf", "DiffText" },
                 }
-                require("core.utils").linkHl(groups, "MiniDiff")
+                vim.iter(groups):each(function(group)
+                        vim.api.nvim_set_hl(0, "MiniDiff" .. group[1], { link = group[2] })
+                end)
         end,
 }

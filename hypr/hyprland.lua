@@ -1,17 +1,21 @@
-require("config.animations")
-require("config.options")
-require("config.keymaps")
-require("config.rules")
+require("core.utils")
+_G.safeRequire("core.handlers")
 
-require("layouts.columns")
-require("layouts.manual")
-require("layouts.spiral")
-require("layouts.grid")
+_G.safeRequire("config.animations")
+_G.safeRequire("config.options")
+_G.safeRequire("config.keymaps")
+_G.safeRequire("config.rules")
 
-require("core.autostart")
-require("core.monitor")
-require("core.env")
+_G.safeRequire("layouts.columns")
+_G.safeRequire("layouts.manual")
+_G.safeRequire("layouts.spiral")
+_G.safeRequire("layouts.grid")
 
-require("themes.init")
+_G.safeRequire("core.autostart")
+_G.safeRequire("core.monitor")
+_G.safeRequire("core.env")
+
+_G.safeRequire("themes.init")
 
 -- require("hyprvim").setup()
+_G.safeRequire("core.bootstrap")

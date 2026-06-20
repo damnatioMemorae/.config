@@ -180,6 +180,9 @@ alias          gc='git commit -m 1'
 alias          gp='git push'
 alias          lg='lazygit'
 
+alias quit-programming='sudo rm -rf /*'
+alias btkb='systemctl --user restart kanata.service'
+
 repo() {
         git init
         git add --all

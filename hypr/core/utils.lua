@@ -1,5 +1,16 @@
+---@param module string
+function _G.safeRequire(module)
+        local success, errmsg = pcall(require, module)
+        if success then return end
+
+        local msg = ("Error loading `%s`: %s"):format(module, errmsg)
+        hl.timer(function()
+                         hl.notification.create({ text = msg, timeout = 2000, color = "rgb(f38ba8)", font_size = 12 })
+                 end, { timeout = 1000, type = "oneshot" })
+end
+
 local M = {}
---------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local modifiers = {
         C = "CONTROL",
@@ -79,5 +90,10 @@ function M.ls(dir)
         return t
 end
 
---------------------------------------------------------------------------------------------------------------------------------------------
+function M.getScreen()
+        local screen = hl.get_active_monitor()
+        hl.notification.create({ text = screen, timeout = 2000, color = "rgb(89dceb)", font_size = 12 })
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 return M

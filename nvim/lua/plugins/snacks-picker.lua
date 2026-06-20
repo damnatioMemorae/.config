@@ -7,6 +7,17 @@ local none   = Border.borderStyleNone
 
 local insertOnShow = function() vim.cmd.stopinsert() end
 
+local function getPicker(picker)
+        local fzf_lua = pcall(require, "fzf-lua")
+        local snacks  = pcall(require, "snacks")
+
+        if snacks then
+                return require("snacks.picker")[picker]()
+        elseif fzf_lua then
+                return require("fzf-lua")[picker]()
+        end
+end
+
 local function importLuaModule()
         Snacks.picker.grep{
                 title  = "󰢱 Import module",
@@ -42,22 +53,22 @@ end
 return {
         "folke/snacks.nvim",
         keys = {
-                { leader .. "<leader>", function() Snacks.picker() end,                           desc = "Main Picker",       mode = { "n" } },
-                { leader .. "f",        function() Snacks.picker.files() end,                     desc = "File Picker",       mode = { "n" } },
-                { leader .. "k",        function() Snacks.picker.keymaps({ global = false }) end, desc = "Keymap (buffer)",   mode = { "n" } },
-                { leader .. "K",        function() Snacks.picker.keymaps() end,                   desc = "Keymap (global)",   mode = { "n" } },
-                { leader .. "w",        function() Snacks.picker.grep() end,                      desc = "Grep Picker",       mode = { "n" } },
-                { leader .. "W",        function() Snacks.picker.grep_word() end,                 desc = "Grep Word",         mode = { "n", "x" } },
-                { leader .. "B",        function() Snacks.picker.grep_buffers() end,              desc = "Grep Word",         mode = { "n" } },
-                { leader .. "R",        function() Snacks.picker.registers() end,                 desc = "Register Picker",   mode = { "n" } },
-                { leader .. "h",        function() Snacks.picker.highlights() end,                desc = "Highlight Picker",  mode = { "n" } },
-                { leader .. "H",        function() Snacks.picker.help() end,                      desc = "Help Picker",       mode = { "n" } },
-                { leader .. "l",        function() Snacks.picker.lsp_config() end,                desc = "Lazy Picker",       mode = { "n" } },
-                { leader .. "b",        function() Snacks.picker.buffers() end,                   desc = "Buffer Picker",     mode = { "n" } },
-                { leader .. "u",        function() Snacks.picker.undo() end,                      desc = "Undo Picker",       mode = { "n" } },
-                { leader .. "j",        function() Snacks.picker.jumps() end,                     desc = "Jumps Picker",      mode = { "n" } },
-                { leader .. "e",        function() Snacks.explorer() end,                         desc = "Buffer Picker",     mode = { "n" } },
-                { leader .. "i",        importLuaModule,                                          desc = "Import Lua Module", mode = { "n" },     ft = "lua" },
+                -- { leader .. "<leader>", function() Snacks.picker() end,                           desc = "Main Picker",       mode = { "n" } },
+                -- { leader .. "f",        function() Snacks.picker.files() end,                     desc = "File Picker",       mode = { "n" } },
+                -- { leader .. "k",        function() Snacks.picker.keymaps({ global = false }) end, desc = "Keymap (buffer)",   mode = { "n" } },
+                -- { leader .. "K",        function() Snacks.picker.keymaps() end,                   desc = "Keymap (global)",   mode = { "n" } },
+                -- { leader .. "w",        function() Snacks.picker.grep() end,                      desc = "Grep Picker",       mode = { "n" } },
+                -- { leader .. "W",        function() Snacks.picker.grep_word() end,                 desc = "Grep Word",         mode = { "n", "x" } },
+                -- { leader .. "B",        function() Snacks.picker.grep_buffers() end,              desc = "Grep Word",         mode = { "n" } },
+                -- { leader .. "R",        function() Snacks.picker.registers() end,                 desc = "Register Picker",   mode = { "n" } },
+                -- { leader .. "h",        function() Snacks.picker.highlights() end,                desc = "Highlight Picker",  mode = { "n" } },
+                -- { leader .. "H",        function() Snacks.picker.help() end,                      desc = "Help Picker",       mode = { "n" } },
+                -- { leader .. "l",        function() Snacks.picker.lsp_config() end,                desc = "Lazy Picker",       mode = { "n" } },
+                -- { leader .. "b",        function() Snacks.picker.buffers() end,                   desc = "Buffer Picker",     mode = { "n" } },
+                -- { leader .. "u",        function() Snacks.picker.undo() end,                      desc = "Undo Picker",       mode = { "n" } },
+                -- { leader .. "j",        function() Snacks.picker.jumps() end,                     desc = "Jumps Picker",      mode = { "n" } },
+                -- { leader .. "e",        function() Snacks.explorer() end,                         desc = "Buffer Picker",     mode = { "n" } },
+                -- { leader .. "i",        importLuaModule,                                          desc = "Import Lua Module", mode = { "n" },     ft = "lua" },
                 {
                         leader .. "p",
                         function()
@@ -82,8 +93,8 @@ return {
                 -- { "<LocalLeader>D", function() Snacks.picker.lsp_declarations() end,      desc = "Show Declarations",       mode = { "n" } },
                 { leader .. "s",    function() Snacks.picker.lsp_symbols() end,           desc = "Show LSP Symbols",        mode = { "n" } },
                 { leader .. "S",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Show Workspace Symbols",  mode = { "n" } },
-                { leader .. "d",    function() Snacks.picker.diagnostics_buffer() end,    desc = "Show Buffer Diagnostics", mode = { "n" } },
-                { leader .. "D",    function() Snacks.picker.diagnostics() end,           desc = "Show Workspace Symbols",  mode = { "n" } },
+                -- { leader .. "d",    function() Snacks.picker.diagnostics_buffer() end,    desc = "Show Buffer Diagnostics", mode = { "n" } },
+                -- { leader .. "D",    function() Snacks.picker.diagnostics() end,           desc = "Show Workspace Symbols",  mode = { "n" } },
         },
         opts = {
                 picker = {

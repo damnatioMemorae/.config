@@ -1,4 +1,5 @@
-local bkeymap  = require("core.utils").bufKeymap
+local bkeymap  = bufMap
+
 local optl     = vim.opt_local
 --------------------------------------------------------------------------------
 

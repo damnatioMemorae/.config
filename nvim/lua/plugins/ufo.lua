@@ -3,6 +3,7 @@ local lvl  = vim.v.count
 
 return {
         "kevinhwang91/nvim-ufo",
+        event        = "BufEnter",
         dependencies = { "kevinhwang91/promise-async" },
         keys         = {
                 { "<leader>if", function() require("ufo").inspect() end, desc = "Fold Info" },
@@ -118,17 +119,17 @@ return {
                         mode = mode,
                         desc = "Close L7 Folds",
                 },
-                { -- 8
-                        "<A-8>",
-                        function() require("ufo").closeFoldsWith(8) end,
-                        mode = mode,
-                        desc = "Close L8 Folds",
-                },
                 { -- 9
                         "<A-9>",
                         function() require("ufo").closeFoldsWith(9) end,
                         mode = mode,
                         desc = "Close L9 Folds",
+                },
+                { -- 8
+                        "<A-8>",
+                        function() require("ufo").closeFoldsWith(8) end,
+                        mode = mode,
+                        desc = "Close L8 Folds",
                 },
 
                 { -- FOLD PREVIEW
@@ -147,8 +148,8 @@ return {
                 vim.opt.foldenable     = false
         end,
         opts         = {
-                open_fold_hl_timeout    = 0,
-                close_fold_kinds_for_ft = {
+                open_fold_hl_timeout           = 0,
+                close_fold_kinds_for_ft        = {
                         cpp      = { "comment" },
                         c        = { "comment" },
                         default  = { "comment" },
@@ -160,15 +161,22 @@ return {
                         toml     = { "imports", "comment" },
                         zsh      = { "if_statement", "for_statement", "function_definition" },
                 },
-                preview                 = {
+                close_fold_current_line_for_ft = {
+                        lua = true,
+                },
+                preview                        = {
                         win_config = {
                                 border       = Border.borderStyle,
                                 winblend     = Config.winblend,
-                                winhighlight = "NormalFloat:NormalFloat",
+                                winhighlight = "NormalFloat:WildMenu,FloatBorder:WildMenu",
+                        },
+                        mappings   = {
+                                close  = "<Esc>",
+                                switch = "K",
                         },
                 },
-                provider_selector       = function(_bufnr, ft, _buftype)
-                        local lsp_with_out_folding = { "markdown", "zsh", "bash", "css", "json" }
+                provider_selector              = function(_bufnr, ft, _buftype)
+                        local lsp_with_out_folding = { "lua", "markdown", "zsh", "bash", "css", "json" }
 
                         if vim.tbl_contains(lsp_with_out_folding, ft) then
                                 return { "treesitter", "indent" }
@@ -176,11 +184,15 @@ return {
 
                         return { "treesitter", "indent" }
                 end,
-                fold_virt_text_handler  = function(_virtText)
+                fold_virt_text_handler         = function(_virtText)
+                        --[=[
                         vim.wo.foldtext = [[
                                 substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').' ... '.trim(getline(v:foldend))
                                 ]]
-                        -- return _virtText
+                        --[==[
+                        --]=]
+                        return _virtText
+                        --]==]
                 end,
         },
 }
