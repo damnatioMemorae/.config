@@ -1,7 +1,7 @@
 return {
-        "echasnovski/mini.surround",
+        "nvim-mini/mini.surround",
         version = false,
-        event   = "BufReadPre",
+        event   = "BufReadPost",
         opts    = {
                 custom_surroundings    = nil,
                 highlight_duration     = 1000,
@@ -17,9 +17,8 @@ return {
                         highlight      = "sh",
                         replace        = "sr",
                         update_n_lines = "sn",
-
-                        suffix_last = "h",
-                        suffix_next = "l",
+                        suffix_last    = "h",
+                        suffix_next    = "l",
                 },
         },
 }

@@ -109,7 +109,7 @@ configuration {
     modi:                        "drun";
     show-icons:                  false;
   	drun-display-format:         "{name}";
-    font:                        "Monocraft 14";
+    font:                        "Noita 14";
 }
 
 /* Config and colors ----------------------------------------------- */

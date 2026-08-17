@@ -1,83 +1,35 @@
+local icons = Icon.Misc
+
+local function smol(symbol)
+        local ref = symbol.references
+        local cnt = symbol.stacked_count
+
+        return vim
+            .iter {
+                    { "", icons.definiton, "Def" },
+                    { ref, "r", "Ref" },
+                    { cnt > 0 and ("+%d"):format(cnt), "", "@define" },
+            }
+            :filter(function(i) return i[1] end)
+            :fold({}, function(acc, i)
+                    if #acc > 0 then acc[#acc + 1] = { "", "NonText" } end
+                    acc[#acc + 1] = { " " .. i[2] .. i[1], i[3]:match "^@" and i[3] or "Symbol" .. i[3] }
+                    return acc
+            end)
+end
+
 return {
         "Wansmer/symbol-usage.nvim",
-        event  = "LspAttach",
-        keys   = { { "<leader>os", Toggle.codeLens, desc = "LSP Codelens - Toggle" } },
-        config = function()
-                local bg          = {}
-                -- local bg        = "LspInlayHint"
-                local _groups_col = {
-                        { "Def",  "@lsp.type.parameter", "DiagnosticUnderlineError" },
-                        { "Ref",  "@keyword",            "DiagnosticUnderlineWarn" },
-                        { "Impl", "@class",              "DiagnosticUnderlineHint" },
-                }
-                local groups      = {
-                        { "Def",   "@variable",   "LspInlayHint" },
-                        { "Ref",   "Keyword",     "LspInlayHint" },
-                        { "Impl",  "Structure",   "LspInlayHint" },
-                        { "Round", "LspInlayHint" },
-                }
-
-                local h = require("core.utils").getHl
-
-                local function hl(list)
-                        for _, hl_groups in ipairs(list) do
-                                local symbol, fg_col, bg_col = unpack(hl_groups)
-                                vim.api.nvim_set_hl(0, "SymbolUsage" .. symbol,
-                                                    { fg = h(fg_col).fg, bg = h(bg_col).bg, bold = false })
-                        end
-                end
-
-                hl(groups)
-
-                local function textFormat(symbol)
-                        local res    = {}
-                        local empty  = ""
-                        local sep    = " "
-                        local border = " "
-
-                        local stacked_functions_content = symbol.stacked_count > 0
-                                   and ("+%s"):format(symbol.stacked_count) or ""
-
-                        local function insert(icon, sym, hlStr)
-                                if bg == nil then border = "" end
-                                return table.insert(res, { border .. icon .. sep .. tostring(sym) .. border,
-                                        "SymbolUsage" .. hlStr })
-                        end
-
-                        if symbol.definition then
-                                if #res > 0 then table.insert(res, { " ", "NonText" }) end
-                                insert(Icons.Misc.definiton, symbol.definition, "Def")
-                        end
-
-                        if symbol.references then
-                                if #res > 0 then table.insert(res, { " ", "NonText" }) end
-                                insert(Icons.Misc.reference, symbol.definition, "Ref")
-                        end
-
-                        if symbol.implementation then
-                                if #res > 0 then table.insert(res, { " ", "NonText" }) end
-                                insert(Icons.Misc.implementation, symbol.implementation, "Impl")
-                        end
-
-                        if stacked_functions_content ~= "" then
-                                if #res > 0 then table.insert(res, { " ", "NonText" }) end
-
-                                table.insert(res, { border, "SymbolUsageDef" })
-                                table.insert(res, { " " .. tostring(stacked_functions_content), "@define" })
-                                table.insert(res, { border, "SymbolUsageDef" })
-                                -- insert("", tostring(stacked_functions_content), "SymbolUsageImpl")
-                        end
-
-                        return res
-                end
-
-                require("symbol-usage").setup({
-                        text_format    = textFormat,
-                        vt_position    = "end_of_line",
-                        vt_priority    = 2000,
-                        references     = { enabled = true, include_declaration = false },
-                        definition     = { enabled = true },
-                        implementation = { enabled = true },
-                })
-        end,
+        event = "LspAttach",
+        keys  = { { "<leader>os", Toggle.codeLens, desc = "LSP Codelens - Toggle" } },
+        opts  = {
+                text_format    = smol,
+                vt_position    = "end_of_line",
+                -- vt_position    = "textwidth",
+                -- vt_position    = "above",
+                vt_priority    = 2000,
+                references     = { enabled = true, include_declaration = false },
+                definition     = { enabled = true },
+                implementation = { enabled = true },
+        },
 }

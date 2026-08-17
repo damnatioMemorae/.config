@@ -133,6 +133,8 @@ prepend_dirs = [
         { name = "Public"    ,text = "", fg = "#fab387" },
         { name = "hypr"      ,text = "", fg = "#89dceb" },
         { name = "nvim"      ,text = "", fg = "#a6e3a1" },
+        { name = "nvim-declarative"      ,text = "", fg = "#a6e3a1" },
+        { name = "NollaVim"      ,text = "", fg = "#a6e3a1" },
         { name = "tmux"      ,text = "", fg = "#a6e3a1" },
         # { name = "vesktop"   ,text = "", fg = "#89b4fa" },
         # { name = "ghostty"   ,text = "󰊠", fg = "#89b4fa" },

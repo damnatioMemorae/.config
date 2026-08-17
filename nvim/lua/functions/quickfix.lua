@@ -1,0 +1,191 @@
+local g   = vim.g
+local o   = vim.o
+local fn  = vim.fn
+local api = vim.api
+local cmd = vim.cmd
+
+---- HIGHLIGHTS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+linq
+"Qf"
+    { "LineNr", "Special" }
+    { "Match", "IncSearch" }
+    { "Filename", "Directory" }
+
+---- TEXT ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local ns = api.nvim_create_namespace "qflist"
+
+api.nvim_set_hl(0, "QfMatch", { link = "Removed", default = true })
+
+local function getLines(ttt)
+        local lines = {}
+        for _, tt in ipairs(ttt) do
+                local line = ""
+                for _, t in ipairs(tt) do
+                        line = line .. t[1]
+                end
+                table.insert(lines, line)
+        end
+        return lines
+end
+
+local function applyHighlights(bufnr, ttt)
+        api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
+        for i, tt in ipairs(ttt) do
+                local col = 0
+                for _, t in ipairs(tt) do
+                        vim.hl.range(bufnr, ns, t[2], { i - 1, col }, { i - 1, col + #t[1] })
+                        col = col + #t[1]
+                end
+        end
+end
+
+local type_hilights = {
+        E     = "DiagnosticSignError",
+        W     = "DiagnosticSignWarn",
+        I     = "DiagnosticSignInfo",
+        N     = "DiagnosticSignHint",
+        H     = "DiagnosticSignHint",
+        error = "DiagnosticSignError",
+}
+
+local function shortPath(path)
+        local sep    = string.sub(package.config, 1, 1);
+        local as_raw = { "nvim$" };
+
+        local name = fn.fnamemodify(path, ":.")
+        if name == path then
+                name = fn.fnamemodify(name, ":~")
+        end
+        local function isRaw(str)
+                for _, pattern in ipairs(as_raw) do
+                        if string.match(str, pattern) then
+                                return true;
+                        end
+                end
+                return false;
+        end
+
+        local parts     = vim.split(name, sep, { trimempty = true });
+        local shortened = {};
+        for p, part in ipairs(parts) do
+                if isRaw(part) or p == 1 or p == #parts then
+                        table.insert(shortened, part);
+                elseif string.match(part, "^%.") then
+                        table.insert(shortened, fn.strcharpart(part, 0, 2));
+                else
+                        table.insert(shortened, fn.strcharpart(part, 0, 1));
+                end
+        end
+
+        return table.concat(shortened, sep);
+end
+
+function _G.qfText(info)
+        local list
+        local what = { id = info.id, items = 1, qfbufnr = 1 }
+        if info.quickfix == 1 then
+                list = fn.getqflist(what)
+        else
+                list = fn.getloclist(info.winid, what)
+        end
+        local ttt = {}
+        for _, item in ipairs(list.items) do
+                local tt     = {}
+                local text   = item.text:gsub("^%s+", "")
+                local prefix = item.type
+                if item.bufnr == 2 then
+                        table.insert(tt, { prefix, type_hilights[item.type] })
+                        table.insert(tt, { ":" .. item.lnum, "QfLineNr" })
+                        table.insert(tt, { " ", "Default" })
+                        table.insert(tt, { text, type_hilights[item.type] or "QfText" })
+                else
+                        local fname = fn.bufname(item.bufnr)
+                        fname       = shortPath(fname)
+                        table.insert(tt, { prefix .. " ", type_hilights[item.type] })
+                        table.insert(tt, { fname, "QfFilename" })
+                        if item.lnum > 0 then
+                                table.insert(tt, { ":" .. item.lnum, "QfLineNr" })
+                                table.insert(tt, { " ", "Default" })
+                                local hl = type_hilights[item.type]
+                                if hl then
+                                        table.insert(tt, { text, hl })
+                                elseif item.end_col ~= 0 and item.end_lnum == item.lnum then
+                                        local matches = nil
+                                        if item.user_data and type(item.user_data) == "table" then
+                                                matches = item.user_data.matches
+                                        end
+                                        if not matches then
+                                                if item.lnum and item.col and item.end_col then
+                                                        if item.lnum > 0 and item.col > 0 and item.end_col > 0 then
+                                                                matches = { { item.col, item.end_col } }
+                                                        end
+                                                end
+                                        end
+                                        local from = 1
+                                        for _, m in ipairs(matches or {}) do
+                                                table.insert(tt, { text:sub(from, m[1] - 1), "QfText" })
+                                                table.insert(tt, { text:sub(m[1], m[2]), "QfMatch" })
+                                                from = m[2] + 1
+                                        end
+                                        if from <= #item.text then
+                                                table.insert(tt, { text:sub(from), "QfText" })
+                                        end
+                                else
+                                        table.insert(tt, { text, type_hilights[item.type] or "QfText" })
+                                end
+                        end
+                end
+                table.insert(ttt, tt)
+        end
+        vim.schedule(function()
+                applyHighlights(list.qfbufnr, ttt)
+        end)
+        return getLines(ttt)
+end
+
+---- KEYMAPS -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local prev   = function() pcmd(g.qf_mode .. "prev")(g.qf_mode .. "last") end
+local next   = function() pcmd(g.qf_mode .. "next")(g.qf_mode .. "first") end
+local fprev  = function() pcmd(g.qf_mode .. "Nfile")(g.qf_mode .. "last") end
+local fnext  = function() pcmd(g.qf_mode .. "nfile")(g.qf_mode .. "first") end
+local remove = function() cmd(g.qf_mode .. "expr []") end
+local first  = function()
+        pcmd "lfirst" "cfirst"
+        cmd "wincmd p"
+end
+local last   = function()
+        pcmd "llast" "clast"
+        cmd "wincmd p"
+end
+local toggle = function()
+        match(g.qf_mode) {
+                c = function()
+                        local list_win_open = fn.getqflist { winid = true }.winid ~= 0
+                        cmd(list_win_open and "cclose" or "copen")
+                        cmd "wincmd p"
+                end,
+                l = function()
+                        local list_win_open = fn.getloclist(0, { winid = true }).winid ~= 0
+                        cmd(list_win_open and "lclose" or "lopen")
+                        cmd "wincmd p"
+                end,
+        }
+end
+
+bufq { "qq", first, desc = "List 1st" }
+bufq { "Q", last, desc = "List last" }
+keyq { "[", fprev, desc = "List file prev", unique = false, nowait = true }
+keyq { "]", fnext, desc = "List file next", unique = false, nowait = true }
+keyq { "(", prev, desc = "List item prev", unique = false }
+keyq { ")", next, desc = "List item next", unique = false }
+keyq { "qr", remove, desc = "List remove", unique = false }
+keyq { "<leader>q", toggle, desc = "List remove", unique = false }
+keyq { "<LocalLeader>q", Toggle.qfMode, desc = "Toggle List mode", unique = false }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+cmd "packadd cfilter"
+o.quickfixtextfunc = "v:lua.qfText"

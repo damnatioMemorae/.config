@@ -1,23 +1,19 @@
+local function sub() require "rip-substitute".sub() end
+local function subR() require "rip-substitute".rememberCursorWord() end
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 return {
         "chrisgrieser/nvim-rip-substitute",
         cmd  = "RipSubstitute",
         keys = {
-                {
-                        "<LocalLeader>w",
-                        function() require("rip-substitute").sub() end,
-                        mode = { "n", "x", "v" },
-                        desc = "Substitute (rip-sub)",
-                },
-                {
-                        "<LocalLeader>W",
-                        function() require("rip-substitute").rememberCursorWord() end,
-                        desc = "Remember cursor word (rip-sub)",
-                },
+                { "<LocalLeader>w", sub,  mode = { "n", "x" }, desc = "Substitute (rip-sub)" },
+                { "<LocalLeader>W", subR, mode = "n",          desc = "Remember cursor word (rip-sub)" },
         },
         opts = {
                 popupWin        = {
                         title                   = "",
-                        border                  = Border.borderStyle,
+                        border                  = Border.Default.Normal,
                         position                = "top",
                         hideSearchReplaceLabels = true,
                         hideKeymapHints         = true,

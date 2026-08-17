@@ -131,18 +131,18 @@ function in {
         fi
 }
 
-# Helpful aliases
 alias           l='ls --format=single-column'
 alias          ls='ls -lhc --color'
 alias          un='$aurhelper -Rns'
 alias          up='$aurhelper -Syu --sudoloop'
-# alias          up='sudo pacman -Syu'
 alias          pl='$aurhelper -Qs'
 alias          pa='$aurhelper -Ss'
 alias          pc='$aurhelper -Sc'
 alias          po='$aurhelper -Qtdq | $aurhelper -Rns -'
 alias           S='sudo pacman -S'
 
+alias        task='go-task'
+alias          hx='helix'
 alias        tarx='tar xzvf'
 alias        tarc='tar czvf $(date +"%y-%m-%d_%H-%M-%S.tar.gz")'
 alias          sz='clear && source ~/.zshrc && clear'
@@ -158,22 +158,14 @@ alias         fzf='fzf -m --preview="bat --color=always {}"'
 alias           2='hyprctl dispatch exit'
 alias           1='reboot'
 alias           0='shutdown now'
-# alias           .='niri-session'
 alias           .='start-hyprland'
-# alias .=' /usr/lib/plasma-dbus-run-session-if-needed \
-#         /usr/bin/startplasma-wayland'
 
-# Handy change dir shortcuts
 alias          ..='cd ..'
 alias         ...='cd ../..'
 alias          .3='cd ../../..'
 alias          .4='cd ../../../..'
 alias          .5='cd ../../../../..'
-alias    start_12='/usr/lib/jvm/java-8-openjdk/jre/bin/java -Xmx1024M -Xms1024M -jar forge-1.12.2-14.23.5.2860.jar nogui'
-alias    start_21='/usr/lib/jvm/java-23-openjdk/bin/java -Xmx1024M -Xms1024M -jar server.jar nogui'
-alias    start_20='/usr/lib/jvm/java-24-openjdk/bin/java -Xmx6144M -Xms1024M -jar fabric-server-mc.1.20.1-loader.0.16.10-launcher.1.0.1.jar nogui'
 
-# Git aliases
 alias        dots='git add --all && git commit --allow-empty-message -m "" && git push'
 alias          ga='git add --all'
 alias          gc='git commit -m 1'
@@ -229,7 +221,7 @@ alias mkdir='mkdir -p'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-EDTOR='nvim'
+EDITOR='nvim'
 
 source <(fzf --zsh)
 

@@ -38,7 +38,7 @@
 @define-color charging  #add8e6;
 
 @define-color workspace-fg-empty @base;
-@define-color workspace-fg @spark;
+@define-color workspace-fg @text;
 @define-color workspace-fg-active #41feb3;
 @define-color workspace-border1 @surface1;
 @define-color workspace-border2 @surface0;

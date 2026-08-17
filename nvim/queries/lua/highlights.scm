@@ -20,9 +20,8 @@
         (#set! priority 130))
 
 
-; ((function_definition "function" @function) (#set! conceal " "))
-; ((function_declaration "function" @function) (#set! conceal " "))
 ((function_definition "function" @function) (#set! conceal "λ"))
+; ((function_definition "function" @function) (#set! conceal "\\"))
 ; ((function_declaration "function" @function) (#set! conceal "λ"))
 ; ((binary_expression "~=" @operator) (#set! conceal "≠"))
 ; ((binary_expression ">=" @operator) (#set! conceal "≥"))

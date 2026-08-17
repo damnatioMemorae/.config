@@ -29,21 +29,21 @@ local function getMode()
 end
 
 local function getBranch()
-        if vim.fn.isdirectory(".git") == 0 then
+        if vim.fn.isdirectory ".git" == 0 then
                 return "--"
         else
-                local branch = vim.fn.systemlist("git branch --show-current")[1]
-                branch       = branch:match("%w+")
+                local branch = vim.fn.systemlist "git branch --show-current"[1]
+                branch       = branch:match "%w+"
 
                 return (branch and branch ~= "") and (" " .. branch) or ""
         end
 end
 
 local function getDiff()
-        if vim.fn.isdirectory(".git") == 0 then
+        if vim.fn.isdirectory ".git" == 0 then
                 return ""
         else
-                local file = vim.fn.expand("%:p")
+                local file = vim.fn.expand "%:p"
                 if file == "" then
                         return ""
                 end
@@ -55,29 +55,14 @@ local function getDiff()
                         return "+0 ~0 -0"
                 end
 
-                local added, removed = output[1]:match("(%d+)%s+(%d+)")
+                local added, removed = output[1]:match "(%d+)%s+(%d+)"
                 added                = tonumber(added) or 0
                 removed              = tonumber(removed) or 0
 
                 local changed = math.min(added, removed)
                 -- return string.format("+%d ~%d -%d", added, changed, removed)
-                return "%#DiffAdded#+" .. added .. " %#DiffChanged#~" .. changed .. " %#DiffRemoved#-" .. removed
+                return "%#DiffAdd#+" .. added .. " %#DiffChange#~" .. changed .. " %#DiffDelete#-" .. removed
         end
-
-        -- local statuses = io.popen("git status"):read("*a")
-        -- statuses       = statuses:match("%w+")
-
-        -- local changes   = 0
-        -- local additions = 0
-        -- local deletions = 0
-
-        -- if statuses ~= nil then
-        --         changes   = statuses.changed or 0
-        --         additions = statuses.added or 0
-        --         deletions = statuses.removed or 0
-        -- end
-
-        -- return "%#DiffAdded#+" .. additions .. " %#DiffChanged#~" .. changes .. " %#DiffRemoved#-" .. deletions
 end
 
 local function getModified()
@@ -126,7 +111,7 @@ end
 function statusline()
         local severity = vim.diagnostic.severity
 
-        return table.concat({
+        return table.concat {
                 -- getComponent("StatusMode", getMode()),
                 getComponent("Title", getBranch()),
                 getComponent("Title", getDiff()),
@@ -135,8 +120,5 @@ function statusline()
                 getComponent("DiagnosticSignError", getDiagnostic(severity.ERROR)),
                 getComponent("DiagnosticSignWarn", getDiagnostic(severity.WARN)),
                 getComponent("DiagnosticSignHint", getDiagnostic(severity.HINT)),
-        })
+        }
 end
-
-vim.o.laststatus = 3
-vim.o.statusline = "%!v:lua.statusline()"

@@ -2,7 +2,7 @@
 vec4 TRAIL_COLOR = iCurrentCursorColor; // can change to eg: vec4(0.2, 0.6, 1.0, 0.5);
 
 // === MASTER ANIMATION PARAMETERS ===
-const float SMEAR_ENABLED = 1.0;        // 1.0 = enable smear trail, 0.0 = disable
+const float SMEAR_ENABLED = 0.0;        // 1.0 = enable smear trail, 0.0 = disable
 const float ANIMATION_LENGTH = 0.2;     // MASTER: total animation duration per leg (your tuned value)
 const float TRAIL_SIZE = 1.0;           // 0.0 = no trail, 1.0 = maximum trail length
 
@@ -12,13 +12,13 @@ const float LEAD_EDGE_LAG = 0.05;       // 0.05 = lead catches up 20× faster th
 const float TRAIL_EDGE_LAG = 1.0;       // 1.0 = trail edge lags fully (maximum stretch)
 
 // === EASING PARAMETERS ===
-const float EASE_POWER = 2.0;           // Controls easing curve (2.0 = smooth, higher = more extreme)
+const float EASE_POWER = 1.0;           // Controls easing curve (2.0 = smooth, higher = more extreme)
 
 // === ALPHA GRADIENT PARAMETERS ===
 // 100% alpha at lead (cursor), 0% alpha at trail (lagging end)
-const float SMEAR_BASE_ALPHA = 0.85;    // Base opacity multiplier for the trail
+const float SMEAR_BASE_ALPHA = 1.0;    // Base opacity multiplier for the trail
 const float LEAD_EDGE_ALPHA = 1.0;      // Alpha at leading edge (cursor position) - fully opaque
-const float TRAIL_EDGE_ALPHA = 0.0;     // Alpha at trailing edge (lagging end) - transparent
+const float TRAIL_EDGE_ALPHA = 1.0;     // Alpha at trailing edge (lagging end) - transparent
 
 // === LEG COMPLETION (TOUR QUEUING SIMULATION) ===
 // Maximize persistence so multiple legs remain visible (creates "tour" illusion)

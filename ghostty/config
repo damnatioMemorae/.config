@@ -3,7 +3,20 @@ font-family-bold           = Monocraft
 font-family-italic         = Monocraft
 font-family-bold-italic    = Monocraft
 
+adjust-cell-width          = 16%
+adjust-cell-height         = 32%
+
 font-size                  = 10
+
+# font-family                = Noita
+# font-family-bold           = Noita
+# font-family-italic         = Noita
+# font-family-bold-italic    = Noita
+
+# adjust-cell-width          = 0
+# adjust-cell-height         = 7
+
+# font-size                  = 11
 
 font-feature               = -calt
 font-feature               = -liga
@@ -15,10 +28,8 @@ font-synthetic-style       = no-bold-italic
 
 bold-is-bright             = true
 
-adjust-cell-width          = 16%
-adjust-cell-height         = 32%
 adjust-underline-position  = 2
-adjust-underline-thickness = 10%
+adjust-underline-thickness = 30%
 adjust-icon-height         = 100%
 
 shell-integration          = none
@@ -66,9 +77,9 @@ custom-shader-animation    = true
 custom-shader              = ~/.config/ghostty/shaders/cursor/boo-cursor.glsl
 # custom-shader              = ~/.config/ghostty/shaders/cursor/tinkle-cursor.glsl
 
+# custom-shader              = ~/.config/ghostty/shaders/rgbsplit.glsl
 # custom-shader              = ~/.config/ghostty/shaders/crt-chromatic.glsl
 # custom-shader              = ~/.config/ghostty/shaders/bloom.glsl
-# custom-shader              = ~/.config/ghostty/shaders/rgbsplit.glsl
 # custom-shader              = ~/.config/ghostty/shaders/crt.glsl
 # custom-shader              = ~/.config/ghostty/shaders/blackwall.glsl
 # custom-shader              = ~/.config/ghostty/shaders/glitchy.glsl

@@ -7,83 +7,22 @@
         "margin": "0 400 10 400",
         // "margin": "0 10 0 10",
         "height": 36,
-        "fixed-center": true,
+        "fixed-center": false,
         "exclusive": true,
         "passthrough": false,
         "gtk-layer-shell": false,
         "reload_style_on_change": true,
         "modules-left": [
                 "custom/separators",
-                "hyprland/language",
-                "hyprland/workspaces",
-                // "custom/waypick",
-                ""
-        ],
-        "modules-center": [
-                "custom/separators",
-                "backlight",
-                "custom/separators",
-                "pulseaudio",
-                // "custom/privacy",
-                ""
+                "custom/cpu_graph"
         ],
         "modules-right": [
                 "custom/privacy",
                 "custom/separators",
-                "custom/updates",
                 "custom/recording",
-                "group/hardware",
-                ""
+                "group/hardware"
         ],
-
-        //──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        // HYPRLAND
-
-        "hyprland/workspaces": {
-                "rotate": 0,
-                "all-outputs": true,
-                "active-only": false,
-                "on-click": "activate",
-                "disable-scroll": false,
-                "on-scroll-down": "hyprctl dispatch workspace +1",
-                "on-scroll-up": "hyprctl dispatch workspace -1",
-                "format": "{icon}",
-                "format-icons": {
-                        "1": "",
-                        "2": "",
-                        "3": "",
-                        "4": "",
-                        "5": "",
-                        "6": "",
-                        "7": "",
-                        "8": "",
-                        "9": "",
-                        "default": "o"
-                },
-                "persistent-workspaces": {
-                        "1": [],
-                        "2": [],
-                        "3": [],
-                        "4": [],
-                        "5": [],
-                        "6": [],
-                        "7": [],
-                        "8": [],
-                        "9": []
-                }
-        },
-        "hyprland/language": {
-                "format": "{}",
-                "format-en": "🮋",
-                "format-ru": "🬋",
-                "on-click": "keyboardswitch"
-        },
-        "hyprland/submap": {
-                "format": "🬋",
-                "max-length": 8,
-                "tooltip": false
-        },
-
+        //-- HYPRLAND ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         "group/hardware": {
                 "orientation": "horizontal",
                 "modules": [
@@ -100,28 +39,6 @@
                         "battery",
                         "custom/separators"
                 ]
-        },
-        "backlight": {
-                "device": "intel_backlight",
-                "format": "{percent}",
-                "on-click": "darkshader.lua",
-                "on-click-right": "shaders",
-                "tooltip-format": "{icon} {percent}%",
-                "on-scroll-up": "brightnessctl set 5%+",
-                "on-scroll-down": "brightnessctl set 5%-",
-                "min-length": 1
-        },
-        "pulseaudio": {
-                "format": "{volume}",
-                "format-muted": "{volume}",
-                "tooltip": true,
-                "tooltip-format": "Device: {desc}",
-                "on-click": "volumecontrol.lua set Master toggle",
-                "on-click-right": "hyprctl dispatch exec pavucontrol",
-                "on-scroll-up": "volumecontrol.lua set Master 5 +",
-                "on-scroll-down": "volumecontrol.lua set Master 5 -",
-                "min-length": 2,
-                "max-length": 6
         },
         "network": {
                 "format-wifi": " {essid} ",
@@ -145,10 +62,7 @@
                 "min-length": 1,
                 "max-length": 6
         },
-
-        //──────────────────────────────────────────────────────────────────────────────────────────────────────
-        // CPU TEMPERATURE
-
+        //-- CPU TEMPERATURE ---------------------------------------------------------------------------------------------------------------------------------------------------------------
         "temperature": {
                 "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input",
                 "critical-treshold": 10,
@@ -188,18 +102,10 @@
                 "min-length": 1,
                 "max-length": 5
         },
-
-        //──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        // CUSTOM
-
-        "custom/updates": {
-                "exec": "systemupdate t",
-                "return-type": "json",
-                "format": "{}",
-                "rotate": 0,
-                "interval": 43200,
-                "tooltip": true,
-                "signal": 20
+        //-- CUSTOM ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        "custom/cpu_graph": {
+                "exec": "cpu_graph",
+                "return-type": "json"
         },
         "custom/privacy": {
                 "exec": "privacy",
@@ -244,17 +150,6 @@
                         "Low": "gpu l"
                 }
         },
-        // "custom/waypick": {
-        //         "exec": "waypick",
-        //         "return-type": "json",
-        //         "format": " {} ",
-        //         "tooltip": true,
-        //         "interval": "once",
-        //         "signal": 9,
-        //         "on-click": "waypick pick && pkill -RTMIN+9 waybar",
-        //         "on-click-right": "waypick copy",
-        //         "escape": false
-        // },
         "custom/separator": {
                 "format": ""
         },

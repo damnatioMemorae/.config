@@ -1,663 +1,354 @@
-local nano = require("functions.nano-plugins")
-local eval = require("functions.inspect-and-eval")
+local b    = vim.b
+local bo   = vim.bo
+local fn   = vim.fn
+local ui   = vim.ui
+local api  = vim.api
+local cmd  = vim.cmd
+local log  = vim.log
+local lsp  = vim.lsp
+local opt  = vim.opt
+local ts   = vim.treesitter
+local diag = vim.diagnostic
 
-local prefix = "<LocalLeader>"
-local map    = _G.smartMap
+local levels = log.levels
 
 local n, i, c, v, o, x, _t = "n", "i", "c", "v", "o", "x", "t"
 
----- META ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+local com  = require "functions.comment"
+local eval = require "functions.inspect-and-eval"
+local nano = require "functions.nano-plugins"
 
-map({ prefix .. "k", "<cmd>help!<CR>", mode = { n, x }, desc = "Help" })
-map({ "<leader>R", "<cmd>rest<CR>", desc = "Restart TUI" })
-map({ "ZZ", "<cmd>qa<CR>", desc = "Quit" })
+local send = nano.teleSend
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-map({
-        "<A-;>",
-        function()
-                local path_of_this_lua_file = debug.getinfo(1, "S").source:gsub("^@", "")
-                vim.cmd.edit(path_of_this_lua_file)
-        end,
-        desc = "Edit keybindings",
-}) -- [A-;] EDIT KEYMAPS FILE
+local function spltis(mod)
+        local command   = fn.getcmdline()
+        local shell_cmd = command:match "^!%s*(.*)"
+        if shell_cmd then
+                command = string.format("%s terminal %s", mod, shell_cmd)
+        elseif not command:match("^%s*" .. vim.pesc(mod) .. "%s+") then
+                command = string.format("%s %s", mod, command)
+        end
 
-map({ "<leader>pd", function() vim.ui.open(vim.fn.stdpath("data")) end, desc = "Local data dir" })
-map({ "<leader>pD", function() vim.ui.open(vim.fn.stdpath("log")) end, desc = "Log dir" })
-
----- NAVIGATION ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-map({ "_", "0" })
-
-map({ "{", "{zzzz", mode = { n, x }, silent = true })
-map({ "}", "}zzzz", mode = { n, x }, silent = true })
-map({ "(", "{zzzz", mode = { n, x }, silent = true })
-map({ ")", "}zzzz", mode = { n, x }, silent = true })
-
--- j/k should on wrapped lines
-map({ "j", "gj", mode = { n, x } })
-map({ "k", "gk", mode = { n, x } })
-
--- make HJKL behave like hjkl but with bigger distance
-map({ "J", "6gj", mode = x })
-map({ "K", "6gk", mode = x })
-
--- Better scroll
-map({ "<C-d>", "<C-d>zzzz", silent = true })
-map({ "<C-u>", "<C-u>zzzz", silent = true })
-map({ "<C-f>", "<C-f>zzzz", silent = true })
-map({ "<C-b>", "<C-b>zzzz", silent = true })
-map({ "<C-o>", "<C-o>zzzz", remap = true })
-map({ "<C-i>", "<C-i>zzzz", remap = true })
-
--- Last line
-map({ "G", "Gzzzz", desc = "Goto last line" })
-
----- SEARCH --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
--- map(x,  "/",     fuzzySearch,                { desc = " Fuzzy search" })
-map({ "\\", "<Esc>/\\%V", mode = x, desc = "Search in sel" })
-map({ "n", "nzzzz", desc = "Search next" })
-map({ "N", "Nzzzz", desc = "Search previous" })
-map({ "<esc>", "<cmd>nohlsearch<cr><esc>", mode = { n, i }, desc = "Escape and Clear hlsearch", silent = true })
-
-map({
-        "<A-x>",
-        function()
-                local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-                for _, line in ipairs(lines) do
-                        local url = line:match("%l+://[^%s%)%]}\"'`>]+")
-                        if url then return vim.ui.open(url) end
-                end
-                vim.notify("No URL found in file.", vim.log.levels.WARN)
-        end,
-        desc = "Open first URL in file",
-}) -- [A-x] OPEN FIRST URL IN FILE
-
---[=[ make `fF` use `nN` instead of `;,`
-map(n, "f", function() nano.fF("f") end, { desc = "f" })
-map(n, "F", function() nano.fF("F") end, { desc = "F" })
---]=]
-
----- EDITING -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
--- Undo
-map({
-        "<leader>u",
-        function()
-                if not package.loaded["undotree"] then vim.cmd.packadd("nvim.undotree") end
-                require("undotree").open()
-        end,
-        desc = "Undo Tree",
-}) -- [spc-u] UNDO TREE
-map({ "u", "<cmd>silent undo<CR>", desc = "Silent undo" })
-map({ "U", "<cmd>silent redo<CR>", desc = "Silent redo" })
-map({ "<LocalLeader>u", ":earlier ", desc = "Undo to earlier" })
-map({ "<LocalLeader>U", function() vim.cmd.later(vim.o.undolevels) end, desc = "Redo all" })
-
--- Duplicate line
-map({ "<C-w>", function() nano.smartDuplicate() end, desc = "Duplicate line", nowait = true })
-
--- Toggles
-map({ "~", "v~", desc = "Toggle char case (w/o moving)" })
-map({ "<", function() nano.toggleWordCasing() end, desc = "Toggle lower/Title case" })
-map({ ">", function() nano.camelSnakeToggle() end, desc = "Toggle camelCase and snake_case" })
-
-map({
-        "X",
-        function()
-                local updated_line = vim.api.nvim_get_current_line():sub(1, -2)
-                vim.api.nvim_set_current_line(updated_line)
-        end,
-        desc = "Delete char at EoL",
-}) -- [X] DELETE AT EOL
-
--- Append to EoL
-local trail_chars = { ",", ")", ";", ".", '"', "'", " \\", " {", "?" }
-for _, chars in pairs(trail_chars) do
-        map({
-                "<leader>" .. vim.trim(chars),
-                function()
-                        local updated_line = vim.api.nvim_get_current_line() .. chars
-                        vim.api.nvim_set_current_line(updated_line)
-                end })
+        return "<C-\\>e" .. fn.string(command) .. "<CR><CR>"
 end
 
-map({ "z.", "1z=", desc = "Fix spelling" }) -- works even with `spell=false`
-map({
-        "zl",
-        function()
-                local suggestions = vim.fn.spellsuggest(vim.fn.expand("<cword>"))
-                suggestions = vim.list_slice(suggestions, 1, 9)
-                vim.ui.select(suggestions, { prompt = "󰓆 Spelling suggestions" }, function(selection)
-                        if not selection then return end
-                        vim.cmd.normal{ '"_ciw' .. selection, bang = true }
-                end)
-        end,
-        desc = "Spell suggestions",
-}) -- [zl] SPELL SUGGESTIONS
+local function open(path)
+        ui.open(fn.stdpath(path))
+end
 
-map({
-        "<A-t>",
-        function() require("functions.auto-template-str").insertTemplateStr() end,
-        mode = i,
-        desc =
-        "Insert template string",
-}) -- [A-t] TEMPLATE STRING
+keyq { "<LocalLeader>k", "<cmd>help!<CR>", desc = "Help", mode = { n, x } }
+keyq { "<leader>R", cmd.restart, desc = "Restart TUI" }
+keyq { "<C-s>", cmd.write, desc = "Save File" }
+keyq { "ZZ", function() cmd "qa" end, desc = "Quit" }
+keyq { "<leader>pl", function() open "log" end, desc = "Log dir" }
+keyq { "<leader>pd", function() open "data" end, desc = "Local data dir" }
+keyq { "<leader>S", function() send "file" end, desc = "Telegram send file" }
+keyq { "<leader>SS", function() send "text" end, desc = "Telegram send text" }
 
--- Repeatable edit
-map({ "<C-Space>", '*N"_cgn', desc = "Repeatable edit (cword)", silent = true })
-map({
-        "<C-Space>",
-        function()
-                assert(vim.fn.mode() == "v", "Only visual (character) mode.")
-                local selection = vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"))[1]
-                vim.fn.setreg("/", "\\V" .. vim.fn.escape(selection, [[/\]]))
-                return '<Esc>"_cgn'
-        end,
-        mode = x,
-        expr = true,
-        desc = "Repeatable edit (selection)",
-}) -- [C-spc] REPEATABLE SELECTION EDIT
+keyq { "_", "0" }
+keyq { "j", "gj", mode = { n, x } }
+keyq { "k", "gk", mode = { n, x } }
+keyq { "J", "6gj", mode = x }
+keyq { "K", "6gk", mode = x }
 
--- Merging
-map({ "m", "J", desc = "Merge line up" })
-map({ "M", "<cmd>. move +1<CR>kJ", desc = "Merge line down" })
+keyq { "n", "n", desc = "Search next" }
+keyq { "N", "N", desc = "Search previous" }
+keyq { "\\", "<Esc>/\\%V", desc = "Search in sel", mode = x }
+keyq { "<esc>", "<cmd>nohlsearch<cr><esc>", desc = "Escape and Clear hlsearch", mode = { n, i }, silent = true }
 
--- Make file executable
--- keymap(n, "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
+keyq { "u", "<cmd>silent undo<CR>", desc = "Silent undo" }
+keyq { "U", "<cmd>silent redo<CR>", desc = "Silent redo" }
+keyq { "<LocalLeader>u", ":earlier ", desc = "Undo to earlier" }
+keyq { "<LocalLeader>U", function() cmd.later(vim.o.undolevels) end, desc = "Redo all" }
+keyq { "<leader>u", function() -- `spc-u` UNDO TREE
+        if not package.loaded["undotree"] then
+                cmd.packadd "nvim.undotree"
+        end
+        require "undotree".open()
+end, desc = "Undo Tree" }
 
--- Backspace in INSERT mode
-map({ "<C-d>", "<Backspace>", mode = { i, c }, desc = "Delete" })
+keyq { "<", nano.toggleWordCasing, desc = "Toggle lower/Title case" }
+keyq { ">", nano.camelSnakeToggle, desc = "Toggle camelCase and snake_case" }
+keyq { "<C-w>", nano.smartDuplicate, desc = "Duplicate line", nowait = true }
+keyq { "M", "<cmd>. move +1<CR>kJ", desc = "Merge line down" }
+keyq { "~", "v~", desc = "Toggle char case (w/o moving)" }
+keyq { "m", "J", desc = "Merge line up" }
+keyq { "z.", "1z=", desc = "Fix spelling" }
+keyq { "zl", function() -- `zl` SPELL SUGGESTIONS
+        local suggestions = fn.spellsuggest(fn.expand "<cword>")
+        suggestions       = vim.list_slice(suggestions, 1, 9)
+        ui.select(suggestions, { prompt = "󰓆 Spelling suggestions" },
+                  function(selection)
+                          if not selection then return end
+                          cmd.normal { '"_ciw' .. selection, bang = true }
+                  end)
+end, desc = "Spell suggestions" }
 
--- Save file
-map({ "<C-s>", function() vim.cmd.write() end, desc = "Save File" })
+keyq { "X", function() -- `X` DELETE AT EOL
+        local updated_line = api.nvim_get_current_line():sub(1, -2)
+        api.nvim_set_current_line(updated_line)
+end, desc = "Delete char at EoL" }
 
----- SURROUND ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vim -- Append to EoL
+    .iter { "(", ")", "[", "]", "{", "}", '"', "'", ",", ".", ";", ":", "\\", "?", "_" }
+    :each(function(char)
+            keyq { "<leader>" .. vim.trim(char), function()
+                    local updated_line = api.nvim_get_current_line() .. char
+                    api.nvim_set_current_line(updated_line)
+            end }
+    end)
 
-map({ "<A-`>", [[wBi`<Esc>ea`<Esc>b]], desc = "Inline Code cword" })
-map({ "<A-`>", "<Esc>`<i`<Esc>`>la`<Esc>", mode = x, desc = "Inline Code selection" })
-map({ "<A-`>", "``<Left>", mode = i, desc = "Inline Code" })
+keyq { "<M-t>", function() -- `M-t` TEMPLATE STRING
+        require "functions.auto-template-str".insertTemplateStr()
+end, desc = "Insert template string", mode = i }
 
----- WHITESPACE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "<C-Space>", '*N"_cgn', desc = "Repeatable edit (cword)", silent = true }
+keyq { "<C-Space>", function() -- `C-spc` REPEATABLE SELECTION EDIT,
+        assert(fn.mode() == "v", "Only visual (character) mode.")
+        local selection = fn.getregion(fn.getpos ".", fn.getpos "v")[1]
+        fn.setreg("/", "\\V" .. fn.escape(selection, [[/\]]))
+        return '<Esc>"_cgn'
+end, desc = "Repeatable edit (selection)", mode = x, expr = true }
 
-map({ "-", "[<Space>", desc = "blank above", remap = true })
-map({ "=", "]<Space>", desc = "blank below", remap = true })
+keyq { "<M-`>", [[wBi`<Esc>ea`<Esc>b]], desc = "Inline Code cword" }
+keyq { "<M-`>", "<Esc>`<i`<Esc>`>la`<Esc>", desc = "Inline Code selection", mode = x }
+keyq { "<M-`>", "``<Left>", desc = "Inline Code", mode = i }
 
----- QUICKFIX ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "+", "[<Space>", desc = "blank above", remap = true }
+keyq { "-", "]<Space>", desc = "blank below", remap = true }
 
-map({ ")", "<cmd>silent cnext<CR>zv<cmd>wincmd p<CR>", silent = true, unique = false })
-map({ "(", "<cmd>silent cprev<CR>zv<cmd>wincmd p<CR>", silent = true, unique = false })
-map({ "qr", function() vim.cmd.cexpr("[]") end, desc = "Remove items", ft = "qf" })
-map({ "qq", "<cmd>silent cfirst<CR>zv<cmd>wincmd p<CR>", desc = "Goto 1st", ft = "qf" })
-map({ "Q", "<cmd>silent clast<CR>zv<cmd>wincmd p<CR>", desc = "Goto last", ft = "qf" })
-map({
-        "<leader>q",
-        function()
-                local quickfix_win_open = vim.fn.getqflist({ winid = true }).winid ~= 0
-                vim.cmd(quickfix_win_open and "cclose" or "copen")
-        end,
-        desc = "Toggle quickfix window",
-}) -- [spc-spc-q] TOGGLE QF WINDOW
+---- YANK & PASTE --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
----- FOLDS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "<C-y>", ":%y<CR>", desc = "Yank all", silent = true }
+keyq { "y", function() -- STICKY
+        b.preYankCursor = api.nvim_win_get_cursor(0)
+        return "y"
+end, mode = { n, x }, expr = true }
+keyq { "Y", function() -- STICKY
+        b.preYankCursor = api.nvim_win_get_cursor(0)
+        return "y$"
+end, expr = true, unique = false }
 
---[=[
-map({ "zz", "<cmd>%foldclose<CR>", desc = "Close toplevel folds" })
-map({ "zm", "zM", desc = "Close all folds" })
-map({ "zv", "zv", desc = "Open until cursor visible" }) -- just for which-key
-map({ "zr", "zR", desc = "Open all folds" })
-map({ "zf", function() vim.opt.foldlevel = vim.v.count1 end, desc = "Set fold level to {count}" })
---]=]
+-- keyq { "d", '"_d', mode = { n, x } }
+keyq { "x", '"_x', mode = { n, x } }
+keyq { "c", '"_c', mode = { n, x } }
+keyq { "C", '"_C' }
+keyq { "p", "P", mode = x }
+keyq { "dd", function() -- `dd` DONT SAVE EMPTY LINES
+        local line_empty = vim.trim(api.nvim_get_current_line()) == ""
+        return (line_empty and '"_dd' or "dd")
+end, expr = true }
 
----- YANK ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "p", "]p", desc = "Paste & indent" }
 
-do
-        map({
-                "y",
-                function()
-                        vim.b.preYankCursor = vim.api.nvim_win_get_cursor(0)
-                        return "y"
-                end,
-                mode = { n, x },
-                expr = true,
-        })
-        map({
-                "Y",
-                function()
-                        vim.b.preYankCursor = vim.api.nvim_win_get_cursor(0)
-                        return "y$"
-                end,
-                expr   = true,
-                unique = false,
-        })
+keyq { "<C-p>", function() -- STICKY PASTE AT EOL
+        local cur_line = api.nvim_get_current_line():gsub("%s*$", "")
+        local reg      = vim.trim(fn.getreg "+")
+        api.nvim_set_current_line(cur_line .. " " .. reg)
+end, desc = "Sticky paste at EoL" }
 
-        vim.api.nvim_create_autocmd("TextYankPost", {
-                desc = "User: Sticky yank",
-                callback = function()
-                        if vim.v.event.operator == "y" and vim.b.preYankCursor then
-                                vim.api.nvim_win_set_cursor(0, vim.b.preYankCursor)
-                                vim.b.preYankCursor = nil
-                        end
-                end,
-        })
-end -- STICKY YANK
-do
-        map({ "<A-p>", '"1p', desc = " Paste from yankring" })
+keyq { "<C-v>", function() -- PASTE CHARWISE
+        local reg = vim.trim(fn.getreg "+"):gsub("\n%s*$", "\n")
+        fn.setreg("+", reg, "v")
+        return "<C-g>u<C-r><C-o>+"
+end, desc = "Paste charwise", mode = i, expr = true }
 
-        vim.api.nvim_create_autocmd("TextYankPost", {
+do -- YANKRING
+        keyq { "<M-p>", '"1p', desc = "Paste from yankring" }
+
+        auq "TextYankPost" {
                 desc     = "User: Yankring",
                 callback = function()
                         if vim.v.event.operator ~= "y" then
                                 return
                         end
-                        for i = 9, 1, -1 do
-                                vim.fn.setreg(tostring(i), vim.fn.getreg(tostring(i - 1)))
+                        for a = 9, 1, -1 do
+                                fn.setreg(tostring(a), fn.getreg(tostring(a - 1)))
                         end
                 end,
-        })
-end -- YANKRING
-
-vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
-        desc     = "User: Highlighted Yank",
-        callback = function()
-                -- play("pickup")
-                vim.hl.hl_op({ higroup = "IncSearch", timeout = 150 })
-        end,
-})
-
-map({ "<C-y>", ":%y<CR>", desc = " Yank all", silent = true })
-
--- map({ "d", '"_d', mode = { n, x } })
-map({ "x", '"_x', mode = { n, x } })
-map({ "c", '"_c', mode = { n, x } })
-map({ "C", '"_C' })
-map({ "p", "P", mode = x })
-map({
-        "dd",
-        function()
-                local line_empty = vim.trim(vim.api.nvim_get_current_line()) == ""
-                return (line_empty and '"_dd' or "dd")
-        end,
-        expr = true,
-}) -- [dd] DONT SAVE EMPTY LINES
-
----- PASTE ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-map({
-        "<C-p>",
-        function()
-                local cur_line = vim.api.nvim_get_current_line():gsub("%s*$", "")
-                local reg      = vim.trim(vim.fn.getreg("+"))
-                vim.api.nvim_set_current_line(cur_line .. " " .. reg)
-        end,
-        desc = " Sticky paste at EoL",
-}) -- [C-p] PASTE AT EOL
-map({
-        "<C-v>",
-        function()
-                local reg = vim.trim(vim.fn.getreg("+")):gsub("\n%s*$", "\n")
-                vim.fn.setreg("+", reg, "v")
-                return "<C-g>u<C-r><C-o>+"
-        end,
-        mode = i,
-        expr = true,
-        desc = " Paste charwise",
-}) -- [C-v] INSERT MODE PASTE
-
--- default paste
-map({ "p", "]p", desc = " Paste & indent" })
+        }
+end
 
 ---- TEXTOBJECTS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local textobj_remaps = {
-        { "c", "}", "", "curly" },
-        { "r", "]", "󰅪", "rectangular" },
-        { "m", "W", "󰬞", "WORD" },
-        { "q", '"', "", "double" },
-        { "z", "'", "", "single" },
-        { "e", "`", "", "backtick" },
+        { "c", "{", "curly" },
+        { "r", "]", "rectangular" },
+        { "m", "W", "WORD" },
+        { "q", '"', "double" },
+        { "z", "'", "single" },
+        { "e", "`", "backtick" },
 }
-for _, value in pairs(textobj_remaps) do
-        local remap, original, icon, label = unpack(value)
-        map({ "i" .. remap, "i" .. original, mode = { o, x }, desc = icon .. " inner " .. label })
-        map({ "a" .. remap, "a" .. original, mode = { o, x }, desc = icon .. " outer " .. label })
-end
 
--- Special remaps
-map({ "J", "2j", mode = o })
--- map({ "<C-Space>", '"_ciw', desc = "change word" })
--- map({ "<C-Space>", '"_c', mode = x, desc = "change selection" })
-map({ "d<Space>", '"_daw', mode = n, desc = "delete word" })
+vim
+    .iter(textobj_remaps)
+    :each(function(value)
+            where(function(_)
+                    keyq { "i" .. _.remap, "i" .. _.orig, desc = "inner " .. _.label, mode = { o, x } }
+                    keyq { "a" .. _.remap, "a" .. _.orig, desc = "outer " .. _.label, mode = { o, x } }
+            end) {
+                        remap = value[1],
+                        orig  = value[2],
+                        label = value[3],
+                }
+    end)
 
----- COMMENTS ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "J", "2j", mode = o }
+keyq { "d<Space>", '"_daw', desc = "delete word", mode = n }
 
-map({ "q", "zzgc", mode = { n, x }, desc = "Comment operator", remap = true })
-map({ "qq", "gcczz", desc = "Comment line", remap = true })
+do -- COMMENT
+        keyq { "q", "gc", desc = "Comment operator", mode = { n, x }, remap = true }
+        keyq { "qq", "gcc", desc = "Comment line", remap = true }
+        keyq { "u", "gc", desc = "Multiline comment", mode = o, remap = true }
+        keyq { "guu", "guu" }
 
-do
-        map({ "u", "gc", mode = o, desc = "Multiline comment", remap = true })
-        map({ "guu", "guu" }) -- prevent `omap u` above from overwriting `guu`
-end
-do
-        local com = require("functions.comment")
-        map({ "qw", function() com.commentHr("replaceMode") end, desc = "Horizontal Divider + Label" })
-        map({ "qy", function() com.duplicateLineAsComment() end, desc = "Duplicate Line as Comment" })
-        map({ "Q", function() com.addComment("eol") end, desc = "Append Comment" })
-        map({ "qo", function() com.addComment("below") end, desc = "Comment Below" })
-        map({ "qO", function() com.addComment("above") end, desc = "Comment Above" })
-        map({
-                "dQ",
-                function()
-                        vim.cmd(("g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"),
-                                                                "/.*[]~")))
-                end,
-                desc = "Delete Comments",
-        })
+        keyq { "Q", function() com.addComment "eol" end, desc = "Append Comment" }
+        keyq { "qo", function() com.addComment "below" end, desc = "Comment Below" }
+        keyq { "qO", function() com.addComment "above" end, desc = "Comment Above" }
+        keyq { "qe", function() com.commentHr() end, desc = "Horizontal Divider" }
+        keyq { "qw", function() com.commentHr "replaceMode" end, desc = "Horizontal Divider + Label" }
+        keyq { "qy", function() com.duplicateLineAsComment() end, desc = "Duplicate Line as Comment" }
         com.setupReplaceModeHelpersForComments()
 end
 
----- LSP -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "i", function()
+        local line_empty = vim.trim(api.nvim_get_current_line()) == ""
+        return line_empty and '"_cc' or "i"
+end, desc = "indented i on empty line", expr = true }
 
-map({
-        "<A-d>",
-        function()
-                vim.diagnostic.jump({ count = 1, float = false })
-                vim.cmd.normal("zz")
-        end,
-        mode = { n, x },
-        desc = "Diagnostic Next",
-}) -- [A-d] DIAGNOSTIC NEXT
-map({
-        "<A-D>",
-        function()
-                vim.diagnostic.jump({ count = -1, float = false })
-                vim.cmd.normal("zz")
-        end,
-        mode = { n, x },
-        desc = "Diagnostic Prev",
-}) -- [A-d] DIAGNOSTIC PREV
+---- VISUAL --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-map({ "K", vim.lsp.buf.hover, desc = "Hover Documentation", unique = false })
-map({ "J", vim.lsp.buf.signature_help, desc = "Signature Help" })
+-- keyq { "v", "m'v" }
+-- keyq { "V", "m'V" }
+-- keyq { "<Esc>", "<Esc>''", mode = x }
+-- keyq { "v", "vo", { remap = true } }
+keyq { "<C-v>", "ggVG", desc = "select all" }
+keyq { "V", "j", desc = "repeated `V` selects more lines", mode = x }
+keyq { "v", "<C-v>", desc = "`vv` starts visual block", mode = x }
 
-map({ prefix .. "f", "gF", desc = "LSP Goto File" })
-map({ prefix .. "t", "grt", desc = "LSP Type Definition" })
-map({ prefix .. "q", vim.lsp.buf.code_action, mode = { n, x }, desc = "LSP Code Action Picker" })
--- keymap(n, prefix .. "x", "grt",                   { desc = "LSP Type Definition" })
+---- CMDLINE -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-map({ "<A-j>", function() nano.scrollLspOrOtherWin(5) end, desc = "Scroll other win" })
-map({ "<A-K>", function() nano.scrollLspOrOtherWin(-5) end, desc = "Scroll other win" })
+keyq { "<M-x>r", ":luafile " .. fn.stdpath "config" .. "/" }
+keyq { "<M-x>l", ":livegrep " }
+keyq { "<M-x>f", ":find " }
+keyq { "<M-x>c", function()
+        cmd "w"
+        cmd "silent make!"
+        -- cmd "copen"
+end }
+keyq { "<M-x>C", function()
+        local makeprg = fn.input "global makeprg: "
+        api.nvim_set_option_value("makeprg", makeprg, { scope = "global" })
+        if makeprg then cmd "silent make!" end
+end }
 
-map({
-        "<leader>k",
-        function()
-                vim.diagnostic.config({ virtual_lines = { current_line = true }, virtual_text = false })
+keyq { "<M-left>", "<C-b>", desc = "Goto start of cmdline", mode = c }
+keyq { "<M-right>", "<C-e>", desc = "Goto end of cmdline", mode = c }
+keyq { "<up>", "<C-p>", desc = "Cmdline completion scroll up", mode = c }
+keyq { "<down>", "<C-n>", desc = "Cmdline completion scroll down", mode = c }
 
-                vim.api.nvim_create_autocmd("CursorMoved", {
-                        group    = vim.api.nvim_create_augroup("line-diagnostics", { clear = true }),
-                        callback = function()
-                                vim.diagnostic.config({ virtual_lines = false, virtual_text = false })
-                                return true
-                        end,
-                })
-        end,
-        desc = "Diagnostic Lines",
-}) -- [spc-k] DIAGNOSTIC LINES
+keyq { "<C-v>", function() -- `C-v` PASTE CMDLINE
+        fn.setreg("+", vim.trim(fn.getreg "+"))
+        return "<C-r>+"
+end, desc = "Cmdline Paste", mode = c, expr = true }
+keyq { "<M-c>", function() -- `C-v` YANK CMDLINE
+        local cmdline = fn.getcmdline()
+        if cmdline == "" then return vim.notify("Nothing to copy.", levels.WARN) end
+        fn.setreg("+", cmdline)
+        vim.notify(cmdline, nil, { title = "Copied" })
+end, desc = "Yank cmdline", mode = c }
+keyq { "<BS>", function() -- `M-c` TANK CMDLINE
+        if fn.getcmdline() ~= "" then return "<BS>" end
+end, desc = "disable <BS> when cmdline is empty", mode = c, expr = true, unique = false }
 
----- GOTO ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "<c-l>", function() return spltis "vertical" end, mode = c, expr = true }
+keyq { "<c-j>", function() return spltis "horizontal" end, mode = c, expr = true }
+keyq { "<c-CR>", function() return spltis "tab" end, mode = c, expr = true }
 
---[=[
-map(n, prefix .. "D", vim.lsp.buf.declaration,    { desc = " Goto Declaration" })
-map(n, prefix .. "d", vim.lsp.buf.definition,     { desc = " Goto Definition" })
-map(n, prefix .. "i", vim.lsp.buf.implementation, { desc = " Goto Implementation" })
-map(n, prefix .. "r", vim.lsp.buf.references,     { desc = " Goto Implementation" })
-map(n, prefix .. "I", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
-map(n, prefix .. "c", vim.lsp.buf.code_action,    { desc = "󱠀 Code Action" })
-map(n, prefix .. "F", vim.lsp.buf.format,         { desc = "LSP Format" })
---]=]
+---- TERMINAL ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
----- MODES ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-map({
-        "i",
-        function()
-                local line_empty = vim.trim(vim.api.nvim_get_current_line()) == ""
-                return line_empty and '"_cc' or "i"
-        end,
-        expr = true,
-        desc = "indented i on empty line",
-}) -- [i] INSERT MODE
-
--- VISUAL
-map({ "<C-v>", "ggVG", desc = "select all" })
-map({ "V", "j", mode = x, desc = "repeated `V` selects more lines" })
-map({ "v", "<C-v>", mode = x, desc = "`vv` starts visual block" })
-
-map({
-        "<C-v>",
-        function()
-                vim.fn.setreg("+", vim.trim(vim.fn.getreg("+")))
-                return "<C-r>+"
-        end,
-        mode = c,
-        expr = true,
-        desc = "Paste",
-}) -- [C-v] CMDLINE PASTE
-
-map({
-        "<A-c>",
-        function()
-                local cmdline = vim.fn.getcmdline()
-
-                if cmdline == "" then
-                        return vim.notify("Nothing to copy.", vim.log.levels.WARN)
-                end
-
-                vim.fn.setreg("+", cmdline)
-                vim.notify(cmdline, nil, { title = "Copied", icon = "󰅍" })
-        end,
-        mode = c,
-        desc = "Yank cmdline",
-}) -- [A-c] TANK CMDLINE
-
-map({
-        "<BS>",
-        function()
-                if vim.fn.getcmdline() ~= "" then
-                        return "<BS>"
-                end
-        end,
-        mode = c,
-        expr = true,
-        desc = "disable <BS> when cmdline is empty",
-}) -- [BS] DISABLE BS IN EMPTY CMDLINE
-
-map({ "<C-a>", "<C-b>", mode = c, desc = "Goto start of cmdline" })
-map({ "<A-Left>", "<C-b>", mode = c, desc = "Goto start of cmdline" })
-map({ "<A-Right>", "<C-e>", mode = c, desc = "Goto end of cmdline" })
-
-local function spltis(mod)
-        local cmd       = vim.fn.getcmdline()
-        local shell_cmd = cmd:match"^!%s*(.*)"
-        if shell_cmd then
-                cmd = string.format("%s terminal %s", mod, shell_cmd)
-        elseif not cmd:match("^%s*" .. vim.pesc(mod) .. "%s+") then
-                cmd = string.format("%s %s", mod, cmd)
-        end
-
-        return "<C-\\>e" .. vim.fn.string(cmd) .. "<CR><CR>"
-end
-
-map({ "<c-l>", function() return spltis("vertical") end, mode = c, expr = true })
-map({ "<c-j>", function() return spltis("horizontal") end, mode = c, expr = true })
-map({ "<c-cr>", function() return spltis("tab") end, mode = c, expr = true })
+keyq { "<Esc>", "<C-\\><C-n>", mode = "t" }
 
 ---- INSPECT & EVAL ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-map({ "<leader>ii", vim.cmd.Inspect, desc = "Inspect at cursor" })
-map({ "<leader>it", vim.treesitter.inspect_tree, desc = "TS tree" })
-map({ "<leader>iq", vim.treesitter.query.edit, desc = "TS query" })
+keyq { "<leader>ii", cmd.Inspect, desc = "Inspect at cursor" }
+keyq { "<leader>it", ts.inspect_tree, desc = "TS tree" }
+keyq { "<leader>iq", ts.query.edit, desc = "TS query" }
+keyq { "<leader>in", eval.nodeAtCursor, desc = "Node at cursor" }
+keyq { "<leader>ia", eval.inspectNodeAncestors, desc = "Node ancestors" }
+keyq { "<leader>iL", function() cmd.edit(lsp.log.get_filename()) end, desc = "LSP log" }
+keyq { "<leader>il", eval.lspCapabilities, desc = "LSP capabilities" }
+keyq { "<leader>ib", eval.bufferInfo, desc = "Buffer info" }
+keyq { "<leader><leader>x", eval.runFile, desc = "Run file" }
+keyq { "<leader>ye", function() -- `spc-y-e` YANK LAST EX COMMAND
+        local command    = vim.trim(fn.getreg ":")
+        local last_excmd = command:gsub("^lua ", ""):gsub("^= ?", "")
+        if last_excmd == "" then return vim.notify("Nothing to copy", levels.TRACE) end
+        local syntax = vim.startswith(command, "lua") and "lua" or "vim"
+        vim.notify(last_excmd, nil, { title = "Copied", icon = "󰅍", ft = syntax })
+        fn.setreg("+", last_excmd)
+end, desc = "Yank last ex-cmd" }
 
-map({ "<leader>in", function() eval.nodeAtCursor() end, desc = "Node at cursor" })
-map({ "<leader>ia", function() eval.inspectNodeAncestors() end, desc = "Node ancestors" })
+keyq { "<leader>ie", eval.evalNvimLua, desc = "Eval" }
+keyq { "<CR>", eval.evalNvimLua, desc = "Eval", mode = x, ft = "lua" }
+keyq { "<leader>id", function() -- `spc-i-d` NEXT DIAGNOSTIC
+        vim.notify(vim.inspect(diag.get_next()), nil, { ft = "lua" })
+end, desc = "Next diagnostic" }
+keyq { "<leader>iE", function() -- `spc-E` EVLA LUA EXPRESSION
+        local selection = fn.mode() == "n" and "" or fn.getregion(fn.getpos ".", fn.getpos "v")[1]
+        return ":lua  = " .. selection
+end, desc = "Eval lua expr", mode = { n, x }, expr = true }
 
-map({ "<leader>iL", function() vim.cmd.edit(vim.lsp.log.get_filename()) end, desc = "LSP log" })
-map({ "<leader>il", function() eval.lspCapabilities() end, desc = "LSP capabilities" })
-map({ "<leader>ib", function() eval.bufferInfo() end, desc = "Buffer info" })
-map({ "<leader>ie", function() eval.evalNvimLua() end, mode = { n, x }, desc = "Eval" })
-map({ "<leader><leader>x", function() eval.runFile() end, desc = "Run file" })
+---- SPLITS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-map({
-        "<leader>id",
-        function()
-                local diag = vim.diagnostic.get_next()
-                vim.notify(vim.inspect(diag), nil, { ft = "lua" })
-        end,
-        desc = "Next diagnostic",
-}) -- [spc-i-d] NEXT DIAGNOSTIC
+keyq { "<M-Space>", "<C-w>w", desc = "Cycle windows", mode = { n, v, i } }
+keyq { "<M-m>", "<cmd>vsplit<CR>", desc = "Split altfile", mode = { n, x, i } }
+keyq { "<M-n>", "<cmd>vertical split #<CR>", desc = "Split altfile", mode = { n, x, i } }
+keyq { "<C-n>", "<cmd>messages<CR>", desc = "Notification History" }
+keyq { "<M-W>", "<cmd>only<CR>", desc = "Close other windows", mode = { n, x, i } }
 
-map({
-        "<leader>E",
-        function()
-                local selection = vim.fn.mode() == "n" and "" or
-                           vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"))[1]
-                return ":lua = " .. selection
-        end,
-        mode = { n, x },
-        expr = true,
-        desc = "Eval lua expr",
-}) -- [spc-E] EVLA LUA EXPRESSION
+---- BUFFERS -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-map({
-        "<leader>ye",
-        function()
-                local cmd        = vim.trim(vim.fn.getreg(":"))
-                local last_excmd = cmd:gsub("^lua ", ""):gsub("^= ?", "")
+keyq { "<M-r>", cmd.edit, desc = "Reload buffer" }
 
-                if last_excmd == "" then
-                        return vim.notify("Nothing to copy", vim.log.levels.TRACE)
-                end
+keyq { "<M-w>", function() -- `M-w` DELETE WINDOW/BUFFER
+        cmd "silent! update"
+        local win_closed = pcall(cmd.close)
+        if win_closed then return end
 
-                local syntax = vim.startswith(cmd, "lua") and "lua" or "vim"
-                vim.notify(last_excmd, nil, { title = "Copied", icon = "󰅍", ft = syntax })
-                vim.fn.setreg("+", last_excmd)
-        end,
-        desc = "Yank last ex-cmd",
-}) -- [spc-y-e] YANK LAST EX COMMAND
+        local buf_count = #fn.getbufinfo { buflisted = 1 }
+        if buf_count == 1 then
+                return vim.notify("Only one buffer open.", levels.TRACE)
+        end
+        cmd.bdelete()
+end, desc = "Close window/buffer", mode = { n, i, x } }
+keyq { "H", function() -- `H` PREVIOUS BUFFER
+        if bo.buftype ~= "" then return end
+        cmd.bprevious()
+end, desc = "Prev Buffer" }
+keyq { "L", function() -- `L` NEXT BUFFER
+        if bo.buftype ~= "" then return end
+        cmd.bnext()
+end, desc = "Next Buffer" }
 
----- WINDOWS & SPLITS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-map({ "<A-m>", "<cmd>vsplit<CR>", mode = { n, x, i }, desc = "Split altfile" })
-map({ "<A-Space>", "<C-w>w", mode = { n, v, i }, desc = "Cycle windows" })
-map({ "<A-n>", "<cmd>vertical split #<CR>", mode = { n, x, i }, desc = "Split altfile" })
-map({ "<C-n>", "<cmd>messages<CR>", desc = "Notification History" })
-map({ "<A-W>", vim.cmd.only, mode = { n, x, i }, desc = "Close other windows" })
-
----- BUFFERS & FILES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-map({
-        "<A-w>",
-        function()
-                vim.cmd("silent! update")
-                local win_closed = pcall(vim.cmd.close) -- fails on last window
-                if win_closed then
-                        return
-                end
-                local buf_count = #vim.fn.getbufinfo({ buflisted = 1 })
-                if buf_count == 1 then
-                        return vim.notify("Only one buffer open.", vim.log.levels.TRACE)
-                end
-                vim.cmd.bdelete()
-        end,
-        mode = { n, i, x },
-        desc = "Close window/buffer",
-}) -- [A-w] DELETE WINDOW/BUFFER
-
-map({ "<A-r>", vim.cmd.edit, desc = "Reload buffer" })
-map({
-        "H",
-        function()
-                if vim.bo.buftype ~= "" then return end
-                vim.cmd.bprevious()
-        end,
-        desc = "Prev Buffer",
-}) -- [H] PREVIOUS BUFFER
-map({
-        "L",
-        function()
-                if vim.bo.buftype ~= "" then return end
-                vim.cmd.bnext()
-        end,
-        desc = "Next Buffer",
-})
-
----- MACROS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-do
-        local reg        = "r"
-        local toggle_key = "0"
-
-        vim.fn.setreg(reg, "")
-        map({ toggle_key, function() nano.startOrStopRecording(toggle_key, reg) end, desc = "Start/stop recording" })
-        map({ "9", function() nano.playRecording(reg) end, desc = "Play recording" })
-end
+where(function(_) -- MACROS
+        fn.setreg(_.reg, "")
+        keyq { _.toggle, function() nano.startOrStopRecording(_.toggle, _.reg) end, desc = "Start/stop recording" }
+        keyq { "9", function() nano.playRecording(_.reg) end, desc = "Play recording" }
+        keyq { _.edit, function() nano.editMacro(_.reg) end, desc = "Edit recording" }
+end) {
+            reg    = "r",
+            edit   = "1",
+            toggle = "0",
+    }
 
 ---- REFACTORING ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-map({ "<leader>fd", ":global //d<Left><Left>", desc = "delete matching lines" })
+keyq { "<leader>fd", ":global //d<Left><Left>", desc = "delete matching lines" }
+keyq { "<LocalLeader>n", lsp.buf.rename, desc = "LSP rename" }
+keyq { "<LocalLeader>m", nano.camelSnakeLspRename, desc = "LSP rename: camel/snake" }
 
-map({ prefix .. "n", vim.lsp.buf.rename, desc = "LSP rename" })
-map({ prefix .. "m", function() nano.camelSnakeLspRename() end, desc = "LSP rename: camel/snake" })
-
---[=[
-map({
-        "<leader>qq",
-        function()
-                local updated_line =
-                           vim.api.nvim_get_current_line():gsub("[\"']", { ['"'] = "'", ["'"] = '"' })
-                vim.api.nvim_set_current_line(updated_line)
-        end,
-        mode = n,
-        desc = "Switch quotes in line",
-}) -- [spc-q-q] SWITCH QUOTES ]=]
-
----- OPTION TOGGLING -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-map({
-        "<leader>ol",
-        function()
-                vim.cmd.lsp("restart")
-                vim.notify("Restarting LSPs", vim.log.levels.DEBUG)
-        end,
-        desc = "LSP restart",
-}) -- [spc-o-l] RESTART LSP
-
-map({ "<leader>oc", function() Toggle.concealLvl() end, desc = "Toggle Conceal" })
-map({ "<leader>o<leader>", function() Toggle.all() end, desc = "Toggle UI" })
-
----- RELOAD PLUGINS ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-map({
-        "<leader>lr",
-        function()
-                local plugins      = require("lazy").plugins()
-                local plugin_names = {}
-                for _, plugin in ipairs(plugins) do
-                        table.insert(plugin_names, plugin.name)
-                end
-
-                vim.ui.select(
-                        plugin_names,
-                        { title = "Reload plugin" },
-                        function(selected) require("lazy").reload({ plugins = { selected } }) end
-                )
-        end,
-        desc = "Reload plugin",
-})
-
-local loaded = pcall(require, "tiny-cmdline")
-if loaded then
-        map({ ":", function()
-                require("functions.cmdline").cmdline()
-        end })
-end
+---- TOGGLES -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyq { "<leader>oc", Toggle.concealLvl, desc = "Toggle Conceal" }
+keyq { "<leader>o<leader>", Toggle.all, desc = "Toggle UI" }

@@ -1,9 +1,9 @@
 local error_query = vim.treesitter.query.parse("query", "[(ERROR)(MISSING)] @a")
-local namespace   = vim.api.nvim_create_namespace("treesitter.diagnostics")
+local namespace   = vim.api.nvim_create_namespace "treesitter.diagnostics"
 
 --- @param args vim.api.keyset.create_autocmd.callback_args
 local function diagnose(args)
-        if not vim.diagnostic.is_enabled({ bufnr = args.buf }) then
+        if not vim.diagnostic.is_enabled { bufnr = args.buf } then
                 return
         end
         if vim.bo[args.buf].buftype ~= "" then
@@ -39,7 +39,7 @@ local function diagnose(args)
                                                         end_lnum  = end_lnum,
                                                         col       = col,
                                                         end_col   = end_col,
-                                                        message   = require("core.icons").diagnostics.ERROR,
+                                                        message   = Icon.Diagnostics.ERROR,
                                                         code      = string.format("%s-syntax", ltree:lang()),
                                                         bufnr     = args.buf,
                                                         namespace = namespace,
@@ -54,14 +54,14 @@ local function diagnose(args)
                                                 local previous = node:prev_sibling()
                                                 if previous and previous:type() ~= "ERROR" then
                                                         local previous_type = previous:named() and previous:type() or
-                                                                   string.format("`%s`", previous:type())
+                                                            string.format("`%s`", previous:type())
                                                         diagnostic.message  = diagnostic.message ..
-                                                                   " after " .. previous_type
+                                                            " after " .. previous_type
                                                 end
 
                                                 if parent and parent:type() ~= "ERROR" and (previous == nil or previous:type() ~= parent:type()) then
                                                         diagnostic.message = diagnostic.message ..
-                                                                   " in " .. parent:type()
+                                                            " in " .. parent:type()
                                                 end
 
                                                 table.insert(diagnostics, diagnostic)
@@ -76,8 +76,8 @@ end
 
 local autocmd_group = vim.api.nvim_create_augroup("editor.treesitter", { clear = true })
 
-vim.api.nvim_create_autocmd({ "FileType", "TextChanged", "InsertLeave" }, {
+auq { "FileType", "TextChanged", "InsertLeave" } {
         desc     = "treesitter diagnostics",
         group    = autocmd_group,
         callback = vim.schedule_wrap(diagnose),
-})
+}

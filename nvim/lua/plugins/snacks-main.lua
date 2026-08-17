@@ -1,50 +1,33 @@
-local groups = {
-        { "Title",                "DiagnosticError" },
+local git   = Icon.Git
+local misc  = Icon.Misc
+local diag  = Icon.Diagnostics
+local kinds = Icon.Kinds
 
-        { "PickerTitle",          "DiagnosticError" },
-        { "Picker",               "Normal" },
-        { "PickerBorder",         "borderStyle" },
-        { "PickerListCursorLine", "Visual" },
-        { "PickerCursorLine",     "TinyInlineDiagnosticVirtualTextError" },
-        { "PickerSelected",       "Error" },
-        { "PickerIconFile",       "BlinkCmpKindFile" },
+local border = Border.Default.Normal
+local none   = Border.Default.NormalNone
+local top    = Border.Plain.Top
+local bot    = Border.Plain.Bottom
 
-        { "PickerUndoAdded",      "SnacksDiffAdd" },
-        { "PickerUndoSaved",      "SnacksDiffContext" },
-        { "PickerUndoRemoved",    "SnacksDiffDelete" },
-        { "PickerUndoCurrent",    "DiffText" },
-
-        { "DiffAdded",            "DiffAdd" },
-        { "DiffSaved",            "DiffChange" },
-        { "DiffRemoved",          "DiffDelete" },
-        { "DiffCurrent",          "DiffText" },
-}
-require("core.utils").hlBulk(groups, "Snacks")
-
-local border = Border.borderStyle
-local none   = Border.borderStyleNone
-local top    = Border.borderTop
-local bot    = Border.borderBottom
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local loaded, _ = pcall(require, "snacks")
 local toggle    = Snacks.toggle
-
 if loaded then
-        toggle.option("relativenumber", { name = " Relative Line Number", global = true }):map("<leader>or")
-        toggle.option("number", { name = " Line Number", global = true }):map("<leader>on")
-        toggle.option("wrap", { name = "󰖶 Wrap", global = true }):map("<leader>ow")
-        toggle.treesitter({ name = " Treesitter Highlight" }):map("<leader>ot")
+        toggle.option("relativenumber", { name = "Relative Line Number", global = true }):map "<leader>or"
+        toggle.option("number", { name = "Line Number", global = true }):map "<leader>on"
+        toggle.option("wrap", { name = "Wrap", global = true }):map "<leader>ow"
+        toggle.treesitter { name = "Treesitter Highlight" }:map "<leader>ot"
 end
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 return {
         "folke/snacks.nvim",
         lazy     = false,
         priority = 1000,
         keys     = {
-                -- { "<A-b>",      function() Snacks.bufdelete() end,          desc = "Delete Buffer" },
-                { "<A-b>",      "<cmd>b #<CR>",                             desc = "Swap buffer" },
+                { "<M-b>",      "<cmd>b #<CR>",                             desc = "Swap buffer" },
                 { "<leader>fr", function() Snacks.rename.rename_file() end, desc = "Rename File" },
-                { "<leader>lg", function() Snacks.lazygit() end,            desc = "Lazygit" },
         },
         opts     = {
                 quickfile = { enabled = true },
@@ -145,23 +128,23 @@ return {
                                 },
                         },
                         icons     = {
-                                Diagnostics = Icons.Diagnostics,
-                                kinds       = Icons.Kinds,
+                                Diagnostics = diag,
+                                kinds       = kinds,
                                 tree        = { vertical = " ", middle = " ", last = " " },
                                 files       = {
                                         enabled  = true,
-                                        dir      = Icons.Kinds.Folder,
-                                        dir_open = Icons.Misc.folderOpen,
-                                        file     = Icons.Kinds.File,
+                                        dir      = kinds.Folder,
+                                        dir_open = misc.folderOpen,
+                                        file     = kinds.File,
                                 },
                                 ui          = {
-                                        selected   = Icons.Diagnostics.HINT .. " ",
+                                        selected   = diag.HINT .. " ",
                                         unselected = "",
                                 },
                                 git         = {
-                                        added     = Icons.Git.Added,
-                                        deleted   = Icons.Git.Deleted,
-                                        modified  = Icons.Git.Modified,
+                                        added     = git.Added,
+                                        deleted   = git.Deleted,
+                                        modified  = git.Modified,
                                         enabled   = true,
                                         commit    = "󰜘 ",
                                         staged    = "●",
@@ -299,7 +282,7 @@ return {
                                 spell          = false,
                                 statuscolumn   = "",
                         },
-                        cache    = vim.fn.stdpath("cache") .. "/Snacks.image",
+                        cache    = vim.fn.stdpath "cache" .. "/Snacks.image",
                         debug    = { request = false, convert = false, placement = false },
                         icons    = { math = "󰪚 ", chart = "󰄧 ", image = " " },
                         env      = {},

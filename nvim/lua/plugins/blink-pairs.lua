@@ -1,16 +1,17 @@
 return {
         "saghen/blink.pairs",
-        build   = function() require("blink.pairs").build():pwait(60000) end,
-        event   = { "InsertEnter", "CmdlineEnter", "BufReadPre" },
-        keys    = {
-                { "<A-i>", "a{<CR><down>,<up><esc>i", mode = "n", desc = " Open new scope", remap = true },
-                { "<A-i>", "{<CR>", mode = "i", desc = " Open new scope", remap = true },
+        build        = function() require "blink.pairs".build():pwait(60000) end,
+        event        = "BufReadPost",
+        dependencies = { "saghen/blink.lib" },
+        keys         = {
+                { "<M-i>", "a{<CR><down>,<up><esc>i", mode = "n", desc = "Open new scope", remap = true },
+                { "<M-i>", "{<CR>",                   mode = "i", desc = "open new scope", remap = true },
         },
-        opts    = {
+        opts         = {
                 mappings = {
                         enabled            = true,
-                        cmdline            = true,
-                        disabled_filetypes = {},
+                        cmdline            = false,
+                        disabled_filetypes = { "rip-substitute" },
                         wrap               = { ["<C-b>"] = "motion", ["<C-S-b>"] = "motion_reverse" },
                         pairs              = {
                                 ["<"] = {
@@ -18,8 +19,8 @@ return {
                                                 ">",
                                                 languages = { "lua" },
                                                 when      = function(ctx)
-                                                        return ctx.ts:matches_capture("string")
-                                                                   or ctx.ts:matches_capture("string_content")
+                                                        return ctx.ts:matches_capture "string"
+                                                            or ctx.ts:matches_capture "string_content"
                                                 end,
                                         },
                                 },
@@ -27,9 +28,8 @@ return {
                 },
                 highlights = {
                         enabled         = true,
-                        cmdline         = true,
-                        groups          = { "BlinkPairsOrange", "BlinkPairsPurple", "BlinkPairsBlue" },
-                        -- groups          = { "BlinkPairs" },
+                        cmdline         = false,
+                        groups          = {},
                         unmatched_group = "MatchParen",
                         matchparen      = {
                                 enabled             = true,

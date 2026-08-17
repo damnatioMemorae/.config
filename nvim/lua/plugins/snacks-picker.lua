@@ -1,390 +1,335 @@
+linq
+"Snacks"
+    { "Picker", "Normal" }
+    { "PickerBorder", "Border" }
+    { "PickerBoxBorder", "Border" }
+    { "PickerListBorder", "Border" }
+    { "PickerInputBorder", "Border" }
+    { "PickerPreviewBorder", "Border" }
+    { "PickerCursorLine", "PmenuSel" }
+    { "PickerListCursorLine", "PmenuSel" }
+    { "PickerPathIgnored", "Directory" }
+    { "PickerPathHidden", "Directory" }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local o   = vim.o
+local v   = vim.v
+local bo  = vim.bo
+local fn  = vim.fn
+local fs  = vim.fs
+local ui  = vim.ui
+local uv  = vim.uv
+local cmd = vim.cmd
+local api = vim.api
+local env = vim.env
+
+local git   = Icon.Git
+local misc  = Icon.Misc
+local diag  = Icon.Diagnostics
+local kinds = Icon.Kinds
+
 local leader = "<leader><leader>"
+local none   = Border.Default.None
 
-local top    = Border.borderTop
-local border = Border.borderStyle
-local bot    = Border.borderBottom
-local none   = Border.borderStyleNone
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local insertOnShow = function() vim.cmd.stopinsert() end
+local picker = {
+        prompt     = " > ",
+        ui_select  = false,
+        hidden     = true,
+        ignored    = true,
+        formats    = { file = { filename_only = true } },
+        layout     = { preset = "dropdown" },
+        sources    = {
+                files      = {
+                        cmd     = "rg",
+                        follow  = true,
+                        args    = {
+                                "--files",
+                                "--sortr=modified",
+                                "--no-config",
+                                ("--ignore-file=" .. env.HOME .. "/.config/ripgrep/ignore"),
+                        },
+                        hidden  = true,
+                        matcher = { frecency = true },
+                        win     = { input = { keys = { [":"] = { "complete_and_add_colon", mode = "i" } } } },
+                        confirm = function(picker, item, action)
+                                local abs_path       = Snacks.picker.util.path(item) or ""
+                                local symlink_target = uv.fs_readlink(abs_path)
 
-local function getPicker(picker)
-        local fzf_lua = pcall(require, "fzf-lua")
-        local snacks  = pcall(require, "snacks")
+                                if symlink_target then
+                                        local link_dir = fs.dirname(item._path)
+                                        local original = fs.normalize(link_dir ..
+                                                "/" .. symlink_target)
+                                        assert(uv.fs_stat(original),
+                                               "file does not exist: " .. original)
+                                        item._path = original
+                                end
 
-        if snacks then
-                return require("snacks.picker")[picker]()
-        elseif fzf_lua then
-                return require("fzf-lua")[picker]()
-        end
-end
+                                local binary_ext = { "pdf", "png", "webp", "docx" }
+                                local ext        = abs_path:match ".+%.([^.]+)$" or ""
 
-local function importLuaModule()
-        Snacks.picker.grep{
-                title  = "󰢱 Import module",
-                cmd    = "rg",
-                args   = { "--only-matching", "--no-config" },
-                live   = false,
-                regex  = true,
-                search = [[local (\w+) ?= ?require\(["'](.*?)["']\)(\.[\w.]*)?]],
-                ft     = "lua",
+                                if vim.tbl_contains(binary_ext, ext) then
+                                        ui.open(abs_path)
+                                        picker:close()
+                                else
+                                        Snacks.picker.actions.confirm(picker, item, action)
+                                end
+                        end,
+                        actions = {
+                                complete_and_add_colon = function(picker)
+                                        local query = api.nvim_get_current_line()
+                                        local file  = picker:current().file
 
-                layout = { preset = "select", layout = { width = 0.75 } },
-                transform = function(item, ctx) -- ensure items are unique
-                        ctx.meta.done = ctx.meta.done or {}
-                        local import = item.text:gsub(".-:", "") -- different occurrences of same import
-                        if ctx.meta.done[import] then return false end
-                        ctx.meta.done[import] = true
+                                        if not file or query:find ":" then
+                                                fn.feedkeys(":", "n")
+                                                return
+                                        end
+
+                                        api.nvim_set_current_line(file .. ":")
+                                        cmd.startinsert { bang = true }
+                                end,
+                        },
+                },
+                buffers    = {
+                        format = "buffer",
+                        hidden = false,
+                        win    = { input = { keys = { ["d"] = "bufdelete", ["<Left>"] = "bufdelete" } } },
+                },
+                help       = {
+                        confirm = function(picker)
+                                picker:action "help"
+                                cmd.only()
+                        end,
+                },
+                keymaps    = {
+                        confirm = function(picker, item)
+                                if not item.file then
+                                        return
+                                end
+
+                                picker:close()
+                                local lnum = item.pos[1]
+                                cmd(("edit +%d %s"):format(lnum, item.file))
+                        end,
+                },
+                highlights = {
+                        confirm = function(picker, item)
+                                fn.setreg("+", item.hl_group)
+                                Snacks.notify(item.hl_group, { title = "Copied", icon = "󰅍" })
+                                picker:close()
+                        end,
+                },
+
+                grep        = {},
+                grep_word   = {},
+                grep_buffer = {},
+
+                lsp_implementations   = {},
+                lsp_definitions       = {},
+                lsp_declarations      = {},
+                lsp_symbols           = {},
+                lsp_workspace_symbols = {},
+                lsp_references        = {},
+                diagnostics           = {},
+                diagnostics_buffer    = {},
+        },
+        win        = {
+                preview = { ["<C-p>"] = { "toggle_preview", mode = { "i", "n" } } },
+                list    = { ["<C-p>"] = { "toggle_preview", mode = { "i", "n" } } },
+                input   = {
+                        keys = {
+                                ["<a-s>"] = { "flash", mode = { "n", "i" } },
+                                ["s"]     = { "flash" },
+                                ["<Esc>"] = { "close", mode = { "i", "n" } },
+                                ["h"]     = { "toggle_hidden", mode = { "n" } },
+                                ["l"]     = { "confirm", mode = { "n" } },
+                                ["J"]     = { "preview_scroll_down", mode = { "i", "n" } },
+                                ["K"]     = { "preview_scroll_up", mode = { "i", "n" } },
+                                ["H"]     = { "preview_scroll_left", mode = { "i", "n" } },
+                                ["L"]     = { "preview_scroll_right", mode = { "i", "n" } },
+                                ["<C-p>"] = { "toggle_preview", mode = { "i", "n" } },
+                        },
+                },
+        },
+        icons      = {
+                Diagnostics = diag,
+                kinds       = kinds,
+                tree        = { vertical = " ", middle = " ", last = " " },
+                files       = { enabled = true, dir = kinds.Folder, dir_open = misc.folderOpen, file = kinds.File },
+                ui          = { selected = diag.HINT .. " ", unselected = "" },
+                git         = {
+                        added     = git.Added,
+                        deleted   = git.Deleted,
+                        modified  = git.Modified,
+                        enabled   = true,
+                        commit    = "󰜘 ",
+                        staged    = "●",
+                        ignored   = " ",
+                        renamed   = "",
+                        unmerged  = " ",
+                        untracked = "?",
+                },
+        },
+        actions    = {
+                flash         = function(picker)
+                        local ok = pcall(require, "flash")
+                        if not ok then return end
+                        require "flash".jump {
+                                pattern = "^",
+                                label   = { after = { 0, 0 } },
+                                search  = {
+                                        mode    = "search",
+                                        exclude = {
+                                                function(win)
+                                                        return bo[vim.api.nvim_win_get_buf(win)].filetype ~=
+                                                            "snacks_picker_list"
+                                                end,
+                                        },
+                                },
+                                action  = function(match)
+                                        local idx = picker.list:row2idx(match.pos[1])
+                                        picker.list:_move(idx, true, true)
+                                end,
+                        }
                 end,
-                format = function(item, _picker) -- only display the grepped line
-                        local out = {}
-                        local line = item.line:gsub("^local ", "")
-                        Snacks.picker.highlight.format(item, line, out)
-                        return out
+                yank          = function(picker, item, action)
+                        if not item then
+                                return
+                        end
+
+                        local reg   = action.reg or v.register
+                        local value = item[action.field] or item.data or item.text
+                        fn.setreg(reg, value)
+
+                        if action.notify ~= false then
+                                local buf = item.buf or api.nvim_win_get_buf(picker.main)
+                                local ft  = bo[buf].filetype
+                                vim.notify(value, nil, { icon = "󰅍", title = "Copied", ft = ft })
+                        end
                 end,
-                confirm = function(picker, item) -- insert the line below the current one
-                        picker:close()
-                        vim.cmd.normal{ "o", bang = true }
-                        vim.api.nvim_set_current_line(item.line)
-                        vim.cmd.normal{ "==l", bang = true }
+                qflist_and_go = function(picker, _item, _action)
+                        local query = api.nvim_get_current_line()
+                        local title = picker.title .. (query and ": " .. query or "")
+
+                        picker:action "qflist"
+                        fn.setqflist({}, "a", { title = title })
+
+                        cmd.cclose()
+                        cmd "silent cfirst"
+                        cmd.normal { "zv", bang = true }
+
+                        api.nvim_exec_autocmds("QuickFixCmdPost", {})
                 end,
-        }
-end
+        },
+        layouts    = {
+                dropdown          = {
+                        layout = {
+                                box    = "horizontal",
+                                width  = 0.7,
+                                height = 0.7,
+                                border = none,
+                                {
+                                        box    = "vertical",
+                                        border = none,
+                                        title  = "",
+                                        { win = "input", border = Border.Plain.NoBottom },
+                                        { win = "list",  border = Border.Plain.Top },
+                                },
+                        },
+                },
+                small_no_preview  = {
+                        cycle  = true, -- `list_up/down` action wraps
+                        layout = {
+                                box    = "horizontal",
+                                width  = 0.65,
+                                height = 0.6,
+                                border = "none",
+                                {
+                                        box    = "vertical",
+                                        border = o.winborder --[[@as "rounded"|"single"|"double"|"solid"]],
+                                        title  = "{title} {live} {flags}",
+                                        { win = "input", height = 1,     border = "bottom" },
+                                        { win = "list",  border = "none" },
+                                },
+                        },
+                },
+                wide_with_preview = {
+                        preset = "small_no_preview",
+                        layout = {
+                                width = 0.999,
+                                [2]   = {
+                                        win    = "preview",
+                                        title  = "{preview}",
+                                        border = o.winborder --[[@as "rounded"|"single"|"double"|"solid"]],
+                                        width  = 0.5,
+                                },
+                        },
+                },
+                big_preview       = {
+                        preset = "wide_with_preview",
+                        layout = { height = 0.8, [2] = { width = 0.6 }, -- second win is the preview
+                        },
+                },
+                sidebar           = {
+                        preview = "main",
+                        cycle   = true, -- `list_up/down` action wraps
+                        layout  = {
+                                box       = "vertical",
+                                position  = "left", --  = split window
+                                width     = 0.3,
+                                min_width = 25,
+                                { win = "input",  height = 1, border = "bottom" },
+                                { win = "list" },
+                                { win = "preview" },
+                        },
+                },
+                sidebar_no_input  = {
+                        preview = "main",
+                        cycle   = true, -- `list_up/down` action wraps
+                        layout  = {
+                                box       = "vertical",
+                                position  = "left", --  = split window
+                                width     = 0.3,
+                                min_width = 25,
+                                { win = "list" },
+                                { win = "preview" },
+                        },
+                },
+        },
+        formatters = { file = { filename_list = true } },
+}
 
 return {
         "folke/snacks.nvim",
         keys = {
-                -- { leader .. "<leader>", function() Snacks.picker() end,                           desc = "Main Picker",       mode = { "n" } },
-                -- { leader .. "f",        function() Snacks.picker.files() end,                     desc = "File Picker",       mode = { "n" } },
-                -- { leader .. "k",        function() Snacks.picker.keymaps({ global = false }) end, desc = "Keymap (buffer)",   mode = { "n" } },
-                -- { leader .. "K",        function() Snacks.picker.keymaps() end,                   desc = "Keymap (global)",   mode = { "n" } },
-                -- { leader .. "w",        function() Snacks.picker.grep() end,                      desc = "Grep Picker",       mode = { "n" } },
-                -- { leader .. "W",        function() Snacks.picker.grep_word() end,                 desc = "Grep Word",         mode = { "n", "x" } },
-                -- { leader .. "B",        function() Snacks.picker.grep_buffers() end,              desc = "Grep Word",         mode = { "n" } },
-                -- { leader .. "R",        function() Snacks.picker.registers() end,                 desc = "Register Picker",   mode = { "n" } },
-                -- { leader .. "h",        function() Snacks.picker.highlights() end,                desc = "Highlight Picker",  mode = { "n" } },
-                -- { leader .. "H",        function() Snacks.picker.help() end,                      desc = "Help Picker",       mode = { "n" } },
-                -- { leader .. "l",        function() Snacks.picker.lsp_config() end,                desc = "Lazy Picker",       mode = { "n" } },
-                -- { leader .. "b",        function() Snacks.picker.buffers() end,                   desc = "Buffer Picker",     mode = { "n" } },
-                -- { leader .. "u",        function() Snacks.picker.undo() end,                      desc = "Undo Picker",       mode = { "n" } },
-                -- { leader .. "j",        function() Snacks.picker.jumps() end,                     desc = "Jumps Picker",      mode = { "n" } },
-                -- { leader .. "e",        function() Snacks.explorer() end,                         desc = "Buffer Picker",     mode = { "n" } },
-                -- { leader .. "i",        importLuaModule,                                          desc = "Import Lua Module", mode = { "n" },     ft = "lua" },
+                { leader .. "<leader>", function() Snacks.picker() end,                          desc = "Main Picker",             mode = { "n" } },
+                { leader .. "f",        function() Snacks.picker.files() end,                    desc = "File Picker",             mode = { "n" } },
+                { leader .. "b",        function() Snacks.picker.buffers() end,                  desc = "Buffer Picker",           mode = { "n" } },
+                { leader .. "w",        function() Snacks.picker.grep() end,                     desc = "Grep Picker",             mode = { "n" } },
+                { leader .. "W",        function() Snacks.picker.grep_word() end,                desc = "Grep Word",               mode = { "n", "x" } },
+                { leader .. "k",        function() Snacks.picker.keymaps { global = false } end, desc = "Keymap (buffer)",         mode = { "n" } },
+                { leader .. "K",        function() Snacks.picker.keymaps() end,                  desc = "Keymap (global)",         mode = { "n" } },
+                { leader .. "h",        function() Snacks.picker.highlights() end,               desc = "Highlight Picker",        mode = { "n" } },
+                { leader .. "H",        function() Snacks.picker.help() end,                     desc = "Help Picker",             mode = { "n" } },
+                { leader .. "d",        function() Snacks.picker.diagnostics_buffer() end,       desc = "Show Buffer Diagnostics", mode = { "n" } },
+                { leader .. "D",        function() Snacks.picker.diagnostics() end,              desc = "Show Workspace Symbols",  mode = { "n" } },
                 {
                         leader .. "p",
                         function()
-                                Snacks.picker.files({
+                                Snacks.picker.files {
                                         title      = "󰈮 Local plugins",
-                                        cwd        = vim.fn.stdpath("data") .. "/lazy",
+                                        cwd        = fn.stdpath "data" .. "/lazy",
                                         exclude    = { "*/tests/*", "*.toml", "*.tmux", "*.txt" },
                                         matcher    = { filename_bonus = false },
                                         formatters = { file = { filename_first = false } },
-                                })
+                                }
                         end,
                         desc = "Import Lua Module",
                         mode = { "n" },
                         ft   = "lua",
                 },
-
-                ---- LSP -----------------------------------------------------------------------------------------------
-
-                -- { "<LocalLeader>r", function() Snacks.picker.lsp_references() end,        desc = "Show References",         mode = { "n" } },
-                -- { "<LocalLeader>i", function() Snacks.picker.lsp_implementations() end,   desc = "Show Implementations",    mode = { "n" } },
-                -- { "<LocalLeader>d", function() Snacks.picker.lsp_definitions() end,       desc = "Show Definitions",        mode = { "n" } },
-                -- { "<LocalLeader>D", function() Snacks.picker.lsp_declarations() end,      desc = "Show Declarations",       mode = { "n" } },
-                { leader .. "s",    function() Snacks.picker.lsp_symbols() end,           desc = "Show LSP Symbols",        mode = { "n" } },
-                { leader .. "S",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Show Workspace Symbols",  mode = { "n" } },
-                -- { leader .. "d",    function() Snacks.picker.diagnostics_buffer() end,    desc = "Show Buffer Diagnostics", mode = { "n" } },
-                -- { leader .. "D",    function() Snacks.picker.diagnostics() end,           desc = "Show Workspace Symbols",  mode = { "n" } },
         },
-        opts = {
-                picker = {
-                        prompt    = " > ",
-                        ui_select = false,
-                        hidden    = true,
-                        ignored   = true,
-                        formats   = { file = { filename_only = true } },
-                        layout    = { preset = "default" },
-                        sources   = {
-                                files        = {
-                                        layout  = "vertical",
-                                        cmd     = "rg",
-                                        follow  = true,
-                                        args    = {
-                                                "--files",
-                                                "--sortr=modified",
-                                                "--no-config",
-                                                ("--ignore-file=" .. vim.env.HOME .. "/.config/ripgrep/ignore"),
-                                        },
-                                        hidden  = true,
-                                        matcher = { frecency = true },
-                                        win     = { input = { keys = { [":"] = { "complete_and_add_colon", mode = "i" } } } },
-                                        confirm = function(picker, item, action)
-                                                local abs_path       = Snacks.picker.util.path(item) or ""
-                                                local symlink_target = vim.uv.fs_readlink(abs_path)
-
-                                                if symlink_target then
-                                                        local link_dir = vim.fs.dirname(item._path)
-                                                        local original = vim.fs.normalize(link_dir ..
-                                                                "/" .. symlink_target)
-                                                        assert(vim.uv.fs_stat(original),
-                                                               "file does not exist: " .. original)
-                                                        item._path = original
-                                                end
-
-                                                local binary_ext = { "pdf", "png", "webp", "docx" }
-                                                local ext        = abs_path:match(".+%.([^.]+)$") or ""
-                                                if vim.tbl_contains(binary_ext, ext) then
-                                                        vim.ui.open(abs_path)
-                                                        picker:close()
-                                                else
-                                                        Snacks.picker.actions.confirm(picker, item, action)
-                                                end
-                                        end,
-                                        actions = {
-                                                complete_and_add_colon = function(picker)
-                                                        local query = vim.api.nvim_get_current_line()
-                                                        local file  = picker:current().file
-                                                        if not file or query:find(":") then
-                                                                vim.fn.feedkeys(":", "n")
-                                                                return
-                                                        end
-                                                        vim.api.nvim_set_current_line(file .. ":")
-                                                        vim.cmd.startinsert{ bang = true }
-                                                end,
-                                        },
-                                },
-                                help         = {
-                                        layout  = "vertical",
-                                        confirm = function(picker)
-                                                picker:action("help")
-                                                vim.cmd.only()
-                                        end,
-                                },
-                                keymaps      = {
-                                        layout  = "dropdown",
-                                        confirm = function(picker, item)
-                                                if not item.file then return end
-                                                picker:close()
-                                                local lnum = item.pos[1]
-                                                vim.cmd(("edit +%d %s"):format(lnum, item.file))
-                                        end,
-                                },
-                                icons        = {
-                                        layout  = { preset = "small_no_preview", layout = { width = 0.7 } },
-                                        confirm = function(picker, item, action)
-                                                picker:close()
-                                                if not item then return end
-                                                local value = item[action.field] or item.data or item.text
-                                                vim.api.nvim_paste(value, true, -1)
-                                                if picker.input.mode ~= "i" then return end
-                                                vim.schedule(function()
-                                                        local col = vim.fn.virtcol(".")
-                                                        local eol = vim.fn.virtcol("$") - 1
-                                                        if col == eol then
-                                                                vim.cmd.startinsert{ bang = true }
-                                                        else
-                                                                vim.cmd.normal{ "l", bang = true }
-                                                                vim.cmd.startinsert()
-                                                        end
-                                                end)
-                                        end,
-                                },
-                                highlights   = {
-                                        layout  = "default",
-                                        confirm = function(picker, item)
-                                                vim.fn.setreg("+",           item.hl_group)
-                                                Snacks.notify(item.hl_group, { title = "Copied", icon = "󰅍" })
-                                                picker:close()
-                                        end,
-                                },
-                                buffers      = {
-                                        on_show = insertOnShow,
-                                        layout  = "vscode",
-                                        format  = "buffer",
-                                        hidden  = false,
-                                        win     = { input = { keys = { ["d"] = "bufdelete", ["<Left>"] = "bufdelete" } } },
-                                },
-                                undo         = {
-                                        on_show = insertOnShow,
-                                        layout  = "default",
-                                        format  = "buffer",
-                                        hidden  = false,
-                                        win     = {},
-                                },
-                                jumps        = {
-                                        on_show = insertOnShow,
-                                        layout  = "default",
-                                        format  = "buffer",
-                                        hidden  = false,
-                                        win     = {},
-                                },
-                                explorer     = {
-                                        layout = {
-                                                preset  = "sidebar",
-                                                preview = false,
-                                                input   = false,
-                                        },
-                                },
-                                grep         = { layout = "vertical" },
-                                grep_word    = { layout = "vertical" },
-                                grep_buffer  = { layout = "vertical" },
-                                registers    = { layout = "vertical" },
-                                lazy         = { layout = "dropdown" },
-                                picker       = { layout = "vscode" },
-                                colorschemes = { layout = { hidden = { "preview" }, max_height = 8, preset = "ivy" } },
-
-                                lsp_implementations   = { layout = "vertical", on_show = insertOnShow },
-                                lsp_definitions       = { layout = "vertical", on_show = insertOnShow },
-                                lsp_declarations      = { layout = "vertical", on_show = insertOnShow },
-                                lsp_symbols           = { layout = "vertical", on_show = insertOnShow },
-                                lsp_workspace_symbols = { layout = "vertical", on_show = insertOnShow },
-                                lsp_references        = { layout = "vertical", on_show = insertOnShow },
-                                diagnostics           = { layout = "vertical", on_show = insertOnShow },
-                                diagnostics_buffer    = { layout = "vertical", on_show = insertOnShow },
-                        },
-                        win       = {
-                                input = {
-                                        keys = {
-                                                ["<Esc>"] = { "close", mode = { "i", "n" } },
-                                                ["h"]     = { "toggle_hidden", mode = { "n" } },
-                                                ["l"]     = { "confirm", mode = { "n" } },
-                                                ["J"]     = { "preview_scroll_down", mode = { "i", "n" } },
-                                                ["K"]     = { "preview_scroll_up", mode = { "i", "n" } },
-                                                ["H"]     = { "preview_scroll_left", mode = { "i", "n" } },
-                                                ["L"]     = { "preview_scroll_right", mode = { "i", "n" } },
-                                        },
-                                },
-                        },
-                        icons     = {
-                                Diagnostics = Icons.Diagnostics,
-                                kinds       = Icons.Kinds,
-                                tree        = {
-                                        vertical = " ",
-                                        middle   = " ",
-                                        last     = " ",
-                                },
-                                files       = {
-                                        enabled  = true,
-                                        dir      = Icons.Kinds.Folder,
-                                        dir_open = Icons.Misc.folderOpen,
-                                        file     = Icons.Kinds.File,
-                                },
-                                ui          = {
-                                        selected   = Icons.Diagnostics.HINT .. " ",
-                                        unselected = "",
-                                },
-                                git         = {
-                                        added     = Icons.Git.Added,
-                                        deleted   = Icons.Git.Deleted,
-                                        modified  = Icons.Git.Modified,
-                                        enabled   = true,
-                                        commit    = "󰜘 ",
-                                        staged    = "●",
-                                        ignored   = " ",
-                                        renamed   = "",
-                                        unmerged  = " ",
-                                        untracked = "?",
-                                },
-                        },
-                        layouts   = {
-                                vscode   = {
-                                        preview = false,
-                                        layout  = {
-                                                backdrop  = true,
-                                                row       = 1,
-                                                width     = 0.3,
-                                                height    = 0.45,
-                                                min_width = 60,
-                                                border    = none,
-                                                box       = "vertical",
-                                                { win = "input",   height = 1,          border = border, title = "{title} {live} {flags}", title_pos = "center" },
-                                                { win = "list",    border = border },
-                                                { win = "preview", title = "{preview}", border = border },
-                                        },
-                                },
-                                select   = {
-                                        preview = false,
-                                        layout  = {
-                                                backdrop   = true,
-                                                width      = 0.5,
-                                                min_width  = 80,
-                                                height     = 0.4,
-                                                min_height = 10,
-                                                box        = "vertical",
-                                                border     = border,
-                                                title      = "{title}",
-                                                title_pos  = "center",
-                                                { win = "input",   height = 1,          border = bot },
-                                                { win = "list",    border = none },
-                                                { win = "preview", title = "{preview}", height = 0.4, border = top },
-                                        },
-                                },
-                                vertical = {
-                                        layout = {
-                                                backdrop   = true,
-                                                width      = 0.8,
-                                                height     = 0.95,
-                                                min_width  = 70,
-                                                min_height = 30,
-                                                box        = "vertical",
-                                                border     = border,
-                                                title      = "{title} {live} {flags}",
-                                                title_pos  = "center",
-                                                { win = "list",    border = none },
-                                                { win = "input",   height = 1,          border = bot },
-                                                { win = "preview", title = "{preview}", height = 0.6, border = top },
-                                        },
-                                },
-                                default  = {
-                                        layout = {
-                                                box       = "horizontal",
-                                                width     = 0.9,
-                                                min_width = 120,
-                                                height    = 0.9,
-                                                {
-                                                        box    = "vertical",
-                                                        border = border,
-                                                        title  = "{title} {live} {flags}",
-                                                        { win = "input", height = 1,   border = bot },
-                                                        { win = "list",  border = none },
-                                                },
-                                                { win = "preview", title = "{preview}", border = border, width = 0.7 },
-                                        },
-                                },
-                                dropdown = {
-                                        layout = {
-                                                backdrop  = true,
-                                                width     = 0.9,
-                                                height    = 0.9,
-                                                min_width = 80,
-                                                border    = none,
-                                                box       = "vertical",
-                                                {
-                                                        box       = "vertical",
-                                                        border    = border,
-                                                        title     = "{title} {live} {flags}",
-                                                        title_pos = "center",
-                                                        { win = "input", height = 1,   border = bot },
-                                                        { win = "list",  border = none },
-                                                        -- { win  = "preview", title  = "{preview}", height  = 0.6, border  = border },
-                                                },
-                                        },
-                                },
-                                sidebar  = {
-                                        preview = false,
-                                        layout  = {
-                                                backdrop  = true,
-                                                width     = 35,
-                                                min_width = 20,
-                                                height    = 0,
-                                                position  = "right",
-                                                border    = none,
-                                                box       = "vertical",
-                                                { win = "list",    border = none },
-                                                { win = "preview", title = "{preview}", height = 0.4, border = top },
-                                        },
-                                },
-                        },
-                },
-        },
+        opts = { picker = picker },
 }

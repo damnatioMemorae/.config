@@ -1,24 +1,22 @@
-local groups = {
-        { "@keyword.type.cpp",                        "@keyword" },
-        { "@keyword.import.cpp",                      "Preproc" },
-        { "@keyword.repeat.cpp",                      "@keyword.repeat" },
-        { "@keyword.return.cpp",                      "Statement" },
-        { "@keyword.modifier.cpp",                    "@modifier" },
-        { "@keyword.operator.cpp",                    "@keyword.operator" },
-        { "@keyword.conditional.cpp",                 "@keyword.conditional" },
+local api     = vim.api
+local command = api.nvim_create_user_command
 
-        { "@lsp.type.type.cpp",                       "@type" },
-        { "@lsp.type.class.cpp",                      "@class" },
-        { "@lsp.type.method.cpp",                     "@method" },
-        { "@lsp.type.modifier.cpp",                   "@modifier" },
-        { "@lsp.type.function.cpp",                   "@function" },
-        { "@lsp.type.namespace.cpp",                  "@module" },
-        { "@lsp.typemod.variable.globalScope.cpp",    "@variable" },
-        { "@lsp.typemod.class.defaultLibrary.cpp",    "@class" },
-        { "@lsp.typemod.variable.functionScope.cpp",  "@character" },
-        { "@lsp.typemod.variable.defaultLibrary.cpp", "@variable.builtin" },
-        { "@lsp.typemod.function.defaultLibrary.cpp", "@function.builtin" },
-}
-vim.iter(groups):each(function(group)
-        vim.api.nvim_set_hl(0, group[1], { link = group[2] })
-end)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- local cmake = require "cmake-tools"
+
+command("CMakeRunPerf", function()
+                -- cmake.run { wrap_call = { "perf", "record", "--call-graph", "dwarf" } }
+        end, {})
+
+command("CMakeRunValgrind", function()
+                -- cmake.run { wrap_call = { "valgrind", "--leak-check=full", "--xml=yes", "--xml-file=valgrind.xml" } }
+        end, {})
+
+command("CMakeRunPerfCurrent", function()
+                -- cmake.run_current_file { wrap_call = { "perf", "record", "--call-graph", "dwarf" } }
+        end, {})
+
+command("CMakeRunValgrindCurrent", function()
+                -- cmake.run_current_file { wrap_call = { "valgrind", "--leak-check=full", "--xml=yes", "--xml-file=valgrind.xml" } }
+        end, {})

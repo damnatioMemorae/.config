@@ -1,3 +1,15 @@
+linq
+"MiniHipatterns"
+    { "Fixme", "@comment.error" }
+    { "Hack", "@comment.warning" }
+    { "Todo", "@comment.todo" }
+    { "Hint", "@comment.hint" }
+    { "Note", "@comment.note" }
+    { "Code", "@comment.code" }
+    { "Url", "@comment.url" }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 local words = {
         ["colors.ivory"]     = "#dce0e8",
         ["colors.spark"]     = "#add8e6",
@@ -25,39 +37,114 @@ local words = {
         ["colors.surface1"]  = "#45475a",
         ["colors.surface0"]  = "#313244",
         ["colors.base"]      = "#1e1e2e",
-        ["colors.mantle"]    = "#14141f",
+        ["colors.mantle0"]   = "#191927",
+        ["colors.mantle1"]   = "#14141f",
         ["colors.crust1"]    = "#11111b",
         ["colors.crust0"]    = "#0e0e16",
+
+        ["colors.teal_transparent"]   = "#273741",
+        ["colors.sky_transparent"]    = "#29383c",
+        ["colors.green_transparent"]  = "#2c3932",
+        ["colors.yellow_transparent"] = "#3d3835",
+        ["colors.red_transparent"]    = "#3c2733",
 }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 return {
         "nvim-mini/mini.hipatterns",
         version = false,
-        event   = "BufReadPre",
-        config  = function()
-                local hipatterns = require("mini.hipatterns")
+        event   = "BufReadPost",
+        opts    = function(_, opts)
+                local hi = require "mini.hipatterns"
+
+                opts.highlighters = opts.highlighters or {}
+
+                local function _notInTsCapture(capture, groupFn)
+                        return function(bufId, match, data)
+                                local caps = vim.treesitter.get_captures_at_pos(bufId, data.line - 1, data.from_col - 1)
+                                for _, c in ipairs(caps) do
+                                        if c.capture == capture then
+                                                return groupFn(bufId, match, data)
+                                        end
+                                end
+
+                                return nil
+                        end
+                end
+
+                local function getHighlight(cb)
+                        return function(_, match)
+                                return hi.compute_hex_color_group(cb(match), "bg")
+                        end
+                end
+
+                local function getHexLong(match)
+                        return match
+                end
 
                 local function wordColorGroup(_, match)
                         local hex = words[match]
                         if hex == nil then return nil end
-                        return hipatterns.compute_hex_color_group(hex, "bg")
+                        return hi.compute_hex_color_group(hex, "bg")
                 end
 
-                hipatterns.setup({
-                        highlighters = {
-                                hex_color  = hipatterns.gen_highlighter.hex_color(),
-                                word_color = { pattern = "%f[%w]()%S+()%f[%W]", group = wordColorGroup },
-                        },
-                })
+                local function inComment(bufnr, row, col)
+                        local ok, captures = pcall(vim.treesitter.get_captures_at_pos, bufnr, row, col)
+                        if not ok then
+                                return false
+                        end
 
-                local groups = {
-                        { "Note",  "@comment.note" },
-                        { "Todo",  "@comment.todo" },
-                        { "Hack",  "@comment.hack" },
-                        { "Fixme", "@comment.error" },
+                        for _, cap in ipairs(captures or {}) do
+                                if cap.capture:match "comment" then
+                                        return true
+                                end
+                        end
+
+                        return false
+                end
+
+                local function hlComKeyword(_words, hl)
+                        local keywords = {}
+
+                        for _, word in ipairs(_words) do
+                                keywords[word] = true
+                        end
+
+                        return {
+                                pattern = "()%u+:()",
+                                group   = function(bufnr, match, data)
+                                        if not inComment(bufnr, data.line - 1, data.from_col) then
+                                                return nil
+                                        end
+
+                                        if keywords[match:sub(1, -2)] then
+                                                return hl or "Todo"
+                                        end
+                                end,
+                        }
+                end
+
+                local highlighters = {
+                        code       = {
+                                pattern = "`[^`]+`",
+                                group   = function(bufnr, _match, data)
+                                        if not inComment(bufnr, data.line, data.from_col) then
+                                                return nil
+                                        end
+                                        return "MiniHipatternsCode"
+                                end,
+                        },
+                        fixme      = hlComKeyword({ "FIXME", "BUG", "ERROR" }, "MiniHipatternsFixme"),
+                        hack       = hlComKeyword({ "HACK", "WARNING", "WARN", "FIX" }, "MiniHipatternsHack"),
+                        todo       = hlComKeyword({ "TODO", "WIP" }, "MiniHipatternsTodo"),
+                        hint       = hlComKeyword({ "HINT", "DONE" }, "MiniHipatternsHint"),
+                        note       = hlComKeyword({ "NOTE", "XXX", "INFO", "DOCS", "PERF", "TEST" }, "MiniHipatternsNote"),
+                        -- url        = { pattern = "https?://%S+", group = "MiniHipatternsUrl" },
+                        hex_color  = { pattern = "#%x%x%x%x%x%x%f[%X]", group = getHighlight(getHexLong) },
+                        word_color = { pattern = "%f[%w]()%S+()%f[%W]", group = wordColorGroup },
                 }
-                vim.iter(groups):each(function(group)
-                        vim.api.nvim_set_hl(0, "MiniHipatterns" .. group[1], { link = group[2] })
-                end)
+
+                opts.highlighters = vim.tbl_extend("keep", opts.highlighters or {}, highlighters)
         end,
 }

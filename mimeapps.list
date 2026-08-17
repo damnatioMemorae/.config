@@ -10,6 +10,9 @@ x-scheme-handler/betterdiscord=discord.desktop
 inode/directory=yazi.desktop
 x-scheme-handler/tg=org.telegram.desktop.desktop
 x-scheme-handler/tonsite=org.telegram.desktop.desktop
+x-scheme-handler/nekoray=x-scheme-handler-iblis.desktop
+x-scheme-handler/nekobox=x-scheme-handler-iblis.desktop
+x-scheme-handler/v2raytun=x-scheme-handler-iblis.desktop
 
 [Added Associations]
 x-scheme-handler/tg=org.telegram.desktop.desktop;userapp-AyuGram Desktop-ZNKQO3.desktop;

@@ -1,152 +1,130 @@
-local textObj = require("core.utils").extraTextobjMaps
+local bo  = vim.bo
+local api = vim.api
+local cmd = vim.cmd
+local log = vim.log
 
-local icon = Icons.Kinds
+local levels = log.levels
+
 local mode = { "n", "v", "x", "o" }
+local to   = require "utils.misc".extraTextobjMaps
 
-local function select(obj, pos)
-        local textobject = "@" .. obj .. "." .. pos
-        return function()
-                require("nvim-treesitter-textobjects.select").select_textobject(textobject, "textobjects")
-        end
-end
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local function addDocstring()
-        require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
-
-        local ft     = vim.bo.filetype
-        local indent = vim.api.nvim_get_current_line():match("^%s*")
-        local ln     = vim.api.nvim_win_get_cursor(0)[1]
-
-        if ft == "python" then
-                indent = indent .. (" "):rep(4)
-                vim.api.nvim_buf_set_lines(0, ln, ln, false, { indent .. ('"'):rep(6) })
-                vim.api.nvim_win_set_cursor(0, { ln + 1, #indent + 3 })
-                vim.cmd.startinsert()
-        elseif ft == "javascript" then
-                vim.cmd.normal{ "t)", bang = true }
-                vim.lsp.buf.code_action{
-                        filter = function(action) return action.title == "Infer parameter types from usage" end,
-                        apply  = true,
-                }
-                vim.defer_fn(function()
-                                     vim.api.nvim_win_set_cursor(0, { ln + 1, 0 })
-                                     vim.cmd.normal{ "t)", bang = true }
-                             end, 100)
-        elseif ft == "typescript" then
-                vim.api.nvim_buf_set_lines(0, ln - 1, ln - 1, false, { indent .. "/**  */" })
-                vim.api.nvim_win_set_cursor(0, { ln, #indent + 4 })
-                vim.cmd.startinsert()
-        elseif ft == "lua" then
-                local param_line = vim.api.nvim_get_current_line():match("function.*%((.*)%)$")
-                if not param_line then return end
-                local params       = vim.split(param_line, ", ?")
-                local luadoc_lines = vim.iter(params)
-                           :map(function(param) return ("%s---@param %s any"):format(indent, param) end)
-                           :totable()
-                vim.api.nvim_buf_set_lines(0, ln - 1, ln - 1, false, luadoc_lines)
-                vim.api.nvim_win_set_cursor(0, { ln, #luadoc_lines[1] })
-                vim.cmd.normal{ '"_ciw', bang = true }
-                vim.cmd.startinsert{ bang = true }
-        else
-                vim.notify(ft .. " is not supported.", vim.log.levels.WARN, { title = "docstring" })
-        end
+        require "nvim-treesitter-textobjects.move".goto_previous_start("@function.outer", "textobjects")
+        match(bo.filetype) {
+                lua = function()
+                        local line       = api.nvim_win_get_cursor(0)[1]
+                        local indent     = api.nvim_get_current_line():match "^%s*"
+                        local param_line = api.nvim_get_current_line():match "function.*%((.*)%)$"
+                        if nilq(param_line) then return end
+                        local params       = vim.split(param_line, ", ?")
+                        local luadoc_lines = vim
+                            .iter(params)
+                            :map(function(param)
+                                    return ("%s---@param %s "):format(indent, param)
+                            end)
+                            :totable()
+                        api.nvim_buf_set_lines(0, line - 1, line - 1, false, luadoc_lines)
+                        api.nvim_win_set_cursor(0, { line, #luadoc_lines[1] })
+                        cmd.normal { '"_ciw', bang = true }
+                        cmd.startinsert { bang = true }
+                end,
+                _   = function()
+                        vim.notify(bo.filetype .. " is not supported.", levels.WARN, { title = "docstring" })
+                end,
+        }
 end
 
-local function gotoObj(obj, pos, dir)
-        local textobject = "@" .. obj .. "." .. pos
-        if dir == "prev" then
-                require("nvim-treesitter-textobjects.move").goto_previous_start(textobject, "textobjects")
-        elseif dir == "next" then
-                require("nvim-treesitter-textobjects.move").goto_next_start(textobject, "textobjects")
-        end
+local function selectNode(obj, pos)
+        require "nvim-treesitter-textobjects.select".select_textobject("@" .. obj .. "." .. pos, "textobjects")
 end
 
-local function swapObj(obj, pos, dir)
-        local textobject = "@" .. obj .. "." .. pos
-        if dir == "prev" then
-                require("nvim-treesitter-textobjects.swap").swap_previous(textobject)
-        elseif dir == "next" then
-                require("nvim-treesitter-textobjects.swap").swap_next(textobject)
-        end
+local function gotoNode(obj, pos, dir)
+        require "nvim-treesitter-textobjects.move"["goto_" .. dir .. "_start"]("@" .. obj .. "." .. pos, "textobjects")
+        cmd "norm zv"
 end
+
+local function swapNode(obj, pos, dir)
+        require "nvim-treesitter-textobjects.swap"["swap_" .. dir]("@" .. obj .. "." .. pos)
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 return {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        dependencies = "nvim-treesitter",
-        branch       = "main",
-        keys         = {
-                ---- COMMENTS --------------------------------------------------------------------------------------------------------------------------------------------------------------
+        branch = "main",
+        event  = "BufReadPost",
+        keys   = {
+                { "<M-[>",        function() swapNode("function", "inner", "previous") end,    desc = "Swap function" },
+                { "<M-]>",        function() swapNode("function", "inner", "next") end,        desc = "Swap function" },
+                { "<M-{>",        function() swapNode("parameter", "inner", "previous") end,   desc = "Swap arg" },
+                { "<M-}>",        function() swapNode("parameter", "inner", "next") end,       desc = "Swap arg" },
+                { "<M-{>",        function() swapNode("md_section", "inner", "previous") end,  desc = "Swap arg",     ft = "markdown" },
+                { "<M-}>",        function() swapNode("md_section", "inner", "next") end,      desc = "Swap arg",     ft = "markdown" },
 
-                { "q",  select("comment", "outer"), mode = "o",            desc = "single comment" },
-                { "qf", addDocstring,               desc = "add docstring" },
-                {
+                { "<M-q>",        function() gotoNode("comment", "outer", "next") end,         mode = mode,           desc = "Goto next comment" },
+                { "<M-Q>",        function() gotoNode("comment", "outer", "previous") end,     mode = mode,           desc = "Goto previous comment" },
+                { "<M-a>",        function() gotoNode("parameter", "outer", "next") end,       mode = mode,           desc = "Goto next parameter" },
+                { "<M-A>",        function() gotoNode("parameter", "outer", "previous") end,   mode = mode,           desc = "Goto previous parameter" },
+                { "<M-f>",        function() gotoNode("function", "name", "next") end,         mode = mode,           desc = "Goto next function" },
+                { "<M-F>",        function() gotoNode("function", "name", "previous") end,     mode = mode,           desc = "Goto next function" },
+                { "<M-o>",        function() gotoNode("conditional", "inner", "next") end,     mode = mode,           desc = "Goto next condition" },
+                { "<M-O>",        function() gotoNode("conditional", "inner", "previous") end, mode = mode,           desc = "Goto previous condition" },
+                { "<M-c>",        function() gotoNode("call", "outer", "next") end,            mode = mode,           desc = "Goto next call" },
+                { "<M-C>",        function() gotoNode("call", "outer", "previous") end,        mode = mode,           desc = "Goto previous call" },
+                { "<M-u>",        function() gotoNode("loop", "outer", "next") end,            mode = mode,           desc = "Goto next loop" },
+                { "<M-U>",        function() gotoNode("loop", "outer", "previous") end,        mode = mode,           desc = "Goto previous loop" },
+                { "<M-s>",        function() gotoNode("assignment", "lhs", "next") end,        mode = mode,           desc = "Goto next assignment" },
+                { "<M-S>",        function() gotoNode("assignment", "lhs", "previous") end,    mode = mode,           desc = "Goto previous assignment" },
+                { "<M-v>",        function() gotoNode("assignment", "rhs", "next") end,        mode = mode,           desc = "Goto next value" },
+                { "<M-V>",        function() gotoNode("assignment", "rhs", "previous") end,    mode = mode,           desc = "Goto previous value" },
+                { "<M-t>",        function() gotoNode("assignment", "outer", "next") end,      mode = mode,           desc = "Goto next type" },
+                { "<M-T>",        function() gotoNode("assignment", "outer", "previous") end,  mode = mode,           desc = "Goto previous type" },
+
+                { "aa",           function() selectNode("parameter", "outer") end,             mode = { "x", "o" },   desc = "outer arg" },
+                { "ia",           function() selectNode("parameter", "inner") end,             mode = { "x", "o" },   desc = "inner arg" },
+                { "a/",           function() selectNode("regex", "outer") end,                 mode = { "x", "o" },   desc = "outer regex" },
+                { "i/",           function() selectNode("regex", "inner") end,                 mode = { "x", "o" },   desc = "inner regex" },
+                { "au",           function() selectNode("loop", "outer") end,                  mode = { "x", "o" },   desc = "outer loop" },
+                { "iu",           function() selectNode("loop", "inner") end,                  mode = { "x", "o" },   desc = "inner loop" },
+                { "aE",           function() selectNode("codeblock", "outer") end,             mode = { "x", "o" },   desc = "outer codeblock" },
+                { "iE",           function() selectNode("codeblock", "inner") end,             mode = { "x", "o" },   desc = "inner codeblock" },
+                { "a" .. to.call, function() selectNode("call", "outer") end,                  mode = { "x", "o" },   desc = "outer call" },
+                { "i" .. to.call, function() selectNode("call", "inner") end,                  mode = { "x", "o" },   desc = "inner call" },
+                { "a" .. to.func, function() selectNode("function", "outer") end,              mode = { "x", "o" },   desc = "outer function" },
+                { "i" .. to.func, function() selectNode("function", "inner") end,              mode = { "x", "o" },   desc = "inner function" },
+                { "a" .. to.cond, function() selectNode("conditional", "outer") end,           mode = { "x", "o" },   desc = "outer condition" },
+                { "i" .. to.cond, function() selectNode("conditional", "inner") end,           mode = { "x", "o" },   desc = "inner condition" },
+
+                { "q",            function() selectNode("comment", "outer") end,               mode = "o",            desc = "single comment" },
+                { "qf",           addDocstring,                                                desc = "add docstring" },
+                { -- CHANGE SINGLE COMMENT
                         "cq",
                         function()
-                                local select_obj = require("nvim-treesitter-textobjects.select").select_textobject
-                                select_obj("@comment.outer", "textobjects")
-                                local com_str = vim.bo.commentstring:format("")
-                                vim.cmd.normal{ "c" .. com_str, bang = true }
-                                vim.cmd.startinsert{ bang = true }
+                                -- local select_obj = require("nvim-treesitter-textobjects.select").select_textobject
+                                -- select_obj("@comment.inner", "textobjects")
+                                selectNode("comment", "inner")
+                                local com_str = bo.commentstring:format ""
+                                cmd.normal { "c" .. com_str, bang = true }
+                                cmd.startinsert { bang = true }
                         end,
                         desc = "Change single comment",
-                }, -- CHANGE SINGLE COMMENT
-                {
+                },
+                { -- STICKY DELETE COMMENT
                         "dq",
                         function()
-                                local cursor_before = vim.api.nvim_win_get_cursor(0)
-                                local select_obj = require("nvim-treesitter-textobjects.select").select_textobject
+                                local cursor_before = api.nvim_win_get_cursor(0)
+                                local select_obj = require "nvim-treesitter-textobjects.select".select_textobject
                                 select_obj("@comment.outer", "textobjects")
-                                vim.cmd.normal{ "d", bang = true }
-                                local trimmed_line = vim.api.nvim_get_current_line():gsub("%s+$", "")
-                                vim.api.nvim_set_current_line(trimmed_line)
-                                vim.api.nvim_win_set_cursor(0, cursor_before)
+                                cmd.normal { "d", bang = true }
+                                local trimmed_line = api.nvim_get_current_line():gsub("%s+$", "")
+                                api.nvim_set_current_line(trimmed_line)
+                                api.nvim_win_set_cursor(0, cursor_before)
                         end,
                         desc = "Sticky delete single comment",
-                }, -- STICKY DELETE COMMENT
+                },
 
-                ---- MOVE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                { "<A-q>", function() gotoObj("comment", "outer", "next") end, mode = mode, desc = " Goto next comment" },
-                { "<A-Q>", function() gotoObj("comment", "outer", "prev") end, mode = mode, desc = " Goto prev comment" },
-                { "<A-f>", function() gotoObj("function", "name", "next") end, mode = mode, desc = icon.Function .. "Goto next function" },
-                { "<A-F>", function() gotoObj("function", "name", "prev") end, mode = mode, desc = icon.Function .. "Goto next function" },
-                { "<A-a>", function() gotoObj("parameter", "outer", "next") end, mode = mode, desc = icon.Parameter .. "Goto next parameter" },
-                { "<A-A>", function() gotoObj("parameter", "outer", "prev") end, mode = mode, desc = icon.Parameter .. "Goto prev parameter" },
-                { "<A-o>", function() gotoObj("conditional", "inner", "next") end, mode = mode, desc = icon.IfStatement .. "Goto next condition" },
-                { "<A-O>", function() gotoObj("conditional", "inner", "prev") end, mode = mode, desc = icon.IfStatement .. "Goto prev condition" },
-                { "<A-c>", function() gotoObj("call", "outer", "next") end, mode = mode, desc = icon.Call .. "Goto next call" },
-                { "<A-C>", function() gotoObj("call", "outer", "prev") end, mode = mode, desc = icon.Call .. "Goto prev call" },
-                { "<A-u>", function() gotoObj("loop", "outer", "next") end, mode = mode, desc = icon.Repeat .. "Goto next loop" },
-                { "<A-U>", function() gotoObj("loop", "outer", "prev") end, mode = mode, desc = icon.Repeat .. "Goto prev loop" },
-                { "<A-s>", function() gotoObj("assignment", "lhs", "next") end, mode = mode, desc = icon.Variable .. "Goto next assignment" },
-                { "<A-S>", function() gotoObj("assignment", "lhs", "prev") end, mode = mode, desc = icon.Variable .. "Goto prev assignment" },
-                { "<A-v>", function() gotoObj("assignment", "rhs", "next") end, mode = mode, desc = icon.Value .. "Goto next value" },
-                { "<A-V>", function() gotoObj("assignment", "rhs", "prev") end, mode = mode, desc = icon.Value .. "Goto prev value" },
-                { "<A-t>", function() gotoObj("assignment", "outer", "next") end, mode = mode, desc = icon.Type .. "Goto next type" },
-                { "<A-T>", function() gotoObj("assignment", "outer", "prev") end, mode = mode, desc = icon.Type .. "Goto prev type" },
-
-                ---- SWAP ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                { "<A-}>", function() swapObj("parameter", "inner", "next") end, desc = icon.Parameter .. "Swap arg" },
-                { "<A-{>", function() swapObj("parameter", "inner", "prev") end, desc = icon.Parameter .. "Swap arg" },
-
-                { "<A-}>", function() swapObj("md_section", "inner", "next") end, desc = icon.Parameter .. "Swap arg", ft = "markdown" },
-                { "<A-{>", function() swapObj("md_section", "inner", "prev") end, desc = icon.Parameter .. "Swap arg", ft = "markdown" },
-
-                ---- TEXT OBJECTS ----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                { "a/", select("regex", "outer"), mode = { "x", "o" }, desc = icon.Regex .. "outer regex" },
-                { "i/", select("regex", "inner"), mode = { "x", "o" }, desc = icon.Regex .. "inner regex" },
-                { "aa", select("parameter", "outer"), mode = { "x", "o" }, desc = icon.Parameter .. "outer arg" },
-                { "ia", select("parameter", "inner"), mode = { "x", "o" }, desc = icon.Parameter .. "inner arg" },
-                { "au", select("loop", "outer"), mode = { "x", "o" }, desc = icon.Repeat .. "outer loop" },
-                { "iu", select("loop", "inner"), mode = { "x", "o" }, desc = icon.Repeat .. "inner loop" },
-                { "a" .. textObj.call, select("call", "outer"), mode = { "x", "o" }, desc = icon.Call .. "outer call" },
-                { "i" .. textObj.call, select("call", "inner"), mode = { "x", "o" }, desc = icon.Call .. "inner call" },
-                { "a" .. textObj.func, select("function", "outer"), mode = { "x", "o" }, desc = icon.Function .. "outer function" },
-                { "i" .. textObj.func, select("function", "inner"), mode = { "x", "o" }, desc = icon.Function .. "inner function" },
-                { "a" .. textObj.condition, select("conditional", "outer"), mode = { "x", "o" }, desc = icon.IfStatement .. "outer condition" },
-                { "i" .. textObj.condition, select("conditional", "inner"), mode = { "x", "o" }, desc = icon.IfStatement .. "inner condition" },
         },
-        opts         = { select = { lookahead = true, include_surrounding_whitespace = true } },
+        opts   = { move = { set_jumps = true }, select = { lookahead = true, include_surrounding_whitespace = false } },
 }

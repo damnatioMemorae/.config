@@ -1,63 +1,59 @@
+local v  = vim.v
+local fn = vim.fn
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local remote = function() require "flash".remote() end
+local jump   = function() require "flash".jump() end
+local inc    = function() require "flash".treesitter { actions = { ["m"] = "next", ["M"] = "prev" } } end
+local first  = function() require "flash".jump { search = { mode = function(str) return "\\<" .. str end } } end
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+auq "CmdlineLeave" {
+        callback = function()
+                local ev = v.event
+                if (ev.cmdtype == "?") and (not ev.abort) and (fn.searchcount().total > 1) then
+                        vim.schedule(function() jump() end)
+                end
+        end,
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 return {
         "folke/flash.nvim",
-        keys   = {
-                {
-                        "f",
-                        mode = { "n", "x", "o" },
-                        function() require("flash").jump() end,
-                        desc = "Flash",
-                },
-                {
-                        "R",
-                        mode = "o",
-                        function() require("flash").remote() end,
-                        desc = "Remote Flash",
-                },
-                -- {
-                --         "r",
-                --         mode = "o",
-                --         function() require("flash").treesitter_search() end,
-                --         desc = "Treesitter Search",
-                -- },
+        keys = {
+                { "f", jump,   mode = { "n", "x", "o" }, desc = "Flash" },
+                { "F", first,  mode = { "n", "x", "o" }, desc = "Flash first" },
+                { "R", remote, mode = "o",               desc = "Remote Flash" },
+                { "T", inc,    mode = "o",               desc = "Treesitter Search" },
         },
-        opts   = {
+        opts = {
                 jump      = { nohlsearch = true, autojump = true },
-                label     = { uppercase = false },
-                prompt    = {
-                        prefix     = { { Icons.Arrows.rightBig, "FlashPromptIcon" } },
-                        win_config = { border = Border.borderStyleNone, row = -1 },
-                },
-                search    = {
-                        enabled = false,
-                        exclude = {
-                                "flash_prompt",
-                                "qf",
-                                "notify",
-                                "cmp_menu",
-                                "noice",
-                                "flash_prompt",
-                                function(win)
-                                        if vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win)):match"BqfPreview" then
-                                                return true
-                                        end
-                                        return not vim.api.nvim_win_get_config(win).focusable
-                                end,
+                label     = { uppercase = false, style = "overlay" },
+                highlight = {
+                        backdrop = true,
+                        matches  = true,
+                        priority = 5000,
+                        groups   = {
+                                label    = "IncSearch",
+                                match    = "LspInlayHint",
+                                current  = "LspInlayHint",
+                                backdrop = "NonText",
                         },
                 },
+                prompt    = {
+                        enabled    = false,
+                        prefix     = { { Icon.Arrows.rightBig, "Special" } },
+                        win_config = { border = Border.Default.None, row = 0 },
+                },
+                search    = { enabled = false, exclude = { "flash_prompt", "cmp_menu" } },
                 remote_op = { restore = true },
-                modes     = { char = { enabled = false }, search = { enabled = false } },
+                modes     = {
+                        search     = { enabled = false },
+                        char       = { enabled = false },
+                        treesitter = { enabled = false, search = { incremental = true }, label = { style = "overlay" } },
+                },
         },
-        config = function(_, opts)
-                require("flash").setup(opts)
-
-                local groups = {
-                        { "Backdrop", "NonText" },
-                        { "Match",    "LspInlayHint" },
-                        { "Current",  "LspInlayHint" },
-                        { "Label",    "DiagnosticVirtualTextInfo" },
-                }
-                vim.iter(groups):each(function(group)
-                        vim.api.nvim_set_hl(0, "Flash" .. group[1], { link = group[2] })
-                end)
-        end,
 }
