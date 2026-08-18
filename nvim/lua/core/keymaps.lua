@@ -230,7 +230,7 @@ keyq { "v", "<C-v>", desc = "`vv` starts visual block", mode = x }
 ---- CMDLINE -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 keyq { "<M-x>r", ":luafile " .. fn.stdpath "config" .. "/" }
-keyq { "<M-x>l", ":livegrep " }
+keyq { "<M-x>g", ":livegrep " }
 keyq { "<M-x>f", ":find " }
 keyq { "<M-x>c", function()
         cmd "w"
@@ -247,18 +247,22 @@ keyq { "<M-left>", "<C-b>", desc = "Goto start of cmdline", mode = c }
 keyq { "<M-right>", "<C-e>", desc = "Goto end of cmdline", mode = c }
 keyq { "<up>", "<C-p>", desc = "Cmdline completion scroll up", mode = c }
 keyq { "<down>", "<C-n>", desc = "Cmdline completion scroll down", mode = c }
+-- keyq { "<left>", "<nop>", desc = "Cmdline  move left", mode = c }
+-- keyq { "<right>", "<nop>", desc = "Cmdline  move right", mode = c }
+keyq { "<left>", "<left>", desc = "Cmdline  move left", mode = c, unique = true }
+keyq { "<right>", "<right>", desc = "Cmdline  move right", mode = c, unique = true }
 
 keyq { "<C-v>", function() -- `C-v` PASTE CMDLINE
         fn.setreg("+", vim.trim(fn.getreg "+"))
         return "<C-r>+"
 end, desc = "Cmdline Paste", mode = c, expr = true }
-keyq { "<M-c>", function() -- `C-v` YANK CMDLINE
+keyq { "<M-c>", function() -- `M-c` YANK CMDLINE
         local cmdline = fn.getcmdline()
         if cmdline == "" then return vim.notify("Nothing to copy.", levels.WARN) end
         fn.setreg("+", cmdline)
         vim.notify(cmdline, nil, { title = "Copied" })
 end, desc = "Yank cmdline", mode = c }
-keyq { "<BS>", function() -- `M-c` TANK CMDLINE
+keyq { "<BS>", function() -- `BS` DISABLE BS ON EMPTY CMDLINE
         if fn.getcmdline() ~= "" then return "<BS>" end
 end, desc = "disable <BS> when cmdline is empty", mode = c, expr = true, unique = false }
 

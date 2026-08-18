@@ -17,13 +17,13 @@ local child  = function() node "child" end
 
 return {
         "romus204/tree-sitter-manager.nvim",
-        event  = "BufReadPost",
-        init   = function()
+        event = "BufReadPost",
+        init  = function()
                 o.foldmethod = "expr"
-                o.foldexpr   = "v:lua.vim.treesitter.foldexpr()"
+                o.foldexpr   = [[v:lua.vim.treesitter.foldexpr()]]
         end,
-        keys   = { { "m", parent, mode = { "v" } }, { "M", child, mode = { "v" } } },
-        opts   = {
+        keys  = { { "m", parent, mode = { "v" } }, { "M", child, mode = { "v" } } },
+        opts  = {
 
                 parser_dir       = fn.stdpath "data" .. "/site/parser",
                 query_dir        = fn.stdpath "data" .. "/site/queries",

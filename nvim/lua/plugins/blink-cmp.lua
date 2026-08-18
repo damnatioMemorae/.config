@@ -169,7 +169,7 @@ local sources    = {
                         name         = "omni",
                         module       = "blink.cmp.sources.complete_func",
                         score_offset = 60,
-                        opts         = { disable_omnifunc = { "v:lua.vim.lsp.omnifunc" } },
+                        opts         = { disable_omnifunc = { [[v:lua.vim.lsp.omnifunc]] } },
                 },
                 ripgrep  = {
                         module       = "blink-cmp-rg",

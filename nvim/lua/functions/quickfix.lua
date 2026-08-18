@@ -182,10 +182,10 @@ keyq { "]", fnext, desc = "List file next", unique = false, nowait = true }
 keyq { "(", prev, desc = "List item prev", unique = false }
 keyq { ")", next, desc = "List item next", unique = false }
 keyq { "qr", remove, desc = "List remove", unique = false }
-keyq { "<leader>q", toggle, desc = "List remove", unique = false }
-keyq { "<LocalLeader>q", Toggle.qfMode, desc = "Toggle List mode", unique = false }
+keyq { "<LocalLeader>q", toggle, desc = "List remove", unique = false }
+keyq { "<leader>q", Toggle.qfMode, desc = "Toggle List mode", unique = false }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 cmd "packadd cfilter"
-o.quickfixtextfunc = "v:lua.qfText"
+o.quickfixtextfunc = [[v:lua.qfText]]

@@ -1,3 +1,5 @@
+// vim: set filetype=waybar:
+// vim: set filetype=jsonc:
 {
         "mod": "dock",
         "name": "main",
