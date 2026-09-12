@@ -1,13 +1,10 @@
-local bo  = vim.bo
-local api = vim.api
-local cmd = vim.cmd
-local log = vim.log
+local bo     = vim.bo
+local api    = vim.api
+local cmd    = vim.cmd
+local levels = vim.log.levels
 
-local levels = log.levels
-
-local mode = { "n", "v", "x", "o" }
-local to   = require "utils.misc".extraTextobjMaps
-
+local xo  = { "x", "o" }
+local nxo = { "n", "x", "o" }
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local function addDocstring()
@@ -36,75 +33,90 @@ local function addDocstring()
         }
 end
 
-local function selectNode(obj, pos)
-        require "nvim-treesitter-textobjects.select".select_textobject("@" .. obj .. "." .. pos, "textobjects")
+local tst = "nvim-treesitter-textobjects."
+
+local function swap(obj)
+        return function(pos)
+                return function(dir)
+                        return function()
+                                return require(tst .. "swap")["swap_" .. dir]("@" .. obj .. "." .. pos)
+                        end
+                end
+        end
 end
 
-local function gotoNode(obj, pos, dir)
-        require "nvim-treesitter-textobjects.move"["goto_" .. dir .. "_start"]("@" .. obj .. "." .. pos, "textobjects")
-        cmd "norm zv"
+local function jump(obj)
+        return function(pos)
+                return function(dir)
+                        return function()
+                                require(tst .. "move")["goto_" .. dir .. "_start"]("@" .. obj .. "." .. pos,
+                                                                                   "textobjects")
+                                cmd "norm zv"
+                        end
+                end
+        end
 end
 
-local function swapNode(obj, pos, dir)
-        require "nvim-treesitter-textobjects.swap"["swap_" .. dir]("@" .. obj .. "." .. pos)
+local function sel(obj)
+        return function(pos)
+                return function()
+                        return require(tst .. "select").select_textobject("@" .. obj .. "." .. pos, "textobjects")
+                end
+        end
 end
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 return {
         "nvim-treesitter/nvim-treesitter-textobjects",
         branch = "main",
         event  = "BufReadPost",
         keys   = {
-                { "<M-[>",        function() swapNode("function", "inner", "previous") end,    desc = "Swap function" },
-                { "<M-]>",        function() swapNode("function", "inner", "next") end,        desc = "Swap function" },
-                { "<M-{>",        function() swapNode("parameter", "inner", "previous") end,   desc = "Swap arg" },
-                { "<M-}>",        function() swapNode("parameter", "inner", "next") end,       desc = "Swap arg" },
-                { "<M-{>",        function() swapNode("md_section", "inner", "previous") end,  desc = "Swap arg",     ft = "markdown" },
-                { "<M-}>",        function() swapNode("md_section", "inner", "next") end,      desc = "Swap arg",     ft = "markdown" },
+                { "<M-[>", swap "function" "inner" "previous",    desc = "Swap function" },
+                { "<M-]>", swap "function" "inner" "next",        desc = "Swap function" },
+                { "<M-{>", swap "parameter" "inner" "previous",   desc = "Swap arg" },
+                { "<M-}>", swap "parameter" "inner" "next",       desc = "Swap arg" },
+                { "<M-{>", swap "md_section" "inner" "previous",  desc = "Swap markdown section",    ft = "markdown" },
+                { "<M-}>", swap "md_section" "inner" "next",      desc = "Swap markdown section",    ft = "markdown" },
 
-                { "<M-q>",        function() gotoNode("comment", "outer", "next") end,         mode = mode,           desc = "Goto next comment" },
-                { "<M-Q>",        function() gotoNode("comment", "outer", "previous") end,     mode = mode,           desc = "Goto previous comment" },
-                { "<M-a>",        function() gotoNode("parameter", "outer", "next") end,       mode = mode,           desc = "Goto next parameter" },
-                { "<M-A>",        function() gotoNode("parameter", "outer", "previous") end,   mode = mode,           desc = "Goto previous parameter" },
-                { "<M-f>",        function() gotoNode("function", "name", "next") end,         mode = mode,           desc = "Goto next function" },
-                { "<M-F>",        function() gotoNode("function", "name", "previous") end,     mode = mode,           desc = "Goto next function" },
-                { "<M-o>",        function() gotoNode("conditional", "inner", "next") end,     mode = mode,           desc = "Goto next condition" },
-                { "<M-O>",        function() gotoNode("conditional", "inner", "previous") end, mode = mode,           desc = "Goto previous condition" },
-                { "<M-c>",        function() gotoNode("call", "outer", "next") end,            mode = mode,           desc = "Goto next call" },
-                { "<M-C>",        function() gotoNode("call", "outer", "previous") end,        mode = mode,           desc = "Goto previous call" },
-                { "<M-u>",        function() gotoNode("loop", "outer", "next") end,            mode = mode,           desc = "Goto next loop" },
-                { "<M-U>",        function() gotoNode("loop", "outer", "previous") end,        mode = mode,           desc = "Goto previous loop" },
-                { "<M-s>",        function() gotoNode("assignment", "lhs", "next") end,        mode = mode,           desc = "Goto next assignment" },
-                { "<M-S>",        function() gotoNode("assignment", "lhs", "previous") end,    mode = mode,           desc = "Goto previous assignment" },
-                { "<M-v>",        function() gotoNode("assignment", "rhs", "next") end,        mode = mode,           desc = "Goto next value" },
-                { "<M-V>",        function() gotoNode("assignment", "rhs", "previous") end,    mode = mode,           desc = "Goto previous value" },
-                { "<M-t>",        function() gotoNode("assignment", "outer", "next") end,      mode = mode,           desc = "Goto next type" },
-                { "<M-T>",        function() gotoNode("assignment", "outer", "previous") end,  mode = mode,           desc = "Goto previous type" },
+                { "<M-q>", jump "comment" "outer" "next",         desc = "Goto next comment",        mode = nxo },
+                { "<M-Q>", jump "comment" "outer" "previous",     desc = "Goto previous comment",    mode = nxo },
+                { "<M-a>", jump "parameter" "outer" "next",       desc = "Goto next parameter",      mode = nxo },
+                { "<M-A>", jump "parameter" "outer" "previous",   desc = "Goto previous parameter",  mode = nxo },
+                { "<M-f>", jump "function" "name" "next",         desc = "Goto next function",       mode = nxo },
+                { "<M-F>", jump "function" "name" "previous",     desc = "Goto next function",       mode = nxo },
+                { "<M-o>", jump "conditional" "inner" "next",     desc = "Goto next condition",      mode = nxo },
+                { "<M-O>", jump "conditional" "inner" "previous", desc = "Goto previous condition",  mode = nxo },
+                { "<M-c>", jump "call" "outer" "next",            desc = "Goto next call",           mode = nxo },
+                { "<M-C>", jump "call" "outer" "previous",        desc = "Goto previous call",       mode = nxo },
+                -- { "<M-u>", jump "loop" "outer" "next",            desc = "Goto next loop",           mode = nxo },
+                -- { "<M-U>", jump "loop" "outer" "previous",        desc = "Goto previous loop",       mode = nxo },
+                { "<M-s>", jump "assignment" "lhs" "next",        desc = "Goto next assignment",     mode = nxo },
+                { "<M-S>", jump "assignment" "lhs" "previous",    desc = "Goto previous assignment", mode = nxo },
+                { "<M-v>", jump "assignment" "rhs" "next",        desc = "Goto next value",          mode = nxo },
+                { "<M-V>", jump "assignment" "rhs" "previous",    desc = "Goto previous value",      mode = nxo },
+                { "<M-t>", jump "assignment" "outer" "next",      desc = "Goto next type",           mode = nxo },
+                { "<M-T>", jump "assignment" "outer" "previous",  desc = "Goto previous type",       mode = nxo },
 
-                { "aa",           function() selectNode("parameter", "outer") end,             mode = { "x", "o" },   desc = "outer arg" },
-                { "ia",           function() selectNode("parameter", "inner") end,             mode = { "x", "o" },   desc = "inner arg" },
-                { "a/",           function() selectNode("regex", "outer") end,                 mode = { "x", "o" },   desc = "outer regex" },
-                { "i/",           function() selectNode("regex", "inner") end,                 mode = { "x", "o" },   desc = "inner regex" },
-                { "au",           function() selectNode("loop", "outer") end,                  mode = { "x", "o" },   desc = "outer loop" },
-                { "iu",           function() selectNode("loop", "inner") end,                  mode = { "x", "o" },   desc = "inner loop" },
-                { "aE",           function() selectNode("codeblock", "outer") end,             mode = { "x", "o" },   desc = "outer codeblock" },
-                { "iE",           function() selectNode("codeblock", "inner") end,             mode = { "x", "o" },   desc = "inner codeblock" },
-                { "a" .. to.call, function() selectNode("call", "outer") end,                  mode = { "x", "o" },   desc = "outer call" },
-                { "i" .. to.call, function() selectNode("call", "inner") end,                  mode = { "x", "o" },   desc = "inner call" },
-                { "a" .. to.func, function() selectNode("function", "outer") end,              mode = { "x", "o" },   desc = "outer function" },
-                { "i" .. to.func, function() selectNode("function", "inner") end,              mode = { "x", "o" },   desc = "inner function" },
-                { "a" .. to.cond, function() selectNode("conditional", "outer") end,           mode = { "x", "o" },   desc = "outer condition" },
-                { "i" .. to.cond, function() selectNode("conditional", "inner") end,           mode = { "x", "o" },   desc = "inner condition" },
-
-                { "q",            function() selectNode("comment", "outer") end,               mode = "o",            desc = "single comment" },
-                { "qf",           addDocstring,                                                desc = "add docstring" },
+                { "a/",    sel "regex" "outer",                   desc = "outer regex",              mode = xo },
+                { "i/",    sel "regex" "inner",                   desc = "inner regex",              mode = xo },
+                { "aE",    sel "codeblock" "outer",               desc = "outer codeblock",          mode = xo },
+                { "iE",    sel "codeblock" "inner",               desc = "inner codeblock",          mode = xo },
+                { "aa",    sel "parameter" "outer",               desc = "outer arg",                mode = xo },
+                { "ia",    sel "parameter" "inner",               desc = "inner arg",                mode = xo },
+                { "af",    sel "function" "outer",                desc = "outer function",           mode = xo },
+                { "if",    sel "function" "inner",                desc = "inner function",           mode = xo },
+                { "aF",    sel "call" "outer",                    desc = "outer call",               mode = xo },
+                { "iF",    sel "call" "inner",                    desc = "inner call",               mode = xo },
+                { "ao",    sel "conditional" "outer",             desc = "outer condition",          mode = xo },
+                { "io",    sel "conditional" "inner",             desc = "inner condition",          mode = xo },
+                { "aO",    sel "loop" "outer",                    desc = "outer loop",               mode = xo },
+                { "iO",    sel "loop" "inner",                    desc = "inner loop",               mode = xo },
+                { "qf",    addDocstring,                          desc = "add docstring" },
                 { -- CHANGE SINGLE COMMENT
                         "cq",
                         function()
                                 -- local select_obj = require("nvim-treesitter-textobjects.select").select_textobject
                                 -- select_obj("@comment.inner", "textobjects")
-                                selectNode("comment", "inner")
+                                sel "comment" "inner"
                                 local com_str = bo.commentstring:format ""
                                 cmd.normal { "c" .. com_str, bang = true }
                                 cmd.startinsert { bang = true }
@@ -124,7 +136,6 @@ return {
                         end,
                         desc = "Sticky delete single comment",
                 },
-
         },
         opts   = { move = { set_jumps = true }, select = { lookahead = true, include_surrounding_whitespace = false } },
 }

@@ -63,11 +63,11 @@ for _, rule in ipairs(window_rules) do
         hl.window_rule(rule)
 end
 
-hl.window_rule({ float = true, size = "960 540", pin = true, group = "deny", match = { class = "org.pulseaudio.pavucontrol" } })
-hl.window_rule({ float = true, size = "720 380", pin = true, group = "deny", match = { class = "hyprland-share-picker" } })
-hl.window_rule({ float = true, size = "460 270", pin = true, group = "deny", match = { title = "Discord Popout" } })
-hl.window_rule({ no_blur = true, group = "deny", match = { float = true } })
-hl.window_rule({ no_blur = true, match = { float = false } })
+hl.window_rule { float = true, size = "960 540", pin = true, group = "deny", match = { class = "org.pulseaudio.pavucontrol" } }
+hl.window_rule { float = true, size = "720 380", pin = true, group = "deny", match = { class = "hyprland-share-picker" } }
+hl.window_rule { float = true, size = "460 270", pin = true, group = "deny", match = { title = "Discord Popout" } }
+hl.window_rule { no_blur = true, group = "deny", match = { float = true } }
+hl.window_rule { no_blur = true, match = { float = false } }
 
 -- no_dim on, opacity 0.5 override 0.5 override 0.5 override, match:class com.q.bg
 -- group deny, float on, size 540 380, move (window_w) (window_h*0.9), pin on, match:title Картинка в картинке

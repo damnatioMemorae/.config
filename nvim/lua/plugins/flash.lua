@@ -1,33 +1,14 @@
-local v  = vim.v
-local fn = vim.fn
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-local remote = function() require "flash".remote() end
-local jump   = function() require "flash".jump() end
-local inc    = function() require "flash".treesitter { actions = { ["m"] = "next", ["M"] = "prev" } } end
-local first  = function() require "flash".jump { search = { mode = function(str) return "\\<" .. str end } } end
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-auq "CmdlineLeave" {
-        callback = function()
-                local ev = v.event
-                if (ev.cmdtype == "?") and (not ev.abort) and (fn.searchcount().total > 1) then
-                        vim.schedule(function() jump() end)
-                end
-        end,
-}
-
+local nxo   = { "n", "x", "o" }
+local flash = function(_) return function(__) return function() require "flash"[_](__) end end end
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 return {
         "folke/flash.nvim",
         keys = {
-                { "f", jump,   mode = { "n", "x", "o" }, desc = "Flash" },
-                { "F", first,  mode = { "n", "x", "o" }, desc = "Flash first" },
-                { "R", remote, mode = "o",               desc = "Remote Flash" },
-                { "T", inc,    mode = "o",               desc = "Treesitter Search" },
+                { "R", flash "remote" (),                                                          mode = "o", desc = "Remote Flash" },
+                { "f", flash "jump" (),                                                            mode = nxo, desc = "Flash" },
+                { "F", flash "jump" { search = { mode = function(str) return "\\<" .. str end } }, mode = nxo, desc = "Flash first" },
+                { "T", flash "inc" { actions = { ["m"] = "next", ["M"] = "prev" } },               mode = "o", desc = "Treesitter Search" },
         },
         opts = {
                 jump      = { nohlsearch = true, autojump = true },
@@ -37,7 +18,7 @@ return {
                         matches  = true,
                         priority = 5000,
                         groups   = {
-                                label    = "IncSearch",
+                                label    = "CurSearch",
                                 match    = "LspInlayHint",
                                 current  = "LspInlayHint",
                                 backdrop = "NonText",

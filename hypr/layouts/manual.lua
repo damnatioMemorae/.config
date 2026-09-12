@@ -106,7 +106,7 @@ hl.layout.register("manual", {
 
         layout_msg = function(ctx, msg)
                 local id      = active_id(ctx)
-                local command = msg:match("^(%S+)")
+                local command = msg:match "^(%S+)"
 
                 if command == "splith" or command == "h" then
                         if id then

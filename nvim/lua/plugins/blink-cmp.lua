@@ -1,48 +1,3 @@
-linq
-"BlinkCmp"
-    { "KindClass", "@lsp.type.class" }
-    { "KindColor", "DevIconDss" }
-    { "KindConstant", "@constant" }
-    { "KindConstructor", "@constructor" }
-    { "KindEnum", "@lsp.type.enum" }
-    { "KindEnumMember", "@lsp.type.enumMember" }
-    { "KindEvent", "@lsp.type.event" }
-    { "KindField", "@lsp.type.property" }
-    { "KindFile", "Comment" }
-    { "KindFolder", "Directory" }
-    { "KindFunction", "@lsp.type.function" }
-    { "KindInterface", "@lsp.type.interface" }
-    { "KindKeyword", "Todo" }
-    { "KindMethod", "@lsp.type.method" }
-    { "KindModule", "@module" }
-    { "KindOperator", "@lsp.type.operator" }
-    { "KindProperty", "@lsp.type.property" }
-    { "KindReference", "@lsp.type.function" }
-    { "KindSnippet", "@lsp.type.keyword" }
-    { "KindStruct", "@lsp.type.struct" }
-    { "KindText", "@string" }
-    { "KindTypeParameter", "@lsp.type.typeParameter" }
-    { "KindUnit", "@lsp.type.number" }
-    { "KindValue", "@lsp.type.number" }
-    { "KindVariable", "@lsp.type.variable" }
-    { "AbbrDeprecated", "DiagnosticDeprecated" }
-    { "LabelDescription", "Comment" }
-    { "LabelDetail", "Comment" }
-    { "LabelMatch", "PmenuMatch" }
-    { "Menu", "Pmenu" }
-    { "MenuBorder", "PmenuBorder" }
-    { "MenuSelection", "pmenuSel" }
-    { "Doc", "PmenuDoc" }
-    { "DocBorder", "BlinkCmpDoc" }
-    { "DocSeparator", "BlinkCmpDoc" }
-    { "SignatureHelp", "BlinkCmpDoc" }
-    { "SignatureHelpBorder", "BlinkCmpDoc" }
-    { "Source", "Comment" }
-    { "ScrollBarThumb", "PmenuThumb" }
-    { "ScrollBarGutter", "PmenuSbar" }
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 local snippets   = {}
 -- local snippets   = { preset = "luasnip" }
 local cmdline    = { enabled = false, completion = { menu = { auto_show = true } } }
@@ -169,7 +124,7 @@ local sources    = {
                         name         = "omni",
                         module       = "blink.cmp.sources.complete_func",
                         score_offset = 60,
-                        opts         = { disable_omnifunc = { [[v:lua.vim.lsp.omnifunc]] } },
+                        opts         = { disable_omnifunc = { vim.lsp.omnifunc } },
                 },
                 ripgrep  = {
                         module       = "blink-cmp-rg",
@@ -247,6 +202,53 @@ local opts = {
         appearance = appearance,
         signature  = signature,
 }
+
+---- HIGHLIGHTS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+linq
+"BlinkCmp"
+    { "KindClass", "@lsp.type.class" }
+    { "KindColor", "DevIconDss" }
+    { "KindConstant", "@constant" }
+    { "KindConstructor", "@constructor" }
+    { "KindEnum", "@lsp.type.enum" }
+    { "KindEnumMember", "@lsp.type.enumMember" }
+    { "KindEvent", "@lsp.type.event" }
+    { "KindField", "@lsp.type.property" }
+    { "KindFile", "Comment" }
+    { "KindFolder", "Directory" }
+    { "KindFunction", "@lsp.type.function" }
+    { "KindInterface", "@lsp.type.interface" }
+    { "KindKeyword", "Todo" }
+    { "KindMethod", "@lsp.type.method" }
+    { "KindModule", "@module" }
+    { "KindOperator", "@lsp.type.operator" }
+    { "KindProperty", "@lsp.type.property" }
+    { "KindReference", "@lsp.type.function" }
+    { "KindSnippet", "@lsp.type.keyword" }
+    { "KindStruct", "@lsp.type.struct" }
+    { "KindText", "@string" }
+    { "KindTypeParameter", "@lsp.type.typeParameter" }
+    { "KindUnit", "@lsp.type.number" }
+    { "KindValue", "@lsp.type.number" }
+    { "KindVariable", "@lsp.type.variable" }
+    { "AbbrDeprecated", "DiagnosticDeprecated" }
+    { "LabelDescription", "Comment" }
+    { "LabelDetail", "Comment" }
+    { "LabelMatch", "Visual" }
+    { "Menu", "Pmenu" }
+    { "MenuBorder", "PmenuBorder" }
+    { "MenuSelection", "pmenuSel" }
+    { "Doc", "PmenuDoc" }
+    { "DocBorder", "BlinkCmpDoc" }
+    { "DocSeparator", "BlinkCmpDoc" }
+    { "SignatureHelp", "BlinkCmpDoc" }
+    { "SignatureHelpBorder", "BlinkCmpDoc" }
+    { "Source", "Comment" }
+    { "ScrollBarThumb", "PmenuThumb" }
+    { "ScrollBarGutter", "PmenuSbar" }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 return {
         "saghen/blink.cmp",

@@ -1,18 +1,67 @@
----- PREDICATES ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---- FUNCITONS -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local eq   = function(a) return function(b) return a == b end end
-local typq = function(a) return function(t) return type(a) == t end end
+local function curry(f, n)
+        n = n or debug.getinfo(f, "u").nparams
+        local function curried(args, count)
+                return function(...)
+                        local argc     = select("#", ...)
+                        local new_args = { unpack(args) }
+                        for i = 1, argc do
+                                new_args[count + i] = select(i, ...)
+                        end
+                        local new_count = count + argc
+                        if new_count >= n then
+                                return f(unpack(new_args, 1, n))
+                        end
+                        return curried(new_args, new_count)
+                end
+        end
+        return curried({}, 0)
+end
 
-local nilq = function(_) return _ == nil end
-local tblq = function(_) return type(_) == "table" end
-local strq = function(_) return type(_) == "string" end
-local numq = function(_) return type(_) == "number" end
-local booq = function(_) return type(_) == "boolean" end
-local funq = function(_) return type(_) == "function" end
+local function uncurry(f)
+        return function(...)
+                local args = { ... }
+                local result = f
+                for i = 1, #args do
+                        result = result(args[i])
+                end
+                return result
+        end
+end
+
+local function revq(f, n)
+        local function collect(args)
+                return function(...)
+                        local new_args = { unpack(args) }
+                        for i = 1, select("#", ...) do
+                                new_args[#new_args + 1] = select(i, ...)
+                        end
+                        if #new_args >= n then
+                                local reversed = {}
+                                for i = 1, n do
+                                        reversed[i] = new_args[n - i + 1]
+                                end
+                                local result = f
+                                for i = 1, n do
+                                        result = result(reversed[i])
+                                end
+                                return result
+                        end
+                        return collect(new_args)
+                end
+        end
+        return collect {}
+end
 
 ---- PATTERN MATCHING ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+---@param value any
+---@param pattern any
 local function matches(value, pattern)
+        -- if type(pattern) == "function" then
+        --         return pattern(value)
+        -- end
         if type(pattern) == "function" then
                 return value == pattern(value)
         end
@@ -27,6 +76,8 @@ local function matches(value, pattern)
         return value == pattern
 end
 
+---@param action function
+---@param value any
 local function execute(action, value)
         if type(action) == "function" then
                 return action(value)
@@ -34,20 +85,14 @@ local function execute(action, value)
         return action
 end
 
----@type fun(value: any): fun(cases: table): function
-function match(value)
+---@alias MatchAction any|fun(value: any): any
+---@alias MatchCases table<any, MatchAction>
+---@param value any
+---@return fun(cases: MatchCases): any
+local function match(value)
         return function(cases)
                 for pattern, action in pairs(cases) do
-                        if pattern ~= "_" and type(pattern) == "string" then
-                                if value == pattern then
-                                        return execute(action, value)
-                                end
-                        end
-                end
-                for i = 1, #cases, 2 do
-                        local pattern = cases[i]
-                        local action  = cases[i + 1]
-                        if matches(value, pattern) then
+                        if pattern ~= "_" and matches(value, pattern) then
                                 return execute(action, value)
                         end
                 end
@@ -73,35 +118,14 @@ local function guard(args)
         end
 end
 
----@type fun(expr: function): fun(bindings: table): function
-local function where(expr)
-        return function(bindings)
-                return expr(bindings)
-        end
-end
-
 local function unless(condition)
         return function(value)
                 if not condition then return nil end
-                return funq(value) and value() or value
+                return type(value) == "function" and value() or value
         end
 end
 
 ---- LISTS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
----@type fun(tbl: table): fun(idx: number): table|table
-local function ext(tbl)
-        return function(idx)
-                return tbl[idx] or tbl
-        end
-end
-
----@type fun(tbl: table): fun(idx: number): table|nil
-local function _ext(tbl)
-        return function(idx)
-                return tbl[idx] or nil
-        end
-end
 
 ---@type fun(t1: table): fun(t2: table): table
 local function extl(dst)
@@ -113,13 +137,12 @@ local function extl(dst)
         end
 end
 
----@type fun(acc: table): fun(list: table): table
-local function fold(acc)
-        return function(list)
-                local new_acc         = acc
-                new_acc[#new_acc + 1] = list
-                return new_acc
-        end
+---@param acc table
+---@param val any
+local function fold(acc, val)
+        local new_acc = acc
+        new_acc[#new_acc + 1] = val
+        return new_acc
 end
 
 ---@type fun(f: function): fun(acc: table): fun(tbl: table): function
@@ -157,25 +180,13 @@ local function mapl(f)
         end
 end
 
----@type fun(tbl: table, pred: function): fun(acc: table): fun(x: any): table
-local function filter(tbl)
-        return function(pred)
-                return foldl(function(acc)
-                        return function(x)
-                                unless(pred(x))(fold(acc))
-                                return acc
-                        end
-                end) {} (tbl)
-        end
-end
-
 ---- OPERATORS -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ---@type fun(sep: string): fun(head: string): fun(tail: string): string
 local function concat(sep)
         return function(head)
                 return function(tail)
-                        unless(nilq(head))(tail)
+                        unless(head == nil)(tail)
                         return head .. sep .. tail
                 end
         end
@@ -185,40 +196,38 @@ end
 local M = {}
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-M.predicates   = {
-        eq    = eq,
-        typq  = typq,
-        nilq  = nilq,
-        tblq  = tblq,
-        numq  = numq,
-        strq  = strq,
-        booq  = booq,
-        funq  = funq,
-        _eq   = not eq,
-        _typq = not typq,
-        _nilq = not nilq,
-        _tblq = not tblq,
-        _numq = not numq,
-        _strq = not strq,
-        _booq = not booq,
-        _funq = not funq,
+M.combinator   = {
+        revq    = revq,
+        curry   = curry,
+        uncurry = uncurry,
 }
 M.lists        = {
-        ext    = ext,
-        _ext   = _ext,
         extl   = extl,
         map    = map,
         mapl   = mapl,
         fold   = fold,
         foldl  = foldl,
-        filter = filter,
         concat = concat,
 }
 M.conditionals = {
         guard  = guard,
-        match  = match,
-        where  = where,
         unless = unless,
+}
+M.predicates   = {
+        gt    = function(x) return function(_) return _ > x and _ end end, ---@param x number
+        lt    = function(x) return function(_) return _ < x and _ end end, ---@param x number
+        eq    = function(x) return function(_) return _ == x and _ end end, ---@param x number
+        neq   = function(x) return function(_) return _ ~= x and _ end end, ---@param x number
+        gtq   = function(x) return function(_) return _ >= x and _ end end, ---@param x number
+        ltq   = function(x) return function(_) return _ <= x and _ end end, ---@param x number
+        _nil  = function(_) return _ ~= nil and _ end, ---@param _ any
+        nilq  = function(_) return _ == nil and _ end, ---@param _ any
+        self  = function(_) return _ end, ---@param _ any
+        lower = function(_) return _:lower() end, ---@param _ string
+        upper = function(_) return _:upper() end, ---@param _ string
+}
+M.matching     = {
+        match = match,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -228,7 +237,8 @@ setmetatable(M, {
                 for _, group in pairs(self) do
                         if type(group) == "table" then
                                 for key, value in pairs(group) do
-                                        rawset(_G, key, value)
+                                        -- rawset(_G, key, value)
+                                        _G[key] = value
                                 end
                         end
                 end

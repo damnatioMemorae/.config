@@ -1,10 +1,8 @@
 local g          = vim.g
 local wo         = vim.wo
 local lsp        = vim.lsp
-local log        = vim.log
 local diagnostic = vim.diagnostic
-
-local levels = log.levels
+local levels     = vim.log.levels
 
 local misc  = Icon.Misc
 local diag  = Icon.Diagnostics
@@ -100,16 +98,16 @@ local function toggleConcealLvl()
 end
 
 local function toggleListMode(mode)
-        mode = mode or g.qf_mode
+        mode = mode or g.mode
         match(mode) {
-                { "quickfix", "c" }, function()
-                g.qf_mode = "l"
-                vim.notify("list: loclist", levels.WARN)
-        end,
-                { "loclist",  "l" }, function()
-                g.qf_mode = "c"
-                vim.notify("list: quickfix", levels.WARN)
-        end,
+                [{ "quickfix", "c" }] = function()
+                        g.mode = "l"
+                        vim.notify("list: loclist", levels.WARN)
+                end,
+                [{ "loclist", "l" }]  = function()
+                        g.mode = "c"
+                        vim.notify("list: quickfix", levels.WARN)
+                end,
         }
 end
 

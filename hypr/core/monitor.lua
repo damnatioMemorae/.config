@@ -3,10 +3,10 @@ local monitors = {
 }
 
 for _, monitor in ipairs(monitors) do
-        hl.monitor({
+        hl.monitor {
                 output   = monitor[1],
                 mode     = monitor[2],
                 position = monitor[3],
                 scale    = monitor[4],
-        })
+        }
 end

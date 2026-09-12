@@ -1,4 +1,4 @@
-local rgb = require("core.utils").rgb
+local rgb = require "core.utils".rgb
 
 local cmds = {
         "gsettings set org.gnome.desktop.interface gtk-theme           'catppuccin-mocha-red-standard+default'",
@@ -17,7 +17,7 @@ for _, cmd in ipairs(cmds) do
 end
 
 local M = {}
---------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 M.Colors = {
         ivory     = "#dce0e8",
@@ -47,24 +47,26 @@ M.Colors = {
         surface0  = "#313244",
         base      = "#1e1e2e",
         mantle    = "#14141f",
-        crust1    = "#11111b",
-        crust0    = "#0e0e16",
+        crust     = "#0e0e16",
 }
 
 M.Groups = {
         BodrerActive   = rgb(M.Colors.text),
         BodrerInactive = rgb(M.Colors.text),
 
-        groupBodrerActive         = rgb(M.Colors.text),
-        groupBodrerInactive       = rgb(M.Colors.text),
+        groupBodrerActive         = rgb(M.Colors.base),
+        groupBodrerInactive       = rgb(M.Colors.crust),
         groupBodrerActiveLocked   = rgb(M.Colors.text),
         groupBodrerInactiveLocked = rgb(M.Colors.text),
-        groupBarText              = rgb(M.Colors.text),
-        groupBarActive            = rgb(M.Colors.crust0),
-        groupBarInactive          = rgb(M.Colors.mantle),
-        groupBarActiveLocked      = rgb(M.Colors.red),
-        groupBarInactiveLocked    = rgb(M.Colors.crust0),
+
+        groupBarActive       = rgb(M.Colors.base),
+        groupBarActiveText   = rgb(M.Colors.subtext0),
+        groupBarActiveLocked = rgb(M.Colors.red),
+
+        groupBarInactive       = rgb(M.Colors.crust),
+        groupBarInactiveText   = rgb(M.Colors.surface2),
+        groupBarInactiveLocked = rgb(M.Colors.crust),
 }
 
---------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 return M

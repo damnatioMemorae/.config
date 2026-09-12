@@ -11,13 +11,13 @@ end
 
 local function makeAnim(animations)
         for _, animation in ipairs(animations) do
-                hl.animation({
+                hl.animation {
                         leaf    = animation[1] or nil,
                         enabled = animation[2] or nil,
                         speed   = animation[3] or nil,
                         bezier  = animation[4] or nil,
                         style   = animation[5] or nil,
-                })
+                }
         end
 end
 

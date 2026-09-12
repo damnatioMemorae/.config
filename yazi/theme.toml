@@ -24,9 +24,9 @@
         syntect_theme = "~/.config/yazi/Catppuccin-mocha.tmTheme"
 
 [indicator]
-        parent  = { bg = "#14141f" ,bold = false }
-        current = { bg = "#14141f" ,bold = true }
-        preview = { bg = "#14141f" ,bold = false }
+        parent  = { bg = "#313244" }
+        current = { bg = "#313244" }
+        preview = { bg = "#313244" }
         padding = { open = "█"     ,close = "█" }
 
 [tabs]

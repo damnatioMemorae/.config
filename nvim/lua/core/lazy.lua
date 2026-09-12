@@ -1,18 +1,16 @@
-local g   = vim.g
-local fn  = vim.fn
-local ui  = vim.ui
-local uv  = vim.uv
-local api = vim.api
-local log = vim.log
-local opt = vim.opt
-
-local levels = log.levels
+local g      = vim.g
+local fn     = vim.fn
+local ui     = vim.ui
+local uv     = vim.uv
+local api    = vim.api
+local opt    = vim.opt
+local levels = vim.log.levels
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local lazypath = fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not uv.fs_stat(lazypath) then
-        local repo = "https://github.com/folke/lazy.ngit"
+        local repo = "https://github.com/folke/lazy.nvim.git"
         local args = { "git", "clone", "--filter=blob:none", "--branch=stable", repo, lazypath }
         local out  = vim.system(args):wait()
         if out.code ~= 0 then

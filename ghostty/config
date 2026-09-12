@@ -49,8 +49,6 @@ window-padding-balance     = true
 
 theme                      = theme
 
-gtk-single-instance        = true
-
 keybind = ctrl+,=unbind
 keybind = ctrl+alt+arrow_down=unbind
 keybind = ctrl+alt+arrow_left=unbind

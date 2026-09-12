@@ -1,18 +1,3 @@
-linq
-"Snacks"
-    { "Picker", "Normal" }
-    { "PickerBorder", "Border" }
-    { "PickerBoxBorder", "Border" }
-    { "PickerListBorder", "Border" }
-    { "PickerInputBorder", "Border" }
-    { "PickerPreviewBorder", "Border" }
-    { "PickerCursorLine", "PmenuSel" }
-    { "PickerListCursorLine", "PmenuSel" }
-    { "PickerPathIgnored", "Directory" }
-    { "PickerPathHidden", "Directory" }
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 local o   = vim.o
 local v   = vim.v
 local bo  = vim.bo
@@ -32,7 +17,24 @@ local kinds = Icon.Kinds
 local leader = "<leader><leader>"
 local none   = Border.Default.None
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+local function pick(picker)
+        return function()
+                return Snacks.picker[picker]()
+        end
+end
+
+linq
+"Snacks"
+    { "Picker", "Normal" }
+    { "PickerBorder", "Border" }
+    { "PickerBoxBorder", "Border" }
+    { "PickerListBorder", "Border" }
+    { "PickerInputBorder", "Border" }
+    { "PickerPreviewBorder", "Border" }
+    { "PickerCursorLine", "PmenuSel" }
+    { "PickerListCursorLine", "PmenuSel" }
+    { "PickerPathIgnored", "Directory" }
+    { "PickerPathHidden", "Directory" }
 
 local picker = {
         prompt     = " > ",
@@ -224,6 +226,36 @@ local picker = {
                 end,
         },
         layouts    = {
+                ivy               = {
+                        layout = {
+                                box    = "vertical",
+                                row    = -1,
+                                height = 0.3,
+                                { win = "input", height = 1, border = none },
+                                {
+                                        box    = "vertical",
+                                        border = none,
+                                        title  = "",
+                                        { win = "list", border = none },
+                                },
+                        },
+                },
+                ivy_split         = {
+                        preview = "main",
+                        layout  = {
+                                box    = "vertical",
+                                row    = -1,
+                                height = 0.3,
+                                { win = "input", height = 1, border = none },
+                                {
+                                        box    = "vertical",
+                                        border = none,
+                                        title  = "",
+                                        { win = "list",    border = none },
+                                        { win = "preview", title = "{preview}", width = 0.6, border = none },
+                                },
+                        },
+                },
                 dropdown          = {
                         layout = {
                                 box    = "horizontal",
@@ -304,17 +336,15 @@ local picker = {
 return {
         "folke/snacks.nvim",
         keys = {
-                { leader .. "<leader>", function() Snacks.picker() end,                          desc = "Main Picker",             mode = { "n" } },
-                { leader .. "f",        function() Snacks.picker.files() end,                    desc = "File Picker",             mode = { "n" } },
-                { leader .. "b",        function() Snacks.picker.buffers() end,                  desc = "Buffer Picker",           mode = { "n" } },
-                { leader .. "w",        function() Snacks.picker.grep() end,                     desc = "Grep Picker",             mode = { "n" } },
-                { leader .. "W",        function() Snacks.picker.grep_word() end,                desc = "Grep Word",               mode = { "n", "x" } },
-                { leader .. "k",        function() Snacks.picker.keymaps { global = false } end, desc = "Keymap (buffer)",         mode = { "n" } },
-                { leader .. "K",        function() Snacks.picker.keymaps() end,                  desc = "Keymap (global)",         mode = { "n" } },
-                { leader .. "h",        function() Snacks.picker.highlights() end,               desc = "Highlight Picker",        mode = { "n" } },
-                { leader .. "H",        function() Snacks.picker.help() end,                     desc = "Help Picker",             mode = { "n" } },
-                { leader .. "d",        function() Snacks.picker.diagnostics_buffer() end,       desc = "Show Buffer Diagnostics", mode = { "n" } },
-                { leader .. "D",        function() Snacks.picker.diagnostics() end,              desc = "Show Workspace Symbols",  mode = { "n" } },
+                { leader .. "f", pick "files",              desc = "File Picker" },
+                { leader .. "b", pick "buffers",            desc = "Buffer Picker" },
+                { leader .. "w", pick "grep",               desc = "Grep Picker" },
+                { leader .. "W", pick "grep_word",          desc = "Grep Word",              mode = { "n", "x" } },
+                { leader .. "k", pick "keymaps",            desc = "Keymap (global)" },
+                { leader .. "h", pick "highlights",         desc = "Highlight Picker" },
+                { leader .. "H", pick "help",               desc = "Help Picker" },
+                { leader .. "d", pick "diagnostics_buffer", desc = "Show Buffer Diagnostics" },
+                { leader .. "D", pick "diagnostics",        desc = "Show Workspace Symbols" },
                 {
                         leader .. "p",
                         function()
@@ -327,7 +357,6 @@ return {
                                 }
                         end,
                         desc = "Import Lua Module",
-                        mode = { "n" },
                         ft   = "lua",
                 },
         },

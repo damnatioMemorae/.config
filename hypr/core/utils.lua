@@ -5,7 +5,7 @@ function _G.safeRequire(module)
 
         local msg = ("Error loading `%s`: %s"):format(module, errmsg)
         hl.timer(function()
-                         hl.notification.create({ text = msg, timeout = 2000, color = "rgb(f38ba8)", font_size = 12 })
+                         hl.notification.create { text = msg, timeout = 2000, color = "rgb(f38ba8)", font_size = 12 }
                  end, { timeout = 1000, type = "oneshot" })
 end
 
@@ -21,7 +21,7 @@ local modifiers = {
 }
 
 local function parseKeys(keys)
-        local body = keys:match("^<(.+)>$")
+        local body = keys:match "^<(.+)>$"
         if not body then
                 return keys
         end
@@ -29,7 +29,7 @@ local function parseKeys(keys)
         local parsed = {}
         local key
 
-        for part in body:gmatch("[^-]+") do
+        for part in body:gmatch "[^-]+" do
                 local modifier = modifiers[part]
 
                 if modifier then
@@ -60,9 +60,9 @@ function M.bind(keys, dispatcher, flags)
 end
 
 function M.getHostname()
-        local f = io.popen("hostnamectl hostname")
+        local f = io.popen "hostnamectl hostname"
         if f == nil then return "" end
-        local hostname = f:read("l")
+        local hostname = f:read "l"
         f:close()
         return hostname
 end
@@ -92,7 +92,7 @@ end
 
 function M.getScreen()
         local screen = hl.get_active_monitor()
-        hl.notification.create({ text = screen, timeout = 2000, color = "rgb(89dceb)", font_size = 12 })
+        hl.notification.create { text = screen, timeout = 2000, color = "rgb(89dceb)", font_size = 12 }
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,16 +1,14 @@
-local b   = vim.b
-local bo  = vim.bo
-local fn  = vim.fn
-local ui  = vim.ui
-local ts  = vim.ts
-local api = vim.api
-local cmd = vim.cmd
-local log = vim.log
-local lsp = vim.lsp
-local opt = vim.opt
-local net = vim.net
-
-local levels = log.levels
+local b      = vim.b
+local bo     = vim.bo
+local fn     = vim.fn
+local ui     = vim.ui
+local ts     = vim.ts
+local api    = vim.api
+local cmd    = vim.cmd
+local lsp    = vim.lsp
+local opt    = vim.opt
+local net    = vim.net
+local levels = vim.log.levels
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local M = {}
@@ -47,7 +45,7 @@ function M.wrap(startWrap, endWrap)
         local clipboard_url
         if startWrap == "mdlink" then
                 local clipb   = fn.getreg "+"
-                clipboard_url = clipb:match "^#[%w-]+$"        -- heading-link
+                clipboard_url = clipb:match "^#[%w-]+$"          -- heading-link
                     or clipb:match [[^%l%l%l+://[^%s)%]}"'`>]+]] -- url
                     or ""
                 insert        = ("[%s](%s)"):format(text, clipboard_url)
@@ -226,8 +224,8 @@ function M.cycle(type)
                 if updated == cur_line then -- none/heading/task -> bullet
                         updated = cur_line
                             :gsub("^(%s*)[*+-] %[[ x-]%] ", "%1") -- remove task
-                            :gsub("^#+ ", "")                   -- remove heading
-                            :gsub("^(%s*)(.*)", "%1- %2")       -- add bullet
+                            :gsub("^#+ ", "")                     -- remove heading
+                            :gsub("^(%s*)(.*)", "%1- %2")         -- add bullet
                 end
         elseif type == "task" then
                 updated = cur_line:gsub("^%s*[*+-] %[[ x-]%] ", function(task)
@@ -239,8 +237,8 @@ function M.cycle(type)
                 end)
                 if updated == cur_line then -- none/bullet/number -> task
                         updated = cur_line
-                            :gsub("^(%s*)%d+%. ", "%1")     -- remove number
-                            :gsub("^(%s*)[*+-] ", "%1")     -- remove bullet
+                            :gsub("^(%s*)%d+%. ", "%1")       -- remove number
+                            :gsub("^(%s*)[*+-] ", "%1")       -- remove bullet
                             :gsub("^(%s*)(.*)", "%1- [ ] %2") -- add open task
                 end
         else

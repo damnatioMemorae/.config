@@ -1,1 +1,1 @@
-require("core.handlers.animations")(require("config.animations"))
+require "core.handlers.animations"(require "config.animations")

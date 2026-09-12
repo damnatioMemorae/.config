@@ -1,4 +1,4 @@
-local HOME = os.getenv("HOME")
+local HOME = os.getenv "HOME"
 
 local envs = {
         { "XCURSOR_SIZE",                        "20" },
@@ -7,7 +7,8 @@ local envs = {
         { "HYPRCURSOR_THEME",                    "catppuccin-mocha-red" },
 
         { "EIDITOR",                             "nvim" },
-        { "TERMINAL",                            "ghostty" },
+        -- { "TERMINAL",                            "ghostty" },
+        { "TERMINAL",                            "kitty" },
         { "BROWSER",                             "librewolf" },
         { "SCRIPTS",                             HOME .. "/.local/bin" },
 

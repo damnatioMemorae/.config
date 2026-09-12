@@ -1,22 +1,21 @@
 local o   = vim.o
 local api = vim.api
 
-local ui2        = require "vim._core.ui2"
-local messages   = require "vim._core.ui2.messages"
-local o_msg_show = messages.msg_show
-
 local last_title = nil
 local last_hl    = "Normal"
 local win_hl     = "PmenuDoc"
 local hl_str     = "Normal:" .. win_hl .. ",FloatBorder:" .. win_hl
 local border     = Border.Default.Normal
 
+local ui2          = require "vim._core.ui2"
+local messages     = require "vim._core.ui2.messages"
+local o_msg_show   = messages.msg_show
 local orig_set_pos = messages.set_pos
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 local _targets = {
-        [""]         = "msg",
+        -- [""]         = "msg",
         empty        = "msg",
         bufwrite     = "msg",
         echo         = "msg",
@@ -48,11 +47,12 @@ local _targets = {
 require "vim._core.ui2".enable {
         enable = true,
         msg    = {
-                targets = "msg",
-                cmd     = { height = 0.5 },
-                dialog  = { height = 0.5 },
-                pager   = { height = 0.5 },
-                msg     = { height = 0.3, timeout = 1500 },
+                -- targets = "msg",
+                targets = _targets,
+                -- cmd     = { height = 0.5 },
+                -- dialog  = { height = 0.5 },
+                -- pager   = { height = 0.5 },
+                -- msg     = { height = 0.3, timeout = 1500 },
         },
 }
 

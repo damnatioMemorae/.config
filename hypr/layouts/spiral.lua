@@ -36,7 +36,7 @@ hl.layout.register("spiral", {
         end,
 
         layout_msg = function(ctx, msg)
-                local command, arg = msg:match("^(%S+)%s*(.*)$")
+                local command, arg = msg:match "^(%S+)%s*(.*)$"
 
                 if command == "ratio" then
                         state.ratio = clamp(tonumber(arg) or state.ratio, 0.1, 0.9)

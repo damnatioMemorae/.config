@@ -1,3 +1,14 @@
+local g      = vim.g
+local env    = vim.env
+local cmd    = vim.cmd
+local lsp    = vim.lsp
+local iter   = vim.iter
+local levels = vim.log.levels
+
+local icons = Icon.Misc
+
+---- HIGHLIGHTS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 linq
 "Mason"
     { "Error", "DiagnosticError" }
@@ -22,33 +33,20 @@ linq
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local g   = vim.g
-local env = vim.env
-local cmd = vim.cmd
-local log = vim.log
-local lsp = vim.lsp
-
-local icons  = Icon.Misc
-local levels = log.levels
-
 local ensure_installed = {
         ---- ASM ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "asm-lsp",
 
         ---- BASH --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "shfmt",
         "shellcheck",
         "bash-language-server",
 
         ---- C/C++ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "clangd",
         "clang-format",
 
         ---- WEB ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "vtsls",
         "html-lsp",
         "json-lsp",
@@ -58,28 +56,23 @@ local ensure_installed = {
         "prettierd",
 
         ---- ODIN --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "ols",
 
         ---- GO ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "gopls",
 
         ---- LUA ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "lua-language-server",
         "local-lua-debugger-vscode",
         "vim-language-server",
 
         ---- HASKELL -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "haskell-language-server",
         "fourmolu",
         "ormolu",
         "hlint",
 
         ---- OTHER -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
         "tree-sitter-cli",
         "yaml-language-server",
 }
@@ -91,15 +84,12 @@ local function notify(msg, level, opts)
         if not opts then opts = {} end
         opts.title = "Mason"
         opts.icon  = ""
-        vim.schedule(function()
-                vim.notify(msg, levels[level:upper()], opts)
-        end)
+        vim.schedule(function() vim.notify(msg, levels[level:upper()], opts) end)
 end
 
 local function enableLsps()
         local installed_packs  = require "mason-registry".get_installed_packages()
-        local lsp_config_names = vim
-            .iter(installed_packs)
+        local lsp_config_names = iter(installed_packs)
             :fold({}, function(acc, pack)
                     table.insert(acc, pack.spec.neovim and pack.spec.neovim.lspconfig)
                     return acc
@@ -133,8 +123,7 @@ local function syncPackages()
         mason_reg.refresh(function(ok, _)
                 assert(ok, "Could not refresh mason registry.")
 
-                vim
-                    .iter(ensure_installed)
+                iter(ensure_installed)
                     :each(function(packName)
                             if not mason_reg.has_package(packName) then
                                     local msg = ("No package [%s] available."):format(packName)
@@ -154,8 +143,7 @@ local function syncPackages()
                 assert(#ensure_installed > 10, "< 10 mason packages, aborting uninstalls.")
                 local installed_packages = mason_reg.get_installed_package_names()
 
-                vim
-                    .iter(installed_packages)
+                iter(installed_packages)
                     :each(function(packName)
                             if vim.tbl_contains(ensure_installed, packName) then return end
                             mason_reg.get_package(packName):uninstall({}, function(success, error)

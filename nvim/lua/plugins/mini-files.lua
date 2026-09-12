@@ -1,11 +1,11 @@
 linq
 "MiniFiles"
-    { "TitleFocused", "Border" }
-    { "Title", "Border" }
+    { "TitleFocused", "Directory" }
+    { "Title", "Directory" }
     { "Normal", "Normal" }
     { "Border", "Normal" }
     { "BorderModified", "Normal" }
-    { "CursorLine", "PmenuSel" }
+    { "CursorLine", "Visual" }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -16,8 +16,7 @@ local fs     = vim.fs
 local ui     = vim.ui
 local api    = vim.api
 local cmd    = vim.cmd
-local log    = vim.log
-local levels = log.levels
+local levels = vim.log.levels
 
 local kinds = Icon.Kinds
 local send  = require "functions.nano-plugins".teleSend "file"
@@ -34,60 +33,48 @@ local function open()
                 require "mini.files".open()
         end
 end
-
 local function current()
         local mf = require "mini.files"
         local _  = mf.close() or mf.open(api.nvim_buf_get_name(0), false)
         vim.defer_fn(function() mf.reveal_cwd() end, 30)
 end
-
 local function filterShow(_fsEntry)
         return true
 end
-
 local function filterHide(fsEntry)
         return not vim.startswith(fsEntry.name, ".")
 end
-
 local function toggleDotfiles()
         show_dotfiles    = not show_dotfiles
         local new_filter = show_dotfiles and filterShow or filterHide
         require "mini.files".refresh { content = { filter = new_filter } }
 end
-
 local function mapSplit(buf, lhs, direction)
-        where(function(_) keyq { _.lhs, _.rhs, buf = _.buf, desc = _.desc } end) {
-                lhs  = lhs,
-                rhs  = function()
-                        local cur_target = require "mini.files".get_explorer_state().target_window
-                        local new_target = api.nvim_win_call(cur_target, function()
-                                cmd(direction .. " split")
-                                return api.nvim_get_current_win()
-                        end)
-                        require "mini.files".set_target_window(new_target)
-                end,
-                buf  = buf,
-                desc = "Split " .. direction,
-        }
+        local desc = "Split " .. direction
+        local rhs  = function()
+                local cur_target = require "mini.files".get_explorer_state().target_window
+                local new_target = api.nvim_win_call(cur_target, function()
+                        cmd(direction .. " split")
+                        return api.nvim_get_current_win()
+                end)
+                require "mini.files".set_target_window(new_target)
+        end
+        keymapq { lhs, rhs, buf = buf, desc = desc }
 end
-
 local function setCwd()
         local path = (require "mini.files".get_fs_entry() or {}).path
         if path == nil then return vim.notify "Cursor is not on valid entry" end
         fn.chdir(fs.dirname(path))
 end
-
 local function yankPath()
         local path = (require "mini.files".get_fs_entry() or {}).path
         if path == nil then return vim.notify "Cursor is not on valid entry" end
         vim.notify("Yanked: " .. path)
         fn.setreg(v.register, path)
 end
-
 local function uiOpen()
         ui.open(require "mini.files".get_fs_entry().path)
 end
-
 local function prefix(fsEntry)
         local icon_dir = kinds.Folder .. " "
         if fsEntry.fs_type == "directory" then
@@ -95,11 +82,9 @@ local function prefix(fsEntry)
         end
         return require "mini.files".default_prefix(fsEntry)
 end
-
 local function setMark(id, path, desc)
         require "mini.files".set_bookmark(id, path, { desc = desc })
 end
-
 local function layout(args, width, height)
         local state   = require "mini.files".get_explorer_state() or {}
         local win_ids = vim.tbl_map(function(t) return t.win_id end, state.windows or {})
@@ -157,8 +142,28 @@ auq "User" { -- MARKS
                 setMark("~", "~",                                      "Home directory")
         end,
 }
-
-auq "User" { -- SPLITS AND MAPS
+auq "User" { -- BORDER
+        pattern  = "MiniFilesWindowOpen",
+        callback = function(args)
+                local win_id = args.data.win_id
+                local config = api.nvim_win_get_config(args.data.win_id)
+                local border = match(border_width) {
+                        [1] = Border.Default.Normal,
+                        _   = Border.Default.None,
+                }
+                config.border = border
+                api.nvim_win_set_config(win_id, config)
+        end,
+}
+auq "User" { -- LAYOUT
+        pattern  = "MiniFilesWindowUpdate",
+        callback = function(args) layout(args, 60, 30) end,
+}
+auq "User" { -- CONFIRM
+        pattern  = "MiniFilesExplorerClose",
+        callback = function() fn.confirm = fn.confirm end,
+}
+auq "User" { -- KEYMAPS
         pattern  = "MiniFilesBufferCreate",
         callback = function(args)
                 local buf = args.data.buf_id
@@ -166,37 +171,16 @@ auq "User" { -- SPLITS AND MAPS
                 mapSplit(buf, "<C-s>", "belowright horizontal")
                 mapSplit(buf, "<C-v>", "belowright vertical")
                 mapSplit(buf, "<C-t>", "tab")
-                keyq { lhs .. "~", setCwd, buf = buf, desc = "Set cwd" }
-                keyq { lhs .. "x", uiOpen, buf = buf, desc = "OS open" }
-                keyq { "@", yankPath, buf = buf, desc = "Yank path" }
-                keyq { ".", toggleDotfiles, buf = buf, desc = "Toggle hidden files" }
-                keyq { "S", function()
-                        send((require "mini.files".get_fs_entry() or {}).path)
-                end, mode = { "n", "x" }, buf = buf, desc = "Telegram send" }
+                kq
+                ""
+                    { lhs .. "~", setCwd, buf = buf, desc = "Set cwd" }
+                    { lhs .. "x", uiOpen, buf = buf, desc = "OS open" }
+                    { "@", yankPath, buf = buf, desc = "Yank path" }
+                    { ".", toggleDotfiles, buf = buf, desc = "Toggle hidden files" }
+                    { "S", function()
+                            send((require "mini.files".get_fs_entry() or {}).path)
+                    end, mode = { "n", "x" }, buf = buf, desc = "Telegram send" }
         end,
-}
-
-auq "User" { -- BORDER
-        pattern  = "MiniFilesWindowOpen",
-        callback = function(args)
-                match(border_width) {
-                        1, function()
-                        local win_id  = args.data.win_id
-                        local config  = api.nvim_win_get_config(win_id)
-                        config.border = Border.Default.Normal
-                        api.nvim_win_set_config(win_id, config)
-                end }
-        end,
-}
-
-auq "User" { -- LAYOUT
-        pattern  = "MiniFilesWindowUpdate",
-        callback = function(args) layout(args, 60, 30) end,
-}
-
-auq "User" { -- CONFIRM
-        pattern  = "MiniFilesExplorerClose",
-        callback = function() fn.confirm = fn.confirm end,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -207,10 +191,10 @@ return {
         opts   = {
                 content  = { filter = nil, highlight = nil, prefix = prefix, sort = nil },
                 mappings = {
-                        close       = "<Esc>",
+                        close       = "q",
                         go_in       = "l",
-                        go_in_plus  = "L",
                         go_out      = "h",
+                        go_in_plus  = "L",
                         go_out_plus = "H",
                         mark_goto   = "m",
                         mark_set    = '"',
@@ -230,6 +214,8 @@ return {
         },
         config = function(_, opts)
                 require "mini.files".setup(opts)
-                require "real-icons.integrations.mini_files".opts()
+                if pcall(require, "real-icons.integrations.mini_files") then
+                        require "real-icons.integrations.mini_files".opts()
+                end
         end,
 }

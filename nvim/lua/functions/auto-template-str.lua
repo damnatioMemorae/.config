@@ -1,13 +1,10 @@
 ---@diagnostic disable: missing-parameter
 
-local bo  = vim.bo
-local fn  = vim.fn
-local ts  = vim.treesitter
-local api = vim.api
-local log = vim.log
-
-local ft     = bo.ft
-local levels = log.levels
+local bo     = vim.bo
+local fn     = vim.fn
+local ts     = vim.treesitter
+local api    = vim.api
+local levels = vim.log.levels
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 local M = {}
@@ -52,50 +49,46 @@ local FiletypeFuncs = {}
 
 ---@param node TSNode
 function FiletypeFuncs.lua(node)
-        where(function(_) updateNode(_.node, "%s", _.transformer, "nodeEnd", 12) end) {
-                transformer = function(nodeText) return "(" .. nodeText .. "):format()" end,
-                node        = match(node.type()) {
-                        string          = node,
-                        escape_sequence = node.parent():parent(),
-                        node.type():find "^string_content", node:parent(),
-                },
+        local transformer = function(nodeText) return "(" .. nodeText .. "):format()" end
+        local node_type   = match(node.type()) {
+                string                               = function() return node end,
+                escape_sequence                      = function() return node.parent():parent() end,
+                [node.type():find "^string_content"] = function() return node:parent() end,
         }
+        updateNode(node_type, "%s", transformer, "nodeEnd", 12)
 end
 
 ---@param node TSNode
 function FiletypeFuncs.python(node)
-        where(function(_) updateNode(_.node, "{}", _.transformer, nil, 2) end) {
-                transformer = function(nodeText) return "f" .. nodeText end,
-                node        = match(node.type()) {
-                        string          = node,
-                        escape_sequence = node.parent():parent(),
-                        node.type():find "^string_", node:parent(),
-                },
+        local transformer = function(nodeText) return "f" .. nodeText end
+        local node_type   = match(node.type()) {
+                string                        = function() return node end,
+                escape_sequence               = function() return node.parent():parent() end,
+                [node.type():find "^string_"] = function() return node:parent() end,
         }
+        updateNode(node_type, "{}", transformer, nil, 2)
 end
 
 ---@param node TSNode
 function FiletypeFuncs.javascript(node)
-        where(function(_) updateNode(_.node, "${}", _.transformer, nil, 2) end) {
-                transformer = function(nodeText) return "`" .. nodeText:sub(2, -2) .. "`" end,
-                node        = match(node.type()) {
-                        { "string",          "template_string" }, node,
-                        { "string_fragment", "escape_sequence" }, node:parent(),
-                },
+        local transformer = function(nodeText) return "`" .. nodeText:sub(2, -2) .. "`" end
+        local node_type   = match(node.type()) {
+                [{ "string", "template_string" }]          = function() return node end,
+                [{ "string_fragment", "escape_sequence" }] = function() return node:parent() end,
         }
+        updateNode(node_type, "${}", transformer, nil, 2)
 end
 
 FiletypeFuncs.typescript = FiletypeFuncs.javascript
 
 ---@param node TSNode
 function FiletypeFuncs.swift(node)
-        where(function(_) updateNode(_.node, "\\()", _.transformer, nil, 2) end) {
-                transformer = function(nodeText) return nodeText end,
-                node        = match(node.type()) {
-                        line_srt_text       = node,
-                        line_string_literal = node,
-                },
+        local transformer = function(nodeText) return nodeText end
+        local node_type   = match(node.type()) {
+                line_srt_text       = function() return node end,
+                line_string_literal = function() return node end,
         }
+        updateNode(node_type, "\\()", transformer, nil, 2)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,8 +96,8 @@ end
 function M.insertTemplateStr()
         if fn.mode() ~= "i" then return warn "Only works in insert mode." end
 
-        local update_func = FiletypeFuncs[ft]
-        if not update_func then return warn("Not configured for " .. ft) end
+        local update_func = FiletypeFuncs[bo.ft]
+        if not update_func then return warn("Not configured for " .. bo.ft) end
         local node_at_cursor = ts.get_node()
         if not node_at_cursor then return warn "No node at cursor" end
 

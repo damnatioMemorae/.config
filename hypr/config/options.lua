@@ -1,15 +1,21 @@
-local groups = require("themes").Groups
+local groups = require "themes".Groups
+local colors = require "themes".Colors
 
-local config = {}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+local config = {} ---@class HL.ConfigOpt
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+---@type HL.ConfigOpt.General
 config.general    = {
         border_size = 0,
         col         = { active_border = groups.borderActive, inactive_border = groups.borderInactive },
         gaps_in     = 5,
         gaps_out    = 10,
         snap        = { enabled = false },
-        layout      = "lua:columns",
+        -- layout      = "lua:columns",
+        layout      = hl.plugin.hy3 and "hy3" or "lua:columns",
 }
+---@type HL.ConfigOpt.Input
 config.input      = {
         follow_mouse       = 1,
         force_no_accel     = true,
@@ -18,6 +24,7 @@ config.input      = {
         sensitivity        = 0,
         touchpad           = { disable_while_typing = true, drag_lock = true, natural_scroll = false },
 }
+---@type HL.ConfigOpt.Cursor
 config.cursor     = {
         sync_gsettings_theme     = true,
         enable_hyprcursor        = true,
@@ -29,6 +36,7 @@ config.cursor     = {
         zoom_rigid               = false,
         inactive_timeout         = 4.0,
 }
+---@type HL.ConfigOpt.Group
 config.group      = {
         auto_group               = true,
         drag_into_group          = 2,
@@ -51,7 +59,7 @@ config.group      = {
                 gaps_out         = 0,
                 gaps_in          = 0,
                 indicator_height = 20,
-                text_color       = groups.groupBarText,
+                text_color       = groups.groupBarActiveText,
                 col              = {
                         active          = groups.groupBarActive,
                         inactive        = groups.groupBarInactive,
@@ -60,23 +68,19 @@ config.group      = {
                 },
         },
 }
+---@type HL.ConfigOpt.Decoration
 config.decoration = {
+        motion_blur        = { enabled = true, samples = 10 },
         rounding           = 0,
-        -- active_opacity     = 0.88,
         inactive_opacity   = 1,
         fullscreen_opacity = 1,
         dim_inactive       = true,
         dim_strength       = 0.25,
-        -- screen_shader      = "~/.config/hypr/shaders/dark.frag",
         screen_shader      = "",
-        glow               = { enabled = false },
         shadow             = {
-                enabled        = false,
-                range          = -2,
-                sharp          = true,
-                color          = 0xffcba6f7,
-                color_inactive = 0xff181825,
-                -- offset         = 4 4,
+                enabled = false,
+                range   = -2,
+                sharp   = true,
         },
         blur               = {
                 enabled           = true,
@@ -92,6 +96,7 @@ config.decoration = {
                 popups            = true,
         },
 }
+---@type HL.ConfigOpt.Misc
 config.misc       = {
         middle_click_paste             = true,
         allow_session_lock_restore     = true,
@@ -112,71 +117,114 @@ config.misc       = {
         close_special_on_empty         = true,
         disable_autoreload             = false,
 }
+---@type HL.ConfigOpt.Xwayland
 config.xwayland   = {
         force_zero_scaling = true,
 }
+---@type HL.ConfigOpt.Binds
 config.binds      = {
         workspace_center_on              = true,
         allow_workspace_cycles           = true,
         hide_special_on_workspace_change = true,
         movefocus_cycles_fullscreen      = true,
 }
+---@type HL.ConfigOpt.OpenGL
 config.opengl     = {
-        nvidia_anti_flicker = 1,
+        nvidia_anti_flicker = true,
 }
+---@type HL.ConfigOpt.Ecosystem
 config.ecosystem  = {
         no_update_news  = true,
         no_donation_nag = true,
 }
+---@type HL.ConfigOpt.Debug
 config.debug      = {
         disable_logs    = false,
         damage_tracking = 0,
         suppress_errors = false,
 }
+---@type HL.ConfigOpt.Scrolling
 config.scrolling  = {
         column_width     = 0.9,
-        focus_fit_method = 1
+        focus_fit_method = 1,
 }
-
---[[
-config.plugin= {
-        hy3 ={
-                no_gaps_when_only    = 0,
-                node_collapse_policy = 0,
-                tabs= {
-                        height       = 22,
+---@type HL.Plugin
+config.plugin     = {
+        hy3             = {
+                node_collapse_policy = 1,
+                group_inset          = 10,
+                tab_first_window     = false,
+                tabs                 = {
+                        height       = 20,
                         padding      = 0,
+                        from_top     = true,
                         radius       = 0,
                         border_width = 0,
-                        render_text  = true,
-                        text_center  = false,
-                        text_font    = Monocraft,
+                        text_font    = "Monocraft",
                         text_height  = 10,
-                        text_padding = 12,
+                        text_padding = 0,
+                        colors       = {
+                                active        = colors.crust,
+                                active_text   = colors.text,
+                                active_border = colors.crust,
 
-                        col.active          = rgba(0e0e16ff),
-                        col.active.border   = rgba(0e0e16ff),
-                        col.active.text     = rgba(0e0e16ff),
+                                focused        = colors.crust,
+                                focused_text   = colors.surface2,
+                                focused_border = colors.crust,
 
-                        col.focused         = rgba(0e0e16ff),
-                        col.focused.border  = rgba(0e0e16ff),
-                        col.focused.text    = rgba(0e0e16ff),
+                                inactive        = colors.base,
+                                inactive_text   = colors.surface2,
+                                inactive_border = colors.base,
 
-                        col.inactive        = rgba(14141fff),
-                        col.inactive.border = rgba(14141fff),
-                        col.inactive.text   = rgba(14141fff),
+                                urgent        = colors.red,
+                                urgent_text   = colors.crust,
+                                urgent_border = colors.red,
 
-                        col.urgent          = rgba(281d29ff),
-                        col.urgent.border   = rgba(281d29ff),
-                        col.urgent.text     = rgba(281d29ff),
-                }
-                autotile= {
-                        enable         = false,
-                        trigger_width  = 800,
-                        trigger_height = 300,
-                }
-        }
+                                locked        = colors.surface0,
+                                locked_text   = colors.text,
+                                locked_border = colors.surface0,
+                        },
+                },
+        },
+        dynamic_cursors = {
+                enabled    = true,
+                mode       = "rotate",
+                threshold  = 1,
+                rotate     = {
+                        length = 20,
+                        offset = 20.0,
+                },
+                tilt       = {
+                        limit      = 1000,
+                        activation = "negative_quadratic",
+                        window     = 100,
+                        full       = 60,
+                },
+                stretch    = {
+                        limit      = 100,
+                        activation = "negative_quadratic",
+                        window     = 100,
+                },
+                shake      = {
+                        enabled   = true,
+                        threshold = 4.0,
+                        base      = 4.0,
+                        speed     = 1.0,
+                        influence = 1.0,
+                        limit     = 0.0,
+                        timeout   = 0,
+                        effects   = true,
+                        ipc       = false,
+                },
+                hyprcursor = {
+                        nearest    = 1,
+                        enabled    = true,
+                        resolution = -1,
+                        fallback   = "clientside",
+                },
+        },
 }
---]]
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 hl.config(config)
+hl.plugin.dynamic_cursors.shape_rule { shape = "text", mode = "tilt" }
