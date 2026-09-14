@@ -23,6 +23,14 @@ local ns = api.nvim_create_namespace "QfList"
 
 api.nvim_set_hl(0, "QfMatch", { link = "Removed", default = true })
 
+local type_hilights = {
+        E     = "DiagnosticSignError",
+        W     = "DiagnosticSignWarn",
+        I     = "DiagnosticSignInfo",
+        N     = "DiagnosticSignHint",
+        H     = "DiagnosticSignHint",
+        error = "DiagnosticSignError",
+}
 local function getLines(ttt)
         local lines = {}
         for _, tt in ipairs(ttt) do
@@ -34,36 +42,14 @@ local function getLines(ttt)
         end
         return lines
 end
-
-local function applyHighlights(bufnr, ttt)
-        api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-        for i, tt in ipairs(ttt) do
-                local col = 0
-                for _, t in ipairs(tt) do
-                        vim.hl.range(bufnr, ns, t[2], { i - 1, col }, { i - 1, col + #t[1] })
-                        col = col + #t[1]
-                end
-        end
-end
-
-local type_hilights = {
-        E     = "DiagnosticSignError",
-        W     = "DiagnosticSignWarn",
-        I     = "DiagnosticSignInfo",
-        N     = "DiagnosticSignHint",
-        H     = "DiagnosticSignHint",
-        error = "DiagnosticSignError",
-}
-
 local function shortPath(path)
         local sep    = string.sub(package.config, 1, 1);
         local as_raw = { "nvim$" };
         local fmod   = curry(fn.fnamemodify, 2)(path)
-        local name   = match(path) {
-                [fmod ":."] = function() return fmod ":~" end,
-                _           = function() return fmod ":." end,
+        local name   = match(fmod ":.") {
+                [p.self] = function() return fmod ":~" end,
+                _        = function(_) return _ end,
         }
-
         local function isRaw(str)
                 for _, pattern in ipairs(as_raw) do
                         if string.match(str, pattern) then
@@ -72,7 +58,6 @@ local function shortPath(path)
                 end
                 return false;
         end
-
         local parts     = vim.split(name, sep, { trimempty = true });
         local shortened = iter(parts)
             :enumerate()
@@ -88,10 +73,18 @@ local function shortPath(path)
                     end }
             end)
             :totable()
-
         return table.concat(shortened, sep);
 end
-
+local function applyHighlights(bufnr, ttt)
+        api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
+        for i, tt in ipairs(ttt) do
+                local col = 0
+                for _, t in ipairs(tt) do
+                        vim.hl.range(bufnr, ns, t[2], { i - 1, col }, { i - 1, col + #t[1] })
+                        col = col + #t[1]
+                end
+        end
+end
 o.quickfixtextfunc = function(info)
         local what = { id = info.id, items = 1, qfbufnr = 1 }
         local list = match(info.quickfix) {
@@ -184,13 +177,13 @@ bufq { "Q", last, desc = "List last", ft = "qf" }
 iter { "q", "Q" }:each(function(_) keymapq { "<leader>" .. _, toggle(_, 30, 25), desc = "Toggle List" } end)
 kq
 ""
-    { "<M-u>", older, desc = "List older" }
-    { "<M-U>", newer, desc = "List newer" }
-    { "[", fprev, desc = "List file prev", nowait = true }
-    { "]", fnext, desc = "List file next", nowait = true }
+    { "qd", remove, desc = "List clear" }
     { "(", prev, desc = "List item prev" }
     { ")", next, desc = "List item next" }
-    { "qd", remove, desc = "List clear" }
+    { "<M-u>", newer, desc = "List newer" }
+    { "<M-U>", older, desc = "List older" }
+    { "<M-i>", fnext, desc = "List file next" }
+    { "<M-I>", fprev, desc = "List file prev" }
     { "<LocalLeader>q", Toggle.qfMode, desc = "Toggle List mode" }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

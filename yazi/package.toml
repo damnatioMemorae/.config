@@ -1,27 +1,27 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "1962818"
-hash = "6fa6a05a81c98dd000fbca3cca6e9682"
+rev = "58c4f4e"
+hash = "f281261ff04ad7ec867c3f802a50835f"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-filter"
-rev = "1962818"
-hash = "c887903a63a2ff520081b6d90a4b3392"
+rev = "58c4f4e"
+hash = "d6f7351ea25a43c9b5f4315fa1e23935"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:lsar"
-rev = "1962818"
+rev = "58c4f4e"
 hash = "c1c66e28145e28e581e74e2d6da4fdf1"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "1962818"
-hash = "f0c8c378184d5f8abd1b095a443d336d"
+rev = "58c4f4e"
+hash = "87472b05a8c420100f6a2b9cde1e7746"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "1962818"
-hash = "91937a4a9b779eabc6983e258befdfe9"
+rev = "58c4f4e"
+hash = "b95f898e6dc60b52edbc415952e14395"
 
 [[plugin.deps]]
 use = "wylie102/duckdb"
@@ -35,48 +35,48 @@ hash = "f84d828d2b77607c6b066f8cd85598b7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
-rev = "1962818"
-hash = "4c0260feb50ea2437380690ffc241da7"
+rev = "58c4f4e"
+hash = "5b2fbef7d1513ce38ff72623a071a5e"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "1962818"
-hash = "26db011a778f261d730d4f5f8bf24b3f"
+rev = "58c4f4e"
+hash = "5bb0bfab901d3601c370eafdd66edd31"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-paste"
-rev = "1962818"
-hash = "3f8d49413bc8691b4c652eb417a20178"
+rev = "58c4f4e"
+hash = "5be02722d97561b6f7aec22429aa00be"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:piper"
-rev = "1962818"
-hash = "384464b6df8cb807425c521f8cd790f3"
+rev = "58c4f4e"
+hash = "45a533508a9840cc5a10cf6129f63e6a"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:types"
-rev = "1962818"
-hash = "4161cfa043b5ba3341d82c6869007b41"
+rev = "58c4f4e"
+hash = "d368d5a6a72657e1c0e7ee7340dcea8c"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:zoom"
-rev = "1962818"
-hash = "fa268cb59989a87780605fdcfb8d99a9"
+rev = "58c4f4e"
+hash = "83bb4de74060a850749189645413fcae"
 
 [[plugin.deps]]
 use = "AnirudhG07/plugins-yazi:copy-file-contents"
-rev = "71545f4"
-hash = "f8530ee84fee95dbcc26bb1d8d8019c7"
+rev = "3f4f1a3"
+hash = "421263a8558fbd2fdb07a75f074cc6e3"
 
 [[plugin.deps]]
 use = "simla33/ucp"
-rev = "96f54af"
-hash = "2011ef145f7d4aaa23cbc64c05cd6a7f"
+rev = "79043fb"
+hash = "dee1ba1aa0085616b90022b1f2fafc50"
 
 [[plugin.deps]]
 use = "boydaihungst/simple-tag"
-rev = "a971d5a"
-hash = "bd921661ea2be141a1ff182ed81d7012"
+rev = "7728d5c"
+hash = "eb786acc1ca28d843e701a7d567aeb50"
 
 [flavor]
 deps = []

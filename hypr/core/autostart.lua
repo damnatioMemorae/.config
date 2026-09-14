@@ -11,8 +11,8 @@ hl.on("hyprland.start", function()
         hl.exec_cmd(script_path .. "batterynotify")
         hl.exec_cmd "hyprpm reload -n"
 
-        -- hl.exec_cmd("ghostty",   { workspace = 1, silent = true })
-        hl.exec_cmd("kitty",   { workspace = 1, silent = true })
-        hl.exec_cmd("librewolf", { workspace = 2, silent = true })
+        hl.exec_cmd("ghostty", { workspace = 1 })
+        -- hl.exec_cmd("kitty",   { workspace = 1, silent = true })
+        hl.exec_cmd("librewolf", { workspace = 2 })
         hl.exec_cmd "discord"
 end)

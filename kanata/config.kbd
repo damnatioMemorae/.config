@@ -24,7 +24,7 @@
         grv  1    2    3    4    5    6    7    8    9    0     -     =    bspc
         tab  @q    w   @e    r    t    y   @u    i    @o    @p     [     ]    \
         @caps @a    @s    @d    @f    g    @h    @j    @k    @l    ;     '     ret
-        lsft z    x    c   @v   @b    @n    @m    ,    .    /     rsft
+        lsft z    x    c   v   @b    @n    @m    ,    .    /     rsft
         lctl lmet lalt           @spc            ralt rctl
 )
 
@@ -68,7 +68,6 @@
         p    (tap-hold $tt $ht p   (layer-while-held player))
         e    (tap-hold $tt $ht e   (layer-while-held hjkl))
         u    (tap-hold $tt $ht u   (layer-while-held hjkl))
-        v    (tap-hold $tt $ht v   (layer-while-held hjkl))
         b    (tap-hold $tt $ht b   (layer-while-held hjkl))
         o    (tap-hold $tt $ht o   (layer-while-held symbols-left))
         q    (tap-hold $tt $ht q   (layer-while-held symbols-right))

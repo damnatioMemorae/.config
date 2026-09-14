@@ -220,6 +220,7 @@ M.predicates   = {
         neq   = function(x) return function(_) return _ ~= x and _ end end, ---@param x number
         gtq   = function(x) return function(_) return _ >= x and _ end end, ---@param x number
         ltq   = function(x) return function(_) return _ <= x and _ end end, ---@param x number
+        andq  = function(p) return function(_) return p[1](_) and p[2](_) end end,
         _nil  = function(_) return _ ~= nil and _ end, ---@param _ any
         nilq  = function(_) return _ == nil and _ end, ---@param _ any
         self  = function(_) return _ end, ---@param _ any
@@ -227,7 +228,8 @@ M.predicates   = {
         upper = function(_) return _:upper() end, ---@param _ string
 }
 M.matching     = {
-        match = match,
+        match    = match,
+        constant = function(x) return function(...) return x end end, ---@diagnostic disable-line: unused-vararg
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

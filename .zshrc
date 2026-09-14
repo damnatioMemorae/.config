@@ -1,8 +1,4 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-
-# if [[ -n "$ZSH_DEBUGRC" ]]; then
+# if n "$ZSH_DEBUGRC" ]]; then
 #         zmodload zsh/zprof
 # fi
 
@@ -10,13 +6,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export PATH="$PATH:$HOME/.cargo/bin/"
-export PATH=~/XBPS/usr/bin:$PATH
-
+EDITOR='nvim'
+HISTSIZE=10000
+HISTFILE=~/.zsh_histrory
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
 export EDITOR=nvim
-
 export ZSH="$HOME/.oh-my-zsh"
-
+export PATH="$PATH:$HOME/.cargo/bin/":$HOME/home/q/go/bin:$HOME/.local/share/bin/lua:$HOME/.local/share/bin:$HOME/.local/bin
 export FZF_DEFAULT_OPTS='
 --color=fg:#6c7086,fg+:,bg:,bg+:#0e0e16
 --color=hl:#cdd6f4,hl+:#F38BA8,info:#f9e2af,marker:#F38BA8
@@ -25,10 +22,6 @@ export FZF_DEFAULT_OPTS='
 --border="none" --border-label-pos="0" --preview-window="border-bold"
 --padding="1" --margin="0" --prompt="> " --marker="󰨓 "
 --pointer="" --separator="" --scrollbar="" --layout="reverse" --preview-window=right,60%'
-
-GOPATH=/home/q/go/bin
-
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 plugins=(
         z
@@ -40,13 +33,10 @@ plugins=(
 )
 
 ZVM_SYSTEM_CLIPBOARD_ENABLED=true
-
 ZVM_CLIPBOARD_COPY_CMD="wl-copy"
 ZVM_CLIPBOARD_PASTE_CMD="wl-copy paste -n"
 
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-
-source "$ZSH"/oh-my-zsh.sh
 
 function command_not_found_handler {
         local purple='\e[1;35m' bright='\e[0;1m' green='\e[1;32m' reset='\e[0m'
@@ -67,7 +57,6 @@ function command_not_found_handler {
         return 127
 }
 
-# Detect the AUR wrapper
 if pacman -Qi yay &>/dev/null ; then
         aurhelper="yay"
 elif pacman -Qi paru &>/dev/null ; then
@@ -78,7 +67,6 @@ function in {
         local -a inPkg=("$@")
         local -a arch=()
         local -a aur=()
-
         for pkg in "${inPkg[@]}"; do
                 if pacman -Si "$pkg" &>/dev/null; then
                         arch+=("$pkg")
@@ -86,59 +74,58 @@ function in {
                         aur+=("$pkg")
                 fi
         done
-
         if [[ ${#arch[@]} -gt 0 ]]; then
                 sudo pacman -S "${arch[@]}"
         fi
-
         if [[ ${#aur[@]} -gt 0 ]]; then
                 "$aurhelper" -S "${aur[@]}"
         fi
 }
 
-alias           l='ls --format=single-column'
-alias          ls='ls -lhc --color'
-alias          un='$aurhelper -Rns'
-alias          up='$aurhelper -Syu --sudoloop'
-alias          pl='$aurhelper -Qs'
-alias          pa='$aurhelper -Ss'
-alias          pc='$aurhelper -Sc'
-alias          po='$aurhelper -Qtdq | $aurhelper -Rns -'
-alias           S='sudo pacman -S'
+alias  l='ls --format=single-column'
+alias ls='ls -lhc --color'
+alias un='$aurhelper -Rns'
+alias up='$aurhelper -Syu --sudoloop'
+alias pl='$aurhelper -Qs'
+alias pa='$aurhelper -Ss'
+alias pc='$aurhelper -Sc'
+alias po='$aurhelper -Qtdq | $aurhelper -Rns -'
+alias  S='sudo pacman -S'
 
-alias        task='go-task'
-alias          hx='helix'
-alias        tarx='tar xzvf'
-alias        tarc='tar czvf $(date +"%y-%m-%d_%H-%M-%S.tar.gz")'
-alias          sz='clear && source ~/.zshrc && clear'
-alias          sb='clear && source ~/.bashrc && clear'
-alias           t='tmux'
-alias     yayfind='$aurhelper -Slq | fzf --border-label="yay" --multi --preview "$aurhelper -Si {1}" | xargs -ro $aurhelper -S'
-alias     pacfind='pacman -Slq | fzf --border-label="pacman" --multi --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
-alias      rmfind='pacman -Qq | fzf --border-label="remove" --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
+alias    task='go-task'
+alias      hx='helix'
+alias    tarx='tar xzvf'
+alias    tarc='tar czvf $(date +"%y-%m-%d_%H-%M-%S.tar.gz")'
+alias      sz='clear && source ~/.zshrc && clear'
+alias      sb='clear && source ~/.bashrc && clear'
+alias       t='tmux'
+alias yayfind='$aurhelper -Slq | fzf --border-label="yay" --multi --preview "$aurhelper -Si {1}" | xargs -ro $aurhelper -S'
+alias pacfind='pacman -Slq | fzf --border-label="pacman" --multi --preview "pacman -Si {1}" | xargs -ro sudo pacman -S'
+alias  rmfind='pacman -Qq | fzf --border-label="remove" --multi --preview "pacman -Qi {1}" | xargs -ro sudo pacman -Rns'
 
-alias         nvz='nvim ~/.config/.zshrc'
-alias         fzf='fzf -m --preview="bat --color=always {}"'
+alias nvz='nvim ~/.config/.zshrc'
+alias fzf='fzf -m --preview="bat --color=always {}"'
 
-alias           2='hyprctl dispatch exit'
-alias           1='reboot'
-alias           0='shutdown now'
-alias           .='start-hyprland'
+alias 2='hyprctl dispatch exit'
+alias 1='reboot'
+alias 0='shutdown now'
+alias .='start-hyprland'
 
-alias          ..='cd ..'
-alias         ...='cd ../..'
-alias          .3='cd ../../..'
-alias          .4='cd ../../../..'
-alias          .5='cd ../../../../..'
+alias  ..='cd ..'
+alias ...='cd ../..'
+alias  .3='cd ../../..'
+alias  .4='cd ../../../..'
+alias  .5='cd ../../../../..'
 
-alias        dots='git add --all && git commit --allow-empty-message -m "" && git push'
-alias          ga='git add --all'
-alias          gc='git commit -m 1'
-alias          gp='git push'
-alias          lg='lazygit'
+alias dots='git add --all && git commit --allow-empty-message -m "" && git push'
+alias   ga='git add --all'
+alias   gc='git commit -m 1'
+alias   gp='git push'
+alias   lg='lazygit'
 
 alias quit-programming='sudo rm -rf /*'
 alias btkb='systemctl --user restart kanata.service'
+alias mkdir='mkdir -p'
 
 repo() {
         git init
@@ -157,10 +144,8 @@ crun() {
         if [[ -z "$1" ]]; then
                 return 1
         fi
-
         local src="$1"
         local outfile="${src}.out"
-
         if [[ "$src" == *.cpp ]]; then
                 clang++ -std=c++23 -O3 -fsanitize=address,undefined,leak "$src" -o "$outfile" && ./"$outfile"
         elif [[ "$src" == *.c ]]; then
@@ -180,20 +165,6 @@ y() {
         rm -f -- "$tmp"
 }
 
-# Always mkdir a path (this doesn't inhibit functionality to make a single dir)
-alias mkdir='mkdir -p'
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-EDITOR='nvim'
-
-source <(fzf --zsh)
-
-HISTSIZE=10000
-HISTFILE=~/.zsh_histrory
-SAVEHIST=$HISTSIZE
-HISTDUP=erase
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
@@ -207,21 +178,12 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu-no
 zstyle ':fzf-tab:complete:cd*' fzf-preview 'ls --color $realpath'
 
-eval "$(zoxide init zsh)"
-eval "$(zoxide init --cmd cd zsh)"
-
-export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:$HOME/.local/share/bin
-export PATH=$PATH:$HOME/.local/share/bin/lua
-
 bindkey -s "^p" 'yayfind \n'
 bindkey -s "^z" 'zi \n'
 bindkey -s "^h" 'cd \n'
 bindkey -s "^k" 'clear \n'
 bindkey -s "^l" 'l \n'
 bindkey -s "^f" 'fg \n'
-# bindkey -s "^\\ " 'n \n'
-# bindkey -s "^\\ " 'y \n'
 bindkey -s "^\\ " 'fzf \n'
 bindkey -s "^n" 'nvim \n'
 bindkey -s "^y" 'y \n'
@@ -235,11 +197,15 @@ bindkey -s "^[u" 'up \n'
 #         zprof
 # fi
 
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source <(fzf --zsh)
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+source "$ZSH"/oh-my-zsh.sh
+
+eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
         mkdir -p ~/.cache
         start-hyprland > ~/.cache/hyprland.log 2>&1
 fi
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/q/.lmstudio/bin"
-# End of LM Studio CLI section

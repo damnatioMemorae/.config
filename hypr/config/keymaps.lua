@@ -4,8 +4,8 @@ local bind   = utils.bind
 local shader = require "functions.shader"
 -- local cross  = require("functions.cross")
 
--- local terminal = "ghostty"
-local terminal = "kitty"
+local terminal = "ghostty"
+-- local terminal = "kitty"
 local browser  = "librewolf"
 
 local path = "~/.local/share/bin"
@@ -116,22 +116,22 @@ bind { "<D-9>", dsp.focus { workspace = 9 }, { locked = true, repeating = true }
 -- bind { "<D-C-left>", dsp.window.move { workspace = "-1", follow = false } }
 -- bind { "<D-C-right>", dsp.window.move { workspace = "+1", follow = false } }
 
-bind { "<D-C-h>", function()
-        if hy3 then return hl.dispatch(hy3.move_window "left") end
-        return hl.dispatch(dsp.window.move { direction = "left" })
-end, { locked = true, repeating = true } }
-bind { "<D-C-j>", function()
-        if hy3 then return hl.dispatch(hy3.move_window "down") end
-        return hl.dispatch(dsp.window.move { direction = "down" })
-end, { locked = true, repeating = true } }
-bind { "<D-C-k>", function()
-        if hy3 then return hl.dispatch(hy3.move_window "up") end
-        return hl.dispatch(dsp.window.move { direction = "up" })
-end, { locked = true, repeating = true } }
-bind { "<D-C-l>", function()
-        if hy3 then return hl.dispatch(hy3.move_window "right") end
-        return hl.dispatch(dsp.window.move { direction = "right" })
-end, { locked = true, repeating = true } }
+-- bind { "<D-C-h>", function()
+--         if hy3 then return hl.dispatch(hy3.move_window "left") end
+--         return hl.dispatch(dsp.window.move { direction = "left" })
+-- end, { locked = true, repeating = true } }
+-- bind { "<D-C-j>", function()
+--         if hy3 then return hl.dispatch(hy3.move_window "down") end
+--         return hl.dispatch(dsp.window.move { direction = "down" })
+-- end, { locked = true, repeating = true } }
+-- bind { "<D-C-k>", function()
+--         if hy3 then return hl.dispatch(hy3.move_window "up") end
+--         return hl.dispatch(dsp.window.move { direction = "up" })
+-- end, { locked = true, repeating = true } }
+-- bind { "<D-C-l>", function()
+--         if hy3 then return hl.dispatch(hy3.move_window "right") end
+--         return hl.dispatch(dsp.window.move { direction = "right" })
+-- end, { locked = true, repeating = true } }
 
 ---- MOVE WINDOW TO WS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -147,35 +147,36 @@ bind { "<D-A-9>", dsp.window.move { workspace = 9 }, { locked = true, repeating 
 
 ---- GROUPS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-bind { "<D-j>", function()
-        if hy3 then return hl.dispatch(hy3.make_group "v") end
-end }
-bind { "<D-k>", function()
-        if hy3 then return hl.dispatch(hy3.make_group "h") end
-end }
-bind { "<D-g>", function()
-        if hy3 then return hl.dispatch(hy3.change_group "toggletab") end
-        return hl.dispatch(dsp.group.toggle())
-end }
-bind { "<D-left>", function()
-        if hy3 then return hl.dispatch(hy3.focus_tab { direction = "left", wrap = true }) end
-        return hl.dispatch(dsp.group.prev())
-end, { locked = true, repeating = true } }
-bind { "<D-right>", function()
-        if hy3 then return hl.dispatch(hy3.focus_tab { direction = "right", wrap = true }) end
-        return hl.dispatch(dsp.group.next())
-end, { locked = true, repeating = true } }
+-- bind { "<D-j>", function()
+--         if hy3 then return hl.dispatch(hy3.make_group "v") end
+-- end }
+-- bind { "<D-k>", function()
+--         if hy3 then return hl.dispatch(hy3.make_group "h") end
+-- end }
+-- bind { "<D-g>", function()
+--         if hy3 then return hl.dispatch(hy3.change_group "toggletab") end
+--         return hl.dispatch(dsp.group.toggle())
+-- end }
+-- bind { "<D-left>", function()
+--         if hy3 then return hl.dispatch(hy3.focus_tab { direction = "left", wrap = true }) end
+--         return hl.dispatch(dsp.group.prev())
+-- end, { locked = true, repeating = true } }
+-- bind { "<D-right>", function()
+--         if hy3 then return hl.dispatch(hy3.focus_tab { direction = "right", wrap = true }) end
+--         return hl.dispatch(dsp.group.next())
+-- end, { locked = true, repeating = true } }
 
 ---- MISC ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-bind { "<D-comma>", function()
-        if hy3 then return hl.dispatch(hy3.toggle_focus_layer()) end
-end }
-bind { "<D-Escape>", function()
-        if hy3 then return hl.dispatch(hy3.kill_active()) end
-        return hl.dispatch(dsp.window.close())
-end }
-bind { "<D-Escape>", hy3.kill_active() }
+-- bind { "<D-comma>", function()
+--         if hy3 then return hl.dispatch(hy3.toggle_focus_layer()) end
+-- end }
+-- bind { "<D-Escape>", function()
+--         if hy3 then return hl.dispatch(hy3.kill_active()) end
+--         return hl.dispatch(dsp.window.close())
+-- end }
+-- bind { "<D-Escape>", hy3.kill_active() }
+bind { "<D-Escape>", dsp.window.close() }
 bind { "<D-F4>", dsp.window.close(), { locked = true, repeating = true } }
 bind { "<D-A-n>", script "windowpin" }
 bind { "<D-n>", dsp.window.float { action = "toggle" } }

@@ -168,15 +168,19 @@ auq "User" { -- KEYMAPS
         callback = function(args)
                 local buf = args.data.buf_id
                 local lhs = "<leader>"
-                mapSplit(buf, "<C-s>", "belowright horizontal")
-                mapSplit(buf, "<C-v>", "belowright vertical")
-                mapSplit(buf, "<C-t>", "tab")
+                mapSplit(buf, "<M-s>", "belowright horizontal")
+                mapSplit(buf, "<M-v>", "belowright vertical")
+                mapSplit(buf, "<M-t>", "tab")
                 kq
                 ""
                     { lhs .. "~", setCwd, buf = buf, desc = "Set cwd" }
                     { lhs .. "x", uiOpen, buf = buf, desc = "OS open" }
                     { "@", yankPath, buf = buf, desc = "Yank path" }
                     { ".", toggleDotfiles, buf = buf, desc = "Toggle hidden files" }
+                    { "<Up>", "<Up>", buf = buf, desc = "Move Up" }
+                    { "<Down>", "<Down>", buf = buf, desc = "Move Down" }
+                    { "<Left>", "<Left>", buf = buf, desc = "Move Left" }
+                    { "<Right>", "<Right>", buf = buf, desc = "Move Right" }
                     { "S", function()
                             send((require "mini.files".get_fs_entry() or {}).path)
                     end, mode = { "n", "x" }, buf = buf, desc = "Telegram send" }

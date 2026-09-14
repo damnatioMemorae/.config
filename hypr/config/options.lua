@@ -150,42 +150,42 @@ config.scrolling  = {
 }
 ---@type HL.Plugin
 config.plugin     = {
-        hy3             = {
-                node_collapse_policy = 1,
-                group_inset          = 10,
-                tab_first_window     = false,
-                tabs                 = {
-                        height       = 20,
-                        padding      = 0,
-                        from_top     = true,
-                        radius       = 0,
-                        border_width = 0,
-                        text_font    = "Monocraft",
-                        text_height  = 10,
-                        text_padding = 0,
-                        colors       = {
-                                active        = colors.crust,
-                                active_text   = colors.text,
-                                active_border = colors.crust,
-
-                                focused        = colors.crust,
-                                focused_text   = colors.surface2,
-                                focused_border = colors.crust,
-
-                                inactive        = colors.base,
-                                inactive_text   = colors.surface2,
-                                inactive_border = colors.base,
-
-                                urgent        = colors.red,
-                                urgent_text   = colors.crust,
-                                urgent_border = colors.red,
-
-                                locked        = colors.surface0,
-                                locked_text   = colors.text,
-                                locked_border = colors.surface0,
-                        },
-                },
-        },
+        -- hy3             = {
+        --         node_collapse_policy = 1,
+        --         group_inset          = 10,
+        --         tab_first_window     = false,
+        --         tabs                 = {
+        --                 height       = 20,
+        --                 padding      = 0,
+        --                 from_top     = true,
+        --                 radius       = 0,
+        --                 border_width = 0,
+        --                 text_font    = "Monocraft",
+        --                 text_height  = 10,
+        --                 text_padding = 0,
+        --                 colors       = {
+        --                         active        = colors.crust,
+        --                         active_text   = colors.text,
+        --                         active_border = colors.crust,
+        --
+        --                         focused        = colors.crust,
+        --                         focused_text   = colors.surface2,
+        --                         focused_border = colors.crust,
+        --
+        --                         inactive        = colors.base,
+        --                         inactive_text   = colors.surface2,
+        --                         inactive_border = colors.base,
+        --
+        --                         urgent        = colors.red,
+        --                         urgent_text   = colors.crust,
+        --                         urgent_border = colors.red,
+        --
+        --                         locked        = colors.surface0,
+        --                         locked_text   = colors.text,
+        --                         locked_border = colors.surface0,
+        --                 },
+        --         },
+        -- },
         dynamic_cursors = {
                 enabled    = true,
                 mode       = "rotate",

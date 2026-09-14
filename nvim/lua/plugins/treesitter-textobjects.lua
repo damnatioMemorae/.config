@@ -91,8 +91,8 @@ return {
                 -- { "<M-U>", jump "loop" "outer" "previous",        desc = "Goto previous loop",       mode = nxo },
                 { "<M-s>", jump "assignment" "lhs" "next",        desc = "Goto next assignment",     mode = nxo },
                 { "<M-S>", jump "assignment" "lhs" "previous",    desc = "Goto previous assignment", mode = nxo },
-                { "<M-v>", jump "assignment" "rhs" "next",        desc = "Goto next value",          mode = nxo },
-                { "<M-V>", jump "assignment" "rhs" "previous",    desc = "Goto previous value",      mode = nxo },
+                -- { "<M-v>", jump "assignment" "rhs" "next",        desc = "Goto next value",          mode = nxo },
+                -- { "<M-V>", jump "assignment" "rhs" "previous",    desc = "Goto previous value",      mode = nxo },
                 { "<M-t>", jump "assignment" "outer" "next",      desc = "Goto next type",           mode = nxo },
                 { "<M-T>", jump "assignment" "outer" "previous",  desc = "Goto previous type",       mode = nxo },
 

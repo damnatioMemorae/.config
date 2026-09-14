@@ -1,16 +1,15 @@
 local g     = vim.g
 local o     = vim.o
 local bo    = vim.bo
+local fn    = vim.fn
+local uv    = vim.uv
+local wo    = vim.wo
+local api   = vim.api
 local cmd   = vim.cmd
 local opt   = vim.opt
 local opt_l = vim.opt_local
 
-local fn      = vim.fn
-local uv      = vim.uv
-local wo      = vim.wo
-local api     = vim.api
 local augroup = vim.api.nvim_create_augroup
-
 local general = augroup("General Autocmds", { clear = true })
 
 ---- GENERAL -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -36,8 +35,8 @@ auq "FileType" { -- JSON
 auq "FileType" { -- NOFILE
         pattern  = "*",
         group    = general,
-        callback = function(args)
-                match(bo[args.buf].buftype) {
+        callback = function(_)
+                match(bo[_.buf].buftype) {
                         nofile = function()
                                 opt_l.number         = false
                                 opt_l.relativenumber = false
@@ -66,22 +65,6 @@ auq "WinScrolled" { -- SNIPPET
         group    = general,
         callback = function() vim.snippet.stop() end,
 }
-auq "ModeChanged" { -- VIRTUAL EDIT
-        pattern  = "*:*",
-        group    = general,
-        callback = function()
-                local mode = fn.mode()
-                if mode == "n" or mode == "\22" then
-                        opt.virtualedit = "all"
-                end
-                if mode == "i" then
-                        opt.virtualedit = "block"
-                end
-                if mode == "v" or mode == "V" then
-                        opt.virtualedit = "none"
-                end
-        end,
-}
 auq "BufWritePre" { -- TRAILING WHITESPACE
         desc     = "User: Remove trailing whitespace",
         group    = general,
@@ -107,37 +90,83 @@ auq { "BufReadPost", "BufReadPre", "BufWinEnter" } { -- RESTORE CURSOR
         desc     = "User: Restore cursor position",
         group    = general,
         pattern  = "*",
-        callback = function(args)
-                local mark       = api.nvim_buf_get_mark(args.buf, '"')
-                local line_count = api.nvim_buf_line_count(args.buf)
+        callback = function(_)
+                local mark       = api.nvim_buf_get_mark(_.buf, '"')
+                local line_count = api.nvim_buf_line_count(_.buf)
                 if mark[1] > 0 and mark[1] <= line_count then
                         api.nvim_win_set_cursor(0, mark)
                 end
         end,
 }
 
--- local last
--- auq "CmdAtom" { -- DOT REPEAT
---         callback = function(ev)
---                 local is_redo_or_undo = ev.data.changed and (ev.data.undoseq or 0) <= (vim.b[ev.buf].maxseq or 0)
---                 vim.b[ev.buf].maxseq = math.max(vim.b[ev.buf].maxseq or 0, ev.data.undoseq or 0)
---                 if ev.data.changed and not is_redo_or_undo and ev.data.lhs ~= "." then
---                         last = ev.data
+do -- VIRTUAL EDIT & MODES
+        local get = api.nvim_win_get_cursor
+        local set = api.nvim_win_set_cursor
+        local pos = get(0)
+        auq "ModeChanged" {
+                pattern  = "*:*",
+                group    = general,
+                callback = function(_)
+                        local modes    = vim.split(_.match, ":")
+                        local old, new = modes[1], modes[2]
+                        match(old) {
+                                [{ "i", "n", "nt" }] = function() pos = get(0) end,
+                        }
+                        match(new) {
+                                i = function() pos = get(0) end,
+                                n = function() set(0, pos) end,
+                        }
+                        opt.virtualedit = match(fn.mode()) {
+                                [{ "i" }]        = "block",
+                                [{ "v", "V" }]   = "none",
+                                [{ "n", "\22" }] = "all",
+                        }
+                end,
+        }
+end
+do -- REPEAT LAST MOTION
+        local key = '"'
+        local last
+        auq "CmdAtom" {
+                callback = function(_)
+                        local motion = _.data.moved or _.match == "motion"
+                        if motion and not (_.data.changed or _.data.lhs == key) then
+                                last = _.data
+                        end
+                end,
+        }
+        kq "" { key, function()
+                vim.schedule(function()
+                        if last then
+                                api.nvim_feedkeys(last.keys or last.lhs, last.keys and "n" or "m", false)
+                        end
+                end)
+        end }
+end
+-- do -- DOT REPEAT
+--         local last
+--         auq "CmdAtom" {
+--                 callback = function(ev)
+--                         local is_redo_or_undo = ev.data.changed and (ev.data.undoseq or 0) <= (vim.b[ev.buf].maxseq or 0)
+--                         vim.b[ev.buf].maxseq = math.max(vim.b[ev.buf].maxseq or 0, ev.data.undoseq or 0)
+--                         if ev.data.changed and not is_redo_or_undo and ev.data.lhs ~= "." then
+--                                 last = ev.data
+--                         end
+--                 end,
+--         }
+--         kq "" { ".", function()
+--                 local mc = api.nvim_create_namespace "nvim.multicursor"
+--                 if #api.nvim_buf_get_extmarks(0, mc, 0, -1, { limit = 1 }) > 0 then
+--                         api.nvim_feedkeys(".", "n", false)
+--                         return
 --                 end
---         end,
--- }
--- kq "" { ".", function() -- DOT REPEAT
---         local mc = api.nvim_create_namespace "nvim.multicursor"
---         if #api.nvim_buf_get_extmarks(0, mc, 0, -1, { limit = 1 }) > 0 then
---                 api.nvim_feedkeys(".", "n", false)
---                 return
---         end
---         vim.schedule(function()
---                 if last then
---                         api.nvim_feedkeys(last.keys or last.lhs, last.keys and "n" or "m", false)
---                 end
---         end)
--- end, unique = false }
+--                 vim.schedule(function()
+--                         if last then
+--                                 api.nvim_feedkeys(last.keys or last.lhs, last.keys and "n" or "m", false)
+--                         end
+--                 end)
+--         end, unique = false }
+-- end
 
 ---- CMDLINE -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -189,9 +218,7 @@ auq "FileType" {
                 "startuptime",
                 "terminal",
         },
-        callback = function(args)
-                keymapq { "<Esc>", "<cmd>q<CR>", buf = args.buf, silent = true }
-        end,
+        callback = function(_) keymapq { "<Esc>", "<cmd>q<CR>", buf = _.buf, silent = true, nowait = true } end,
 }
 
 ---- AUTO-CLOSE DELETED BUFFERS ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -206,31 +233,26 @@ auq "FocusGained" {
                             if not api.nvim_buf_is_valid(buf.bufnr) then
                                     return acc
                             end
-
                             local still_exists   = uv.fs_stat(buf.name) ~= nil
                             local special_buffer = bo[buf.bufnr].buftype ~= ""
                             local new_buffer     = buf.name == ""
-
                             if still_exists or special_buffer or new_buffer then
                                     return acc
                             end
-
                             table.insert(acc, vim.fs.basename(buf.name))
                             api.nvim_buf_delete(buf.bufnr, { force = false })
                             return acc
                     end)
-
-                if #closed_buffers == 0 then
-                        return
-                end
-
-                if #closed_buffers == 1 then
-                        vim.notify(closed_buffers[1], nil, { title = "Buffer closed", icon = "󰅗" })
-                else
-                        local text = "- " .. table.concat(closed_buffers, "\n- ")
-                        vim.notify(text, nil, { title = "Buffers closed", icon = "󰅗" })
-                end
-
+                match(#closed_buffers) {
+                        [0] = function() end,
+                        [1] = function()
+                                vim.notify(closed_buffers[1], nil, { title = "Buffer closed", icon = "󰅗" })
+                        end,
+                        _   = function()
+                                local text = "- " .. table.concat(closed_buffers, "\n- ")
+                                vim.notify(text, nil, { title = "Buffers closed", icon = "󰅗" })
+                        end,
+                }
                 vim.schedule(function()
                         if api.nvim_buf_get_name(0) ~= "" then return end
                         for _, file in ipairs(vim.v.oldfiles) do
@@ -248,19 +270,14 @@ auq "FocusGained" {
 do
         local prev_key
         local config = { scrollbarWidth = 3, ignoredPrevNormalModeKeys = { "g", g.mapleader } }
-
         ---@param mode? "clear"
         local function searchCountIndicator(mode)
                 local count_ns = api.nvim_create_namespace "searchCounter"
                 api.nvim_buf_clear_namespace(0, count_ns, 0, -1)
-                if mode == "clear" then
-                        return
-                end
+                if mode == "clear" then return end
                 local row   = api.nvim_win_get_cursor(0)[1]
                 local count = fn.searchcount()
-                if vim.tbl_isempty(count) or count.total == 0 then
-                        return
-                end
+                if vim.tbl_isempty(count) or count.total == 0 then return end
                 local text           = (" %d/%d "):format(count.current, count.total)
                 local line           = api.nvim_get_current_line():gsub("\t", (" "):rep(bo.shiftwidth))
                 local signcolumn     = tonumber(wo.signcolumn:match "%d+" or "0") * 2
@@ -273,7 +290,6 @@ do
                         priority      = 4000,
                 })
         end
-
         vim.on_key(function(key, typed)
                            local ignore = vim.tbl_contains(config.ignoredPrevNormalModeKeys, prev_key)
                            prev_key     = typed

@@ -5,7 +5,7 @@ After=multi-user.target
 [Service]
 Type=oneshot
 ExecStartPre=/bin/sleep 20
-ExecStart=/usr/bin/cpupower frequency-set -u 2000MHz
+ExecStart=/usr/bin/cpupower frequency-set -u 3000MHz
 RemainAfterExit=true
 
 [Install]

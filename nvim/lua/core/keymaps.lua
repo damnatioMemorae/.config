@@ -43,8 +43,6 @@ kq -- MOTIONS
 
 kq -- SEARCH
 ""
-    { "n", "n", desc = "Search next" }
-    { "N", "N", desc = "Search previous" }
     { "\\", "<Esc>/\\%V", desc = "Search in sel", mode = x }
     { "<esc>", "<cmd>nohlsearch<cr><esc>", desc = "Escape and Clear hlsearch", mode = ni, silent = true, unique = false }
 
@@ -114,9 +112,21 @@ kq -- BLANK
     { "+", "[<Space>", desc = "blank above", remap = true }
     { "-", "]<Space>", desc = "blank below", remap = true }
 
+kq -- REGISTERS
+""
+    { "x", '"_x', mode = nx }
+    { "c", '"_c', mode = nx }
+    { "C", '"_C' }
+    { "p", "P", mode = x }
+    { "p", "]p", desc = "Paste & indent" }
+    { "dd", function() -- DONT SAVE EMPTY LINES
+            local line_empty = vim.trim(api.nvim_get_current_line()) == ""
+            return (line_empty and '"_dd' or "dd")
+    end, expr = true }
+
 kq -- YANK
 ""
-    { "<C-y>", ":%y<CR>", desc = "Yank all", silent = true }
+    { "<C-y>", "<cmd>%y<CR>", desc = "Yank all", silent = true }
     { "y", function() -- STICKY
             b.preYankCursor = api.nvim_win_get_cursor(0)
             return "y"
@@ -131,28 +141,13 @@ do -- YANKRING
         auq "TextYankPost" {
                 desc     = "User: Yankring",
                 callback = function()
-                        if vim.v.event.operator ~= "y" then
-                                return
-                        end
+                        if vim.v.event.operator ~= "y" then return end
                         for a = 9, 1, -1 do
                                 fn.setreg(tostring(a), fn.getreg(tostring(a - 1)))
                         end
                 end,
         }
 end
-
--- { "d", '"_d', mode = nx }
-kq -- REGISTERS
-""
-    { "x", '"_x', mode = nx }
-    { "c", '"_c', mode = nx }
-    { "C", '"_C' }
-    { "p", "P", mode = x }
-    { "p", "]p", desc = "Paste & indent" }
-    { "dd", function() -- DONT SAVE EMPTY LINES
-            local line_empty = vim.trim(api.nvim_get_current_line()) == ""
-            return (line_empty and '"_dd' or "dd")
-    end, expr = true }
 
 kq "" { "<C-p>", function() -- STICKY PASTE AT EOL
         local cur_line = api.nvim_get_current_line():gsub("%s*$", "")
@@ -199,9 +194,18 @@ end, desc = "indented i on empty line", expr = true }
 
 kq -- VISUAL MODE
 ""
-    { "<C-v>", "ggVG", desc = "select all" }
-    { "V", "j", desc = "repeated `V` selects more lines", mode = x }
+    { "<M-v>", "v$o", desc = "Select to EOL" }
+    { "<C-v>", "ggVG", desc = "Select all" }
+    { "<M-v>", "<cmd>normal! ojo<CR>", desc = "Select line above", mode = x }
+    { "<M-V>", "<cmd>normal! oko<CR>", desc = "Select line below", mode = x }
+    { "<LocalLeader>v", "gv", desc = "Select last selected" }
     { "v", "<C-v>", desc = "`vv` starts visual block", mode = x }
+    { "V", function()
+            match(fn.mode()) {
+                    V = function() cmd "normal! ojo" end,
+                    _ = function() cmd "normal! V" end,
+            }
+    end, desc = "Repeated `V` selects more lines", mode = x }
 
 kq -- CMDX
 ""
@@ -249,24 +253,26 @@ kq -- CMD EDIT
             if fn.getcmdline() ~= "" then return "<BS>" end
     end, desc = "disable <BS> when cmdline is empty", mode = c, expr = true, unique = false }
 
-local function splti(mod)
-        return function()
-                local command   = fn.getcmdline()
-                local shell_cmd = command:match "^!%s*(.*)"
-                if shell_cmd then
-                        command = string.format("%s terminal %s", mod, shell_cmd)
-                elseif not command:match("^%s*" .. vim.pesc(mod) .. "%s+") then
-                        command = string.format("%s %s", mod, command)
+do -- CMD SPLIT
+        local function splti(mod)
+                return function()
+                        local command   = fn.getcmdline()
+                        local shell_cmd = command:match "^!%s*(.*)"
+                        if shell_cmd then
+                                command = string.format("%s terminal %s", mod, shell_cmd)
+                        elseif not command:match("^%s*" .. vim.pesc(mod) .. "%s+") then
+                                command = string.format("%s %s", mod, command)
+                        end
+                        return "<C-\\>e" .. fn.string(command) .. "<CR><CR>"
                 end
-                return "<C-\\>e" .. fn.string(command) .. "<CR><CR>"
         end
-end
 
-kq -- CMD SPLIT
-""
-    { "<c-l>", splti "vertical", mode = c, expr = true }
-    { "<c-j>", splti "horizontal", mode = c, expr = true }
-    { "<c-CR>", splti "tab", mode = c, expr = true }
+        kq
+        ""
+            { "<c-l>", splti "vertical", mode = c, expr = true }
+            { "<c-j>", splti "horizontal", mode = c, expr = true }
+            { "<c-CR>", splti "tab", mode = c, expr = true }
+end
 
 kq "" { "<M-Esc>", "<C-\\><C-n>", mode = "t" }
 do -- TOGGLE TERMINAL
@@ -376,11 +382,9 @@ kq -- MULTICURSOR
     { "<M-,>", mc.mcAdd(-1), desc = "MCursor add above" }
     { "<M->>", mc.mcDel(1), desc = "MCursor delete below" }
     { "<M-<>", mc.mcDel(-1), desc = "MCursor delete above" }
-    { "<LocalLeader><LocalLeader>", "q=", desc = "MCursor follow toggle", mode = nx }
     { "<M-m>", "Q*1q=", desc = "MCursor next match", mode = nx }
     { "<M-M>", "Q#1q=", desc = "MCursor prev match", mode = nx }
-    { "<M-i>", "]C", desc = "MCursor next", mode = nx }
-    { "<M-I>", "[C", desc = "MCursor prev", mode = nx }
+    { "<LocalLeader><LocalLeader>", "q=", desc = "MCursor toggle follow mode", mode = nx, unique = false }
     { "<C-q>", "Q", desc = "MCursor toggle", mode = nx }
     { "<C-g>", "g<C-A>", desc = "MCursor numbers" }
     { "<C-c>", mc.mcClear, mode = nx }

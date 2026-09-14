@@ -1,7 +1,6 @@
 require "core.utils"
 _G.safeRequire "core.handlers"
 
--- _G.safeRequire "core"
 _G.safeRequire "core.autostart"
 _G.safeRequire "core.monitor"
 _G.safeRequire "core.env"

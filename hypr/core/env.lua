@@ -7,8 +7,8 @@ local envs = {
         { "HYPRCURSOR_THEME",                    "catppuccin-mocha-red" },
 
         { "EIDITOR",                             "nvim" },
-        -- { "TERMINAL",                            "ghostty" },
-        { "TERMINAL",                            "kitty" },
+        { "TERMINAL",                            "ghostty" },
+        -- { "TERMINAL",                            "kitty" },
         { "BROWSER",                             "librewolf" },
         { "SCRIPTS",                             HOME .. "/.local/bin" },
 

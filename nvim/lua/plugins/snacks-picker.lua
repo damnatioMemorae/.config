@@ -26,6 +26,7 @@ end
 linq
 "Snacks"
     { "Picker", "Normal" }
+    { "PickerDir", "Comment" }
     { "PickerBorder", "Border" }
     { "PickerBoxBorder", "Border" }
     { "PickerListBorder", "Border" }
